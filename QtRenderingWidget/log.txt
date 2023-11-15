@@ -1,0 +1,840 @@
+-----------------------------------------------
+'Qt RME' Log
+Nov 28 2022 : 19:11:15
+-----------------------------------------------
+
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.-----------------------------------------------
+'Qt RME' Log
+Nov 28 2022 : 19:11:15
+-----------------------------------------------
+
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.-----------------------------------------------
+'Qt RME' Log
+Nov 28 2022 : 19:11:15
+-----------------------------------------------
+
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.-----------------------------------------------
+'Qt RME' Log
+Nov 28 2022 : 19:11:15
+-----------------------------------------------
+
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: createDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: makeDevice: Line: 9: Attempting to create Direct3d 11 Device...
+ACTION: D3D11CreateDevice()...Finsihed. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: Created Swap Chain.. Success.
+ACTION: m_pSwapChain1->GetBuffer().. Success.
+ACTION: CreateRenderTargetView().. Success.
+ACTION: m_oSwapChainData.m_pBackBuffer->Release().. Success.
