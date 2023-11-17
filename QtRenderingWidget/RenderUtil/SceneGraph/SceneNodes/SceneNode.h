@@ -23,17 +23,20 @@ namespace Rldx {
 		void SetResource(ResId resourceId) { resourceId = resourceId; };
 		ResId GetResurce() const { return m_resourceId; };
 
-		void AddChild(SceneNode::SPtr child);
-		void AddChild(SceneNode* poChild);
-
 		void SetParent(SceneNode::SPtr parent);
-
 		SceneNode* GetParent();
+
+		void AddChild(SceneNode::SPtr child);
+		void AddChild(SceneNode* poChild);		
 		SceneNode* GetChild(SceneNode* poChild);
-		SceneNode* GetChild(size_t index = 0);
+		SceneNode* GetChild(size_t index=0);
+		
+		// TODO: test this
+		static SceneNode* FindNode(SceneNode* nodeToFind, SceneNode* currentNode);
 
 		const std::vector<SceneNode::SPtr>& GetChildren() const;
-		std::vector<SceneNode::SPtr> GetChildren();
+		std::vector<SceneNode::SPtr>& GetChildren();
+
 		void RemoveChild(SceneNode::SPtr spoChild);
 		void RemoveChild(SceneNode* poChild);
 		void RemoveChild(size_t index);
@@ -47,7 +50,6 @@ namespace Rldx {
 	private:
 		static NodeId GetNextId();
 
-
 	protected:
 		// node type:
 		ResourceTypeEnum m_resourceType = ResourceTypeEnum::Unknown;
@@ -59,7 +61,7 @@ namespace Rldx {
 		std::weak_ptr<SceneNode> m_wpoParent;
 
 		// geometruy	
-		NodeTransform m_nodeTransform; //
+		NodeTransform m_nodeTransform;
 
 		// node ids	
 		NodeId m_nodeId = ~0;

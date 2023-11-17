@@ -126,12 +126,30 @@ SceneNode* SceneNode::GetChild(size_t index)
 	return m_children[index].get();
 }
 
+// TODO: test this
+inline SceneNode* Rldx::SceneNode::FindNode(SceneNode* nodeToFind, SceneNode* currentNode)
+{
+	if (currentNode == nodeToFind) {
+		return currentNode;
+	}
+
+	for (auto child : currentNode->GetChildren())
+	{
+		auto result = FindNode(nodeToFind, child.get());
+
+		if (result != nullptr)
+			return result;
+	}
+
+	return nullptr;
+}
+
 const std::vector<SceneNode::SPtr>& SceneNode::GetChildren() const
 {
 	return m_children;
 }
 
-std::vector<SceneNode::SPtr> SceneNode::GetChildren()
+std::vector<SceneNode::SPtr>& SceneNode::GetChildren()
 {
 	return m_children;
 }

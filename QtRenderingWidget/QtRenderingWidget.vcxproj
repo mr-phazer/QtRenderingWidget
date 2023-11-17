@@ -107,7 +107,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp" />
+    <ClCompile Include="DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp" />
     <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp" />
     <ClCompile Include="RenderUtil\Managers\TempDemoRenderer.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp" />
@@ -125,8 +128,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
-    <ClInclude Include="DxScene.h" />
-    <ClInclude Include="DxSceneManager.h" />
+    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h" />
+    <ClInclude Include="DxShaderProgram.h" />
     <ClInclude Include="Logging\Logging.h" />
     <QtMoc Include="RenderUtil\Managers\TempDemoRenderer.h" />
     <ClInclude Include="RenderUtil\DxObjects\DXSwapChain.h" />

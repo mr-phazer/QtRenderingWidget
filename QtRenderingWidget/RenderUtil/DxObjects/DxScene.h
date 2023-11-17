@@ -8,11 +8,12 @@ namespace Rldx {
 	struct DxScene
 	{
 
+	public:
+		SceneNode* GetRootNode();;
+		void DeleteNode(SceneNode* node);
 
-
-
-		SceneGraph m_sceneGraph;
-		DxSwapChain::SPtr m_spoSwapChain;
+	private:
+		SceneNode::SPtr m_spoRootNode = SceneNode::Create("RootNode");
 	};
 
 }; // end: namespace Rldx

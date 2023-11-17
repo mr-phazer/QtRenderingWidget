@@ -70,6 +70,15 @@
     <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DxShaderProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderUtil\Managers\DxDeviceManager.h">
@@ -85,9 +94,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\DxObjects\DxTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DxScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="asdsass.h">
@@ -108,10 +114,13 @@
     <ClInclude Include="RenderUtil\Managers\DxTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DxSceneManager.h">
+    <ClInclude Include="RenderUtil\Managers\DxSceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Managers\DxSceneManager.h">
+    <ClInclude Include="DxShaderProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
