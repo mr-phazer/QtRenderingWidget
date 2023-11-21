@@ -2,12 +2,12 @@
 
 using namespace Rldx;
 
-SceneNode* SceneGraph::GetRootNode()
+DxSceneNode* SceneGraph::GetRootNode()
 {
 	 return m_spoRootNode.get(); 
 }
 
-void SceneGraph::DeleteNode(SceneNode* node)
+void SceneGraph::DeleteNode(DxSceneNode* node)
 {
 	if(node->GetParent())
 	{

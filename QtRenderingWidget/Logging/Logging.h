@@ -62,7 +62,12 @@ namespace logging
         static void LogActionInfo(const std::string& _strMsg);
         static void LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
         static void LogAction_success(const std::string& _strMsg);
+        
+        
         static bool LogActionErrorFalse(const std::string& _strMsg);
+        static bool LogActionErrorFalse(const std::string& _strMsg);
+
+
         static bool LogAction_warning(const std::string& _strMsg);
         static void LogWrite(const std::string& _strMsg);
         static void WriteToLogFile(const std::string& logString);

@@ -4,14 +4,24 @@
 
 
 
-namespace rendutil
+namespace Rldx
 {
-	class DxMesh;
+    class DxMeshManager {
+    private:
+        static DxMeshManager* instance;
 
-	class DxMeshManager
-	{
-		
-		
-	};
+        Singleton() {
+            // private constructor to prevent instantiation
+        }
+
+    public:
+        static DxMeshManager* getInstance() {
+            if (instance == nullptr) {
+                instance = new Singleton();
+            }
+            return instance;
+        }
+
+    };   
+   
 }
-

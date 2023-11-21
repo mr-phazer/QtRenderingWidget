@@ -6,21 +6,23 @@
 
 using namespace Rldx;
 
-DxDeviceManager::Ptr Rldx::DxDeviceManager::Create()
-{
-	Ptr po = std::make_unique<DxDeviceManager>();
+std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
-	HRESULT hr = po->Init();
+DxDeviceManager::UPtr Rldx::DxDeviceManager::Create()
+{
+	auto poNewInstance = std::make_unique<DxDeviceManager>();
+
+	HRESULT hr = poNewInstance->InitDirect3d11();
 
 	assert(SUCCEEDED(hr));
 
-	return po;
+	return poNewInstance;
 }
 
-HRESULT Rldx::DxDeviceManager::Init()
+HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 {
-	logging::LogAction("Attempting to create Direct3d 11 Device...");
-	// create device
+	logging::LogAction("Attempting to create Direct3d 11 Device...");	
+	
 	D3D_FEATURE_LEVEL featureLevels[] = {		
 		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
@@ -33,7 +35,6 @@ HRESULT Rldx::DxDeviceManager::Init()
 
 #ifdef _DEBUG
 	HRESULT hr = S_OK;
-
 	try
 	{
 		hr = D3D11CreateDevice(
@@ -94,7 +95,7 @@ bool Rldx::DxDeviceManager::InitFont()
 {
 	// TODO: exception?
 	fontEngine.m_font = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
-	fontEngine.m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(deviceContext());
+	fontEngine.m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(GetDeviceContext());
 
 	if (!(fontEngine.m_font && fontEngine.m_spriteBatch))
 	{
@@ -123,7 +124,7 @@ void Rldx::DxDeviceManager::RenderText()
 	//const float blendFactor[4] = {1,1,1,1};
 	//m_poScene->getDeviceContext()->OMSetBlendState(poBlendState, blendFactor, 0xFFFFFFFF);
 
-	deviceContext()->OMSetDepthStencilState(depthStencilStates.Off.Get(), 1);
+	GetDeviceContext()->OMSetDepthStencilState(depthStencilStates.Off.Get(), 1);
 
 
 	fontEngine.m_spriteBatch->Begin();

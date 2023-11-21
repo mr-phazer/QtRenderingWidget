@@ -17,8 +17,7 @@ namespace Rldx
 	class DxMeshResource : public DxResourceBase
 	{
 		DxMeshResource() : DxResourceBase(ResourceTypeEnum::Mesh) {};
-	};
-	
+	};	
 
 
 	class Texture;
@@ -114,8 +113,6 @@ namespace Rldx
 
 
 	class Texture;
-
-
 
 	// make a singleton
 	class ResourceManager

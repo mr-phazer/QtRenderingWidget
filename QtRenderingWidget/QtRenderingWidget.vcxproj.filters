@@ -58,7 +58,7 @@
     <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\SceneNode.cpp">
+    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUtil\SceneGraph\SceneGraph.cpp">
@@ -70,13 +70,16 @@
     <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DxShaderProgram.cpp">
+    <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp">
+    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.Cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -102,7 +105,7 @@
     <ClInclude Include="RenderUtil\DxObjects\DxScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\SceneNode.h">
+    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\SceneGraph\SceneGraph.h">
@@ -117,10 +120,22 @@
     <ClInclude Include="RenderUtil\Managers\DxSceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DxShaderProgram.h">
+    <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h">
+    <ClInclude Include="RenderUtil\DxObjects\DxMeshData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\Types\CommonVertexType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\DxObjects\TDxResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\COMerrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\TSmartPointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

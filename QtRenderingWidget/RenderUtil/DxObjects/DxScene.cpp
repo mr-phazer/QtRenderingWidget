@@ -2,12 +2,12 @@
 
 using namespace Rldx;
 
-inline SceneNode* Rldx::DxScene::GetRootNode() { return m_spoRootNode.get(); }
+inline DxSceneNode* Rldx::DxScene::GetRootNode() { return m_spoRootNode.get(); }
 
 // TODO: test this
-void Rldx::DxScene::DeleteNode(SceneNode* node)
+void Rldx::DxScene::DeleteNode(DxSceneNode* node)
 {
-	auto nodeResult = SceneNode::FindNode(node, GetRootNode());
+	auto nodeResult = DxSceneNode::FindNode(node, GetRootNode());
 
 	if (nodeResult != nullptr)
 	{

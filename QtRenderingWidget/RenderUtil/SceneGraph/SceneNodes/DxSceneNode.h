@@ -10,35 +10,35 @@
 
 namespace Rldx {
 		
-	class SceneNode : public std::enable_shared_from_this<SceneNode>
+	class DxSceneNode : public std::enable_shared_from_this<DxSceneNode>
 	{
 	public:
-		using SPtr = std::shared_ptr<SceneNode>;	
+		using SPtr = std::shared_ptr<DxSceneNode>;	
 	public:										
-		virtual ~SceneNode();			
+		virtual ~DxSceneNode();			
 
-		static SceneNode::SPtr Create(std::string name = "");
+		static DxSceneNode::SPtr Create(std::string name = "");
 
 		ResourceTypeEnum GetResourceType();
 		void SetResource(ResId resourceId) { resourceId = resourceId; };
 		ResId GetResurce() const { return m_resourceId; };
 
-		void SetParent(SceneNode::SPtr parent);
-		SceneNode* GetParent();
+		void SetParent(DxSceneNode::SPtr parent);
+		DxSceneNode* GetParent();
 
-		void AddChild(SceneNode::SPtr child);
-		void AddChild(SceneNode* poChild);		
-		SceneNode* GetChild(SceneNode* poChild);
-		SceneNode* GetChild(size_t index=0);
+		void AddChild(DxSceneNode::SPtr child);
+		void AddChild(DxSceneNode* poChild);		
+		DxSceneNode* GetChild(DxSceneNode* poChild);
+		DxSceneNode* GetChild(size_t index=0);
 		
 		// TODO: test this
-		static SceneNode* FindNode(SceneNode* nodeToFind, SceneNode* currentNode);
+		static DxSceneNode* FindNode(DxSceneNode* nodeToFind, DxSceneNode* currentNode);
 
-		const std::vector<SceneNode::SPtr>& GetChildren() const;
-		std::vector<SceneNode::SPtr>& GetChildren();
+		const std::vector<DxSceneNode::SPtr>& GetChildren() const;
+		std::vector<DxSceneNode::SPtr>& GetChildren();
 
-		void RemoveChild(SceneNode::SPtr spoChild);
-		void RemoveChild(SceneNode* poChild);
+		void RemoveChild(DxSceneNode::SPtr spoChild);
+		void RemoveChild(DxSceneNode* poChild);
 		void RemoveChild(size_t index);
 		void RemoveChildren();
 
@@ -58,20 +58,20 @@ namespace Rldx {
 	private:
 		// tree structure
 		std::vector<SPtr> m_children;
-		std::weak_ptr<SceneNode> m_wpoParent;
-
+		std::weak_ptr<DxSceneNode> m_wpoParent;
+	private:
 		// geometruy	
 		NodeTransform m_nodeTransform;
-
+	private:
 		// node ids	
 		NodeId m_nodeId = ~0;
 		std::string m_name = "SceneNode";
 		static NodeId sm_nextId;	
 	};		
 
-	class DxMeshNode : public SceneNode
+	class DxMeshNode : public DxSceneNode
 	{		
-		DxMeshNode() : SceneNode() { m_resourceType = ResourceTypeEnum::Mesh; };
+		DxMeshNode() : DxSceneNode() { m_resourceType = ResourceTypeEnum::Mesh; };
 
 		void SetMesh(Mesh* meshData)
 		{

@@ -6,7 +6,10 @@ namespace Rldx {
 
 	class DxSceneManager
 	{
-		
+		DxSceneNode*	
+
+
+
 	};
 
 

@@ -7,13 +7,13 @@ namespace Rldx {
 
 	struct DxScene
 	{
-
 	public:
-		SceneNode* GetRootNode();;
-		void DeleteNode(SceneNode* node);
+		DxSceneNode* GetRootNode();
+		void DeleteNode(DxSceneNode* node);
 
 	private:
-		SceneNode::SPtr m_spoRootNode = SceneNode::Create("RootNode");
+		DxSwapChain m_swapChain;
+		DxSceneNode::SPtr m_spoRootNode = DxSceneNode::Create("RootNode");
 	};
 
 }; // end: namespace Rldx

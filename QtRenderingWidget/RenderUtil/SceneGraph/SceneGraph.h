@@ -7,7 +7,7 @@ namespace Rldx
 	class SceneGraph
 	{
 	public:
-		SceneNode* GetRootNode();
+		DxSceneNode* GetRootNode();
 		
 	};
 }

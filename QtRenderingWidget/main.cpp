@@ -9,14 +9,14 @@ int main(int argc, char* argv[])
 	
 	// -- create the D3D 11 manager, 
 		
-	auto spManager = Rldx::DxDeviceManager::Create();
+	auto spManager = Rldx::DxDeviceManager::GetInstance();;
 	spManager->InitFont();
 
 	// -- create lots of render view, for demo
 	for (size_t i = 0; i < 4; i++)
 	{
 		Rldx::QtRenderingWidget* poNewRenderingWidget = new Rldx::QtRenderingWidget(nullptr); // nullptr = no parent, free floating window
-		poNewRenderingWidget->Init(spManager.get());
+		poNewRenderingWidget->Init(spManager);
 	}
 
 	return a.exec();

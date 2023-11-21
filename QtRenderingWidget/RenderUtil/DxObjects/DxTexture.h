@@ -14,46 +14,31 @@ namespace Rldx
 {
 
 	// TODO: renable
-	/*class IDxTexture
+	class IDxTexture
 	{
-		virtual ID3D11RenderTargetView* GetRenderTargetView() = 0;
-		virtual ID3D11ShaderResourceView* GetShaderResourceView() = 0;
-		virtual ID3D11Texture2D* GetTexture() = 0;
+		virtual ID3D11Texture2D* GetTexture() const = 0;
+		virtual ID3D11RenderTargetView* GetRenderTargetView() const = 0;
+		virtual ID3D11ShaderResourceView* GetShaderResourceView() const = 0;
+
 
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() = 0;
 		virtual ID3D11ShaderResourceView** getAddressOfShaderResourceView() = 0;
 		virtual ID3D11Texture2D** getGetAddressOfTexture() = 0;
 
 	};
-*/
 
-	class DxTexture/* : public IDxTexture*/
+
+	class DxTexture : public IDxTexture
 	{
 	public:
 
-		virtual ID3D11RenderTargetView* GetRenderTargetView()  /*override*/ {
-			return m_cpoRenderTargetView.Get();
-		};
-
-		virtual ID3D11ShaderResourceView* GetShaderResourceView()  /*override*/ {
-			return m_cpoShaderResourceView.Get();
-		};
-
-		virtual ID3D11Texture2D* GetTexture()  /*override*/ {
-			return m_cpoTexture.Get();
-		};
-
-		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ {
-			return m_cpoRenderTargetView.GetAddressOf();
-		};
-
-		virtual ID3D11ShaderResourceView** getAddressOfShaderResourceView()  /*override*/ {
-			return m_cpoShaderResourceView.GetAddressOf();
-		};
-
-		virtual ID3D11Texture2D** getGetAddressOfTexture()  /*override*/ {
-			return m_cpoTexture.GetAddressOf();
-		};
+		virtual ID3D11RenderTargetView* GetRenderTargetView() const override { return m_cpoRenderTargetView.Get();};
+		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  override { return m_cpoShaderResourceView.Get();};
+		virtual ID3D11Texture2D* GetTexture() const  override { return m_cpoTexture.Get();};
+		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() override { return m_cpoRenderTargetView.GetAddressOf();	};
+		virtual ID3D11ShaderResourceView** getAddressOfShaderResourceView()  override { return m_cpoShaderResourceView.GetAddressOf(); };
+		virtual ID3D11Texture2D** getGetAddressOfTexture() override { return m_cpoTexture.GetAddressOf(); };
+		
 
 		virtual Microsoft::WRL::ComPtr<ID3D11RenderTargetView>& GetRenderTargetViewCPO()  /*override */ {
 			return m_cpoRenderTargetView;
@@ -99,8 +84,8 @@ namespace Rldx
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc; // Render Target
 
 		// buffers
-		
-		Microsoft::WRL::ComPtr<ID3D11Texture2D>				m_cpoTexture;		
+
+		Microsoft::WRL::ComPtr<ID3D11Texture2D>				m_cpoTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		m_cpoRenderTargetView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_cpoShaderResourceView;
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>				m_cpoDepthStencilTexture;

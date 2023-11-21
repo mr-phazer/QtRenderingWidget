@@ -107,8 +107,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp" />
-    <ClCompile Include="DxShaderProgram.cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.Cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp" />
     <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp" />
@@ -117,7 +117,8 @@
     <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp" />
     <ClCompile Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.cpp" />
     <ClCompile Include="RenderUtil\SceneGraph\SceneGraph.cpp" />
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\SceneNode.cpp" />
+    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp" />
+    <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
     <QtRcc Include="RenderWindow\View\QtRenderingWidget.qrc" />
     <QtUic Include="RenderWindow\View\QtRenderingWidget.ui" />
@@ -128,8 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h" />
-    <ClInclude Include="DxShaderProgram.h" />
+    <ClInclude Include="Common\TSmartPointer.h" />
+    <ClInclude Include="RenderUtil\DxObjects\DxMeshData.h" />
+    <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h" />
     <ClInclude Include="Logging\Logging.h" />
     <QtMoc Include="RenderUtil\Managers\TempDemoRenderer.h" />
     <ClInclude Include="RenderUtil\DxObjects\DXSwapChain.h" />
@@ -140,7 +142,10 @@
     <ClInclude Include="RenderUtil\Managers\DxTypes.h" />
     <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h" />
     <ClInclude Include="RenderUtil\SceneGraph\SceneGraph.h" />
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\SceneNode.h" />
+    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h" />
+    <ClInclude Include="RenderUtil\Types\CommonVertexType.h" />
+    <ClInclude Include="RenderUtil\DxObjects\TDxResourceManager.h" />
+    <ClInclude Include="Tools\COMerrors.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>

@@ -45,7 +45,7 @@ namespace Rldx
 				return;
 
 
-			m_spoSwapChain->GetBackBuffer()->SetToActiveTargetView(poDxManager->deviceContext());
+			m_spoSwapChain->GetBackBuffer()->SetToActiveTargetView(poDxManager->GetDeviceContext());
 
 			// TODO: remove if works
 			//m_poScreenBuffer->SetToActiveTargetView(poDxManager->deviceContext());
@@ -62,7 +62,7 @@ namespace Rldx
 
 			v4Color /= 255.0f;
 
-			m_spoSwapChain->GetBackBuffer()->ClearPixels(poDxManager->deviceContext(), v4Color);
+			m_spoSwapChain->GetBackBuffer()->ClearPixels(poDxManager->GetDeviceContext(), v4Color);
 
 			// TODO: remove if works
 			//m_poScreenBuffer->clearPixels(poDxManager->deviceContext(), v4Color);
@@ -74,7 +74,7 @@ namespace Rldx
 
 			poDxManager->RenderText();
 
-			m_spoSwapChain->Present(poDxManager->deviceContext());
+			m_spoSwapChain->Present(poDxManager->GetDeviceContext());
 		}
 
 		static DxTempDemoRenderer::Uptr CreateScene(Rldx::DxDeviceManager* pManager, QWidget* poRenderView)
@@ -89,7 +89,7 @@ namespace Rldx
 					poRenderView->width(),
 					poRenderView->height());
 
-			poNewScene->updateViewPort(pManager->deviceContext(), poRenderView);			
+			poNewScene->updateViewPort(pManager->GetDeviceContext(), poRenderView);			
 
 			poNewScene->startRendering(pManager);
 
