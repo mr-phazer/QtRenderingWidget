@@ -22,6 +22,7 @@
 #include "..\DxObjects\DXSwapChain.h"
 #include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 #include "..\..\Logging\Logging.h"
+#include "..\..\Common\TSmartPointer.h"
 
 
 #include <iostream>
@@ -37,96 +38,16 @@ namespace Rldx
 	class DxDeviceManager
 	{
 		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
-		DxDeviceManager() {}
+		//DxDeviceManager() {};
 
 	public:
-		using SPtr = TSmartPointerAll<DxDeviceManager>;
+		using UPtr = std::unique_ptr<DxDeviceManager>;
+
+	public:
+		static DxDeviceManager& GetInstance();
+
 	
-	public:
-		static DxDeviceManager* GetInstance() 
-		{
-			if (sm_spoInstance == nullptr) {
-				sm_spoInstance = Create();
-			}
-			return sm_spoInstance.get();						
-		};
-
-
-	public:
-		using UPtr = std::unique_ptr<DxDeviceManager>;	
-
-	public:
-		HRESULT InitDirect3d11();
-		bool InitFont();
-
-		void RenderText();
-
-		
-
-	private:
-		static SPtr::Unique Create();
-
-		/// <summary>
-		/// Creates Direct 3d 11 device, and device context
-		/// </summary>
-		/// <returns></returns>
-
-		//bool CreateDepthBuffer()
-		//{
-
-		//	//this->moScreenBuffer.initDepthStencilView(_poDevice, width(), height());
-
-
-
-
-
-
-
-		//	//D3D11_DEPTH_STENCIL_DESC dsDesc;
-		//	//// Depth initLog parameters
-		//	//dsDesc.DepthEnable = true;
-		//	//dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		//	//dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-		//	//// Stencil initLog parameters
-		//	//dsDesc.StencilEnable = false;
-		//	//dsDesc.StencilReadMask = 0x00;
-		//	//dsDesc.StencilWriteMask = 0x00;
-
-		//	//// Stencil operations if pixel is front-facing
-		//	//dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		//	//dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		//	//dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		//	//dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		//	//// Stencil operations if pixel is back-facing
-		//	//dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		//	//dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		//	//dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		//	//dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-		//	//// Create depth stencil state
-		//	//ID3D11DepthStencilState* pDSState;
-		//	//HRESULT hr = device()->CreateDepthStencilState(&dsDesc, &depthStencilStates.On);
-
-		//	//assert(SUCCEEDED(hr));
-
-		//	//dsDesc.DepthEnable = false;
-		//	//hr = device()->CreateDepthStencilState(&dsDesc, &depthStencilStates.Off);
-
-		//	//assert(SUCCEEDED(hr));
-
-
-		//}
-
-
-			/// <summary>
-			/// creates swap chain linked native window
-			/// </summary>
-			/// <param name="hwnd">native win api window handle </param>
-			/// <returns>new swap chain on sucess</returns>
-			//DXSwapChain::sptrDXSwapChain createSwapChain(HWND hwnd);
-
+		static UPtr Create();
 
 		ID3D11Device* GetDevice() {
 			return m_cpoDevice.Get();
@@ -142,10 +63,10 @@ namespace Rldx
 			return m_cpoDeviceContext.Get();
 		};
 
-		ID3D11Device* const* deviceAddress() const {
+		ID3D11Device* const* GetAddressOfDevice() const {
 			return m_cpoDevice.GetAddressOf();
 		};
-		ID3D11Device* const* deviceAddress() {
+		ID3D11Device* const* GetAddressOfDevice() {
 			return m_cpoDevice.GetAddressOf();
 		};
 
@@ -163,13 +84,17 @@ namespace Rldx
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetReferenceTiDviceContext() {
 			return m_cpoDeviceContext;
 		}
-
+	
+	private:
+		HRESULT InitDirect3d11();
+		bool InitFont();
+		void RenderText();
+	
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11Device> m_cpoDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_cpoDeviceContext;
 
-
-	public:
+	/*public:
 		struct DepthStencilStates
 		{
 			Microsoft::WRL::ComPtr <ID3D11DepthStencilState> On;
@@ -178,16 +103,13 @@ namespace Rldx
 
 	private:
 
-
-
-
 		struct FontEngine
 		{
 			std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
 			std::unique_ptr<DirectX::SpriteFont> m_font;
 
 			std::vector<std::wstring> m_stringsToDraw = { L"D3D\nIt Works\nNOW: Scenegrapdh" };
-		} fontEngine;
+		} fontEngine;*/
 
 	};
 };

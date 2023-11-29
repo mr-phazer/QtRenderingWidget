@@ -3,41 +3,60 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "..\NodeTransform\NodeTransform.h"
 #include "..\..\Managers\DxResourceManager.h"
 #include "..\..\Managers\DxTypes.h"
-#include <memory>
+
 
 namespace Rldx {
-		
-	class DxSceneNode : public std::enable_shared_from_this<DxSceneNode>
+
+	class Identifiable
+	{	
+	public:
+		Identifiable() : m_id(GetNextId()) {}
+		uint32_t GetId() const { return m_id; }		
+	
+	public:
+		static constexpr uint32_t INVALID_ID = ~0;
+
+	private:
+		static uint32_t GetNextId() { return sm_nextId++; }
+
+	private:
+		uint32_t m_id = INVALID_ID;
+		static uint32_t sm_nextId;
+	};
+
+	class DxSceneNode : public Identifiable
 	{
 	public:
-		using SPtr = std::shared_ptr<DxSceneNode>;	
-	public:										
-		virtual ~DxSceneNode();			
+		using Sptr = std::shared_ptr<DxSceneNode>;
+	public:		
+		virtual ~DxSceneNode();
 
-		static DxSceneNode::SPtr Create(std::string name = "");
+		static DxSceneNode::Sptr Create(std::string name = "");
 
 		ResourceTypeEnum GetResourceType();
 		void SetResource(ResId resourceId) { resourceId = resourceId; };
 		ResId GetResurce() const { return m_resourceId; };
 
-		void SetParent(DxSceneNode::SPtr parent);
 		DxSceneNode* GetParent();
 
-		void AddChild(DxSceneNode::SPtr child);
-		void AddChild(DxSceneNode* poChild);		
-		DxSceneNode* GetChild(DxSceneNode* poChild);
-		DxSceneNode* GetChild(size_t index=0);
-		
+		void AddChild(DxSceneNode::Sptr& spoChild);
+		//void AddChild(DxSceneNode* poChild); // TODO: should remove? require user always use shared_ptr
+		DxSceneNode* GetChildByPtr(DxSceneNode* poChild);
+		DxSceneNode* GetChild(size_t index = 0);
+
+		size_t GetChildCount() const;
+
 		// TODO: test this
-		static DxSceneNode* FindNode(DxSceneNode* nodeToFind, DxSceneNode* currentNode);
+		static DxSceneNode* FindChild(DxSceneNode* nodeToFind, DxSceneNode* currentNode);
 
-		const std::vector<DxSceneNode::SPtr>& GetChildren() const;
-		std::vector<DxSceneNode::SPtr>& GetChildren();
+		const std::vector<DxSceneNode::Sptr>& GetChildren() const;
+		std::vector<DxSceneNode::Sptr>& GetChildren();
 
-		void RemoveChild(DxSceneNode::SPtr spoChild);
+		void RemoveChild(const DxSceneNode::Sptr& spoChild);
 		void RemoveChild(DxSceneNode* poChild);
 		void RemoveChild(size_t index);
 		void RemoveChildren();
@@ -45,42 +64,31 @@ namespace Rldx {
 		NodeTransform& GetTransform();
 		const NodeTransform& GetTransform() const;
 
-		NodeId GetId();
-
 	private:
-		static NodeId GetNextId();
+		void SetParent(DxSceneNode* poParent);
 
 	protected:
 		// node type:
 		ResourceTypeEnum m_resourceType = ResourceTypeEnum::Unknown;
-		ResId m_resourceId = 0;	
+		ResId m_resourceId = 0;
 
 	private:
 		// tree structure
-		std::vector<SPtr> m_children;
-		std::weak_ptr<DxSceneNode> m_wpoParent;
+		std::vector<Sptr> m_children;
+		DxSceneNode* m_wpoParent = nullptr;
 	private:
 		// geometruy	
 		NodeTransform m_nodeTransform;
 	private:
-		// node ids	
-		NodeId m_nodeId = ~0;
+		int m_resouceType = 0;
 		std::string m_name = "SceneNode";
-		static NodeId sm_nextId;	
-	};		
 
-	class DxMeshNode : public DxSceneNode
-	{		
-		DxMeshNode() : DxSceneNode() { m_resourceType = ResourceTypeEnum::Mesh; };
 
-		void SetMesh(Mesh* meshData)
-		{
-			
-		
-		}
+		// node ids	
+		//NodeId m_nodeId = ~0;
+		//static NodeId sm_nextId;		
 
-		// TODO: use mesh buffer code from qtRME, refactor it nicely
-		Mesh* meshData; 
 	};
+
 
 }; // namespace Rldx

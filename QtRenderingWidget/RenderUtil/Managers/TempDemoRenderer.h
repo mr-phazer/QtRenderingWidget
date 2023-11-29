@@ -147,7 +147,7 @@ namespace Rldx
 
 
 	private:
-		Rldx::DxSwapChain::SPtr m_spoSwapChain;
+		Rldx::DxSwapChain::UPtr m_spoSwapChain;
 		//Rldx::DxTexture* m_poScreenBuffer;
 
 	private:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneNodes/SceneNode.h"
+#include "SceneNodes/DxSceneNode.h"
 
 namespace Rldx
 {
@@ -8,13 +8,11 @@ namespace Rldx
 	{
 	public:
 		DxSceneNode* GetRootNode();
-		
+
+	private:
+		std::shared_ptr<DxSceneNode> m_spoRootNode;
 	};
-}
 
 
 
-
-private:
-	std::shared_ptr<SceneNode> m_spoRootNode;
 };

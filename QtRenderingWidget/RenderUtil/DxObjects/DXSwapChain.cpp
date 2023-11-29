@@ -4,7 +4,7 @@
 
 using namespace Rldx;
 
-inline void DxSwapChain::Reset(UINT width, UINT height, ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+inline void DxSwapChain::Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height)
 {
 	ID3D11Texture2D* pBackBuffer = nullptr;
 

@@ -21,11 +21,11 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
@@ -55,8 +55,12 @@
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <IgnoreAllDefaultLibraries>
@@ -67,6 +71,7 @@
     <ClCompile />
     <ClCompile>
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -78,6 +83,7 @@
     <ClCompile />
     <ClCompile>
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -107,11 +113,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.Cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\IDrawable.cpp" />
+    <ClCompile Include="RenderUtil\DxObjects\IDrawable.h" />
+    <ClCompile Include="RenderUtil\Managers\DxResourceManager.cpp" />
     <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp" />
+    <ClCompile Include="RenderUtil\Managers\Helpers\NoCaseMapCompare.h" />
     <ClCompile Include="RenderUtil\Managers\TempDemoRenderer.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp" />
@@ -119,6 +130,7 @@
     <ClCompile Include="RenderUtil\SceneGraph\SceneGraph.cpp" />
     <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp" />
     <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp" />
+    <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
     <QtRcc Include="RenderWindow\View\QtRenderingWidget.qrc" />
     <QtUic Include="RenderWindow\View\QtRenderingWidget.ui" />
@@ -130,6 +142,9 @@
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
+    <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="RenderUtil\ConstBuffers\ConstBuffers.h" />
     <ClInclude Include="RenderUtil\DxObjects\DxMeshData.h" />
     <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h" />
     <ClInclude Include="Logging\Logging.h" />
@@ -138,13 +153,13 @@
     <ClInclude Include="RenderUtil\DxObjects\DxTexture.h" />
     <ClInclude Include="RenderUtil\DxObjects\DxScene.h" />
     <ClInclude Include="RenderUtil\Managers\DxDeviceManager.h" />
+    <ClInclude Include="RenderUtil\Managers\DxResourceManager.h" />
     <ClInclude Include="RenderUtil\Managers\DxSceneManager.h" />
     <ClInclude Include="RenderUtil\Managers\DxTypes.h" />
     <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h" />
     <ClInclude Include="RenderUtil\SceneGraph\SceneGraph.h" />
     <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h" />
     <ClInclude Include="RenderUtil\Types\CommonVertexType.h" />
-    <ClInclude Include="RenderUtil\DxObjects\TDxResourceManager.h" />
     <ClInclude Include="Tools\COMerrors.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>

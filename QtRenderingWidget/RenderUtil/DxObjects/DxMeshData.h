@@ -8,52 +8,63 @@
 #include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
 
+#include "IDrawable.h"
+
 using namespace DirectX;
 
 
 namespace Rldx {
 
-	struct CommonVertex;
-
-
-	class DxMeshData
+	struct DxMeshData
 	{
-	public:
-		void Draw(ID3D11DeviceContext* poDeviceContext,  ID3D11RenderTargetView* destRtV  DxShaderProgram)
-		{
-			poDeviceContext->OMSetRenderTargets(1, &destRtV, nullptr);			
-
-			
-			// TODO: finish
-		}
-
-
-
-	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoVertexBuffer;
-		
+	};	
+
+	class DxMesh : public IDrawable
+	{
+	public:
+		void Draw(ID3D11DeviceContext* poDeviceContext, ID3D11RenderTargetView* destRtV, IDxShaderProgram* shaderProgram) override
+		{
+			poDeviceContext->OMSetRenderTargets(1, &destRtV, nullptr);
+
+
+			// TODO: finish, draw mesh
+		}
+
+		void SetMeshData(const DxMeshData& meshData)
+		{
+			m_meshData = meshData;
+		};
+
+	private:
+		DxMeshData m_meshData;
 	};
-    
-	template <typename INDEX_TYPE, typename VERTEX_TYPE, >
+
+	template <typename INDEX_TYPE, typename VERTEX_TYPE>
 	class DxMeshCreator
-	{	
-		static CreateMesh();
+	{
+		DxMeshData CreateMesh(ID3D11Device* _poDevice, std::vector<VERTEX_TYPE>& vertices, std::vector<INDEX_TYPE>& indices);
 
-
-		template <typename INDEX_TYPE>
-		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const C* pIndices);
-
-		template <typename VERTEX_TYPE>
+	private:
+		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices);
 		bool FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices);
-		
-	
-
+	private:
+		DxMeshData m_meshData;
 
 	}; // class DxMeshCreator
+	
+	template<typename INDEX_TYPE, typename VERTEX_TYPE>
+	inline DxMeshData DxMeshCreator<INDEX_TYPE, VERTEX_TYPE>::CreateMesh(ID3D11Device* _poDevice, std::vector<VERTEX_TYPE>& vertices, std::vector<INDEX_TYPE>& indices)
+	{
+		FillIndexBuffer(_poDevice, indices.size(), indices.data());
+		FillVertexBuffer(_poDevice, vertices.size(), vertices.data());
 
-	template<typename INDEX_TYPE>
-	inline DxMeshCreator:: DxMeshCreator::FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices)
+		return m_tempMeshData;
+	}
+
+	template<typename INDEX_TYPE, typename VERTEX_TYPE>
+	inline bool DxMeshCreator<INDEX_TYPE, VERTEX_TYPE>::FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices)
 	{
 		if (indexCount == 0 || pIndices == nullptr)
 			return false;
@@ -74,14 +85,15 @@ namespace Rldx {
 		indexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_cpoIndexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_meshData.m_cpoIndexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return m_cpoIndexBuffer;
+
 	}
 
-	template<typename VERTEX_TYPE>
-	inline bool DxMeshCreator::FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices)
+	template<typename INDEX_TYPE, typename VERTEX_TYPE>
+	inline bool DxMeshCreator<INDEX_TYPE, VERTEX_TYPE>::FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices)
 	{
 		if (_data_size == 0)
 			return false;
@@ -102,7 +114,7 @@ namespace Rldx {
 		vertexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_cpoVertexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_meshData.m_cpoVertexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);

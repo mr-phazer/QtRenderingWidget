@@ -5,26 +5,9 @@
 #include <qwidget.h>
 #include <qtimer.h>
 
-
-//#include "..\..\RenderUtil\SceneGraph\SceneGraph.h"
-//#include "..\RenderLib\RenderQueue.h"
-//#include "DxTextureView.h"
 #include "..\Managers\DxDeviceManager.h"
 
 
-//class DXSceneRenderer
-//{
-//public:
-//	static std::unique_ptr<DXSceneRenderer> create();
-//
-//
-//	void RenderSceneToScreen(DXScene* t_sceneToRender, Rldx::DXD3DManager* t_dxManager);	
-//
-//	void RenderSceneToTexture(DXScene* t_sceneToRender, Rldx::DxTexture* t_pTexture);
-//
-//
-//	
-//};
 
 namespace Rldx
 {
@@ -33,7 +16,7 @@ namespace Rldx
 		Q_OBJECT
 
 	public:
-		typedef std::unique_ptr<DxSceneManager> UPtr;
+		typedef std::unique_ptr<DxTempDemoRenderer> UPtr;
 
 	public:
 		// TODO: implemement
@@ -45,7 +28,7 @@ namespace Rldx
 				return;
 
 
-			m_spoSwapChain->GetBackBuffer()->SetToActiveTargetView(poDxManager->deviceContext());
+			m_spoSwapChain->GetBackBuffer()->SetToActiveTargetView(poDxManager->GetDeviceContext());
 
 			// TODO: remove if works
 			//m_poScreenBuffer->SetToActiveTargetView(poDxManager->deviceContext());

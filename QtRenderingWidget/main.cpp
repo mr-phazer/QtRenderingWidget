@@ -1,3 +1,4 @@
+
 #include "RenderWindow/View/QtRenderingWidget.h"
 #include <QtWidgets/QApplication>
 
@@ -9,8 +10,7 @@ int main(int argc, char* argv[])
 	
 	// -- create the D3D 11 manager, 
 		
-	auto spManager = Rldx::DxDeviceManager::GetInstance();;
-	spManager->InitFont();
+	auto spManager = Rldx::DxDeviceManager::GetInstance();
 
 	// -- create lots of render view, for demo
 	for (size_t i = 0; i < 4; i++)

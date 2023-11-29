@@ -1,15 +1,19 @@
 #pragma once
 
-#include "..\SceneGraph\SceneNodes\SceneNode.h"
+#include <qobject.h>
 
-namespace Rldx {
+#include "..\DxObjects\DxScene.h"
+#include "..\DxObjects\IDrawable.h"
+
+
+namespace Rldx {	
 
 	class DxSceneManager
 	{
-		DxSceneNode*	
+		Q_OBJECT		
 
-
-
+	private:
+		std::unique_ptr<DxScene> m_scene;
 	};
 
 
