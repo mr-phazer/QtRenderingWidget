@@ -30,7 +30,8 @@ void NodeTransform::SetRotation(const sm::Quaternion& q)
 
 void NodeTransform::SetYawPitchRoll(const sm::Vector3& rotation)
 {
-	// TODO: make a "local.rotation = eulerToQuaterion(x,y,z);" this is clumsy?
+	// TODO: make a "local.rotation = GetQuaterionFromEuler(x,y,z);"
+	// this is clumsy:  ?
 	auto rotMatrix = sm::Matrix::CreateFromYawPitchRoll(rotation.x, rotation.y, rotation.z);
 	sm::Vector3 unusedScale, unsuedTranlation;
 	rotMatrix.Decompose(unusedScale, local.rotation, unsuedTranlation);
