@@ -12,11 +12,16 @@ namespace Rldx {
 	};
 
 	template <typename CLASSNAME>
-	struct TSmartPointerUnique
-	{
-	public:
-		using Unique = std::unique_ptr<CLASSNAME>;
+	struct TUniquePtr
+	{	
+		using UniquePtr = std::unique_ptr<CLASSNAME>;
+		
+		static UniquePtr MakeUnique()
+		{
+			return std::make_unique<CLASSNAME>();		
+		}
 	};
+
 
 	template <typename CLASSNAME>
 	struct TSmartPointerShared

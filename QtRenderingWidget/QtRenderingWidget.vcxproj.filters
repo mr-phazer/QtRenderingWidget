@@ -23,18 +23,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="RenderWindow\View\QtRenderingWidget.qrc">
+    <QtRcc Include="QtObjects\ViewModels\QtRenderingWidget.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="RenderWindow\View\QtRenderingWidget.ui">
+    <QtUic Include="QtObjects\ViewModels\QtRenderingWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="RenderWindow\View\QtRenderingWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="RenderWindow\View\QtRenderingWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -76,7 +70,7 @@
     <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.cpp">
+    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp">
@@ -98,6 +92,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtObjects\ViewModels\QtRenderingWidget_new.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,7 +138,7 @@
     <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxMeshData.h">
+    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\Types\CommonVertexType.h">
@@ -163,6 +160,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtObjects\ViewModels\QtRenderingWidget_new.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

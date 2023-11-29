@@ -17,22 +17,23 @@ namespace Rldx {
 	/// <summary>
 	/// Base for anything that be draw with a shader program
 	/// </summary>
-class IDrawable
-{
-public:
-	virtual void Draw(
-		ID3D11DeviceContext* poDeviceContext, 
-		ID3D11RenderTargetView* destRtV = nullptr, 
-		IDxShaderProgram* shaderProgram = nullptr) = 0;
+	class IDrawable
+	{
+	public:
+		virtual void Draw(
+			ID3D11DeviceContext* poDeviceContext,
+			ID3D11RenderTargetView* destRtV = nullptr,
+			IDxShaderProgram* shaderProgram = nullptr) = 0;
 
-	ItemTypeEnum virtual GetNodeType() = 0;
-};	
+		ItemTypeEnum virtual GetNodeType() = 0;
+	};
 
 	/// <summary>
 	/// Interface for buffer that needs to be resized when the window changes size
 	/// </summary>
 	class IResizable
-	{		
+	{
+	public:
 		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) = 0;
 	};
 }

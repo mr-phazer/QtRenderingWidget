@@ -55,7 +55,6 @@ void NodeTransform::SetScale(const sm::Vector3& scale)
 void NodeTransform::SetScale(float scale)
 {
 	local.scale = { scale, scale, scale };	
-	local.scale = { scale, scale, scale };	
 }
 
 sm::Vector3 NodeTransform::GetScale()

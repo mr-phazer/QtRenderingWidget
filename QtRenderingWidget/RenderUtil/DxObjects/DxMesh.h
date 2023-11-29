@@ -27,7 +27,16 @@ namespace Rldx {
 		void Draw(ID3D11DeviceContext* poDeviceContext, ID3D11RenderTargetView* destRtV, IDxShaderProgram* shaderProgram) override
 		{
 			poDeviceContext->OMSetRenderTargets(1, &destRtV, nullptr);
+			/*
+				for each mesh in meshData
+					set vertex buffer
+					set index buffer
 
+					update shaderprogram const buffers
+					set shader program
+					draw 
+			
+			*/
 
 			// TODO: finish, draw mesh
 		}
