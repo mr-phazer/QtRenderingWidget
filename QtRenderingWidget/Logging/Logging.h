@@ -65,7 +65,7 @@ namespace logging
         
         
         static bool LogActionErrorFalse(const std::string& _strMsg);
-        static bool LogActionErrorFalse(const std::string& _strMsg);
+        //static bool LogActionErrorFalse(const std::string& _strMsg);
 
 
         static bool LogAction_warning(const std::string& _strMsg);

@@ -1,4 +1,7 @@
+
+#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 #include "DxTexture.h"
+
 
 /*inline void Rldx::DxTexture::SetToActiveTargetView(ID3D11DeviceContext* deviceContext)
 {
@@ -36,6 +39,15 @@ inline bool Rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width
 {
 	HRESULT hr = S_OK;
 
+	Create2dTextureBuffer(poD3DDevice,  width, height, format, sampleCount);
+	CreateRenderTargetViewBuffer(poD3DDevice);
+	CreateShaderResourceViewBuffer(poD3DDevice);
+
+	return true;
+}
+
+inline HRESULT Rldx::DxTexture::Create2dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount)
+{
 	ZeroMemory(&m_textureDesc, sizeof(m_textureDesc));
 	ZeroMemory(&m_shaderResourceViewDesc, sizeof(m_shaderResourceViewDesc));
 
@@ -57,19 +69,15 @@ inline bool Rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width
 	m_textureDesc.MiscFlags = 0;
 
 	// Create the texture
-	hr = poD3DDevice->CreateTexture2D(&m_textureDesc, NULL, m_cpoTexture.GetAddressOf());
-	assert(SUCCEEDED(hr));
+	HRESULT hr = poD3DDevice->CreateTexture2D(&m_textureDesc, NULL, m_cpoTexture.GetAddressOf());
 
-	renderTargetViewDesc.Format = m_textureDesc.Format;
-	renderTargetViewDesc.ViewDimension =
-		(m_textureDesc.SampleDesc.Count > 1) ? D3D11_RTV_DIMENSION_TEXTURE2DMS : D3D11_RTV_DIMENSION_TEXTURE2D;
+	DirectX::ThrowIfFailed(hr);
 
-	renderTargetViewDesc.Texture2D.MipSlice = 0;
+	return hr;
+}
 
-	// Create the renderQuad target view.
-	hr = poD3DDevice->CreateRenderTargetView(m_cpoTexture.Get(), &renderTargetViewDesc, &m_cpoRenderTargetView);
-	assert(SUCCEEDED(hr));
-
+inline HRESULT Rldx::DxTexture::CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice)
+{
 	m_shaderResourceViewDesc.Format = m_textureDesc.Format;
 	m_shaderResourceViewDesc.ViewDimension =
 		(m_textureDesc.SampleDesc.Count > 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
@@ -77,10 +85,38 @@ inline bool Rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width
 	m_shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
 	// Create the shader resource view.
-	hr = poD3DDevice->CreateShaderResourceView(m_cpoTexture.Get(), &m_shaderResourceViewDesc, &m_cpoShaderResourceView);
-	assert(SUCCEEDED(hr));
+	HRESULT hr = poD3DDevice->CreateShaderResourceView(m_cpoTexture.Get(), &m_shaderResourceViewDesc, &m_cpoShaderResourceView);
+	
+	DirectX::ThrowIfFailed(hr);
 
-	return true;
+	return hr;
+}
+
+inline HRESULT Rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice)
+{
+	renderTargetViewDesc.Format = m_textureDesc.Format;
+	renderTargetViewDesc.ViewDimension =
+		(m_textureDesc.SampleDesc.Count > 1) ? D3D11_RTV_DIMENSION_TEXTURE2DMS : D3D11_RTV_DIMENSION_TEXTURE2D;
+
+	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	// Create the renderQuad target view.
+	HRESULT hr = poD3DDevice->CreateRenderTargetView(m_cpoTexture.Get(), &renderTargetViewDesc, &m_cpoRenderTargetView);
+	
+	DirectX::ThrowIfFailed(hr);
+
+	return hr;
+}
+
+void Rldx::DxTexture::Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
+{	
+	CreateBuffers(
+		poDevice, 
+		m_textureDesc.Width,
+		m_textureDesc.Height, 		
+		DXGI_FORMAT_R32_TYPELESS, 
+		1, "Texture"
+	);
 }
 
 UINT Rldx::DxTexture::GetHeight()
@@ -91,4 +127,9 @@ UINT Rldx::DxTexture::GetHeight()
 UINT Rldx::DxTexture::GetWidth()
 {
     return m_textureDesc.Width;
+}
+
+UINT Rldx::DxTexture::GetSampleCount()
+{
+	return m_textureDesc.SampleDesc.Count;
 }

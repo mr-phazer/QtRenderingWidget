@@ -2,97 +2,70 @@
 
 using namespace Rldx;
 
-sm::Matrix NodeTransform::getLocalTransform()
+sm::Matrix NodeTransform::GetTransform() const
 {
 	auto mLocalTransformMatrix =
 		sm::Matrix::CreateTranslation(local.translation) *
 		sm::Matrix::CreateFromQuaternion(local.rotation) *
 		sm::Matrix::CreateScale(local.scale);
-	
+
 	return mLocalTransformMatrix;
 }
 
-sm::Matrix& NodeTransform::getGlobalTransformMatrix()
+void NodeTransform::SetTransForm(const sm::Matrix& _mIn)
 {
-	return m_mGlobalTransformMatrix;
+	sm::Matrix tempMatrix = _mIn;
+    tempMatrix.Decompose(local.scale, local.rotation, local.translation);	
 }
 
-void NodeTransform::setGlobalTransformMatrix(const sm::Matrix& _mIn)
+sm::Matrix NodeTransform::GetGlobalTransform(const sm::Matrix& _parent)
 {
-	m_mGlobalTransformMatrix = _mIn;
+	return _parent * GetTransform();
 }
 
-void NodeTransform::setTransForm(const sm::Matrix& _mIn)
+void NodeTransform::SetRotation(const sm::Quaternion& q)
 {
-	sm::Matrix m = _mIn;
-	m.Decompose(local.scale, local.rotation, local.translation);
-
-	m_mGlobalTransformMatrix = _mIn;
+	local.rotation = q;
 }
 
-void NodeTransform::doGlobalTransform(const sm::Matrix& _parent)
-{		
-	getGlobalTransformMatrix() = _parent * getLocalTransform();
+void NodeTransform::SetYawPitchRoll(const sm::Vector3& rotation)
+{
+	// TODO: finish
+	//local.rotation = euler;
+	throw std::exception("not implemented");
 }
 
-void NodeTransform::setRotation(const sm::Quaternion& _q)
+void NodeTransform::SetTranslation(const sm::Vector3 translation)
 {
-	m_mGlobalTransformMatrix *= sm::Matrix::CreateFromQuaternion(_q);
+	local.translation = translation;
 }
 
-void NodeTransform::setYawPitchRoll(const sm::Vector3& _rotation)
+void NodeTransform::SetTranslation(float x, float y, float z)
 {
-	m_mGlobalTransformMatrix *= sm::Matrix::CreateFromYawPitchRoll(_rotation.x, _rotation.y, _rotation.z);
+	SetTranslation(sm::Vector3(x, y, z));
 }
 
-void NodeTransform::setTranslation(const sm::Vector3 _v)
+void NodeTransform::SetScale(const sm::Vector3& scale)
 {
-	local.translation = _v;
-	//m_TransformMatrix *= sm::Matrix::CreateTranslation(_v);
+	local.scale = scale;	
 }
 
-void NodeTransform::setTranslation(float x, float y, float z)
+void NodeTransform::SetScale(float scale)
 {
-	setTranslation({ x,y,z });
+	local.scale = { scale, scale, scale };	
 }
 
-void NodeTransform::setScale(const sm::Vector3& _v)
+sm::Vector3 NodeTransform::GetScale()
 {
-	local.scale = _v;
-	//m_TransformMatrix *= sm::Matrix::CreateScale(_v);
+	return local.scale;
 }
 
-void NodeTransform::setScale(float _scale)
+sm::Vector3 NodeTransform::GetTranslation()
 {
-	local	.scale = { _scale, _scale, _scale };
-	//m_TransformMatrix *= sm::Matrix::CreateScale(_scale);
+	return local.translation;
 }
 
-sm::Vector3 NodeTransform::getScale()
+sm::Quaternion NodeTransform::GetRotation()
 {
-	sm::Vector3 scale, translate;
-	sm::Quaternion quat;
-	m_mGlobalTransformMatrix.Decompose(scale, quat, translate);
-
-	return scale;
-}
-
-sm::Vector3 NodeTransform::getTranslation()
-{
-	sm::Vector3 scale, translate;
-	sm::Quaternion quat;
-	m_mGlobalTransformMatrix.Decompose(scale, quat, translate);
-
-	return translate;
-
-}
-
-sm::Quaternion NodeTransform::getRotation()
-{
-	sm::Vector3 scale, translate;
-	sm::Quaternion quat;
-	m_mGlobalTransformMatrix.Decompose(scale, quat, translate);
-
-	return quat;
-
+	return local.rotation;
 }

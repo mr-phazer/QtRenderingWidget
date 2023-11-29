@@ -1,8 +1,11 @@
+
 #include "DxSceneManager.h"
 #include "..\DxObjects\DXSwapChain.h"
 #include "DxDeviceManager.h"
 #include "..\..\Logging\Logging.h"
 #include "..\..\Tools\tools.h"
+#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
+
 
 using namespace Rldx;
 
@@ -14,9 +17,19 @@ DxDeviceManager::UPtr Rldx::DxDeviceManager::Create()
 
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
-	assert(SUCCEEDED(hr));
+	if (!SUCCEEDED(hr))	{
+		throw DirectX::com_exception(hr);
+	}
 
 	return poNewInstance;
+}
+
+inline DxDeviceManager& Rldx::DxDeviceManager::GetInstance()
+{
+	if (!sm_spoInstance) {
+		sm_spoInstance = Create();
+	}
+	return *sm_spoInstance.get();
 }
 
 HRESULT Rldx::DxDeviceManager::InitDirect3d11()
@@ -94,13 +107,15 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 bool Rldx::DxDeviceManager::InitFont()
 {
 	// TODO: exception?
-	fontEngine.m_font = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
+	/*fontEngine.m_font = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
 	fontEngine.m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(GetDeviceContext());
 
 	if (!(fontEngine.m_font && fontEngine.m_spriteBatch))
 	{
 		throw exception("Error Loading Font");
-	}
+	}*/
+
+	return true;
 }
 
 void Rldx::DxDeviceManager::RenderText()

@@ -1,9 +1,5 @@
+
 #include "Logging.h"
-#include <fstream>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <iostream>
 
 using namespace logging;
 

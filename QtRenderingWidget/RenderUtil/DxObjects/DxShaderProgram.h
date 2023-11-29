@@ -1,18 +1,20 @@
 #pragma once
 
-
-//  WRL wrappers from COM Objects - smart pointers for Direct3d resources
 #include <wrl/client.h>
 #include <d3d11.h>
 #include <string>
 #include <memory>
 #include <vector>
 
+// MS Direct3d lib
+#include "..\..\..\DirectXTK\Inc\BufferHelpers.h"
+
+// author
 #include "..\..\Common\TSmartPointer.h"
 #include "..\..\Tools\tools.h"
+#include "..\ConstBuffers\ConstBuffers.h"
 
 namespace Rldx {
-
 
 	enum class ShaderTypeEnum
 	{
@@ -24,6 +26,7 @@ namespace Rldx {
 	class VertexShaderFile
 	{
 	public:
+		VertexShaderFile(ID3D11VertexShader* poShaderCode) : m_cpoShaderCode(poShaderCode) {};
 		void SetShader(ID3D11VertexShader* poShaderCode) {
 			m_cpoShaderCode = poShaderCode;
 		};
@@ -65,13 +68,11 @@ namespace Rldx {
 			in.close();
 
 			return shaderCodeRaw;
-		}
-				
+		}				
 	};
 
-	class ShaderLoader
-	{
-		
+	class PixelShaderLoader
+	{		
 	public:
 		static PixelShaderFile CreatePixelShaderFromDisk(ID3D11Device* poDevice, const std::wstring& wstrPath)
 		{			
@@ -99,33 +100,93 @@ namespace Rldx {
 
 	}; 
 
-
-#include "..\..\..\DirectXTK\Inc\BufferHelpers.h"
-
-	DirectX::ConstantBuffer<PixelShaderFile> m_constantBuffer;
-
-
-	class DxShaderProgram
+	class VertexShaderLoader
 	{
 	public:
-
-		void init(ID3D11Device* device, std::wstring pixelShaderPath,  std::wstring vertexShaderPath)
+		VertexShaderFile CreateVertexShaderFromDisk(ID3D11Device* poDevice, const std::wstring& wstrPath)
 		{
+			ID3D11VertexShader* pDestShader = nullptr;;
+			auto shaderCodeRaw = ShaderFactoryHelper::GetRawDataFromDisk(wstrPath);
 
-			//if (!vertexShaderPath.empty())
-			//m_VertexShaderFile = ShaderFactory::CreateShaderFromDisk<ID3D11VertexShader>(p, vertexShaderPath);
+			HRESULT hr = poDevice->CreateVertexShader(
+				shaderCodeRaw.data(),
+				shaderCodeRaw.size(),
+				nullptr,
+				&pDestShader
+			);						
 
-			if (!pixelShaderPath.empty())
-				m_pixelShaderFile = ShaderLoader::CreatePixelShaderFromDisk(device, pixelShaderPath);				
-		}
+			return VertexShaderFile(pDestShader);
+		};
+
+		VertexShaderFile CreateVertexShaderFromMemory(ID3D11Device* poDevice, uint8_t* pSource, size_t sizeInBytes)
+		{
+			ID3D11VertexShader* pDestShader = nullptr;;
+			HRESULT hr = poDevice->CreateVertexShader(pSource, sizeInBytes, nullptr, &pDestShader);
+
+			return VertexShaderFile(pDestShader);
+		};
+
+	}; 	
 
 
+	class IDxShaderProgram
+	{
+	public:
+		virtual PixelShaderFile* GetPixelShaderFile() = 0;
+		virtual VertexShaderFile* GetVertexShaderFile() = 0;
 
-	private:
-		PixelShaderFile m_pixelShaderFile;
-		//VertexShaderFile m_VertexxlShaderFile;
+		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
+		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;
 	};
 
+	template <typename PS_CONST_BUFER, typename VS_CONST_BUFER>
+	class DxShaderProgram : public IDxShaderProgram
+	{	
+		PixelShaderFile m_pixelShaderFile;
+		VertexShaderFile m_vertexShaderFile;
+		DirectX::ConstantBuffer<VS_CONST_BUFER> m_vertexShaderConstBuffer;
+		DirectX::ConstantBuffer<PS_CONST_BUFER> m_pixelShaderConstBuffer;
+
+	public:
+		virtual void Create(ID3D11Device* poDevice, std::pair<void*, size_t> vertexShaderMem, std::pair<void*, size_t> pixelShaderMem)
+		{
+			if (!vertexShaderMem.first != nullptr && vertexShaderMem.second > 0)
+				m_VertexShaderFile = PixelShaderLoader::CreatePixelShaderFromMemory(poDevice, vertexShaderMem.first, vertexShaderMem.second);
+
+			if (!pixelShaderMem.first != nullptr && pixelShaderMem.second > 0)
+				m_pixelShaderFile = VertexShaderLoader::CreatePixelShaderFromMemory(poDevice, pixelShaderMem.first, pixelShaderMem.second);
+
+			m_pixelShaderConstBuffer.Create(poDevice);
+			m_vertexShaderConstBuffer.Create(poDevice);
+		}
+
+		virtual void Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
+		{			
+			if (!vertexShaderPath.empty())
+				m_VertexShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, vertexShaderPath);						
+
+			if (!pixelShaderPath.empty())
+				m_pixelShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, pixelShaderPath);				
+
+			m_pixelShaderConstBuffer.Create(poDevice);
+			m_vertexShaderConstBuffer.Create(poDevice);				
+		}
+		
+		PixelShaderFile* GetPixelShaderFile() { return &m_pixelShaderFile; };
+		VertexShaderFile* GetVertexShaderFile() { return &m_VertexShaderFile;};
+
+		ID3D11Buffer* GetPixelShaderConstBuffer() const { return m_pixelShaderConstBuffer.GetBuffer(); };
+		ID3D11Buffer* GetVertexShaderConstBuffer() const { return m_vertexShaderConstBuffer.GetBuffer(); };
+
+		void SetPixelShaderConstBuffer(ID3D11DeviceContext* deviceContext, PS_CONST_BUFER& data)
+		{
+			m_pixelShaderConstBuffer.SetData(deviceContext, data);
+		};
+	};
+
+	using DxStandardShaderProgram  = DxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>;
+	
+	
 
 }; // namespace Rldx
 

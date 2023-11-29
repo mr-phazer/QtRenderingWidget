@@ -1,14 +1,13 @@
+
 #include "DxSceneNode.h"
 
 using namespace Rldx;
 
-uint32_t DxSceneNode::sm_nextId = 100;
-
-
+uint32_t Identifiable::sm_nextId = 1;
 
 DxSceneNode::~DxSceneNode()
 {
-	m_wpoParent.lock()->RemoveChild(shared_from_this());	
+	m_wpoParent->RemoveChild(this);	
 }
 
 inline ResourceTypeEnum Rldx::DxSceneNode::GetResourceType() 
@@ -16,40 +15,32 @@ inline ResourceTypeEnum Rldx::DxSceneNode::GetResourceType()
 	return m_resourceType;
 }
 
-DxSceneNode::SPtr DxSceneNode::Create(std::string name)
+DxSceneNode::Sptr DxSceneNode::Create(std::string name)
 {	
-	SPtr newNode= std::make_shared<DxSceneNode>();
-	newNode->m_nodeId = GetNextId();	
-
-	newNode->m_name = name == ("" ? "SceneNode" : name) + "__" + std::to_string(newNode->m_nodeId);	
+	Sptr newNode= std::make_unique<DxSceneNode>();
+	newNode->m_name = name == ("" ? "SceneNode" : name) + "__" + std::to_string(0/*newNode->GetId()*/);	
 
 	return newNode;
 }
 
 
-void DxSceneNode::AddChild(DxSceneNode::SPtr spoChild)
+void DxSceneNode::AddChild(DxSceneNode::Sptr& spoChild)
 {		
-	spoChild->SetParent(shared_from_this());	
+	spoChild->SetParent(this);
 	m_children.push_back(spoChild);
 }
 
-void DxSceneNode::AddChild(DxSceneNode* poChild)
+void DxSceneNode::SetParent(DxSceneNode* poParent)
 {
-	poChild->SetParent(shared_from_this());	
-	m_children.push_back(SPtr(poChild));
-}
-
-void DxSceneNode::SetParent(DxSceneNode::SPtr parent)
-{
-	m_wpoParent = parent;
+	m_wpoParent = poParent;
 }
 
 DxSceneNode* DxSceneNode::GetParent()
 {	
-	return m_wpoParent.lock().get();
+	return m_wpoParent;
 }
 
-void DxSceneNode::RemoveChild(DxSceneNode::SPtr child)
+void DxSceneNode::RemoveChild(const DxSceneNode::Sptr& child)
 {
 	for (size_t i = 0; i < m_children.size(); i++)
 	{
@@ -93,17 +84,7 @@ const NodeTransform& DxSceneNode::GetTransform() const
 	return m_nodeTransform;
 }
 
-NodeId DxSceneNode::GetNextId()
-{
-	 return sm_nextId++; 
-}
-
-NodeId DxSceneNode::GetId()
-{
-	return m_nodeId;
-}
-
-DxSceneNode* DxSceneNode::GetChild(DxSceneNode* poChild)
+DxSceneNode* DxSceneNode::GetChildByPtr(DxSceneNode* poChild)
 {
 	for (size_t i = 0; i < m_children.size(); i++)
 	{
@@ -126,16 +107,22 @@ DxSceneNode* DxSceneNode::GetChild(size_t index)
 	return m_children[index].get();
 }
 
-// TODO: test this
-inline DxSceneNode* Rldx::DxSceneNode::FindNode(DxSceneNode* nodeToFind, DxSceneNode* currentNode)
+size_t Rldx::DxSceneNode::GetChildCount() const
 {
+	return m_children.size();
+}
+
+// TODO: test this
+inline DxSceneNode* Rldx::DxSceneNode::FindChild(DxSceneNode* nodeToFind, DxSceneNode* currentNode)
+{
+	// to break out of recursion
 	if (currentNode == nodeToFind) {
 		return currentNode;
 	}
 
-	for (auto child : currentNode->GetChildren())
-	{
-		auto result = FindNode(nodeToFind, child.get());
+	for (auto& childNode : currentNode->GetChildren())	
+	{	
+		auto result = FindChild(nodeToFind, childNode.get());
 
 		if (result != nullptr)
 			return result;
@@ -144,14 +131,12 @@ inline DxSceneNode* Rldx::DxSceneNode::FindNode(DxSceneNode* nodeToFind, DxScene
 	return nullptr;
 }
 
-const std::vector<DxSceneNode::SPtr>& DxSceneNode::GetChildren() const
+const std::vector<DxSceneNode::Sptr>& DxSceneNode::GetChildren() const
 {
 	return m_children;
 }
 
-std::vector<DxSceneNode::SPtr>& DxSceneNode::GetChildren()
+std::vector<DxSceneNode::Sptr>& DxSceneNode::GetChildren()
 {
 	return m_children;
 }
-
-

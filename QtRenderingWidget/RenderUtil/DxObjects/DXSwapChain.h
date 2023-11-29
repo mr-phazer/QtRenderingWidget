@@ -29,6 +29,8 @@
 //#include "DxTextureView.h"
 #include "DxTexture.h"
 
+#include "IDrawable.h"
+
 
 namespace Rldx
 {
@@ -36,7 +38,7 @@ namespace Rldx
 	{
 	public:
 		// TODO: is this relly needeed? How often do you need use the smart pointer type?
-		using SPtr = std::shared_ptr<DxSwapChain>;
+		using UPtr = std::unique_ptr<DxSwapChain>;
 	public:
 		DxSwapChain()
 		{
@@ -55,7 +57,7 @@ namespace Rldx
 			return randomColor;
 		}
 
-		static SPtr CreateForHWND(ID3D11Device* poDevice, HWND _hwnd, UINT width, UINT height)
+		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND _hwnd, UINT width = 1024, UINT height = 1024)
 		{
 			auto poNew = std::make_unique<DxSwapChain>();
 
@@ -115,7 +117,7 @@ namespace Rldx
 			return poNew;
 		}
 
-		void Reset(UINT width, UINT height, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+		void Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
 		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView);

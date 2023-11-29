@@ -41,8 +41,4 @@ namespace Rldx
 	TDxResourceManagerTemplate* TDxResourceManagerTemplate::instance = nullptr;
 
 
-	void abc()
-	{
-
-	}
 }

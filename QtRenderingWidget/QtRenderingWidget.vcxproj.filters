@@ -76,10 +76,28 @@
     <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.Cpp">
+    <ClCompile Include="RenderUtil\DxObjects\DxMeshData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\Managers\Helpers\NoCaseMapCompare.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\Managers\DxResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\DxObjects\IDrawable.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\DxObjects\IDrawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -129,13 +147,22 @@
     <ClInclude Include="RenderUtil\Types\CommonVertexType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\TDxResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tools\COMerrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Common\TSmartPointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\ConstBuffers\ConstBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\Managers\DxResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
