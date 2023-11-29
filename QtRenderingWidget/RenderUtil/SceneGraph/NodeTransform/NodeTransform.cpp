@@ -54,6 +54,7 @@ void NodeTransform::SetScale(const sm::Vector3& scale)
 void NodeTransform::SetScale(float scale)
 {
 	local.scale = { scale, scale, scale };	
+	local.scale = { scale, scale, scale };	
 }
 
 sm::Vector3 NodeTransform::GetScale()
@@ -66,7 +67,19 @@ sm::Vector3 NodeTransform::GetTranslation()
 	return local.translation;
 }
 
+sm::Vector3 NodeTransform::GetScale()
 sm::Quaternion NodeTransform::GetRotation()
 {
+	return local.scale;
+}
+
+sm::Vector3 NodeTransform::GetTranslation()
+{
+	return local.translation;
+}
+
+sm::Quaternion NodeTransform::GetRotation()
+{
+	return local.rotation;
 	return local.rotation;
 }
