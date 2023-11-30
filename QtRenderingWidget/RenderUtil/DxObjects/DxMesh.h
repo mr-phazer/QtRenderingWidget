@@ -7,6 +7,8 @@
 
 #include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
+#include "..\Managers\DxResourceManager.h"
+
 
 #include "IDrawable.h"
 
@@ -20,6 +22,13 @@ namespace Rldx {
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoVertexBuffer;
 	};	
+
+	class DxMaterial
+	{
+		// TODO: remove, just for testing, not to leave undefined
+		int testValue = 10000;
+	};
+
 
 	class DxMesh : public IDrawable
 	{
@@ -44,13 +53,19 @@ namespace Rldx {
 			*/			
 		}
 
-		void SetMeshData(const DxMeshData& meshData)
-		{
-			m_meshData = meshData;
+		void SetMeshData(DxMeshData& meshData)
+		{		
+			m_meshData = DxResourceManager::GetInstance().GetMeshes().AddResource(meshData).GetPtr();
+		};
+
+		void SetMaterial(DxMaterial& mesMaterial)
+		{		
+			m_meshMaterial = DxResourceManager::GetInstance().GetMaterialManager().AddResource(mesMaterial).GetPtr();
 		};
 
 	private:
-		DxMeshData m_meshData;
+		DxMeshData* m_meshData;
+		DxMaterial* m_meshMaterial;
 	};
 
 	template <typename INDEX_TYPE, typename VERTEX_TYPE>

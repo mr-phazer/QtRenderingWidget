@@ -4,7 +4,7 @@ using namespace Rldx;
 
 //std::unique_ptr<ResourceManagerBase> ResourceManagerBase::sm_spoInstance;
 ResId ResourceManagerBase::sm_nextId;
-std::unique_ptr<ResourceManager> ResourceManager::sm_spoInstance;
+std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
 
 //inline Rldx::ResourceManager::ResourceManager()
@@ -14,10 +14,10 @@ std::unique_ptr<ResourceManager> ResourceManager::sm_spoInstance;
 //	m_spoMeshManager = TResourceManager<DxMesh>::Create();
 //}
 
-inline ResourceManager& Rldx::ResourceManager::Get()
+inline DxResourceManager& Rldx::DxResourceManager::GetInstance()
 {
 	if (!sm_spoInstance) {
-		sm_spoInstance = std::unique_ptr<ResourceManager>(new ResourceManager);
+		sm_spoInstance = std::unique_ptr<DxResourceManager>(new DxResourceManager);
 	}
 
 	return *sm_spoInstance;
