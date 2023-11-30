@@ -37,17 +37,13 @@ namespace Rldx
 	/// </summary>
 	class DxDeviceManager
 	{
-		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
-		//DxDeviceManager() {};
-
 	public:
-		using UPtr = std::unique_ptr<DxDeviceManager>;
+		using PUnique = std::unique_ptr<DxDeviceManager>;
 
 	public:
 		static DxDeviceManager& GetInstance();
-
-	
-		static UPtr Create();
+			
+		static PUnique Create();
 
 		ID3D11Device* GetDevice() {
 			return m_cpoDevice.Get();

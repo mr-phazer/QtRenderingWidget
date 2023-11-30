@@ -113,7 +113,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="QtObjects\ViewModels\QtRenderingWidget_new.cpp" />
+    <ClCompile Include="QtObjects\Views\QtRenderingWidget_new.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp" />
@@ -133,15 +133,15 @@
     <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
-    <QtRcc Include="QtObjects\ViewModels\QtRenderingWidget.qrc" />
-    <QtUic Include="QtObjects\ViewModels\QtRenderingWidget.ui" />
+    <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc" />
+    <QtUic Include="QtObjects\Views\QtRenderingWidget.ui" />
     <ClCompile Include="RenderUtil\Managers\DxDeviceManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
-    <ClInclude Include="QtObjects\ViewModels\QtRenderingWidget_new.h" />
+    <ClInclude Include="QtObjects\Views\QtRenderingWidget_new.h" />
     <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="RenderUtil\ConstBuffers\ConstBuffers.h" />

@@ -23,23 +23,15 @@ namespace Rldx {
 			 
 				- process scene graph to get all meshnodes
 				- put mesh nodes in a container "class DxRenderQueue"
-				- user DxRenderPass::Draw(DxRenderQueue queueToDraw)
 				- for each mesh node in DxRenderQueue
-					- set shader program - from material if any, else the shader program passed in this method
-
-					- set vertex buffer
-					- set index buffer
-
-					- set texture - from material if existing - else default textures
-					- set mesh vertex shader constant buffer - mesh transform, animation
-					- set mesh pixel shader constant buffer - lighting params, colors, etc
-					- draw
+				  - user DxRenderPass::Draw(DxRenderQueue queueToDraw)
+				
+				
+					
 			
 			*/
 
 		}
-
-
 
 		DxSceneNode* GetRootNode();
 		void DeleteNode(DxSceneNode* node);
@@ -57,7 +49,7 @@ namespace Rldx {
 	};
 
 
-	class SceneCreator
+	class HWNDSceneCreator
 	{
 	public:
 		static DxScene::UPtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)

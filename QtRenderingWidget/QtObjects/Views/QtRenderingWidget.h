@@ -22,7 +22,7 @@ namespace Rldx
 	public:
 		QtRenderingWidget(QWidget* parent = Q_NULLPTR);
 
-		Rldx::DxTempDemoRenderer::Uptr m_upoScene;-
+		Rldx::DxTempDemoRenderer::Uptr m_upoScene;
 		Rldx::DxDeviceManager* m_spDxManager;
 
 		//void setSwapChain(Rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)

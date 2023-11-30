@@ -1,5 +1,5 @@
 
-#include "RenderWindow/View/QtRenderingWidget_new.h"
+#include "QtObjects/Views/QtRenderingWidget_new.h"
 #include <QtWidgets/QApplication>
 
 #include "RenderUtil/Managers/DxDeviceManager.h"

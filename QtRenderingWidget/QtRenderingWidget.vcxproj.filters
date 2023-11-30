@@ -23,10 +23,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="QtObjects\ViewModels\QtRenderingWidget.qrc">
+    <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="QtObjects\ViewModels\QtRenderingWidget.ui">
+    <QtUic Include="QtObjects\Views\QtRenderingWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -94,7 +94,7 @@
     <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtObjects\ViewModels\QtRenderingWidget_new.cpp">
+    <ClCompile Include="QtObjects\Views\QtRenderingWidget_new.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,7 +162,7 @@
     <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QtObjects\ViewModels\QtRenderingWidget_new.h">
+    <ClInclude Include="QtObjects\Views\QtRenderingWidget_new.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

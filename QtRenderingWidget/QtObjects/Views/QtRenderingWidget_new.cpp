@@ -1,4 +1,4 @@
-#include "QtRenderingWidget.h"
+#include "QtRenderingWidget_new.h"
 
 //#include "..\RenderLib\Direct3d11Device.h"
 

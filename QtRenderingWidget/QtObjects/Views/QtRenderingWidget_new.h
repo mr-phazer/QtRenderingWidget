@@ -37,15 +37,19 @@ namespace Rldx
 				{
 					throw exception("Error Loading Font");
 				}*/
-			m_spDxManager = dxManager;
-			m_upoScene = Rldx::DxTempDemoRenderer::CreateScene(m_spDxManager, this);
+			m_poDxManager = dxManager;
+			//m_upoScene = Rldx::DxTempDemoRenderer::CreateScene(m_spDxManager, this);
+			m_upoSceneManager = DxSceneManager::Create();
+
+			m_upoSceneManager->
+				= SceneCreator::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
 
 			return true;
 		}
 
 	private:
-		Rldx::DxSceneManager::Uptr m_upoScene;
-		Rldx::DxDeviceManager* m_spDxManager;
+		Rldx::DxSceneManager::PUnique m_upoSceneManager;
+		Rldx::DxDeviceManager* m_poDxManager;
 
 
 		//void timerHandler(const Rldx::DXD3DManager::spDXD3DManger& _dxManager)

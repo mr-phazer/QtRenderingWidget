@@ -24,21 +24,24 @@ namespace Rldx {
 	class DxMesh : public IDrawable
 	{
 	public:
-		void Draw(ID3D11DeviceContext* poDeviceContext, ID3D11RenderTargetView* destRtV, IDxShaderProgram* shaderProgram) override
+		void Draw(ID3D11DeviceContext* poDeviceContext, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
 		{
+			// TODO: finish, draw mesh
+			
 			poDeviceContext->OMSetRenderTargets(1, &destRtV, nullptr);
 			/*
-				for each mesh in meshData
-					set vertex buffer
-					set index buffer
+				- From mesh.material:
+					- set shader program - if any, else the shader program passed in this method
+					  - set PS shaders
+					  - set VS shaders
+					  - update VS const buffers
+					  - update PS const buffers
+					- set textures (SRV) if existing - else default textures					
 
-					update shaderprogram const buffers
-					set shader program
-					draw 
-			
-			*/
-
-			// TODO: finish, draw mesh
+				- set vertex buffer
+				- set index buffer				
+				- D3ddevice.drawindexed()			
+			*/			
 		}
 
 		void SetMeshData(const DxMeshData& meshData)
