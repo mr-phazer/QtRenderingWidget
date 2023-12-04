@@ -5,8 +5,7 @@ class ID3D11DeviceContext;
 class ID3D11RenderTargetView;
 
 namespace Rldx {
-
-	class CommonVertex;
+		
 	class IDxShaderProgram;
 
 	enum class ItemTypeEnum : int

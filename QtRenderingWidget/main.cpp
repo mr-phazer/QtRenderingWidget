@@ -4,6 +4,8 @@
 
 #include "RenderUtil/Managers/DxDeviceManager.h"
 
+#include "RenderUtil/DxObjects/DxShaderProgram.h"
+
 int main(int argc, char* argv[]) 
 {	
 	QApplication a(argc, argv);
@@ -12,11 +14,15 @@ int main(int argc, char* argv[])
 		
 	auto spManager = Rldx::DxDeviceManager::GetInstance();
 
+	Rldx::DxMeshShaderProgam testShaderProgram;
+	testShaderProgram.Create(spManager.GetDevice(), L"", L"");
+
+
 	// -- create lots of render view, for demo
 	for (size_t i = 0; i < 4; i++)
 	{
 		Rldx::QtRenderingWidget* poNewRenderingWidget = new Rldx::QtRenderingWidget(nullptr); // nullptr = no parent, free floating window
-		poNewRenderingWidget->Init(spManager);
+		poNewRenderingWidget->Init(&spManager);
 	}
 
 	return a.exec();

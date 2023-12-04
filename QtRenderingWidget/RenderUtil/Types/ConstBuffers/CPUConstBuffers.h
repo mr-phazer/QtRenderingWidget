@@ -2,11 +2,11 @@
 
 #include <DirectXMath.h>
 #include "..\..\..\DirectXTK\Inc\SimpleMath.h"
-#include "..\ConstBuffers\ConstBuffers.h"
+#include "..\ConstBuffers\CPUConstBuffers.h"
 
 namespace Rldx {
 
-	struct VS_MeshConstantBuffer 
+	struct VS_MeshConstantBuffer
 	{
 		DirectX::XMFLOAT4X4 mWorld = sm::Matrix::Identity;
 		DirectX::XMFLOAT3 pivot = { 0,0,0 };
@@ -22,11 +22,10 @@ namespace Rldx {
 		DirectX::XMFLOAT4X4 inverse[256] = {  };
 	};
 
-
 	struct PS_MeshConstantBuffer
 	{
 		float reflectivity = 1.0;
-		float ambientlight = 1.0;
+		float ambientLight = 1.0;
 		float reserved1;
 		float reserved2;
 
@@ -55,7 +54,6 @@ namespace Rldx {
 		DirectX::XMUINT4 puiMaskIndices = { 0, 1, 2, 0 };
 
 		uint32_t PisTextureSRGB[64];
-	};
+	}; 
 
-
-};
+}; // namespace Rldx 

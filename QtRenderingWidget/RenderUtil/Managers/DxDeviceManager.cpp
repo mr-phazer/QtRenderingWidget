@@ -11,7 +11,7 @@ using namespace Rldx;
 
 std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
-DxDeviceManager::UPtr Rldx::DxDeviceManager::Create()
+DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
 {
 	auto poNewInstance = std::make_unique<DxDeviceManager>();
 

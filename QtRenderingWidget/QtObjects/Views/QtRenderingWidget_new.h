@@ -41,14 +41,14 @@ namespace Rldx
 			//m_upoScene = Rldx::DxTempDemoRenderer::CreateScene(m_spDxManager, this);
 			m_upoSceneManager = DxSceneManager::Create();
 
-			m_upoSceneManager->
-				= SceneCreator::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
+			m_upoSceneManager->CreateScene(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
+				
 
 			return true;
 		}
 
 	private:
-		Rldx::DxSceneManager::PUnique m_upoSceneManager;
+		Rldx::DxSceneManager::UniquePtr m_upoSceneManager;
 		Rldx::DxDeviceManager* m_poDxManager;
 
 

@@ -102,7 +102,7 @@ namespace DirectX
 
     //----------------------------------------------------------------------------------
     // A mesh consists of one or more model mesh parts
-    class ModelMesh
+    class ModelMeshModelMesh
     {
     public:
         ModelMesh() noexcept;

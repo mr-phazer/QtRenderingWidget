@@ -10,9 +10,11 @@
 
 
 namespace Rldx {
+	
+	using uint32_t = uint32_t;
 
 	class Identifiable
-	{	
+	{			
 	public:
 		Identifiable() : m_id(GetNextId()) {}
 		uint32_t GetId() const { return m_id; }		
@@ -37,9 +39,7 @@ namespace Rldx {
 
 		static DxSceneNode::Sptr Create(std::string name = "");
 
-		ResourceTypeEnum GetResourceType();
-		void SetResource(ResId resourceId) { resourceId = resourceId; };
-		ResId GetResurce() const { return m_resourceId; };
+		ResourceTypeEnum GetResourceType();		
 
 		DxSceneNode* GetParent();
 
@@ -70,7 +70,7 @@ namespace Rldx {
 	protected:
 		// node type:
 		ResourceTypeEnum m_resourceType = ResourceTypeEnum::Unknown;
-		ResId m_resourceId = 0;
+		uint32_t m_resourceId = 0;
 
 	private:
 		// tree structure

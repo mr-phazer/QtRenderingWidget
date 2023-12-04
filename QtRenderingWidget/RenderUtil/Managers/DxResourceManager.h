@@ -21,13 +21,13 @@ namespace Rldx {
 		RESOURCE_TYPE* m_ptr;
 	};
 
-	class DxTextureView {};
-	class DxMesh;
-	class DxMeshData;
-	class DxTexture {};
+	// forward declarations
+	class DxTextureView;
+	class DxMesh;	
+	class DxTexture;
 	class DxMaterial;
 	class IDxShaderProgram;
-		
+
 	// non-template parent, SHOULD? make sure that the static id is unique per instantiation?
 	class ResourceManagerBase
 	{
@@ -38,25 +38,13 @@ namespace Rldx {
 		uint32_t GetNextId() const { return sm_nextId++; }
 
 	private:
-		static uint32_t sm_nextId;
-		/*protected:
-			static std::unique_ptr<ResourceManagerBase> sm_spoInstance;*/
+		static uint32_t sm_nextId;		
 	};
 
 	template <typename RESOURCE_TYPE>
 	class TResourceManager : public ResourceManagerBase
 	{
 	public:
-	/*	RESOURCE_TYPE* GetResourceByString(const std::string& id) const
-		{
-			auto it = m_resourceDataByString.find(id);
-			if (it != m_resourceDataByString.end())
-			{
-				return it->second.get();
-			}
-
-			return nullptr;
-		}*/
 
 		RESOURCE_TYPE* GetResourceById(uint32_t id) const
 		{
@@ -102,11 +90,13 @@ namespace Rldx {
 		TResourceManager<DxMeshData>& GetMeshes() { return m_spoMeshManager; }
 		TResourceManager<DxTextureView>& GetTextures() { return m_spotextureManager; }
 		TResourceManager<DxMaterial>& GetMaterialManager() { return m_spoMaterialManager; }
+		TResourceManager<IDxShaderProgram>& GetShaderManager() { return m_spoShaderManager; }
 
 	private:
 		TResourceManager<DxMeshData> m_spoMeshManager;
 		TResourceManager<DxTextureView> m_spotextureManager;
 		TResourceManager<DxMaterial> m_spoMaterialManager;
+		TResourceManager<IDxShaderProgram> m_spoShaderManager;
 
 	private:
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;

@@ -77,8 +77,8 @@ namespace Rldx
 		bool CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount, const std::string& objectName = "");
 
 	private:
-		HRESULT Create2dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount));
-		HRESULT Create3dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, UINT depth, DXGI_FORMAT format, UINT sampleCount));
+		HRESULT Create2dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount);
+		HRESULT Create3dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, UINT depth, DXGI_FORMAT format, UINT sampleCount);
 		HRESULT CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice);
 		HRESULT CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice);
 
@@ -101,4 +101,25 @@ namespace Rldx
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_cpoDepthShaderResourceView;
 
 	};
+
+	/// <summary>
+	/// Convenience class for easily RTVs to the set render target d3d method
+	/// </summary>
+	class RTVContainer	{
+
+		RTVContainer(const std::vector<ID3D11RenderTargetView*>& input)
+		{
+			m_vecRTVs = input;
+		}
+
+		operator ID3D11RenderTargetView* const* ()
+		{
+			m_vecRTVs.data();
+		}
+
+	private:
+		std::vector<ID3D11RenderTargetView*> m_vecRTVs;
+	};
+
+
 }

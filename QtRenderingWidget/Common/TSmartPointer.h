@@ -5,21 +5,26 @@ namespace Rldx {
 	template <typename CLASSNAME>
 	struct TSmartPointerAll
 	{
-	public:
-		using Unique = std::unique_ptr<CLASSNAME>;
-		using Shared = std::shared_ptr<CLASSNAME>;
-		using Weak = std::weak_ptr<CLASSNAME>;
+	public:		
+		
+		using UniquePtr = std::unique_ptr<CLASSNAME>;
+		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using WeakPtr = std::weak_ptr<CLASSNAME>;
+
+
 	};
 
 	template <typename CLASSNAME>
 	struct TUniquePtr
-	{	
+	{
+
+	public:
+
 		using UniquePtr = std::unique_ptr<CLASSNAME>;
-		
-		static UniquePtr MakeUnique()
-		{
-			return std::make_unique<CLASSNAME>();		
-		}
+		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using WeakPtr = std::weak_ptr<CLASSNAME>;
+			
+			
 	};
 
 
@@ -27,7 +32,13 @@ namespace Rldx {
 	struct TSmartPointerShared
 	{
 	public:
-		using Shared = std::shared_ptr<CLASSNAME>;
+
+		using UniquePtr = std::unique_ptr<CLASSNAME>;
+		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using WeakPtr = std::weak_ptr<CLASSNAME>;
+
+
+		static auto MakeShared = std::make_shared<CLASSNAME>;
 	};
 
 
@@ -35,6 +46,10 @@ namespace Rldx {
 	struct TSmartPointerWeak
 	{
 	public:
-		using Weak = std::weak_ptr<CLASSNAME>;
+
+		using UniquePtr = std::unique_ptr<CLASSNAME>;
+		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using WeakPtr = std::weak_ptr<CLASSNAME>;
+
 	};
 }

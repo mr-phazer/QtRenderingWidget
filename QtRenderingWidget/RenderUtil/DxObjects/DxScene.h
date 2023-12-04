@@ -7,10 +7,13 @@
 
 namespace Rldx {
 
-	class DxScene : public IDrawable
+	
+	class DxScene : public IDrawable, public TSmartPointerAll<DxScene>
 	{
-	public:
-		using UPtr = std::unique_ptr<DxScene>;
+	
+	public:	
+		
+
 	public:
 		virtual void Draw(
 			ID3D11DeviceContext* poDeviceContext,
@@ -19,19 +22,19 @@ namespace Rldx {
 		{
 			/*
 				- first test, draw one simple mesh.
-			
-			 
+
+
 				- process scene graph to get all meshnodes
 				- put mesh nodes in a container "class DxRenderQueue"
 				- for each mesh node in DxRenderQueue
 				  - user DxRenderPass::Draw(DxRenderQueue queueToDraw)
-				
-				
-					
-			
+
+
+
+
 			*/
 
-		}
+		};
 
 		DxSceneNode* GetRootNode();
 		void DeleteNode(DxSceneNode* node);
@@ -49,14 +52,24 @@ namespace Rldx {
 	};
 
 
-	class HWNDSceneCreator
+	class IDxSceneCreator
 	{
 	public:
-		static DxScene::UPtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		DxScene::UniquePtr Create(ID3D11Device* poDevice);
+		
+	};
+
+	class BoundToHWNDSceneCreator
+	{
+		HWND m_nativeWindowHandle;
+	public:
+		DxScene::UniquePtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
 		{
-			auto newScene = std::make_unique<DxScene>();
+			auto newScene = DxScene::MakeUnique();
 			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, nativeWindowHandle);
-		}
+		};
+
+		BoundToHWNDSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};
 	};
 
 }; // end: namespace Rldx

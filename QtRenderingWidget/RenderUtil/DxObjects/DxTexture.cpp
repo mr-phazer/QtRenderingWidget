@@ -3,7 +3,7 @@
 #include "DxTexture.h"
 
 
-/*inline void Rldx::DxTexture::SetToActiveTargetView(ID3D11DeviceContext* deviceContext)
+/*inline void Rldx::DxTexture::SetToActiveTargetView(ID3D11Deviceentext* deviceContext)
 {
 	auto pRTV = GetRenderTargetView();
 	ID3D11RenderTargetView* const ppRTV[] = { pRTV };

@@ -1,51 +1,85 @@
 #pragma once
 
+// STL
+#include <string>
 #include <vector>
 
-
-#include <DirectXMath.h>
-
-#include <d3dcompiler.h>
+// DX3d
 #include <d3d11.h>
+#include <d3dcompiler.h>
 
-namespace RlDx
+// Authro
+#include "..\Types\ShaderFiles.h"
+
+class ShaderLoaderHelper
 {
-	namespace dx = DirectX;
+public:
+	static std::vector<uint8_t> GetRawDataFromDisk(const std::wstring& shaderPath);
 
-	struct CommonVertex
+public:
+	static PixelShaderFile CreatePixelShaderFromDisk(ID3D11Device* poDevice, const std::wstring& wstrPath)
 	{
-		CommonVertex(
-			dx::XMFLOAT3 const& iposition,
-			dx::XMFLOAT3 const& inormal,
-			dx::XMFLOAT3 const& itangent,
-			dx::XMFLOAT3 const& ibitangent,
-			dx::XMFLOAT4 const& icolor,
-			dx::XMFLOAT2 const& itextureCoordinate);;
+		ID3D11PixelShader* pDestShader = nullptr;;
 
-		void SetVertexDataCommonVertex(
-			dx::XMFLOAT3 const& iposition,
-			dx::XMFLOAT3 const& inormal,
-			dx::XMFLOAT3 const& itangent,
-			dx::XMFLOAT3 const& ibitangent,
-			dx::XMFLOAT4 const& icolor,
-			dx::XMFLOAT2 const& itextureCoordinate);;
+		auto shaderCodeRaw = ShaderLoaderHelper::GetRawDataFromDisk(wstrPath);
 
-		dx::XMFLOAT4 position;
-		dx::XMFLOAT3 normal;
-		dx::XMFLOAT3 tangent;
-		dx::XMFLOAT3 bitangent;
-		dx::XMFLOAT2 textureCoordinate;
-		dx::XMFLOAT4 color;
+		HRESULT hr = poDevice->CreatePixelShader(
+			shaderCodeRaw.data(),
+			shaderCodeRaw.size(),
+			nullptr,
+			&pDestShader
+		);
+
+		return PixelShaderFile(pDestShader);
+	};
+
+	static PixelShaderFile CreatePixelShaderFromMemory(ID3D11Device* poDevice, uint8_t* pSource, size_t sizeInBytes)
+	{
+		ID3D11PixelShader* pDestShader = nullptr;;
+		HRESULT hr = poDevice->CreatePixelShader(pSource, sizeInBytes, nullptr, &pDestShader);
+
+		return PixelShaderFile(pDestShader);
+	};
+
+};
+
+class VertexShaderLoader
+{
+public:
+	static VertexShaderFile CreateVertexShaderFromDisk(ID3D11Device* poDevice, const std::wstring& wstrPath)
+	{
+		ID3D11VertexShader* pDestShader = nullptr;;
+		auto shaderCodeRaw = ShaderLoaderHelper::GetRawDataFromDisk(wstrPath);
+
+		HRESULT hr = poDevice->CreateVertexShader(
+			shaderCodeRaw.data(),
+			shaderCodeRaw.size(),
+			nullptr,
+			&pDestShader
+		);
+
+		return VertexShaderFile(pDestShader);
+	};
+
+	static VertexShaderFile CreateVertexShaderFromMemory(ID3D11Device* poDevice, uint8_t* pSource, size_t sizeInBytes)
+	{
+		ID3D11VertexShader* pDestShader = nullptr;;
+		HRESULT hr = poDevice->CreateVertexShader(pSource, sizeInBytes, nullptr, &pDestShader);
+
+		return VertexShaderFile(pDestShader);
 	};
 
 
-	HRESULT CreateInputLayoutDescFromVertexShaderSignature(void* pMem, size_t buffer_size, ID3D11Device* pD3DDevice, ID3D11InputLayout** pInputLayout)
+	static ID3D11InputLayout* CreateInputLayoutDescFromVertexShaderSignature(
+		void* pMem,
+		size_t buffer_size,
+		ID3D11Device* pD3DDevice)
 	{
 		// Reflect shader info
 		ID3D11ShaderReflection* pVertexShaderReflection = NULL;
 		if (FAILED(D3DReflect(pMem, buffer_size, IID_ID3D11ShaderReflection, (void**)&pVertexShaderReflection)))
 		{
-			return S_FALSE;
+			return nullptr;
 		}
 
 		// Get shader info
@@ -99,17 +133,16 @@ namespace RlDx
 		}
 
 		// Try to create Input Layout
-		HRESULT hr = pD3DDevice->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(), pMem, buffer_size, pInputLayout);
+		ID3D11InputLayout* pInputLayout = NULL;
+		HRESULT hr = pD3DDevice->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(), pMem, buffer_size, &pInputLayout);
 
 		//Free allocation shader reflection memory
 		pVertexShaderReflection->Release();
-		return hr;
-	}
 
-}; // namespace DirectX
+		if (FAILED(hr)) {
+			return nullptr;
+		}
 
-
-
-
-
-
+		return pInputLayout;
+	};
+};

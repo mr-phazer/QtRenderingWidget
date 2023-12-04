@@ -9,19 +9,32 @@
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
 #include "..\Managers\DxResourceManager.h"
 
-
 #include "IDrawable.h"
+#include "DxShaderProgram.h"
+#include "..\Types\CommonVertexType.h"
 
 using namespace DirectX;
 
 
 namespace Rldx {
 
-	struct DxMeshData
+	class DxMeshData
 	{
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoIndexBuffer;
-		Microsoft::WRL::ComPtr<ID3D11Buffer> m_cpoVertexBuffer;
-	};	
+	public:	
+
+		uint32_t                                                indexCount = 0;
+		uint32_t                                                startIndex = 0;
+		int32_t                                                 vertexOffset = 0;
+		uint32_t                                                vertexStride = sizeof(CommonVertex);
+		D3D_PRIMITIVE_TOPOLOGY                                  primitiveType;
+		DXGI_FORMAT                                             indexFormat;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout>               m_cpoInputLayout;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>					m_cpoIndexBuffer;
+		Microsoft::WRL::ComPtr<ID3D11Buffer>					m_cpoVertexBuffer;
+		DXGI_FORMAT m_enumIndexFormat = DXGI_FORMAT::DXGI_FORMAT_R16_UINT;
+		D3D11_PRIMITIVE_TOPOLOGY m_enumTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+	};
 
 	class DxMaterial
 	{
@@ -29,44 +42,40 @@ namespace Rldx {
 		int testValue = 10000;
 	};
 
-
 	class DxMesh : public IDrawable
 	{
-	public:
-		void Draw(ID3D11DeviceContext* poDeviceContext, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
-		{
-			// TODO: finish, draw mesh
-			
-			poDeviceContext->OMSetRenderTargets(1, &destRtV, nullptr);
-			/*
-				- From mesh.material:
-					- set shader program - if any, else the shader program passed in this method
-					  - set PS shaders
-					  - set VS shaders
-					  - update VS const buffers
-					  - update PS const buffers
-					- set textures (SRV) if existing - else default textures					
-
-				- set vertex buffer
-				- set index buffer				
-				- D3ddevice.drawindexed()			
-			*/			
-		}
-
-		void SetMeshData(DxMeshData& meshData)
-		{		
-			m_meshData = DxResourceManager::GetInstance().GetMeshes().AddResource(meshData).GetPtr();
-		};
-
-		void SetMaterial(DxMaterial& mesMaterial)
-		{		
-			m_meshMaterial = DxResourceManager::GetInstance().GetMaterialManager().AddResource(mesMaterial).GetPtr();
-		};
-
-	private:
 		DxMeshData* m_meshData;
-		DxMaterial* m_meshMaterial;
+
+	public:
+		void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
+		{	
+			// if RTV is supplied set that as active
+			if (destRtV != nullptr) {
+				poDC->OMSetRenderTargets(1, &destRtV, nullptr);
+			}
+
+			GetMeshReadyForDrawing(poDC);
+
+			poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
+		};
+
+		virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
+		{
+			UINT stride = sizeof(CommonVertex);
+			UINT offset = 0;
+
+			poDC->IASetVertexBuffers(0, 1, m_meshData->m_cpoVertexBuffer.GetAddressOf(), &stride, &offset);
+			poDC->IASetIndexBuffer(m_meshData->m_cpoIndexBuffer.Get(), m_meshData->m_enumIndexFormat, 0);
+
+			poDC->IASetPrimitiveTopology(m_meshData->m_enumTopology);
+		};
+
+		void SetMeshData(const DxMeshData& meshData)
+		{
+			m_meshData = DxResourceManager::GetInstance().GetMeshes().AddResource(meshData).GetPtr();
+		};		
 	};
+
 
 	template <typename INDEX_TYPE, typename VERTEX_TYPE>
 	class DxMeshCreator
@@ -80,14 +89,18 @@ namespace Rldx {
 		DxMeshData m_meshData;
 
 	}; // class DxMeshCreator
-	
+
 	template<typename INDEX_TYPE, typename VERTEX_TYPE>
 	inline DxMeshData DxMeshCreator<INDEX_TYPE, VERTEX_TYPE>::CreateMesh(ID3D11Device* _poDevice, std::vector<VERTEX_TYPE>& vertices, std::vector<INDEX_TYPE>& indices)
 	{
 		FillIndexBuffer(_poDevice, indices.size(), indices.data());
 		FillVertexBuffer(_poDevice, vertices.size(), vertices.data());
 
-		return m_tempMeshData;
+		m_meshData.indexCount = static_cast<uint32_t>(indices.size());
+		m_meshData.indexFormat = DXGI_FORMAT_R16_UINT;
+		m_meshData.primitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+		return m_meshData;
 	}
 
 	template<typename INDEX_TYPE, typename VERTEX_TYPE>
@@ -146,6 +159,17 @@ namespace Rldx {
 
 		return SUCCEEDED(hr);
 	}
+
+class MeshRenderer
+{
+public:
+	void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram, IDxMaterial* material);
+	
+private:
+	void GetMaterialReady(ID3D11DeviceContext* poDC, IDxMaterial* material);
+	void GetShadersReady(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram);
+	void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC);	
+}
 
 }; // namespace Rldx
 

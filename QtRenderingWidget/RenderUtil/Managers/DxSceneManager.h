@@ -11,9 +11,9 @@ namespace Rldx {
 	class DxSceneManager
 	{	
 	public:	
-		using PUnique = std::unique_ptr<DxSceneManager>;
+		using UniquePtr = std::unique_ptr<DxSceneManager>;
 		
-		static PUnique Create()
+		static UniquePtr Create()
 		{				
 			auto newSceneManager = std::make_unique<DxSceneManager>();
 			newSceneManager->m_scene = HWNDSceneCreator::Create(nullptr, 0);

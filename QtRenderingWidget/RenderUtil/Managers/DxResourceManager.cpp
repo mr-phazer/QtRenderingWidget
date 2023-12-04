@@ -3,7 +3,7 @@
 using namespace Rldx;
 
 //std::unique_ptr<ResourceManagerBase> ResourceManagerBase::sm_spoInstance;
-ResId ResourceManagerBase::sm_nextId;
+uint32_t ResourceManagerBase::sm_nextId;
 std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
 

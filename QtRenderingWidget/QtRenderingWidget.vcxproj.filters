@@ -43,9 +43,6 @@
     <ClCompile Include="Logging\Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Managers\TempDemoRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,6 +92,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QtObjects\Views\QtRenderingWidget_new.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\Types\ShaderFiles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -150,7 +156,7 @@
     <ClInclude Include="Common\TSmartPointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\ConstBuffers\ConstBuffers.h">
+    <ClInclude Include="RenderUtil\Types\ConstBuffers\CPUConstBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\Managers\DxResourceManager.h">
@@ -165,6 +171,15 @@
     <ClInclude Include="QtObjects\Views\QtRenderingWidget_new.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\Types\ShaderFiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
@@ -174,10 +189,5 @@
     <None Include="Logging\ConsoleColors.inl">
       <Filter>Header Files</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="RenderUtil\Managers\TempDemoRenderer.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
 </Project>
