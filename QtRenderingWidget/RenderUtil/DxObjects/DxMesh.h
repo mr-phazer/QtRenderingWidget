@@ -36,12 +36,6 @@ namespace Rldx {
 
 	};
 
-	class DxMaterial
-	{
-		// TODO: remove, just for testing, not to leave undefined
-		int testValue = 10000;
-	};
-
 	class DxMesh : public IDrawable
 	{
 		DxMeshData* m_meshData;

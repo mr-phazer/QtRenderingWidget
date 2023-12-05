@@ -27,8 +27,8 @@ namespace Rldx {
 	class IDxShaderProgram
 	{
 	public:
-		virtual ID3D11VertexShader* GetVertexShader()  = 0;
-		virtual ID3D11PixelShader* GetPixelShader()  = 0;
+		virtual ID3D11VertexShader* GetVertexShader() = 0;
+		virtual ID3D11PixelShader* GetPixelShader() = 0;
 
 		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
 		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;
@@ -36,45 +36,46 @@ namespace Rldx {
 		virtual void UpdateVSConstBuffers(ID3D11DeviceContext*) = 0;
 		virtual void UpdatePSConstBuffers(ID3D11DeviceContext*) = 0;
 
-		virtual void SetVSConstBufferAsActive(ID3D11DeviceContext* poDC) const
+		virtual void GetReady(ID3D11DeviceContext*) = 0;
 
-	//	virtual void SetVSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-	//	{
-	//		auto pConstBufferTemp = GetVertexShaderConstBuffer();
-	//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
-	//	};
+		//	virtual void SetVSConstBufferAsActive(ID3D11DeviceContext* poDC) const
+		//	{
+		//		auto pConstBufferTemp = GetVertexShaderConstBuffer();
+		//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
+		//	};
 
-	//	virtual void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-	//	{
-	//		ID3D11Buffer* pConstBufferTemp[] = { GetPixelShaderConstBuffer() };
-	//		poDC->PSSetConstantBuffers(0, 1, pConstBufferTemp);
-	//	}
+		//	virtual void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
+		//	{
+		//		ID3D11Buffer* pConstBufferTemp[] = { GetPixelShaderConstBuffer() };
+		//		poDC->PSSetConstantBuffers(0, 1, pConstBufferTemp);
+		//	}
 
-	//	virtual void SetVertexShaderAsActive(ID3D11DeviceContext* poDC) const
-	//	{
-	//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
-	//	}
+		//	virtual void SetVertexShaderAsActive(ID3D11DeviceContext* poDC) const
+		//	{
+		//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
+		//	}
 
-	//	virtual void SetPixelShaderSAsActive(ID3D11DeviceContext* poDC) const
-	//	{
-	//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
-	//	}
+		//	virtual void SetPixelShaderSAsActive(ID3D11DeviceContext* poDC) const
+		//	{
+		//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
+		//	}
 
-	//	virtual  void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-	//	{
-	//		auto pConstBufferTemp = GetPixelShaderConstBuffer();
-	//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
-	//	}
+		//	virtual  void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
+		//	{
+		//		auto pConstBufferTemp = GetPixelShaderConstBuffer();
+		//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
+		//	}
 	};
 
-	template <typename PS_CONST_BUFER, typename VS_CONST_BUFER>
+	template <typename VS_CONST_BUFER, typename PS_CONST_BUFER>
 	class TDxShaderProgram : public IDxShaderProgram
 	{
+
 		PixelShaderFile m_pixelShaderFile;
 		VertexShaderFile m_vertexShaderFile;
 		DirectX::ConstantBuffer<VS_CONST_BUFER> m_vertexShaderConstBuffer;
 		DirectX::ConstantBuffer<PS_CONST_BUFER> m_pixelShaderConstBuffer;
-		
+
 		VS_CONST_BUFER vertexShaderConstBuffer;
 		PS_CONST_BUFER pixelShaderConstBuffer;
 
@@ -101,24 +102,36 @@ namespace Rldx {
 
 			m_pixelShaderConstBuffer.Create(poDevice);
 			m_vertexShaderConstBuffer.Create(poDevice);
-		}		
+		}
 
-		virtual ID3D11VertexShader* GetVertexShader()  override { return m_vertexShaderFile.GetShader(); } ;
+		virtual ID3D11VertexShader* GetVertexShader()  override { return m_vertexShaderFile.GetShader(); };
 		virtual ID3D11PixelShader* GetPixelShader()   override { return m_pixelShaderFile.GetShader(); };
 
 		ID3D11Buffer* GetPixelShaderConstBuffer() const { return m_pixelShaderConstBuffer.GetBuffer(); };
 		ID3D11Buffer* GetVertexShaderConstBuffer() const { return m_vertexShaderConstBuffer.GetBuffer(); };
 
 		VS_CONST_BUFER& GetCSEditableVS() { return vertexShaderConstBuffer; };
-		Ps_CONST_BUFER& GetCSEditablePS() { return pixelShaderConstBuffer; };
+		PS_CONST_BUFER& GetCSEditablePS() { return pixelShaderConstBuffer; };
 
 
 
-		
-		
+
+
 	};
 
-	using DxMeshShaderProgam = TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>;
+	class DxMeshShaderProgam : public TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>
+	{
+	public:
+		virtual void GetReady(ID3D11DeviceContext* dc) override
+		{
+			auto& vsCB = GetCSEditableVS();
+			vsCB.mWorld = sm::Matrix::Identity;
+
+			dc->PSSetShader(GetPixelShader(), nullptr, 0);
+			dc->VSSetShader(GetVertexShader(), nullptr, 0);
+		};
+
+	};
 
 }; // namespace Rldx
 

@@ -17,8 +17,8 @@ inline void DxSwapChain::Reset(ID3D11Device* device, ID3D11DeviceContext* device
 	//	m_oSwapChainData.m_pRenderTargetView = nullptr;
 
 
-	*m_BackBufferTexture.GetRenderTargetViewCPO().ReleaseAndGetAddressOf() = nullptr;
-	m_BackBufferTexture.GetTextureCPO().ReleaseAndGetAddressOf();
+	*m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf() = nullptr;
+	m_BackBufferTexture.GetComPtrTexture().ReleaseAndGetAddressOf();
 	//m_oBackBuffer.m_cpoRenderTargetView = nullptr;
 
 
@@ -43,7 +43,7 @@ inline void DxSwapChain::Reset(ID3D11Device* device, ID3D11DeviceContext* device
 	HRESULT hrGetBuffer = (m_cpoSwapChain1->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer)));
 	//std::wstring	wstrErrorMsghrhrGetBuffer = _com_error(hrResize).ErrorMessage();
 
-	HRESULT hrCreateRRTV = device->CreateRenderTargetView(pBackBuffer, NULL, &m_BackBufferTexture.GetRenderTargetViewCPO());
+	HRESULT hrCreateRRTV = device->CreateRenderTargetView(pBackBuffer, NULL, &m_BackBufferTexture.GetComPtrRenderTargetView());
 	//HRESULT hrCreateRRTV = device->CreateRenderTargetView(pBackBuffer, NULL, &m_oBackBuffer.m_cpoRenderTargetView);
 	pBackBuffer->Release();
 

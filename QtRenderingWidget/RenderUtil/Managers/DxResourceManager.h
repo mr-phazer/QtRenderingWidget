@@ -57,6 +57,19 @@ namespace Rldx {
 			return nullptr;
 		}
 
+		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE* resource, const std::string& stringId = "")
+		{
+			auto resourceId = GetNextId();
+			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource);
+
+			// if string supplied, associate string with raw pointer to resource
+			if (!stringId.empty()) {
+				m_resourceDataByString[stringId] = allocatedResource.get(); //m_resourceDataById[resourceId].get();			
+			}
+
+			return { resourceId, allocatedResource.get() };
+		}
+
 		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE& resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
@@ -88,13 +101,13 @@ namespace Rldx {
 		static DxResourceManager& GetInstance();
 
 		TResourceManager<DxMeshData>& GetMeshes() { return m_spoMeshManager; }
-		TResourceManager<DxTextureView>& GetTextures() { return m_spotextureManager; }
+		TResourceManager<DxTexture>& GetTextures() { return m_spotextureManager; }
 		TResourceManager<DxMaterial>& GetMaterialManager() { return m_spoMaterialManager; }
 		TResourceManager<IDxShaderProgram>& GetShaderManager() { return m_spoShaderManager; }
 
 	private:
 		TResourceManager<DxMeshData> m_spoMeshManager;
-		TResourceManager<DxTextureView> m_spotextureManager;
+		TResourceManager<DxTexture> m_spotextureManager;
 		TResourceManager<DxMaterial> m_spoMaterialManager;
 		TResourceManager<IDxShaderProgram> m_spoShaderManager;
 

@@ -124,11 +124,9 @@ namespace Rldx
 		}
 	};
 
-	class Scene;
+	
 	class DxTextureView : public IDxTextureView
 	{
-
-
 	protected:
 		DirectX::XMFLOAT4 getPixelFromDepthBuffer(ID3D11DeviceContext* _poDeviceContext);
 

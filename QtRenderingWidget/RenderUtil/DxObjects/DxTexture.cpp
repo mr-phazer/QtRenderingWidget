@@ -1,7 +1,11 @@
 
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
-#include "DxTexture.h"
 
+#include "d3d11.h"
+
+// Author
+#include "DxTexture.h"
+#include "..\Managers\DxResourceManager.h"
 
 /*inline void Rldx::DxTexture::SetToActiveTargetView(ID3D11Deviceentext* deviceContext)
 {
@@ -21,10 +25,22 @@ inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const std::wstr
 	ID3D11Resource* poTextureResource = nullptr;
 	DirectX::CreateDDSTextureFromFile(poD3DDevice, fileName.c_str(), &poTextureResource, &m_cpoShaderResourceView);
 
-	HRESULT hr = poTextureResource->QueryInterface(IID_ID3D11Texture2D, (void**)&m_cpoTexture);
-	if (FAILED(hr)) {
-		// handle failure here.
+	// Assume that pResource is a valid pointer to an ID3D11Resource object.
+	
+	HRESULT hr = poTextureResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&m_cpoTexture);
+
+	// TODO: check
+	if (SUCCEEDED(hr)) {
+
+		auto DEBUG_1 = 1;
+		// pTexture2D now points to the ID3D11Texture2D interface of the resource.
 	}
+	else {
+		auto DEBUG_ERRROR = 1;
+		// Handle failure here.
+	}
+
+	DxResourceManager::GetInstance().GetTextures().AddResource(this, objectName);
 }
 
 inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName)
@@ -132,4 +148,9 @@ UINT Rldx::DxTexture::GetWidth()
 UINT Rldx::DxTexture::GetSampleCount()
 {
 	return m_textureDesc.SampleDesc.Count;
+}
+
+UINT Rldx::DxTexture::GetSlot()
+{
+	return m_slot;
 }

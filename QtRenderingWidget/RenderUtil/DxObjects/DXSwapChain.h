@@ -95,13 +95,13 @@ namespace Rldx
 			logging::LogActionSuccess("Created Swap Chain.");
 
 			// Get swap chain's back buffer, create its renderQuad target view and set that view as renderQuad target
-			hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture()), (void**)&poNew->m_BackBufferTexture.GetTextureCPO());
+			hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
 			assert(SUCCEEDED(hr));
 
 			logging::LogActionSuccess("m_pSwapChain1->GetBuffer().");
 
 			//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
-			hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture(), nullptr, poNew->m_BackBufferTexture.GetRenderTargetViewCPO().ReleaseAndGetAddressOf());
+			hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
 			assert(SUCCEEDED(hr));
 
 			logging::LogActionSuccess("CreateRenderTargetView().");

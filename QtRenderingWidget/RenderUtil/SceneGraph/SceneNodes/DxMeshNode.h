@@ -7,8 +7,8 @@ namespace Rldx
 {
 	class DxMeshNode : public DxSceneNode, IDrawable
 	{
-		DxMesh* m_meshData;
-		DxMaterial* m_meshMaterial;
+		DxMesh* m_mesh;
+		DxMaterial* m_material;
 		DxMeshShaderProgam* m_shaderProgram;
 
 	public:
@@ -18,36 +18,18 @@ namespace Rldx
 		virtual ~DxMeshNode() = default;
 		
 		static DxMeshNode::Sptr Create(std::string name = "");
-
-		void SetMeshData(DxMeshData& meshData)
+				
+		void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) override
 		{
-			m_meshData = DxResourceManager::GetInstance().GetMeshes().AddResource(meshData).GetPtr();
-		}; 
+			// TODO: finish, draw mesh			
 
-		void SetMeshData(DxMaterial& material)
-		{
-			m_meshMaterial = DxResourceManager::GetInstance().GetMaterialManager().AddResource(material).GetPtr();
-		};
+			m_shaderProgram->GetReady(poDC);
 
-		void SetShader(DxMeshShaderProgam& shaderProgram)
-		{
-			m_shaderProgram = static_cast<DxMeshShaderProgam*>(DxResourceManager::GetInstance().GetShaderManager().AddResource(shaderProgram).GetPtr());
-		};
-	
-		void Draw(ID3D11DeviceContext* poDC,  ID3D11RenderTargetView* destRtV = nullptr) override
-		{
-			// TODO: finish, draw mesh
+			m_material->
 
-			// if RTV is supplied set that as active
-			if (destRtV != nullptr) {
-				poDC->OMSetRenderTargets(1, &destRtV, nullptr);
-			}
+			m_mesh->Draw(poDC, nullptr, destRtV);
 
-			GetMaterialsReady(poDC);
-			GeShaderProgramReady(poDC);
-			GetMeshReadyForDrawing(poDC);
-
-			poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
+			
 		};
 
 	public:
