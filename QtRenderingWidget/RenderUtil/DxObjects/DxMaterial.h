@@ -20,9 +20,10 @@ namespace Rldx {
 			commonStates = DirectX::CommonStates(device);
 		};
 
-		void AddTexture(UINT slot, const DxTexture* pTexture)
+		void AddTexture(UINT slot, const DxTexture& texture)
 		{
-			DxResourceManager::GetInstance()->GetTextures()->AddResource(pTexture);
+			auto ret = DxResourceManager::GetInstance()->GetTextures()->AddResource(texture, "new texture");
+			m_textures.push_back({ slot, ret.GetPtr()});
 		}
 
 		void Bind(ID3D11DeviceContext* poDC);

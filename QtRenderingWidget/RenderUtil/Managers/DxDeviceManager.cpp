@@ -139,26 +139,26 @@ void Rldx::DxDeviceManager::RenderText()
 	//const float blendFactor[4] = {1,1,1,1};
 	//m_poScene->getDeviceContext()->OMSetBlendState(poBlendState, blendFactor, 0xFFFFFFFF);
 
-	GetDeviceContext()->OMSetDepthStencilState(depthStencilStates.Off.Get(), 1);
+	//GetDeviceContext()->OMSetDepthStencilState(depthStencilStates.Off.Get(), 1);
 
 
-	fontEngine.m_spriteBatch->Begin();
-	for (auto& itStr : fontEngine.m_stringsToDraw)
-	{
-		auto boundRect = fontEngine.m_font->MeasureDrawBounds(itStr.c_str(), vPosition, false);
+	//fontEngine.m_spriteBatch->Begin();
+	//for (auto& itStr : fontEngine.m_stringsToDraw)
+	//{
+	//	auto boundRect = fontEngine.m_font->MeasureDrawBounds(itStr.c_str(), vPosition, false);
 
-		fontEngine.m_font->DrawString(
-			fontEngine.m_spriteBatch.get(),
-			itStr.c_str(),
-			vPosition,
-			vColor,
-			rotation,
-			origin,
-			vScale,
-			DirectX::SpriteEffects::SpriteEffects_None
-		);
+	//	fontEngine.m_font->DrawString(
+	//		fontEngine.m_spriteBatch.get(),
+	//		itStr.c_str(),
+	//		vPosition,
+	//		vColor,
+	//		rotation,
+	//		origin,
+	//		vScale,
+	//		DirectX::SpriteEffects::SpriteEffects_None
+	//	);
 
-		vPosition.y += boundRect.bottom;
-	}
-	fontEngine.m_spriteBatch->End();
+	//	vPosition.y += boundRect.bottom;
+	//}
+	//fontEngine.m_spriteBatch->End();
 }

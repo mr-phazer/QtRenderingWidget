@@ -68,6 +68,8 @@ namespace Rldx {
 		{
 			auto newScene = std::make_unique<DxScene>();
 			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle);
+
+			return newScene;
 		};
 
 		BoundToHWNDSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};

@@ -61,6 +61,22 @@ namespace Rldx {
 			return nullptr;
 		}
 
+		ResourceHandle<RESOURCE_TYPE> AddResource(const std::string& stringId = "")
+		{
+			auto resourceId = GetNextId();
+			m_resourceDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(resource);
+			auto pAllocatedResource = m_resourceDataById[resourceId].get();
+
+			// if string supplied, associate string with raw pointer to resource
+			if (!stringId.empty()) {
+				m_resourceDataByString[stringId] = pAllocatedResource; //m_resourceDataById[resourceId].get();			
+			}
+
+			return { resourceId, pAllocatedResource };
+		}
+
+
+
 		ResourceHandle<RESOURCE_TYPE> AddResource(RESOURCE_TYPE* resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
@@ -75,7 +91,7 @@ namespace Rldx {
 			return { resourceId, pAllocatedResource};
 		}
 
-		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE* resource, const std::string& stringId = "")
+		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE& resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
 			auto& allocatedResource = m_resourceDataById[resourceId] = std::make_unique<RESOURCE_TYPE>(resource);
