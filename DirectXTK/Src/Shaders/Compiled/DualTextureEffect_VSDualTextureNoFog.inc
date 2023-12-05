@@ -44,20 +44,20 @@
     dcl_texcoord1 v1  // vin<4,5>
     dcl_texcoord2 v2  // vin<6,7>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c4  // ::VSDualTextureNoFog<10>
     dp4 r0.x, v0, c2  // ::vout<0>
     dp4 r0.y, v0, c3  // ::vout<1>
     dp4 r0.z, v0, c5  // ::vout<3>
 
-#line 44 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
+#line 43 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSDualTextureNoFog<8,9>
     mov oPos.w, r0.z  // ::VSDualTextureNoFog<11>
 
-#line 42 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mov oT0, c1  // ::VSDualTextureNoFog<0,1,2,3>
 
-#line 51 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
+#line 50 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
     mov oT1.xy, v1  // ::VSDualTextureNoFog<4,5>
     mov oT1.zw, v2.xyyx  // ::VSDualTextureNoFog<7,6>
 
@@ -84,10 +84,10 @@ ret
 
 const BYTE DualTextureEffect_VSDualTextureNoFog[] =
 {
-     68,  88,  66,  67,  77, 166, 
-     71, 111,  35, 162,  76, 146, 
-    232, 131, 171, 242,  60, 175, 
-    120,  29,   1,   0,   0,   0, 
+     68,  88,  66,  67, 117, 230, 
+    187, 151, 200,  84,  85, 123, 
+     88,  54,  89, 244,  15, 123, 
+     34, 129,   1,   0,   0,   0, 
     196,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     140,   4,   0,   0, 200,   5, 
@@ -144,17 +144,17 @@ const BYTE DualTextureEffect_VSDualTextureNoFog[] =
       0,   0,   0,   0, 255, 255, 
     116,   3,   0,   0,   0,   0, 
     255, 255, 128,   3,   0,   0, 
-     41,   0,   0,   0, 140,   3, 
-      0,   0,  41,   0,   0,   0, 
-    156,   3,   0,   0,  41,   0, 
+     40,   0,   0,   0, 140,   3, 
+      0,   0,  40,   0,   0,   0, 
+    156,   3,   0,   0,  40,   0, 
       0,   0, 172,   3,   0,   0, 
-     41,   0,   0,   0, 188,   3, 
-      0,   0,  44,   0,   1,   0, 
-    204,   3,   0,   0,  44,   0, 
+     40,   0,   0,   0, 188,   3, 
+      0,   0,  43,   0,   1,   0, 
+    204,   3,   0,   0,  43,   0, 
       1,   0, 224,   3,   0,   0, 
-     42,   0,   0,   0, 236,   3, 
-      0,   0,  51,   0,   1,   0, 
-    248,   3,   0,   0,  51,   0, 
+     41,   0,   0,   0, 236,   3, 
+      0,   0,  50,   0,   1,   0, 
+    248,   3,   0,   0,  50,   0, 
       1,   0,   4,   4,   0,   0, 
      86,  83,  68, 117,  97, 108, 
      84, 101, 120, 116, 117, 114, 

@@ -35,10 +35,7 @@ namespace Rldx {
 
 		using UniquePtr = std::unique_ptr<CLASSNAME>;
 		using SharedPtr = std::shared_ptr<CLASSNAME>;
-		using WeakPtr = std::weak_ptr<CLASSNAME>;
-
-
-		static auto MakeShared = std::make_shared<CLASSNAME>;
+		using WeakPtr = std::weak_ptr<CLASSNAME>;		
 	};
 
 

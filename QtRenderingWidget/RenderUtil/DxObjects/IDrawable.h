@@ -21,7 +21,7 @@ namespace Rldx {
 	public:
 		virtual void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) = 0;
 
-		ItemTypeEnum virtual GetNodeType() = 0;
+		//ItemTypeEnum virtual GetNodeType() = 0;
 	};
 
 	/// <summary>

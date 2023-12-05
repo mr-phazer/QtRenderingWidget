@@ -41,7 +41,7 @@ namespace Rldx {
 		DxMeshData* m_meshData;
 
 	public:
-		void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
+		void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) override
 		{	
 			// if RTV is supplied set that as active
 			if (destRtV != nullptr) {
@@ -154,16 +154,16 @@ namespace Rldx {
 		return SUCCEEDED(hr);
 	}
 
-class MeshRenderer
-{
-public:
-	void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram, IDxMaterial* material);
-	
-private:
-	void GetMaterialReady(ID3D11DeviceContext* poDC, IDxMaterial* material);
-	void GetShadersReady(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram);
-	void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC);	
-}
+	class MeshRenderer
+	{
+	public:
+		void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram, DxMaterial* material);
+
+	private:
+		void GetMaterialReady(ID3D11DeviceContext* poDC, DxMaterial* material);
+		void GetShadersReady(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram);
+		void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC);
+	};
 
 }; // namespace Rldx
 

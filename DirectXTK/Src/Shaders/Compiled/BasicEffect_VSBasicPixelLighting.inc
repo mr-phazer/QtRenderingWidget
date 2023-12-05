@@ -44,7 +44,7 @@
     dcl_texcoord v0  // vin<0,1,2,3>
     dcl_texcoord1 v1  // vin<4,5,6>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 oPos.z, v0, c11  // ::VSBasicPixelLighting<13>
     dp4 oT0.x, v0, c3  // ::VSBasicPixelLighting<0>
     dp4 oT0.y, v0, c4  // ::VSBasicPixelLighting<1>
@@ -56,21 +56,21 @@
     rsq r0.w, r0.w
     mul oT1.xyz, r0.w, r0  // ::VSBasicPixelLighting<4,5,6>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c13.x
     min oT0.w, r0.x, c13.y  // ::VSBasicPixelLighting<3>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 r0.x, v0, c9  // ::vout<0>
     dp4 r0.y, v0, c10  // ::vout<1>
     dp4 r0.z, v0, c12  // ::vout<3>
 
-#line 371 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 370 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicPixelLighting<11,12>
     mov oPos.w, r0.z  // ::VSBasicPixelLighting<14>
 
-#line 378
+#line 377
     mov r0.xy, c13
     mad oT2, c1.w, r0.xxxy, r0.yyyx  // ::VSBasicPixelLighting<7,8,9,10>
 
@@ -106,10 +106,10 @@ ret
 
 const BYTE BasicEffect_VSBasicPixelLighting[] =
 {
-     68,  88,  66,  67,   6, 103, 
-    152, 215,  68, 244,  30,  65, 
-    128, 184, 116, 129, 255,  26, 
-     60, 120,   1,   0,   0,   0, 
+     68,  88,  66,  67,  89,  50, 
+     86,  15,  62, 183, 245, 112, 
+    114, 133,  74,  58, 169, 183, 
+    249, 142,   1,   0,   0,   0, 
      64,   9,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
       4,   6,   0,   0,  96,   8, 
@@ -180,32 +180,32 @@ const BYTE BasicEffect_VSBasicPixelLighting[] =
       0,   0,   0,   0, 255, 255, 
      40,   4,   0,   0,   0,   0, 
     255, 255,  52,   4,   0,   0, 
-     83,   0,   0,   0,  64,   4, 
-      0,   0,  84,   0,   0,   0, 
-     80,   4,   0,   0,  84,   0, 
-      0,   0,  96,   4,   0,   0, 
-     84,   0,   0,   0, 112,   4, 
-      0,   0,  85,   0,   0,   0, 
-    128,   4,   0,   0,  85,   0, 
-      0,   0, 144,   4,   0,   0, 
-     85,   0,   0,   0, 160,   4, 
-      0,   0,  85,   0,   0,   0, 
-    176,   4,   0,   0,  85,   0, 
-      0,   0, 192,   4,   0,   0, 
-     85,   0,   0,   0, 204,   4, 
-      0,   0,  12,   0,   1,   0, 
-    220,   4,   0,   0,  12,   0, 
-      1,   0, 236,   4,   0,   0, 
-     12,   0,   1,   0, 252,   4, 
+     82,   0,   0,   0,  64,   4, 
       0,   0,  83,   0,   0,   0, 
-     12,   5,   0,   0,  83,   0, 
+     80,   4,   0,   0,  83,   0, 
+      0,   0,  96,   4,   0,   0, 
+     83,   0,   0,   0, 112,   4, 
+      0,   0,  84,   0,   0,   0, 
+    128,   4,   0,   0,  84,   0, 
+      0,   0, 144,   4,   0,   0, 
+     84,   0,   0,   0, 160,   4, 
+      0,   0,  84,   0,   0,   0, 
+    176,   4,   0,   0,  84,   0, 
+      0,   0, 192,   4,   0,   0, 
+     84,   0,   0,   0, 204,   4, 
+      0,   0,  11,   0,   1,   0, 
+    220,   4,   0,   0,  11,   0, 
+      1,   0, 236,   4,   0,   0, 
+     11,   0,   1,   0, 252,   4, 
+      0,   0,  82,   0,   0,   0, 
+     12,   5,   0,   0,  82,   0, 
       0,   0,  28,   5,   0,   0, 
-     83,   0,   0,   0,  44,   5, 
-      0,   0, 115,   1,   2,   0, 
-     60,   5,   0,   0, 115,   1, 
+     82,   0,   0,   0,  44,   5, 
+      0,   0, 114,   1,   2,   0, 
+     60,   5,   0,   0, 114,   1, 
       2,   0,  80,   5,   0,   0, 
-    122,   1,   2,   0,  92,   5, 
-      0,   0, 122,   1,   2,   0, 
+    121,   1,   2,   0,  92,   5, 
+      0,   0, 121,   1,   2,   0, 
     104,   5,   0,   0,  86,  83, 
      66,  97, 115, 105,  99,  80, 
     105, 120, 101, 108,  76, 105, 

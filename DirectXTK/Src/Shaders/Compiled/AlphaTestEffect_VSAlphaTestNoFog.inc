@@ -41,20 +41,20 @@
     dcl_texcoord v0  // vin<0,1,2,3>
     dcl_texcoord1 v1  // vin<4,5>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c4  // ::VSAlphaTestNoFog<8>
     dp4 r0.x, v0, c2  // ::vout<0>
     dp4 r0.y, v0, c3  // ::vout<1>
     dp4 r0.z, v0, c5  // ::vout<3>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSAlphaTestNoFog<6,7>
     mov oPos.w, r0.z  // ::VSAlphaTestNoFog<9>
 
-#line 42 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mov oT0, c1  // ::VSAlphaTestNoFog<0,1,2,3>
 
-#line 48 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
+#line 47 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
     mov oT1.xy, v1  // ::VSAlphaTestNoFog<4,5>
 
 // approximately 8 instruction slots used
@@ -77,10 +77,10 @@ ret
 
 const BYTE AlphaTestEffect_VSAlphaTestNoFog[] =
 {
-     68,  88,  66,  67,  13,  32, 
-    149, 171, 245, 180, 133, 194, 
-    235, 215, 108,  87, 236, 189, 
-    190, 110,   1,   0,   0,   0, 
+     68,  88,  66,  67, 218, 157, 
+    224,  52,  62, 156,  41,  17, 
+    155,   6, 152,  74, 244, 170, 
+    143,  60,   1,   0,   0,   0, 
       8,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      44,   4,   0,   0,  60,   5, 
@@ -135,16 +135,16 @@ const BYTE AlphaTestEffect_VSAlphaTestNoFog[] =
       0,   0,   0,   0, 255, 255, 
      32,   3,   0,   0,   0,   0, 
     255, 255,  44,   3,   0,   0, 
-     41,   0,   0,   0,  56,   3, 
-      0,   0,  41,   0,   0,   0, 
-     72,   3,   0,   0,  41,   0, 
+     40,   0,   0,   0,  56,   3, 
+      0,   0,  40,   0,   0,   0, 
+     72,   3,   0,   0,  40,   0, 
       0,   0,  88,   3,   0,   0, 
-     41,   0,   0,   0, 104,   3, 
-      0,   0,  41,   0,   1,   0, 
-    120,   3,   0,   0,  41,   0, 
+     40,   0,   0,   0, 104,   3, 
+      0,   0,  40,   0,   1,   0, 
+    120,   3,   0,   0,  40,   0, 
       1,   0, 140,   3,   0,   0, 
-     42,   0,   0,   0, 152,   3, 
-      0,   0,  48,   0,   1,   0, 
+     41,   0,   0,   0, 152,   3, 
+      0,   0,  47,   0,   1,   0, 
     164,   3,   0,   0,  86,  83, 
      65, 108, 112, 104,  97,  84, 
     101, 115, 116,  78, 111,  70, 

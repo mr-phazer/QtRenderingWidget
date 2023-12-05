@@ -32,7 +32,7 @@
     dcl t1.xy  // texCoord<0,1>
     dcl_2d s0
 
-#line 29 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SpriteEffect.fx"
+#line 28 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SpriteEffect.fx"
     texld r0, t1, s0
     mul r0, r0, t0  // ::SpritePixelShader<0,1,2,3>
     mov oC0, r0  // ::SpritePixelShader<0,1,2,3>
@@ -53,10 +53,10 @@ ret
 
 const BYTE SpriteEffect_SpritePixelShader[] =
 {
-     68,  88,  66,  67,  85,  93, 
-     95, 124, 157, 124,  73,  29, 
-     60, 167, 229,  92,  59, 223, 
-    129,  84,   1,   0,   0,   0, 
+     68,  88,  66,  67,  62, 191, 
+      9, 139, 145, 223, 116,  62, 
+    201,   9,  91,   8,  18, 223, 
+    117,  59,   1,   0,   0,   0, 
     120,   3,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      88,   2,   0,   0, 244,   2, 
@@ -95,10 +95,10 @@ const BYTE SpriteEffect_SpritePixelShader[] =
     255, 255, 164,   1,   0,   0, 
       0,   0, 255, 255, 176,   1, 
       0,   0,   0,   0, 255, 255, 
-    188,   1,   0,   0,  29,   0, 
+    188,   1,   0,   0,  28,   0, 
       0,   0, 200,   1,   0,   0, 
-     29,   0,   0,   0, 216,   1, 
-      0,   0,  29,   0,   0,   0, 
+     28,   0,   0,   0, 216,   1, 
+      0,   0,  28,   0,   0,   0, 
     232,   1,   0,   0,  83, 112, 
     114, 105, 116, 101,  80, 105, 
     120, 101, 108,  83, 104,  97, 

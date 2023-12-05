@@ -40,18 +40,18 @@
     dcl_texcoord v0  // vin<0,1,2,3>
     dcl_texcoord1 v1  // vin<4,5,6,7>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c4  // ::VSBasicVcNoFog<6>
 
-#line 86 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 85 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mul oT0, v1, c1  // ::VSBasicVcNoFog<0,1,2,3>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c2  // ::vout<0>
     dp4 r0.y, v0, c3  // ::vout<1>
     dp4 r0.z, v0, c5  // ::vout<3>
 
-#line 79 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 78 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicVcNoFog<4,5>
     mov oPos.w, r0.z  // ::VSBasicVcNoFog<7>
 
@@ -73,10 +73,10 @@ ret
 
 const BYTE BasicEffect_VSBasicVcNoFog[] =
 {
-     68,  88,  66,  67, 118, 163, 
-     66, 221, 169, 162, 166, 201, 
-    112, 101, 107,   6, 245, 118, 
-     37,  99,   1,   0,   0,   0, 
+     68,  88,  66,  67,  74,  16, 
+    145,  20,   4, 121, 166, 191, 
+      8, 226, 230, 213, 112, 141, 
+     69,  95,   1,   0,   0,   0, 
     136,   5,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     232,   3,   0,   0, 224,   4, 
@@ -130,15 +130,15 @@ const BYTE BasicEffect_VSBasicVcNoFog[] =
     112,   0,   0,   0,   0,   0, 
     255, 255, 228,   2,   0,   0, 
       0,   0, 255, 255, 240,   2, 
-      0,   0,  41,   0,   0,   0, 
-    252,   2,   0,   0,  86,   0, 
+      0,   0,  40,   0,   0,   0, 
+    252,   2,   0,   0,  85,   0, 
       1,   0,  12,   3,   0,   0, 
-     41,   0,   0,   0,  28,   3, 
-      0,   0,  41,   0,   0,   0, 
-     44,   3,   0,   0,  41,   0, 
+     40,   0,   0,   0,  28,   3, 
+      0,   0,  40,   0,   0,   0, 
+     44,   3,   0,   0,  40,   0, 
       0,   0,  60,   3,   0,   0, 
-     79,   0,   1,   0,  76,   3, 
-      0,   0,  79,   0,   1,   0, 
+     78,   0,   1,   0,  76,   3, 
+      0,   0,  78,   0,   1,   0, 
      96,   3,   0,   0,  86,  83, 
      66,  97, 115, 105,  99,  86, 
      99,  78, 111,  70, 111, 103, 

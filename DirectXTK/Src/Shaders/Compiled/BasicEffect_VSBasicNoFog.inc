@@ -38,17 +38,17 @@
     vs_2_0
     dcl_texcoord v0  // vin<0,1,2,3>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c4  // ::VSBasicNoFog<6>
     dp4 r0.x, v0, c2  // ::vout<0>
     dp4 r0.y, v0, c3  // ::vout<1>
     dp4 r0.z, v0, c5  // ::vout<3>
 
-#line 53 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 52 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicNoFog<4,5>
     mov oPos.w, r0.z  // ::VSBasicNoFog<7>
 
-#line 42 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mov oT0, c1  // ::VSBasicNoFog<0,1,2,3>
 
 // approximately 7 instruction slots used
@@ -68,10 +68,10 @@ ret
 
 const BYTE BasicEffect_VSBasicNoFog[] =
 {
-     68,  88,  66,  67, 174, 237, 
-    125, 194, 157,  43, 235,  79, 
-     77,  46, 209,  95, 103, 134, 
-     67,  72,   1,   0,   0,   0, 
+     68,  88,  66,  67,  30, 194, 
+     41, 148,  60, 106,  72, 178, 
+    229,  10, 174, 112, 211, 183, 
+     27,  59,   1,   0,   0,   0, 
      36,   5,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     184,   3,   0,   0, 156,   4, 
@@ -124,15 +124,15 @@ const BYTE BasicEffect_VSBasicNoFog[] =
     120,   0,  40,   0,   0,   0, 
     112,   0,   0,   0,   0,   0, 
     255, 255, 196,   2,   0,   0, 
-     41,   0,   0,   0, 208,   2, 
-      0,   0,  41,   0,   0,   0, 
-    224,   2,   0,   0,  41,   0, 
+     40,   0,   0,   0, 208,   2, 
+      0,   0,  40,   0,   0,   0, 
+    224,   2,   0,   0,  40,   0, 
       0,   0, 240,   2,   0,   0, 
-     41,   0,   0,   0,   0,   3, 
-      0,   0,  53,   0,   1,   0, 
-     16,   3,   0,   0,  53,   0, 
+     40,   0,   0,   0,   0,   3, 
+      0,   0,  52,   0,   1,   0, 
+     16,   3,   0,   0,  52,   0, 
       1,   0,  36,   3,   0,   0, 
-     42,   0,   0,   0,  48,   3, 
+     41,   0,   0,   0,  48,   3, 
       0,   0,  86,  83,  66,  97, 
     115, 105,  99,  78, 111,  70, 
     111, 103,   0,  68, 105, 102, 

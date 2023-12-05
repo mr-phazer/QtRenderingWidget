@@ -43,6 +43,6 @@ namespace Rldx {
 		sm::Vector3 GetScale();
 
 	private:
-		TransformState m_localTransform;
+		TransformState local;
 	};
 };

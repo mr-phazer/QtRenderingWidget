@@ -39,9 +39,7 @@ namespace Rldx
 				}*/
 			m_poDxManager = dxManager;
 			//m_upoScene = Rldx::DxTempDemoRenderer::CreateScene(m_spDxManager, this);
-			m_upoSceneManager = DxSceneManager::Create();
-
-			m_upoSceneManager->CreateScene(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
+			m_upoSceneManager = DxSceneManager::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
 				
 
 			return true;

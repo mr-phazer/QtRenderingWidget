@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include "Helpers/NoCaseMapCompare.h"
 
+
 namespace Rldx {
 
 	template <typename RESOURCE_TYPE>
@@ -22,8 +23,8 @@ namespace Rldx {
 	};
 
 	// forward declarations
-	class DxTextureView;
-	class DxMesh;	
+	class DxTexture;
+	class DxMeshData;	
 	class DxTexture;
 	class DxMaterial;
 	class IDxShaderProgram;
@@ -60,7 +61,7 @@ namespace Rldx {
 		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE* resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
-			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource);
+			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource, [](RESOURCE_TYPE* p) {delete p; });
 
 			// if string supplied, associate string with raw pointer to resource
 			if (!stringId.empty()) {
@@ -73,7 +74,7 @@ namespace Rldx {
 		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE& resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
-			auto& allocatedResource = m_resourceDataById[resourceId] = std::make_unique<RESOURCE_TYPE>(resource);
+			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource, [](RESOURCE_TYPE* p) {delete p; });
 
 			// if string supplied, associate string with raw pointer to resource
 			if (!stringId.empty()) {
@@ -101,13 +102,13 @@ namespace Rldx {
 		static DxResourceManager& GetInstance();
 
 		TResourceManager<DxMeshData>& GetMeshes() { return m_spoMeshManager; }
-		TResourceManager<DxTexture>& GetTextures() { return m_spotextureManager; }
+		TResourceManager<DxTexture>& GetTextures() { return m_spoTextureManager; }
 		TResourceManager<DxMaterial>& GetMaterialManager() { return m_spoMaterialManager; }
 		TResourceManager<IDxShaderProgram>& GetShaderManager() { return m_spoShaderManager; }
 
 	private:
 		TResourceManager<DxMeshData> m_spoMeshManager;
-		TResourceManager<DxTexture> m_spotextureManager;
+		TResourceManager<DxTexture> m_spoTextureManager;
 		TResourceManager<DxMaterial> m_spoMaterialManager;
 		TResourceManager<IDxShaderProgram> m_spoShaderManager;
 

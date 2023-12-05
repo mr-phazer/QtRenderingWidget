@@ -22,7 +22,7 @@
     ps_2_0
     dcl t0  // pin<0,1,2,3>
 
-#line 504 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 503 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mov oC0, t0  // ::PSBasicNoFog<0,1,2,3>
 
 // approximately 1 instruction slot used
@@ -36,10 +36,10 @@ ret
 
 const BYTE BasicEffect_PSBasicNoFog[] =
 {
-     68,  88,  66,  67, 248,  76, 
-     49,  45, 157, 100, 245, 122, 
-    253, 243, 176,   2,  89, 209, 
-      5, 161,   1,   0,   0,   0, 
+     68,  88,  66,  67,   0, 106, 
+    155,  94,  68,  25, 100,  68, 
+     80, 228,   9,  10, 227, 100, 
+    237,  90,   1,   0,   0,   0, 
     108,   2,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     200,   1,   0,   0,   8,   2, 
@@ -74,7 +74,7 @@ const BYTE BasicEffect_PSBasicNoFog[] =
      69, 102, 102, 101,  99, 116, 
      46, 102, 120,   0,  40,   0, 
       0,   0,   0,   0, 255, 255, 
-     80,   1,   0,   0, 248,   1, 
+     80,   1,   0,   0, 247,   1, 
       0,   0,  92,   1,   0,   0, 
      80,  83,  66,  97, 115, 105, 
      99,  78, 111,  70, 111, 103, 

@@ -41,24 +41,24 @@
     def c7, 0, 1, 0, 0
     dcl_texcoord v0  // vin<0,1,2,3>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c5  // ::VSBasic<10>
 
-#line 12
+#line 11
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c7.x
     min oT1.w, r0.x, c7.y  // ::VSBasic<7>
 
-#line 41
+#line 40
     dp4 r0.x, v0, c3  // ::vout<0>
     dp4 r0.y, v0, c4  // ::vout<1>
     dp4 r0.z, v0, c6  // ::vout<3>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasic<8,9>
     mov oPos.w, r0.z  // ::VSBasic<11>
 
-#line 42 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mov oT0, c1  // ::VSBasic<0,1,2,3>
     mov oT1.xyz, c7.x  // ::VSBasic<4,5,6>
 
@@ -82,10 +82,10 @@ ret
 
 const BYTE BasicEffect_VSBasic[] =
 {
-     68,  88,  66,  67, 178, 206, 
-     99,  44, 229,  35, 107, 230, 
-    168,  35, 123, 212,  98, 172, 
-     86, 172,   1,   0,   0,   0, 
+     68,  88,  66,  67,  49, 188, 
+     44,  54,  61, 197, 145, 167, 
+    182, 179,  99, 149, 106, 225, 
+     24, 240,   1,   0,   0,   0, 
      36,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      84,   4,   0,   0, 132,   5, 
@@ -141,20 +141,20 @@ const BYTE BasicEffect_VSBasic[] =
     112,   0,   0,   0,   0,   0, 
     255, 255,   0,   3,   0,   0, 
       0,   0, 255, 255,  24,   3, 
-      0,   0,  41,   0,   0,   0, 
-     36,   3,   0,   0,  12,   0, 
+      0,   0,  40,   0,   0,   0, 
+     36,   3,   0,   0,  11,   0, 
       0,   0,  52,   3,   0,   0, 
-     12,   0,   0,   0,  68,   3, 
-      0,   0,  12,   0,   0,   0, 
-     84,   3,   0,   0,  41,   0, 
+     11,   0,   0,   0,  68,   3, 
+      0,   0,  11,   0,   0,   0, 
+     84,   3,   0,   0,  40,   0, 
       0,   0, 100,   3,   0,   0, 
-     41,   0,   0,   0, 116,   3, 
-      0,   0,  41,   0,   0,   0, 
-    132,   3,   0,   0,  41,   0, 
+     40,   0,   0,   0, 116,   3, 
+      0,   0,  40,   0,   0,   0, 
+    132,   3,   0,   0,  40,   0, 
       1,   0, 148,   3,   0,   0, 
-     41,   0,   1,   0, 168,   3, 
-      0,   0,  42,   0,   0,   0, 
-    180,   3,   0,   0,  43,   0, 
+     40,   0,   1,   0, 168,   3, 
+      0,   0,  41,   0,   0,   0, 
+    180,   3,   0,   0,  42,   0, 
       0,   0, 192,   3,   0,   0, 
      86,  83,  66,  97, 115, 105, 
      99,   0,  68, 105, 102, 102, 

@@ -52,12 +52,14 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -120,9 +122,10 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,9 +144,10 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,8 +167,8 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -185,8 +189,9 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

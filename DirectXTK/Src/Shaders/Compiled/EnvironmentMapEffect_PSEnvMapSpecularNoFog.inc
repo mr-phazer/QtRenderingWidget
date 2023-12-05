@@ -45,12 +45,12 @@
     dcl_2d s0
     dcl_cube s1
 
-#line 321 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 320 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     texld r0, t3, s1
     texld r1, t2, s0
     mul r1, r1, t0  // ::color<0,1,2,3>
 
-#line 323
+#line 322
     mad r0.xyz, r0, r1.w, -r1
     mul r0.w, r0.w, r1.w  // ::envmap<3>
     mad r0.xyz, t1, r0, r1  // ::color<0,1,2>
@@ -84,10 +84,10 @@ ret
 
 const BYTE EnvironmentMapEffect_PSEnvMapSpecularNoFog[] =
 {
-     68,  88,  66,  67, 201, 247, 
-    148, 194,  28, 205, 119, 170, 
-    219,  95, 143,  44,  43, 229, 
-      3, 246,   1,   0,   0,   0, 
+     68,  88,  66,  67,  66,  20, 
+    115,   7,  87,  63,  70, 190, 
+    107,  87,  89, 169, 147, 207, 
+    109, 224,   1,   0,   0,   0, 
      72,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     236,   3,   0,   0, 148,   5, 
@@ -134,17 +134,17 @@ const BYTE EnvironmentMapEffect_PSEnvMapSpecularNoFog[] =
     255, 255, 204,   2,   0,   0, 
       0,   0, 255, 255, 216,   2, 
       0,   0,   0,   0, 255, 255, 
-    228,   2,   0,   0,  65,   1, 
+    228,   2,   0,   0,  64,   1, 
       0,   0, 240,   2,   0,   0, 
-     64,   1,   0,   0,   0,   3, 
-      0,   0,  64,   1,   0,   0, 
-     16,   3,   0,   0,  67,   1, 
+     63,   1,   0,   0,   0,   3, 
+      0,   0,  63,   1,   0,   0, 
+     16,   3,   0,   0,  66,   1, 
       0,   0,  32,   3,   0,   0, 
-     65,   1,   0,   0,  52,   3, 
-      0,   0,  67,   1,   0,   0, 
-     68,   3,   0,   0,  68,   1, 
+     64,   1,   0,   0,  52,   3, 
+      0,   0,  66,   1,   0,   0, 
+     68,   3,   0,   0,  67,   1, 
       0,   0,  88,   3,   0,   0, 
-     68,   1,   0,   0, 108,   3, 
+     67,   1,   0,   0, 108,   3, 
       0,   0,  80,  83,  69, 110, 
     118,  77,  97, 112,  83, 112, 
     101,  99, 117, 108,  97, 114, 

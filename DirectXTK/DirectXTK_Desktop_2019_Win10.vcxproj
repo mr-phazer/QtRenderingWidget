@@ -129,6 +129,7 @@
     <None Include="Src\Shaders\Lighting.fxh" />
     <None Include="Src\Shaders\PBRCommon.fxh" />
     <None Include="Src\Shaders\PixelPacking_Velocity.hlsli" />
+    <None Include="Src\Shaders\Skinning.fxh" />
     <None Include="Src\Shaders\SpriteEffect.fx" />
     <None Include="Src\Shaders\Structures.fxh" />
     <None Include="Src\Shaders\Utilities.fxh" />
@@ -199,7 +200,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
@@ -265,10 +266,9 @@
     <TargetName>DirectXTK</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>DirectXTK</TargetName>
-    <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);F:\coding\Boost_178;C:\Coding\FBX SDK\2020.0.1;C:\Coding\FBX SDK\2020.0.1\include$(VC_IncludePath);C:\Coding\FBX SDK\2020.0.1\include;C:\Program Files\Simplygon\9;F:\qt\5.15.0\msvc2019_64\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <OutDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</OutDir>
@@ -276,10 +276,9 @@
     <TargetName>DirectXTK</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</IntDir>
     <TargetName>DirectXTK</TargetName>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);F:\coding\Boost_178\;C:\Coding\FBX SDK\2020.0.1;C:\Coding\FBX SDK\2020.0.1\include$(VC_IncludePath);C:\Coding\FBX SDK\2020.0.1\include;C:\Program Files\Simplygon\9;F:\qt\5.15.0\msvc2019_64\include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutDir>Bin\Desktop_2019_Win10\$(Platform)\$(Configuration)\</OutDir>
@@ -291,18 +290,17 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions) /MP</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
-      <LanguageStandard>Default</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -314,16 +312,17 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -335,17 +334,18 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;_DEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -357,18 +357,16 @@
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
-      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -382,15 +380,16 @@
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -404,16 +403,16 @@
       <WarningLevel>EnableAllWarnings</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;_WIN7_PLATFORM_UPDATE;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0A00;WIN32;NDEBUG;_LIB;_CRT_STDIO_ARBITRARY_WIDE_SPECIFIERS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Inc;$(ProjectDir)Src;$(ProjectDir)Src\Shaders\Compiled;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ConformanceMode>true</ConformanceMode>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
-      <DisableSpecificWarnings>4711;5045;26812</DisableSpecificWarnings>
+      <AdditionalOptions>/Zc:__cplusplus /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <ExternalWarningLevel>Level4</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

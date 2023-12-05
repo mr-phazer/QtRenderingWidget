@@ -34,11 +34,11 @@
     dcl t2.xy  // pin<8,9>
     dcl_2d s0
 
-#line 564 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 563 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     texld r0, t2, s0
     mul r0, r0, t0  // ::color<0,1,2,3>
 
-#line 24 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 23 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r0.xyz, t1, r0.w, r0  // AddSpecular::color<0,1,2>
     mov oC0, r0  // ::PSBasicVertexLightingTxNoFog<0,1,2,3>
 
@@ -61,10 +61,10 @@ ret
 
 const BYTE BasicEffect_PSBasicVertexLightingTxNoFog[] =
 {
-     68,  88,  66,  67, 127, 228, 
-    139,  54, 208,  63, 129, 245, 
-     72,  24,  29,  22,  42, 143, 
-    146, 248,   1,   0,   0,   0, 
+     68,  88,  66,  67, 207,  61, 
+    233,  85,  90, 121,  52, 206, 
+    230, 190, 128, 160, 244,  80, 
+    197, 219,   1,   0,   0,   0, 
     204,   4,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      80,   3,   0,   0,  48,   4, 
@@ -117,11 +117,11 @@ const BYTE BasicEffect_PSBasicVertexLightingTxNoFog[] =
       0,   0,   0,   0, 255, 255, 
     148,   2,   0,   0,   0,   0, 
     255, 255, 160,   2,   0,   0, 
-     52,   2,   0,   0, 172,   2, 
-      0,   0,  52,   2,   0,   0, 
-    188,   2,   0,   0,  24,   0, 
+     51,   2,   0,   0, 172,   2, 
+      0,   0,  51,   2,   0,   0, 
+    188,   2,   0,   0,  23,   0, 
       1,   0, 204,   2,   0,   0, 
-     24,   0,   1,   0, 224,   2, 
+     23,   0,   1,   0, 224,   2, 
       0,   0,  80,  83,  66,  97, 
     115, 105,  99,  86, 101, 114, 
     116, 101, 120,  76, 105, 103, 

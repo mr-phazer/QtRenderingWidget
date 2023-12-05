@@ -105,25 +105,25 @@ namespace Rldx
 
 	};
 
-	/// <summary>
-	/// Convenience class for easily RTVs to the set render target d3d method
-	/// </summary>
-	class RTVContainer	{
+	///// <summary>
+	///// Convenience class for easily RTVs to the set render target d3d method
+	///// </summary>
+	//class RTVContainer	{
 
-		RTVContainer(const std::vector<ID3D11RenderTargetView*>& input)
-		{
-			m_vecRTVs = input;
-		}
+	//	RTVContainer(const std::vector<ID3D11RenderTargetView*>& input)
+	//	{
+	//		m_vecRTVs = input;
+	//	}
 
-		operator ID3D11RenderTargetView* const* ()
-		{
-			m_vecRTVs.data();
-		}
+	//	operator ID3D11RenderTargetView* const* ()
+	//	{
+	//		m_vecRTVs.data();
+	//	}
 
-	private:
-		std::vector<ID3D11RenderTargetView*> m_vecRTVs;
+	//private:
+	//	std::vector<ID3D11RenderTargetView*> m_vecRTVs;
 
-	};
+	//};
 
 
 }

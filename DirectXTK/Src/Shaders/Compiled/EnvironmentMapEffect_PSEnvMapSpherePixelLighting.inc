@@ -46,12 +46,12 @@
     dcl_2d s0
     dcl_2d s1
 
-#line 122 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 121 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     add r0.xyz, -t1, c10
     nrm r1.xyz, r0  // ::eyeVector<0,1,2>
     nrm r0.xyz, t2  // ::worldNormal<0,1,2>
 
-#line 129
+#line 128
     dp3 r0.w, -r1, r0
     add r0.w, r0.w, r0.w
     mad r1.xyz, r0, -r0.w, -r1  // ::r<0,1,2>
@@ -67,42 +67,42 @@
     mad r2.y, r1.y, r0.w, c12.z  // ::envcoord<1>
     texld r1, r2, s1
 
-#line 120
+#line 119
     texld r2, t0, s0
 
-#line 34 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 33 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r3.x, -c4, r0  // ::dotL<0>
     dp3 r3.y, -c5, r0  // ::dotL<1>
     dp3 r3.z, -c6, r0  // ::dotL<2>
 
-#line 37
+#line 36
     cmp r0.xyz, r3, c12.x, c12.y  // ::zeroL<0,1,2>
     mul r0.xyz, r3, r0  // ::diffuse<0,1,2>
 
-#line 44
+#line 43
     mul r3.xyz, r0.y, c8
     mad r3.xyz, r0.x, c7, r3
     mad r0.xyz, r0.z, c9, r3
     mov r3.xyz, c2  // Parameters::DiffuseColor<0,1,2>
     mad r0.xyz, r0, r3, c3  // ::result<0,1,2>
 
-#line 120 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 119 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     mul r2, r2, t3  // ::color<0,1,2,3>
 
-#line 127
+#line 126
     mul r0.xyz, r0, r2  // ::color<0,1,2>
 
-#line 141
+#line 140
     mad r1.xyz, r1, r2.w, -r0
 
-#line 133
+#line 132
     mul r0.w, r1.w, r2.w  // ::envmap<3>
 
-#line 141
+#line 140
     mad r0.xyz, c1.x, r1, r0  // ::color<0,1,2>
     mad r0.xyz, c0, r0.w, r0  // ::color<0,1,2>
 
-#line 18 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 17 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r1.xyz, c11, r2.w, -r0
     mad r2.xyz, t1.w, r1, r0  // ApplyFog::color<0,1,2>
     mov oC0, r2  // ::PSEnvMapSpherePixelLighting<0,1,2,3>
@@ -164,10 +164,10 @@ ret
 
 const BYTE EnvironmentMapEffect_PSEnvMapSpherePixelLighting[] =
 {
-     68,  88,  66,  67,  64,  28, 
-     33,  95,  37, 188, 247,  84, 
-    101,  34, 190, 101,  45,  13, 
-    125,  62,   1,   0,   0,   0, 
+     68,  88,  66,  67, 181,  19, 
+    165,  60, 231,  85, 182, 253, 
+    121, 173,  61,  42,  51, 100, 
+    177,  56,   1,   0,   0,   0, 
     236,  15,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     184,   9,   0,   0,  56,  15, 
@@ -241,55 +241,55 @@ const BYTE EnvironmentMapEffect_PSEnvMapSpherePixelLighting[] =
     180,   6,   0,   0,   0,   0, 
     255, 255, 192,   6,   0,   0, 
       0,   0, 255, 255, 204,   6, 
-      0,   0, 122,   0,   0,   0, 
-    216,   6,   0,   0, 122,   0, 
+      0,   0, 121,   0,   0,   0, 
+    216,   6,   0,   0, 121,   0, 
       0,   0, 232,   6,   0,   0, 
-    123,   0,   0,   0, 244,   6, 
-      0,   0, 129,   0,   0,   0, 
-      0,   7,   0,   0, 129,   0, 
+    122,   0,   0,   0, 244,   6, 
+      0,   0, 128,   0,   0,   0, 
+      0,   7,   0,   0, 128,   0, 
       0,   0,  16,   7,   0,   0, 
-    129,   0,   0,   0,  32,   7, 
-      0,   0, 130,   0,   0,   0, 
-     52,   7,   0,   0, 130,   0, 
+    128,   0,   0,   0,  32,   7, 
+      0,   0, 129,   0,   0,   0, 
+     52,   7,   0,   0, 129,   0, 
       0,   0,  68,   7,   0,   0, 
-    130,   0,   0,   0,  88,   7, 
-      0,   0, 130,   0,   0,   0, 
-    104,   7,   0,   0, 130,   0, 
+    129,   0,   0,   0,  88,   7, 
+      0,   0, 129,   0,   0,   0, 
+    104,   7,   0,   0, 129,   0, 
       0,   0, 124,   7,   0,   0, 
-    130,   0,   0,   0, 136,   7, 
-      0,   0, 130,   0,   0,   0, 
-    148,   7,   0,   0, 131,   0, 
+    129,   0,   0,   0, 136,   7, 
+      0,   0, 129,   0,   0,   0, 
+    148,   7,   0,   0, 130,   0, 
       0,   0, 164,   7,   0,   0, 
-    131,   0,   0,   0, 176,   7, 
-      0,   0, 131,   0,   0,   0, 
-    196,   7,   0,   0, 133,   0, 
+    130,   0,   0,   0, 176,   7, 
+      0,   0, 130,   0,   0,   0, 
+    196,   7,   0,   0, 132,   0, 
       0,   0, 216,   7,   0,   0, 
-    120,   0,   0,   0, 232,   7, 
-      0,   0,  34,   0,   1,   0, 
-    248,   7,   0,   0,  34,   0, 
+    119,   0,   0,   0, 232,   7, 
+      0,   0,  33,   0,   1,   0, 
+    248,   7,   0,   0,  33,   0, 
       1,   0,   8,   8,   0,   0, 
-     34,   0,   1,   0,  24,   8, 
-      0,   0,  37,   0,   1,   0, 
-     40,   8,   0,   0,  39,   0, 
+     33,   0,   1,   0,  24,   8, 
+      0,   0,  36,   0,   1,   0, 
+     40,   8,   0,   0,  38,   0, 
       1,   0,  60,   8,   0,   0, 
-     44,   0,   1,   0,  76,   8, 
-      0,   0,  44,   0,   1,   0, 
-     92,   8,   0,   0,  44,   0, 
+     43,   0,   1,   0,  76,   8, 
+      0,   0,  43,   0,   1,   0, 
+     92,   8,   0,   0,  43,   0, 
       1,   0, 112,   8,   0,   0, 
-     44,   0,   1,   0, 132,   8, 
-      0,   0,  44,   0,   1,   0, 
-    144,   8,   0,   0, 120,   0, 
+     43,   0,   1,   0, 132,   8, 
+      0,   0,  43,   0,   1,   0, 
+    144,   8,   0,   0, 119,   0, 
       0,   0, 164,   8,   0,   0, 
-    127,   0,   0,   0, 180,   8, 
-      0,   0, 141,   0,   0,   0, 
-    196,   8,   0,   0, 133,   0, 
+    126,   0,   0,   0, 180,   8, 
+      0,   0, 140,   0,   0,   0, 
+    196,   8,   0,   0, 132,   0, 
       0,   0, 216,   8,   0,   0, 
-    141,   0,   0,   0, 232,   8, 
-      0,   0, 142,   0,   0,   0, 
-    252,   8,   0,   0,  18,   0, 
+    140,   0,   0,   0, 232,   8, 
+      0,   0, 141,   0,   0,   0, 
+    252,   8,   0,   0,  17,   0, 
       2,   0,  16,   9,   0,   0, 
-     18,   0,   2,   0,  36,   9, 
-      0,   0,  18,   0,   2,   0, 
+     17,   0,   2,   0,  36,   9, 
+      0,   0,  17,   0,   2,   0, 
      56,   9,   0,   0,  80,  97, 
     114,  97, 109, 101, 116, 101, 
     114, 115,   0,  68, 105, 102, 

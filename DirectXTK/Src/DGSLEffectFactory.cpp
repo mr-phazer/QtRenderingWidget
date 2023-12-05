@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // File: DGSLEffectFactory.cpp
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248929
@@ -29,7 +29,7 @@ static_assert(DGSLEffect::MaxTextures == DGSLEffectFactory::DGSLEffectInfo::Base
 class DGSLEffectFactory::Impl
 {
 public:
-    Impl(_In_ ID3D11Device* device)
+    explicit Impl(_In_ ID3D11Device* device)
         : mPath{},
         mDevice(device),
         mSharing(true),
@@ -77,7 +77,7 @@ std::shared_ptr<IEffect> DGSLEffectFactory::Impl::CreateEffect(DGSLEffectFactory
 {
     if (info.enableDualTexture)
     {
-        throw std::exception("DGSLEffect does not support multiple texcoords");
+        throw std::runtime_error("DGSLEffect does not support multiple texcoords");
     }
 
     if (mSharing && info.name && *info.name)
@@ -100,7 +100,15 @@ std::shared_ptr<IEffect> DGSLEffectFactory::Impl::CreateEffect(DGSLEffectFactory
         }
     }
 
-    auto effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr, info.enableSkinning);
+    std::shared_ptr<DGSLEffect> effect;
+    if (info.enableSkinning)
+    {
+        effect = std::make_shared<SkinnedDGSLEffect>(mDevice.Get(), nullptr);
+    }
+    else
+    {
+        effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr);
+    }
 
     effect->EnableDefaultLighting();
     effect->SetLightingEnabled(true);
@@ -189,7 +197,14 @@ std::shared_ptr<IEffect> DGSLEffectFactory::Impl::CreateDGSLEffect(DGSLEffectFac
 
     if (!info.pixelShader || !*info.pixelShader)
     {
-        effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr, info.enableSkinning);
+        if (info.enableSkinning)
+        {
+            effect = std::make_shared<SkinnedDGSLEffect>(mDevice.Get(), nullptr);
+        }
+        else
+        {
+            effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr);
+        }
     }
     else
     {
@@ -208,37 +223,39 @@ std::shared_ptr<IEffect> DGSLEffectFactory::Impl::CreateDGSLEffect(DGSLEffectFac
         if (first)
             *first = 0;
 
+        ComPtr<ID3D11PixelShader> ps;
         if (!_wcsicmp(root, L"lambert"))
         {
             allowSpecular = false;
-            effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr, info.enableSkinning);
         }
         else if (!_wcsicmp(root, L"phong"))
         {
-            effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr, info.enableSkinning);
+            // lighting, allowSpecular = true
         }
         else if (!_wcsicmp(root, L"unlit"))
         {
             lighting = false;
-            effect = std::make_shared<DGSLEffect>(mDevice.Get(), nullptr, info.enableSkinning);
         }
         else if (mDevice->GetFeatureLevel() < D3D_FEATURE_LEVEL_10_0)
         {
             // DGSL shaders are not compatible with Feature Level 9.x, use fallback shader
             wcscat_s(root, L".cso");
 
-            ComPtr<ID3D11PixelShader> ps;
             factory->CreatePixelShader(root, ps.GetAddressOf());
-
-            effect = std::make_shared<DGSLEffect>(mDevice.Get(), ps.Get(), info.enableSkinning);
         }
         else
         {
             // Create DGSL shader and use it for the effect
-            ComPtr<ID3D11PixelShader> ps;
             factory->CreatePixelShader(info.pixelShader, ps.GetAddressOf());
+        }
 
-            effect = std::make_shared<DGSLEffect>(mDevice.Get(), ps.Get(), info.enableSkinning);
+        if (info.enableSkinning)
+        {
+            effect = std::make_shared<SkinnedDGSLEffect>(mDevice.Get(), ps.Get());
+        }
+        else
+        {
+            effect = std::make_shared<DGSLEffect>(mDevice.Get(), ps.Get());
         }
     }
 
@@ -320,7 +337,7 @@ std::shared_ptr<IEffect> DGSLEffectFactory::Impl::CreateDGSLEffect(DGSLEffectFac
         effect->SetTextureEnabled(true);
     }
 
-    for (size_t j = 0; j < _countof(info.textures); ++j)
+    for (size_t j = 0; j < std::size(info.textures); ++j)
     {
         if (info.textures[j] && *info.textures[j])
         {
@@ -355,7 +372,7 @@ _Use_decl_annotations_
 void DGSLEffectFactory::Impl::CreateTexture(const wchar_t* name, ID3D11DeviceContext* deviceContext, ID3D11ShaderResourceView** textureView)
 {
     if (!name || !textureView)
-        throw std::exception("invalid arguments");
+        throw std::invalid_argument("name and textureView parameters can't be null");
 
 #if defined(_XBOX_ONE) && defined(_TITLE)
     UNREFERENCED_PARAMETER(deviceContext);
@@ -383,24 +400,25 @@ void DGSLEffectFactory::Impl::CreateTexture(const wchar_t* name, ID3D11DeviceCon
             if (!GetFileAttributesExW(fullName, GetFileExInfoStandard, &fileAttr))
             {
                 DebugTrace("ERROR: DGSLEffectFactory could not find texture file '%ls'\n", name);
-                throw std::exception("CreateTexture");
+                throw std::system_error(std::error_code(static_cast<int>(GetLastError()), std::system_category()), "DGSLEffectFactory::CreateTexture");
             }
         }
 
-        wchar_t ext[_MAX_EXT];
+        wchar_t ext[_MAX_EXT] = {};
         _wsplitpath_s(name, nullptr, 0, nullptr, 0, nullptr, 0, ext, _MAX_EXT);
+        const bool isdds = _wcsicmp(ext, L".dds") == 0;
 
-        if (_wcsicmp(ext, L".dds") == 0)
+        if (isdds)
         {
             HRESULT hr = CreateDDSTextureFromFileEx(
                 mDevice.Get(), fullName, 0,
                 D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0,
-                mForceSRGB, nullptr, textureView);
+                mForceSRGB ? DDS_LOADER_FORCE_SRGB : DDS_LOADER_DEFAULT, nullptr, textureView);
             if (FAILED(hr))
             {
                 DebugTrace("ERROR: CreateDDSTextureFromFile failed (%08X) for '%ls'\n",
                     static_cast<unsigned int>(hr), fullName);
-                throw std::exception("CreateDDSTextureFromFile");
+                throw std::runtime_error("DGSLEffectFactory::CreateDDSTextureFromFile");
             }
         }
     #if !defined(_XBOX_ONE) || !defined(_TITLE)
@@ -415,7 +433,7 @@ void DGSLEffectFactory::Impl::CreateTexture(const wchar_t* name, ID3D11DeviceCon
             {
                 DebugTrace("ERROR: CreateWICTextureFromFile failed (%08X) for '%ls'\n",
                     static_cast<unsigned int>(hr), fullName);
-                throw std::exception("CreateWICTextureFromFile");
+                throw std::runtime_error("DGSLEffectFactory::CreateWICTextureFromFile");
             }
         }
     #endif
@@ -429,7 +447,7 @@ void DGSLEffectFactory::Impl::CreateTexture(const wchar_t* name, ID3D11DeviceCon
             {
                 DebugTrace("ERROR: CreateWICTextureFromFile failed (%08X) for '%ls'\n",
                     static_cast<unsigned int>(hr), fullName);
-                throw std::exception("CreateWICTextureFromFile");
+                throw std::runtime_error("DGSLEffectFactory::CreateWICTextureFromFile");
             }
         }
 
@@ -447,7 +465,7 @@ _Use_decl_annotations_
 void DGSLEffectFactory::Impl::CreatePixelShader(const wchar_t* name, ID3D11PixelShader** pixelShader)
 {
     if (!name || !pixelShader)
-        throw std::exception("invalid arguments");
+        throw std::invalid_argument("name and pixelShader parameters can't be null");
 
     auto it = mShaderCache.find(name);
 
@@ -471,7 +489,7 @@ void DGSLEffectFactory::Impl::CreatePixelShader(const wchar_t* name, ID3D11Pixel
             if (!GetFileAttributesExW(fullName, GetFileExInfoStandard, &fileAttr))
             {
                 DebugTrace("ERROR: DGSLEffectFactory could not find shader file '%ls'\n", name);
-                throw std::exception("CreatePixelShader");
+                throw std::system_error(std::error_code(static_cast<int>(GetLastError()), std::system_category()), "DGSLEffectFactory::CreatePixelShader");
             }
         }
 
@@ -482,7 +500,7 @@ void DGSLEffectFactory::Impl::CreatePixelShader(const wchar_t* name, ID3D11Pixel
         {
             DebugTrace("ERROR: CreatePixelShader failed (%08X) to load shader file '%ls'\n",
                 static_cast<unsigned int>(hr), fullName);
-            throw std::exception("CreatePixelShader");
+            throw std::runtime_error("DGSLEffectFactory::CreatePixelShader");
         }
 
         ThrowIfFailed(
@@ -521,21 +539,10 @@ DGSLEffectFactory::DGSLEffectFactory(_In_ ID3D11Device* device)
 {
 }
 
-DGSLEffectFactory::~DGSLEffectFactory()
-{
-}
 
-
-DGSLEffectFactory::DGSLEffectFactory(DGSLEffectFactory&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
-{
-}
-
-DGSLEffectFactory& DGSLEffectFactory::operator= (DGSLEffectFactory&& moveFrom) noexcept
-{
-    pImpl = std::move(moveFrom.pImpl);
-    return *this;
-}
+DGSLEffectFactory::DGSLEffectFactory(DGSLEffectFactory&&) noexcept = default;
+DGSLEffectFactory& DGSLEffectFactory::operator= (DGSLEffectFactory&&) noexcept = default;
+DGSLEffectFactory::~DGSLEffectFactory() = default;
 
 
 // IEffectFactory methods

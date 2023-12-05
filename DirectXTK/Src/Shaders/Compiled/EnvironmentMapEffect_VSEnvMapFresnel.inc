@@ -47,39 +47,39 @@
     dcl_texcoord1 v1  // vin<4,5,6>
     dcl_texcoord2 v2  // vin<7,8>
 
-#line 66 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 65 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     dp3 r0.x, v1, c15
     dp3 r0.y, v1, c16
     dp3 r0.z, v1, c17
     nrm r1.xyz, r0  // ::worldNormal<0,1,2>
 
-#line 34 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 33 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r0.x, -c4, r1  // ::dotL<0>
     dp3 r0.y, -c5, r1  // ::dotL<1>
     dp3 r0.z, -c6, r1  // ::dotL<2>
 
-#line 37
+#line 36
     sge r2.xyz, r0, c22.x  // ::zeroL<0,1,2>
     mul r0.xyz, r0, r2  // ::diffuse<0,1,2>
 
-#line 44
+#line 43
     mul r2.xyz, r0.y, c8
     mad r0.xyw, r0.x, c7.xyzz, r2.xyzz
     mad r0.xyz, r0.z, c9, r0.xyww
     mov r2.xyz, c2  // Parameters::DiffuseColor<0,1,2>
     mad oT0.xyz, r0, r2, c3  // ::VSEnvMapFresnel<0,1,2>
 
-#line 70 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 69 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     dp4 oPos.z, v0, c20  // ::VSEnvMapFresnel<15>
 
-#line 64
+#line 63
     dp4 r0.x, v0, c12  // ::pos_ws<0>
     dp4 r0.y, v0, c13  // ::pos_ws<1>
     dp4 r0.z, v0, c14  // ::pos_ws<2>
     add r0.xyz, -r0, c10
     nrm r2.xyz, r0  // ::eyeVector<0,1,2>
 
-#line 54
+#line 53
     dp3 r0.x, r2, r1  // ::viewAngle<0>
     abs r0.x, r0.x
     add r0.x, -r0.x, c22.y
@@ -87,29 +87,29 @@
     pow r1.w, r0.x, c1.y
     mul oT1.xyz, r1.w, c1.x  // ::VSEnvMapFresnel<4,5,6>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c11
     max r0.x, r0.x, c22.x
     min oT1.w, r0.x, c22.y  // ::VSEnvMapFresnel<7>
 
-#line 80 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 79 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     dp3 r0.x, -r2, r1
     add r0.x, r0.x, r0.x
     mad oT3.xyz, r1, -r0.x, -r2  // ::VSEnvMapFresnel<10,11,12>
 
-#line 70
+#line 69
     dp4 r0.x, v0, c18  // ::vout<13>
     dp4 r0.y, v0, c19  // ::vout<14>
     dp4 r0.z, v0, c21  // ::vout<16>
 
-#line 195
+#line 194
     mad oPos.xy, r0.z, c0, r0  // ::VSEnvMapFresnel<13,14>
     mov oPos.w, r0.z  // ::VSEnvMapFresnel<16>
 
-#line 44 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 43 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     mov oT0.w, c2.w  // ::VSEnvMapFresnel<3>
 
-#line 197 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 196 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     mov oT2.xy, v2  // ::VSEnvMapFresnel<8,9>
 
 // approximately 45 instruction slots used
@@ -170,10 +170,10 @@ ret
 
 const BYTE EnvironmentMapEffect_VSEnvMapFresnel[] =
 {
-     68,  88,  66,  67,  23, 193, 
-    140,  89, 174,  24, 149,  40, 
-    156, 164,  84, 249, 212, 155, 
-     20, 239,   1,   0,   0,   0, 
+     68,  88,  66,  67, 107,  26, 
+     94, 155, 166, 117, 249,  65, 
+      0, 254, 158, 153, 135,  41, 
+    142, 208,   1,   0,   0,   0, 
     252,  15,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     112,   9,   0,   0, 228,  14, 
@@ -246,58 +246,58 @@ const BYTE EnvironmentMapEffect_VSEnvMapFresnel[] =
     255, 255,  92,   6,   0,   0, 
       0,   0, 255, 255, 104,   6, 
       0,   0,   0,   0, 255, 255, 
-    116,   6,   0,   0,  66,   0, 
+    116,   6,   0,   0,  65,   0, 
       0,   0, 128,   6,   0,   0, 
-     66,   0,   0,   0, 144,   6, 
-      0,   0,  66,   0,   0,   0, 
-    160,   6,   0,   0,  66,   0, 
+     65,   0,   0,   0, 144,   6, 
+      0,   0,  65,   0,   0,   0, 
+    160,   6,   0,   0,  65,   0, 
       0,   0, 176,   6,   0,   0, 
-     34,   0,   1,   0, 188,   6, 
-      0,   0,  34,   0,   1,   0, 
-    204,   6,   0,   0,  34,   0, 
+     33,   0,   1,   0, 188,   6, 
+      0,   0,  33,   0,   1,   0, 
+    204,   6,   0,   0,  33,   0, 
       1,   0, 220,   6,   0,   0, 
-     37,   0,   1,   0, 236,   6, 
-      0,   0,  39,   0,   1,   0, 
-    252,   6,   0,   0,  44,   0, 
+     36,   0,   1,   0, 236,   6, 
+      0,   0,  38,   0,   1,   0, 
+    252,   6,   0,   0,  43,   0, 
       1,   0,  12,   7,   0,   0, 
-     44,   0,   1,   0,  28,   7, 
-      0,   0,  44,   0,   1,   0, 
-     48,   7,   0,   0,  44,   0, 
+     43,   0,   1,   0,  28,   7, 
+      0,   0,  43,   0,   1,   0, 
+     48,   7,   0,   0,  43,   0, 
       1,   0,  68,   7,   0,   0, 
-     44,   0,   1,   0,  80,   7, 
-      0,   0,  70,   0,   0,   0, 
-    100,   7,   0,   0,  64,   0, 
+     43,   0,   1,   0,  80,   7, 
+      0,   0,  69,   0,   0,   0, 
+    100,   7,   0,   0,  63,   0, 
       0,   0, 116,   7,   0,   0, 
-     64,   0,   0,   0, 132,   7, 
-      0,   0,  64,   0,   0,   0, 
-    148,   7,   0,   0,  65,   0, 
+     63,   0,   0,   0, 132,   7, 
+      0,   0,  63,   0,   0,   0, 
+    148,   7,   0,   0,  64,   0, 
       0,   0, 164,   7,   0,   0, 
-     65,   0,   0,   0, 180,   7, 
-      0,   0,  54,   0,   0,   0, 
-    192,   7,   0,   0,  56,   0, 
+     64,   0,   0,   0, 180,   7, 
+      0,   0,  53,   0,   0,   0, 
+    192,   7,   0,   0,  55,   0, 
       0,   0, 208,   7,   0,   0, 
-     56,   0,   0,   0, 220,   7, 
-      0,   0,  56,   0,   0,   0, 
-    236,   7,   0,   0,  56,   0, 
+     55,   0,   0,   0, 220,   7, 
+      0,   0,  55,   0,   0,   0, 
+    236,   7,   0,   0,  55,   0, 
       0,   0, 252,   7,   0,   0, 
-     56,   0,   0,   0,  12,   8, 
-      0,   0,  12,   0,   2,   0, 
-     28,   8,   0,   0,  12,   0, 
+     55,   0,   0,   0,  12,   8, 
+      0,   0,  11,   0,   2,   0, 
+     28,   8,   0,   0,  11,   0, 
       2,   0,  44,   8,   0,   0, 
-     12,   0,   2,   0,  60,   8, 
-      0,   0,  80,   0,   0,   0, 
-     76,   8,   0,   0,  80,   0, 
+     11,   0,   2,   0,  60,   8, 
+      0,   0,  79,   0,   0,   0, 
+     76,   8,   0,   0,  79,   0, 
       0,   0,  92,   8,   0,   0, 
-     80,   0,   0,   0, 108,   8, 
-      0,   0,  70,   0,   0,   0, 
-    128,   8,   0,   0,  70,   0, 
+     79,   0,   0,   0, 108,   8, 
+      0,   0,  69,   0,   0,   0, 
+    128,   8,   0,   0,  69,   0, 
       0,   0, 144,   8,   0,   0, 
-     70,   0,   0,   0, 160,   8, 
-      0,   0, 195,   0,   0,   0, 
-    176,   8,   0,   0, 195,   0, 
+     69,   0,   0,   0, 160,   8, 
+      0,   0, 194,   0,   0,   0, 
+    176,   8,   0,   0, 194,   0, 
       0,   0, 196,   8,   0,   0, 
-     44,   0,   1,   0, 208,   8, 
-      0,   0, 197,   0,   0,   0, 
+     43,   0,   1,   0, 208,   8, 
+      0,   0, 196,   0,   0,   0, 
     220,   8,   0,   0,  80,  97, 
     114,  97, 109, 101, 116, 101, 
     114, 115,   0,  68, 105, 102, 

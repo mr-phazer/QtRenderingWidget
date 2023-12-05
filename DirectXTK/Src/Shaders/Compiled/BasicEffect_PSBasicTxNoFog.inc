@@ -32,7 +32,7 @@
     dcl t1.xy  // pin<4,5>
     dcl_2d s0
 
-#line 522 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 521 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     texld r0, t1, s0
     mul r0, r0, t0  // ::PSBasicTxNoFog<0,1,2,3>
     mov oC0, r0  // ::PSBasicTxNoFog<0,1,2,3>
@@ -53,10 +53,10 @@ ret
 
 const BYTE BasicEffect_PSBasicTxNoFog[] =
 {
-     68,  88,  66,  67, 174,  68, 
-    139,  72,  82, 115, 115,  32, 
-    167, 104,  63,  74,  16, 117, 
-    236,  50,   1,   0,   0,   0, 
+     68,  88,  66,  67, 195, 117, 
+     54, 190, 123, 167, 214, 215, 
+    152, 158, 178, 227, 169, 254, 
+    192, 152,   1,   0,   0,   0, 
     128,   3,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      96,   2,   0,   0, 252,   2, 
@@ -95,9 +95,9 @@ const BYTE BasicEffect_PSBasicTxNoFog[] =
       0,   0,   0,   0, 255, 255, 
     184,   1,   0,   0,   0,   0, 
     255, 255, 196,   1,   0,   0, 
-     10,   2,   0,   0, 208,   1, 
-      0,   0,  10,   2,   0,   0, 
-    224,   1,   0,   0,  10,   2, 
+      9,   2,   0,   0, 208,   1, 
+      0,   0,   9,   2,   0,   0, 
+    224,   1,   0,   0,   9,   2, 
       0,   0, 240,   1,   0,   0, 
      80,  83,  66,  97, 115, 105, 
      99,  84, 120,  78, 111,  70, 

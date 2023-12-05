@@ -41,11 +41,11 @@
     dcl t2.xy  // pin<8,9>
     dcl_2d s0
 
-#line 511 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 510 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     texld r0, t2, s0
     mul r0, r0, t0  // ::color<0,1,2,3>
 
-#line 18 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 17 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r1.xyz, c0, r0.w, -r0
     mad r0.xyz, t1.w, r1, r0  // ApplyFog::color<0,1,2>
     mov oC0, r0  // ::PSBasicTx<0,1,2,3>
@@ -71,10 +71,10 @@ ret
 
 const BYTE BasicEffect_PSBasicTx[] =
 {
-     68,  88,  66,  67, 109, 158, 
-    241,  32, 250,   9, 252,   6, 
-      5,   8,  99,  97, 125, 188, 
-    184, 125,   1,   0,   0,   0, 
+     68,  88,  66,  67,  95,  40, 
+     33,   0, 116, 126,  16, 178, 
+      4, 177, 241, 225, 133, 144, 
+    102,  20,   1,   0,   0,   0, 
      24,   5,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      96,   3,   0,   0, 124,   4, 
@@ -129,12 +129,12 @@ const BYTE BasicEffect_PSBasicTx[] =
       0,   0,   0,   0, 255, 255, 
     132,   2,   0,   0,   0,   0, 
     255, 255, 144,   2,   0,   0, 
-    255,   1,   0,   0, 156,   2, 
-      0,   0, 255,   1,   0,   0, 
-    172,   2,   0,   0,  18,   0, 
+    254,   1,   0,   0, 156,   2, 
+      0,   0, 254,   1,   0,   0, 
+    172,   2,   0,   0,  17,   0, 
       1,   0, 188,   2,   0,   0, 
-     18,   0,   1,   0, 208,   2, 
-      0,   0,  18,   0,   1,   0, 
+     17,   0,   1,   0, 208,   2, 
+      0,   0,  17,   0,   1,   0, 
     228,   2,   0,   0,  80,  83, 
      66,  97, 115, 105,  99,  84, 
     120,   0, 171, 171,   1,   0, 

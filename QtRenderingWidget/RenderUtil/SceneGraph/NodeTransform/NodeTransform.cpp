@@ -28,7 +28,7 @@ void NodeTransform::SetRotation(const sm::Quaternion& q)
 	local.rotation = q;
 }
 
-void NodeTransform::SetYawPitchRoll(const sm::Vector3& rotation)
+void NodeTransform::SetRotationFromYawPitchRoll(const sm::Vector3& rotation)
 {
 	// TODO: make a "local.rotation = GetQuaterionFromEuler(x,y,z);"
 	// this is clumsy:  ?
@@ -67,19 +67,7 @@ sm::Vector3 NodeTransform::GetTranslation()
 	return local.translation;
 }
 
-sm::Vector3 NodeTransform::GetScale()
 sm::Quaternion NodeTransform::GetRotation()
 {
-	return local.scale;
-}
-
-sm::Vector3 NodeTransform::GetTranslation()
-{
-	return local.translation;
-}
-
-sm::Quaternion NodeTransform::GetRotation()
-{
-	return local.rotation;
-	return local.rotation;
+	return local.rotation;	
 }

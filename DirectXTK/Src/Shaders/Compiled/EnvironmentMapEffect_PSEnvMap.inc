@@ -45,16 +45,16 @@
     dcl_2d s0
     dcl_cube s1
 
-#line 280 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 279 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     texld r0, t3, s1
     texld r1, t2, s0
     mul r1, r1, t0  // ::color<0,1,2,3>
 
-#line 282
+#line 281
     mad r0.xyz, r0, r1.w, -r1
     mad r0.xyz, t1, r0, r1  // ::color<0,1,2>
 
-#line 18 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 17 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r2.xyz, c0, r1.w, -r0
     mad r1.xyz, t1.w, r2, r0  // ApplyFog::color<0,1,2>
     mov oC0, r1  // ::PSEnvMap<0,1,2,3>
@@ -86,10 +86,10 @@ ret
 
 const BYTE EnvironmentMapEffect_PSEnvMap[] =
 {
-     68,  88,  66,  67, 142, 209, 
-     49,  40,  36, 197, 194,  69, 
-    187, 108, 237, 142,  46,  46, 
-     17,  56,   1,   0,   0,   0, 
+     68,  88,  66,  67, 112, 176, 
+     57,  16, 118, 251,  65, 125, 
+     14,  21, 245, 225,  50,  74, 
+    170, 137,   1,   0,   0,   0, 
     140,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      36,   4,   0,   0, 216,   5, 
@@ -149,16 +149,16 @@ const BYTE EnvironmentMapEffect_PSEnvMap[] =
       0,   3,   0,   0,   0,   0, 
     255, 255,  12,   3,   0,   0, 
       0,   0, 255, 255,  24,   3, 
-      0,   0,  24,   1,   0,   0, 
-     36,   3,   0,   0,  23,   1, 
+      0,   0,  23,   1,   0,   0, 
+     36,   3,   0,   0,  22,   1, 
       0,   0,  52,   3,   0,   0, 
-     23,   1,   0,   0,  68,   3, 
-      0,   0,  26,   1,   0,   0, 
-     84,   3,   0,   0,  26,   1, 
+     22,   1,   0,   0,  68,   3, 
+      0,   0,  25,   1,   0,   0, 
+     84,   3,   0,   0,  25,   1, 
       0,   0, 104,   3,   0,   0, 
-     18,   0,   1,   0, 124,   3, 
-      0,   0,  18,   0,   1,   0, 
-    144,   3,   0,   0,  18,   0, 
+     17,   0,   1,   0, 124,   3, 
+      0,   0,  17,   0,   1,   0, 
+    144,   3,   0,   0,  17,   0, 
       1,   0, 164,   3,   0,   0, 
      80,  83,  69, 110, 118,  77, 
      97, 112,   0, 171, 171, 171, 

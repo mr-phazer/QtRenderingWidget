@@ -22,7 +22,7 @@
 #include "..\DxObjects\DXSwapChain.h"
 #include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 #include "..\..\Logging\Logging.h"
-#include "..\..\Common\TSmartPointer.h"
+
 
 
 #include <iostream>

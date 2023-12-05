@@ -44,43 +44,43 @@
     dcl t3  // pin<9,10,11,12>
     dcl_2d s0
 
-#line 376 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
+#line 361 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
     texld r0, t0, s0
     add r1.xyz, -t1, c12
     dp3 r1.w, r1, r1
     rsq r1.w, r1.w
 
-#line 31 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 30 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     mad r2.xyz, r1, r1.w, -c3
     nrm r3.xyz, r2  // ::halfVectors<0,1,2>
 
-#line 379 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
+#line 364 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
     nrm r2.xyz, t2  // ::worldNormal<0,1,2>
 
-#line 35 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 34 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r3.x, r3, r2  // ::dotH<0>
 
-#line 31
+#line 30
     mad r4.xyz, r1, r1.w, -c4
     mad r1.xyz, r1, r1.w, -c5
     nrm r5.xyz, r1  // ::halfVectors<6,7,8>
 
-#line 35
+#line 34
     dp3 r3.z, r5, r2  // ::dotH<2>
 
-#line 31
+#line 30
     nrm r1.xyz, r4  // ::halfVectors<3,4,5>
 
-#line 35
+#line 34
     dp3 r3.y, r1, r2  // ::dotH<1>
     dp3 r1.x, -c3, r2  // ::dotL<0>
     dp3 r1.y, -c4, r2  // ::dotL<1>
     dp3 r1.z, -c5, r2  // ::dotL<2>
 
-#line 37
+#line 36
     cmp r2.xyz, r1, c14.x, c14.y  // ::zeroL<0,1,2>
 
-#line 40
+#line 39
     mul r4.xyz, r2, r3
     cmp r3.xyz, r3, r4, c14.y
     mul r2.xyz, r1, r2  // ::diffuse<0,1,2>
@@ -93,29 +93,29 @@
     exp r4.z, r3.z
     mul r1.xyz, r1, r4  // ::specular<0,1,2>
 
-#line 45
+#line 44
     mul r3.xyz, r1.y, c10
     mad r3.xyz, r1.x, c9, r3
     mad r1.xyz, r1.z, c11, r3
     mul r1.xyz, r1, c2  // ::result<3,4,5>
 
-#line 376 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
+#line 361 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
     mul r0, r0, t3  // ::color<0,1,2,3>
 
-#line 24 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 23 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mul r1.xyz, r0.w, r1
 
-#line 44 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 43 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     mul r3.xyz, r2.y, c7
     mad r3.xyz, r2.x, c6, r3
     mad r2.xyz, r2.z, c8, r3
     mov r3.xyz, c0  // Parameters::DiffuseColor<0,1,2>
     mad r2.xyz, r2, r3, c1  // ::result<0,1,2>
 
-#line 24 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 23 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r1.xyz, r0, r2, r1  // AddSpecular::color<0,1,2>
 
-#line 18
+#line 17
     mad r2.xyz, c13, r0.w, -r1
     mad r0.xyz, t1.w, r2, r1  // ApplyFog::color<0,1,2>
     mov oC0, r0  // ::PSSkinnedPixelLighting<0,1,2,3>
@@ -185,10 +185,10 @@ ret
 
 const BYTE SkinnedEffect_PSSkinnedPixelLighting[] =
 {
-     68,  88,  66,  67,  54, 159, 
-    170,   8,  92, 168, 173, 244, 
-    235, 154, 188, 206, 193, 240, 
-    129,  90,   1,   0,   0,   0, 
+     68,  88,  66,  67, 203, 247, 
+     75,  36, 154,  37, 165, 225, 
+    162, 233, 192,  56, 142,  98, 
+     93,  87,   1,   0,   0,   0, 
      52,  17,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      16,  10,   0,   0, 128,  16, 
@@ -259,64 +259,64 @@ const BYTE SkinnedEffect_PSSkinnedPixelLighting[] =
       0,   0,   0,   0, 255, 255, 
     200,   6,   0,   0,   0,   0, 
     255, 255, 212,   6,   0,   0, 
-    120,   1,   0,   0, 224,   6, 
-      0,   0, 122,   1,   0,   0, 
-    240,   6,   0,   0, 122,   1, 
+    105,   1,   0,   0, 224,   6, 
+      0,   0, 107,   1,   0,   0, 
+    240,   6,   0,   0, 107,   1, 
       0,   0,   0,   7,   0,   0, 
-    122,   1,   0,   0,  16,   7, 
-      0,   0,  31,   0,   1,   0, 
-     28,   7,   0,   0,  31,   0, 
+    107,   1,   0,   0,  16,   7, 
+      0,   0,  30,   0,   1,   0, 
+     28,   7,   0,   0,  30,   0, 
       1,   0,  48,   7,   0,   0, 
-    123,   1,   0,   0,  60,   7, 
-      0,   0,  35,   0,   1,   0, 
-     72,   7,   0,   0,  31,   0, 
-      1,   0,  88,   7,   0,   0, 
-     31,   0,   1,   0, 108,   7, 
-      0,   0,  31,   0,   1,   0, 
-    128,   7,   0,   0,  35,   0, 
-      1,   0, 140,   7,   0,   0, 
-     31,   0,   1,   0, 156,   7, 
-      0,   0,  35,   0,   1,   0, 
-    168,   7,   0,   0,  34,   0, 
-      1,   0, 184,   7,   0,   0, 
-     34,   0,   1,   0, 200,   7, 
+    108,   1,   0,   0,  60,   7, 
       0,   0,  34,   0,   1,   0, 
-    216,   7,   0,   0,  37,   0, 
+     72,   7,   0,   0,  30,   0, 
+      1,   0,  88,   7,   0,   0, 
+     30,   0,   1,   0, 108,   7, 
+      0,   0,  30,   0,   1,   0, 
+    128,   7,   0,   0,  34,   0, 
+      1,   0, 140,   7,   0,   0, 
+     30,   0,   1,   0, 156,   7, 
+      0,   0,  34,   0,   1,   0, 
+    168,   7,   0,   0,  33,   0, 
+      1,   0, 184,   7,   0,   0, 
+     33,   0,   1,   0, 200,   7, 
+      0,   0,  33,   0,   1,   0, 
+    216,   7,   0,   0,  36,   0, 
       1,   0, 232,   7,   0,   0, 
-     40,   0,   1,   0, 252,   7, 
-      0,   0,  40,   0,   1,   0, 
-     12,   8,   0,   0,  39,   0, 
+     39,   0,   1,   0, 252,   7, 
+      0,   0,  39,   0,   1,   0, 
+     12,   8,   0,   0,  38,   0, 
       1,   0,  32,   8,   0,   0, 
-     40,   0,   1,   0,  48,   8, 
-      0,   0,  40,   0,   1,   0, 
-     60,   8,   0,   0,  40,   0, 
+     39,   0,   1,   0,  48,   8, 
+      0,   0,  39,   0,   1,   0, 
+     60,   8,   0,   0,  39,   0, 
       1,   0,  72,   8,   0,   0, 
-     40,   0,   1,   0,  84,   8, 
-      0,   0,  40,   0,   1,   0, 
-    100,   8,   0,   0,  40,   0, 
+     39,   0,   1,   0,  84,   8, 
+      0,   0,  39,   0,   1,   0, 
+    100,   8,   0,   0,  39,   0, 
       1,   0, 112,   8,   0,   0, 
-     40,   0,   1,   0, 124,   8, 
-      0,   0,  40,   0,   1,   0, 
-    136,   8,   0,   0,  45,   0, 
+     39,   0,   1,   0, 124,   8, 
+      0,   0,  39,   0,   1,   0, 
+    136,   8,   0,   0,  44,   0, 
       1,   0, 152,   8,   0,   0, 
-     45,   0,   1,   0, 168,   8, 
-      0,   0,  45,   0,   1,   0, 
-    188,   8,   0,   0,  45,   0, 
-      1,   0, 208,   8,   0,   0, 
-    120,   1,   0,   0, 224,   8, 
-      0,   0,  24,   0,   2,   0, 
-    240,   8,   0,   0,  44,   0, 
-      1,   0,   0,   9,   0,   0, 
-     44,   0,   1,   0,  16,   9, 
+     44,   0,   1,   0, 168,   8, 
       0,   0,  44,   0,   1,   0, 
-     36,   9,   0,   0,  44,   0, 
+    188,   8,   0,   0,  44,   0, 
+      1,   0, 208,   8,   0,   0, 
+    105,   1,   0,   0, 224,   8, 
+      0,   0,  23,   0,   2,   0, 
+    240,   8,   0,   0,  43,   0, 
+      1,   0,   0,   9,   0,   0, 
+     43,   0,   1,   0,  16,   9, 
+      0,   0,  43,   0,   1,   0, 
+     36,   9,   0,   0,  43,   0, 
       1,   0,  56,   9,   0,   0, 
-     44,   0,   1,   0,  68,   9, 
-      0,   0,  24,   0,   2,   0, 
-     88,   9,   0,   0,  18,   0, 
+     43,   0,   1,   0,  68,   9, 
+      0,   0,  23,   0,   2,   0, 
+     88,   9,   0,   0,  17,   0, 
       2,   0, 108,   9,   0,   0, 
-     18,   0,   2,   0, 128,   9, 
-      0,   0,  18,   0,   2,   0, 
+     17,   0,   2,   0, 128,   9, 
+      0,   0,  17,   0,   2,   0, 
     148,   9,   0,   0,  80,  97, 
     114,  97, 109, 101, 116, 101, 
     114, 115,   0,  68, 105, 102, 

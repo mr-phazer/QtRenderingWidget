@@ -8,17 +8,17 @@
 namespace Rldx {
 
 	
-	class DxScene : public IDrawable, public TSmartPointerAll<DxScene>
+	class DxScene : public IDrawable
 	{
 	
 	public:	
-		
+		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
 		virtual void Draw(
 			ID3D11DeviceContext* poDeviceContext,
-			ID3D11RenderTargetView* destRtV = nullptr,
-			IDxShaderProgram* shaderProgram = nullptr) override
+			ID3D11RenderTargetView* destRtV = nullptr
+			) override
 		{
 			/*
 				- first test, draw one simple mesh.
@@ -61,12 +61,13 @@ namespace Rldx {
 
 	class BoundToHWNDSceneCreator
 	{
+		BoundToHWNDSceneCreator() {};
 		HWND m_nativeWindowHandle;
 	public:
-		DxScene::UniquePtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		DxScene::UniquePtr Create(ID3D11Device* poDevice)
 		{
-			auto newScene = DxScene::MakeUnique();
-			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, nativeWindowHandle);
+			auto newScene = std::make_unique<DxScene>();
+			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle);
 		};
 
 		BoundToHWNDSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};

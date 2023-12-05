@@ -45,17 +45,17 @@
     dcl_2d s0
     dcl_2d s1
 
-#line 94 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
+#line 93 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\DualTextureEffect.fx"
     mov r0.xy, t2.wzyx
     texld r0, r0, s1  // ::overlay<0,1,2,3>
     texld r1, t2, s0  // ::color<0,1,2,3>
 
-#line 97
+#line 96
     mul r0, r0, t0
     mul r1, r1, c1
     mul r0, r0, r1  // ::color<0,1,2,3>
 
-#line 18 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 17 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r1.xyz, c0, r0.w, -r0
     mad r0.xyz, t1.w, r1, r0  // ApplyFog::color<0,1,2>
     mov oC0, r0  // ::PSDualTexture<0,1,2,3>
@@ -87,10 +87,10 @@ ret
 
 const BYTE DualTextureEffect_PSDualTexture[] =
 {
-     68,  88,  66,  67, 254,  57, 
-    221, 208, 214, 108, 246, 116, 
-    253,  58,  46, 162,   8, 181, 
-     68,  39,   1,   0,   0,   0, 
+     68,  88,  66,  67,  72, 103, 
+     62, 253,  47, 123,  71, 100, 
+    153, 127, 245,  69, 238,  28, 
+     91,  66,   1,   0,   0,   0, 
     168,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      72,   4,   0,   0, 244,   5, 
@@ -149,18 +149,18 @@ const BYTE DualTextureEffect_PSDualTexture[] =
     255, 255,  32,   3,   0,   0, 
       0,   0, 255, 255,  44,   3, 
       0,   0,   0,   0, 255, 255, 
-     56,   3,   0,   0,  94,   0, 
+     56,   3,   0,   0,  93,   0, 
       0,   0,  68,   3,   0,   0, 
-     94,   0,   0,   0,  80,   3, 
-      0,   0,  93,   0,   0,   0, 
-     96,   3,   0,   0,  97,   0, 
+     93,   0,   0,   0,  80,   3, 
+      0,   0,  92,   0,   0,   0, 
+     96,   3,   0,   0,  96,   0, 
       0,   0, 112,   3,   0,   0, 
-     97,   0,   0,   0, 128,   3, 
-      0,   0,  97,   0,   0,   0, 
-    144,   3,   0,   0,  18,   0, 
+     96,   0,   0,   0, 128,   3, 
+      0,   0,  96,   0,   0,   0, 
+    144,   3,   0,   0,  17,   0, 
       1,   0, 160,   3,   0,   0, 
-     18,   0,   1,   0, 180,   3, 
-      0,   0,  18,   0,   1,   0, 
+     17,   0,   1,   0, 180,   3, 
+      0,   0,  17,   0,   1,   0, 
     200,   3,   0,   0,  80,  83, 
      68, 117,  97, 108,  84, 101, 
     120, 116, 117, 114, 101,   0, 

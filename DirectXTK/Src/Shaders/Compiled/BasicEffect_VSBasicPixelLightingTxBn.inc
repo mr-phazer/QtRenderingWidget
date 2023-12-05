@@ -47,7 +47,7 @@
     dcl_texcoord1 v1  // vin<4,5,6>
     dcl_texcoord2 v2  // vin<7,8>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 oPos.z, v0, c11  // ::VSBasicPixelLightingTxBn<15>
     dp4 oT1.x, v0, c3  // ::VSBasicPixelLightingTxBn<2>
     dp4 oT1.y, v0, c4  // ::VSBasicPixelLightingTxBn<3>
@@ -56,7 +56,7 @@
 #line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Utilities.fxh"
     mad r0.xyz, v1, c13.x, c13.y  // ::BiasX2<0,1,2>
 
-#line 85 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 84 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r1.x, r0, c6
     dp3 r1.y, r0, c7
     dp3 r1.z, r0, c8
@@ -64,21 +64,21 @@
     rsq r0.x, r0.x
     mul oT2.xyz, r0.x, r1  // ::VSBasicPixelLightingTxBn<6,7,8>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c13.z
     min oT1.w, r0.x, c13.w  // ::VSBasicPixelLightingTxBn<5>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 r0.x, v0, c9  // ::vout<0>
     dp4 r0.y, v0, c10  // ::vout<1>
     dp4 r0.z, v0, c12  // ::vout<3>
 
-#line 442 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 441 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicPixelLightingTxBn<13,14>
     mov oPos.w, r0.z  // ::VSBasicPixelLightingTxBn<16>
 
-#line 452
+#line 451
     mov oT0.xy, v2  // ::VSBasicPixelLightingTxBn<0,1>
     mov r0.zw, c13
     mad oT3, c1.w, r0.zzzw, r0.wwwz  // ::VSBasicPixelLightingTxBn<9,10,11,12>
@@ -119,10 +119,10 @@ ret
 
 const BYTE BasicEffect_VSBasicPixelLightingTxBn[] =
 {
-     68,  88,  66,  67,   2,  70, 
-      0, 177,  91, 232, 116,  45, 
-     20, 246,  89, 189, 205, 230, 
-     54, 223,   1,   0,   0,   0, 
+     68,  88,  66,  67, 246, 100, 
+    216, 156, 249, 185,  92, 151, 
+    191, 247, 149,  76,  88, 170, 
+    169, 158,   1,   0,   0,   0, 
     244,  10,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      24,   7,   0,   0, 220,   9, 
@@ -207,35 +207,35 @@ const BYTE BasicEffect_VSBasicPixelLightingTxBn[] =
     255, 255,  16,   5,   0,   0, 
       0,   0, 255, 255,  28,   5, 
       0,   0,   0,   0, 255, 255, 
-     40,   5,   0,   0,  83,   0, 
+     40,   5,   0,   0,  82,   0, 
       0,   0,  52,   5,   0,   0, 
-     84,   0,   0,   0,  68,   5, 
-      0,   0,  84,   0,   0,   0, 
-     84,   5,   0,   0,  84,   0, 
+     83,   0,   0,   0,  68,   5, 
+      0,   0,  83,   0,   0,   0, 
+     84,   5,   0,   0,  83,   0, 
       0,   0, 100,   5,   0,   0, 
      11,   0,   1,   0, 116,   5, 
-      0,   0,  85,   0,   0,   0, 
-    136,   5,   0,   0,  85,   0, 
+      0,   0,  84,   0,   0,   0, 
+    136,   5,   0,   0,  84,   0, 
       0,   0, 152,   5,   0,   0, 
-     85,   0,   0,   0, 168,   5, 
-      0,   0,  85,   0,   0,   0, 
-    184,   5,   0,   0,  85,   0, 
+     84,   0,   0,   0, 168,   5, 
+      0,   0,  84,   0,   0,   0, 
+    184,   5,   0,   0,  84,   0, 
       0,   0, 200,   5,   0,   0, 
-     85,   0,   0,   0, 212,   5, 
-      0,   0,  12,   0,   2,   0, 
-    228,   5,   0,   0,  12,   0, 
+     84,   0,   0,   0, 212,   5, 
+      0,   0,  11,   0,   2,   0, 
+    228,   5,   0,   0,  11,   0, 
       2,   0, 244,   5,   0,   0, 
-     12,   0,   2,   0,   4,   6, 
-      0,   0,  83,   0,   0,   0, 
-     20,   6,   0,   0,  83,   0, 
+     11,   0,   2,   0,   4,   6, 
+      0,   0,  82,   0,   0,   0, 
+     20,   6,   0,   0,  82,   0, 
       0,   0,  36,   6,   0,   0, 
-     83,   0,   0,   0,  52,   6, 
-      0,   0, 186,   1,   3,   0, 
-     68,   6,   0,   0, 186,   1, 
+     82,   0,   0,   0,  52,   6, 
+      0,   0, 185,   1,   3,   0, 
+     68,   6,   0,   0, 185,   1, 
       3,   0,  88,   6,   0,   0, 
-    196,   1,   3,   0, 100,   6, 
-      0,   0, 195,   1,   3,   0, 
-    112,   6,   0,   0, 195,   1, 
+    195,   1,   3,   0, 100,   6, 
+      0,   0, 194,   1,   3,   0, 
+    112,   6,   0,   0, 194,   1, 
       3,   0, 124,   6,   0,   0, 
      66, 105,  97, 115,  88,  50, 
       0, 171,   1,   0,   3,   0, 

@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // File: DGSLEffect.cpp
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248929
@@ -90,7 +90,7 @@ namespace
     // Slot 4
     struct BoneConstants
     {
-        XMVECTOR Bones[DGSLEffect::MaxBones][3];
+        XMVECTOR Bones[SkinnedDGSLEffect::MaxBones][3];
     };
 
 #pragma pack(pop)
@@ -101,7 +101,7 @@ namespace
     static_assert((sizeof(MiscConstants) % 16) == 0, "CB size not padded correctly");
     static_assert((sizeof(BoneConstants) % 16) == 0, "CB size not padded correctly");
 
-    __declspec(align(16)) struct DGSLEffectConstants
+    XM_ALIGNED_STRUCT(16) DGSLEffectConstants
     {
         MaterialConstants   material;
         LightConstants      light;
@@ -120,63 +120,65 @@ namespace
     };
 }
 
+
+#pragma region Shaders
 // Include the precompiled shader code.
 namespace
 {
 #if defined(_XBOX_ONE) && defined(_TITLE)
     // VS
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_mainVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main1Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main1BonesVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main2Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main2BonesVc.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main4Bones.inc"
-    #include "Shaders/Compiled/XboxOneDGSLEffect_main4BonesVc.inc"
+#include "XboxOneDGSLEffect_main.inc"
+#include "XboxOneDGSLEffect_mainVc.inc"
+#include "XboxOneDGSLEffect_main1Bones.inc"
+#include "XboxOneDGSLEffect_main1BonesVc.inc"
+#include "XboxOneDGSLEffect_main2Bones.inc"
+#include "XboxOneDGSLEffect_main2BonesVc.inc"
+#include "XboxOneDGSLEffect_main4Bones.inc"
+#include "XboxOneDGSLEffect_main4BonesVc.inc"
 
-    // PS
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_main.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_main.inc"
+// PS
+#include "XboxOneDGSLUnlit_main.inc"
+#include "XboxOneDGSLLambert_main.inc"
+#include "XboxOneDGSLPhong_main.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTk.inc"
+#include "XboxOneDGSLUnlit_mainTk.inc"
+#include "XboxOneDGSLLambert_mainTk.inc"
+#include "XboxOneDGSLPhong_mainTk.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTx.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTx.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTx.inc"
+#include "XboxOneDGSLUnlit_mainTx.inc"
+#include "XboxOneDGSLLambert_mainTx.inc"
+#include "XboxOneDGSLPhong_mainTx.inc"
 
-    #include "Shaders/Compiled/XboxOneDGSLUnlit_mainTxTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLLambert_mainTxTk.inc"
-    #include "Shaders/Compiled/XboxOneDGSLPhong_mainTxTk.inc"
+#include "XboxOneDGSLUnlit_mainTxTk.inc"
+#include "XboxOneDGSLLambert_mainTxTk.inc"
+#include "XboxOneDGSLPhong_mainTxTk.inc"
 #else
     // VS
-    #include "Shaders/Compiled/DGSLEffect_main.inc"
-    #include "Shaders/Compiled/DGSLEffect_mainVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main1Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main1BonesVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main2Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main2BonesVc.inc"
-    #include "Shaders/Compiled/DGSLEffect_main4Bones.inc"
-    #include "Shaders/Compiled/DGSLEffect_main4BonesVc.inc"
+#include "DGSLEffect_main.inc"
+#include "DGSLEffect_mainVc.inc"
+#include "DGSLEffect_main1Bones.inc"
+#include "DGSLEffect_main1BonesVc.inc"
+#include "DGSLEffect_main2Bones.inc"
+#include "DGSLEffect_main2BonesVc.inc"
+#include "DGSLEffect_main4Bones.inc"
+#include "DGSLEffect_main4BonesVc.inc"
 
-    // PS
-    #include "Shaders/Compiled/DGSLUnlit_main.inc"
-    #include "Shaders/Compiled/DGSLLambert_main.inc"
-    #include "Shaders/Compiled/DGSLPhong_main.inc"
+// PS
+#include "DGSLUnlit_main.inc"
+#include "DGSLLambert_main.inc"
+#include "DGSLPhong_main.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTk.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTk.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTk.inc"
+#include "DGSLUnlit_mainTk.inc"
+#include "DGSLLambert_mainTk.inc"
+#include "DGSLPhong_mainTk.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTx.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTx.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTx.inc"
+#include "DGSLUnlit_mainTx.inc"
+#include "DGSLLambert_mainTx.inc"
+#include "DGSLPhong_mainTx.inc"
 
-    #include "Shaders/Compiled/DGSLUnlit_mainTxTk.inc"
-    #include "Shaders/Compiled/DGSLLambert_mainTxTk.inc"
-    #include "Shaders/Compiled/DGSLPhong_mainTxTk.inc"
+#include "DGSLUnlit_mainTxTk.inc"
+#include "DGSLLambert_mainTxTk.inc"
+#include "DGSLPhong_mainTxTk.inc"
 #endif
 }
 
@@ -212,19 +214,26 @@ const ShaderBytecode DGSLEffectTraits::PixelShaderBytecode[] =
     { DGSLLambert_mainTxTk, sizeof(DGSLLambert_mainTxTk) }, // LAMBERT (textured, discard)
     { DGSLPhong_mainTxTk, sizeof(DGSLPhong_mainTxTk) },     // PHONG (textured, discard)
 };
+#pragma endregion
 
 
 class DGSLEffect::Impl : public AlignedNew<DGSLEffectConstants>
 {
 public:
-    Impl(_In_ ID3D11Device* device, _In_opt_ ID3D11PixelShader* pixelShader, _In_ bool enableSkinning) :
+    Impl(_In_ ID3D11Device* device, _In_opt_ ID3D11PixelShader* pixelShader) :
         constants{},
+        world{},
+        view{},
+        projection{},
+        lightEnabled{},
+        lightDiffuseColor{},
+        lightSpecularColor{},
         dirtyFlags(INT_MAX),
         vertexColorEnabled(false),
         textureEnabled(false),
         specularEnabled(false),
         alphaDiscardEnabled(false),
-        weightsPerVertex(enableSkinning ? 4 : 0),
+        weightsPerVertex(0),
         mCBMaterial(device),
         mCBLight(device),
         mCBObject(device),
@@ -232,10 +241,16 @@ public:
         mPixelShader(pixelShader),
         mDeviceResources(deviceResourcesPool.DemandCreate(device))
     {
-        static_assert(_countof(DGSLEffectTraits::VertexShaderBytecode) == DGSLEffectTraits::VertexShaderCount, "array/max mismatch");
-        static_assert(_countof(DGSLEffectTraits::PixelShaderBytecode) == DGSLEffectTraits::PixelShaderCount, "array/max mismatch");
+        static_assert(static_cast<int>(std::size(DGSLEffectTraits::VertexShaderBytecode)) == DGSLEffectTraits::VertexShaderCount, "array/max mismatch");
+        static_assert(static_cast<int>(std::size(DGSLEffectTraits::PixelShaderBytecode)) == DGSLEffectTraits::PixelShaderCount, "array/max mismatch");
+        static_assert(MaxDirectionalLights == 4, "Mismatch with DGSL pipline");
+    }
 
-        XMMATRIX id = XMMatrixIdentity();
+    void Initialize(_In_ ID3D11Device* device, bool enableSkinning)
+    {
+        weightsPerVertex = enableSkinning ? 4 : 0;
+
+        const XMMATRIX id = XMMatrixIdentity();
         world = id;
         view = id;
         projection = id;
@@ -244,7 +259,6 @@ public:
         constants.material.SpecularPower = 16;
         constants.object.UvTransform4x4 = id;
 
-        static_assert(MaxDirectionalLights == 4, "Mismatch with DGSL pipline");
         for (int i = 0; i < MaxDirectionalLights; ++i)
         {
             lightEnabled[i] = (i == 0);
@@ -260,7 +274,7 @@ public:
         {
             mCBBone.Create(device);
 
-            for (size_t j = 0; j < MaxBones; ++j)
+            for (size_t j = 0; j < SkinnedDGSLEffect::MaxBones; ++j)
             {
                 constants.bones.Bones[j][0] = g_XMIdentityR0;
                 constants.bones.Bones[j][1] = g_XMIdentityR1;
@@ -353,6 +367,8 @@ SharedResourcePool<ID3D11Device*, DGSLEffect::Impl::DeviceResources> DGSLEffect:
 
 void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 {
+    assert(deviceContext != nullptr);
+
     auto vertexShader = mDeviceResources->GetVertexShader(GetCurrentVSPermutation());
     auto pixelShader = mPixelShader.Get();
     if (!pixelShader)
@@ -369,7 +385,7 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
         constants.object.LocalToWorld4x4 = XMMatrixTranspose(world);
         constants.object.WorldToView4x4 = XMMatrixTranspose(view);
 
-        XMMATRIX worldView = XMMatrixMultiply(world, view);
+        const XMMATRIX worldView = XMMatrixMultiply(world, view);
 
         constants.object.LocalToProjected4x4 = XMMatrixTranspose(XMMatrixMultiply(worldView, projection));
 
@@ -379,7 +395,7 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
     if (dirtyFlags & EffectDirtyFlags::WorldInverseTranspose)
     {
-        XMMATRIX worldInverse = XMMatrixInverse(nullptr, world);
+        const XMMATRIX worldInverse = XMMatrixInverse(nullptr, world);
 
         constants.object.WorldToLocal4x4 = XMMatrixTranspose(worldInverse);
 
@@ -389,7 +405,7 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
     if (dirtyFlags & EffectDirtyFlags::EyePosition)
     {
-        XMMATRIX viewInverse = XMMatrixInverse(nullptr, view);
+        const XMMATRIX viewInverse = XMMatrixInverse(nullptr, view);
 
         constants.object.EyePosition = viewInverse.r[3];
 
@@ -475,17 +491,24 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
             dirtyFlags &= ~EffectDirtyFlags::ConstantBufferBones;
         }
 
-        ID3D11Buffer* buffers[5] = { mCBMaterial.GetBuffer(), mCBLight.GetBuffer(), mCBObject.GetBuffer(),
-                                     mCBMisc.GetBuffer(), mCBBone.GetBuffer() };
+        ID3D11Buffer* buffers[5] =
+        {
+            mCBMaterial.GetBuffer(), mCBLight.GetBuffer(), mCBObject.GetBuffer(),
+            mCBMisc.GetBuffer(), mCBBone.GetBuffer()
+        };
 
         deviceContext->VSSetConstantBuffers(0, 5, buffers);
         deviceContext->PSSetConstantBuffers(0, 4, buffers);
     }
     else
     {
-        ID3D11Buffer* buffers[4] = { mCBMaterial.GetBuffer(), mCBLight.GetBuffer(), mCBObject.GetBuffer(), mCBMisc.GetBuffer() };
+        ID3D11Buffer* buffers[5] =
+        {
+            mCBMaterial.GetBuffer(), mCBLight.GetBuffer(), mCBObject.GetBuffer(),
+            mCBMisc.GetBuffer(), nullptr
+        };
 
-        deviceContext->VSSetConstantBuffers(0, 4, buffers);
+        deviceContext->VSSetConstantBuffers(0, 5, buffers);
         deviceContext->PSSetConstantBuffers(0, 4, buffers);
     }
 #endif
@@ -493,8 +516,17 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
     // Set the textures
     if (textureEnabled)
     {
-        ID3D11ShaderResourceView* txt[MaxTextures] = { textures[0].Get(), textures[1].Get(), textures[2].Get(), textures[3].Get(),
-                                                       textures[4].Get(), textures[5].Get(), textures[6].Get(), textures[7].Get() };
+        ID3D11ShaderResourceView* txt[MaxTextures] =
+        {
+            textures[0].Get(),
+            textures[1].Get(),
+            textures[2].Get(),
+            textures[3].Get(),
+            textures[4].Get(),
+            textures[5].Get(),
+            textures[6].Get(),
+            textures[7].Get()
+        };
         deviceContext->PSSetShaderResources(0, MaxTextures, txt);
     }
     else
@@ -507,8 +539,9 @@ void DGSLEffect::Impl::Apply(_In_ ID3D11DeviceContext* deviceContext)
 
 void DGSLEffect::Impl::GetVertexShaderBytecode(_Out_ void const** pShaderByteCode, _Out_ size_t* pByteCodeLength) noexcept
 {
-    int permutation = GetCurrentVSPermutation();
+    assert(pShaderByteCode != nullptr && pByteCodeLength != nullptr);
 
+    const int permutation = GetCurrentVSPermutation();
     assert(permutation < DGSLEffectTraits::VertexShaderCount);
     _Analysis_assume_(permutation < DGSLEffectTraits::VertexShaderCount);
 
@@ -564,29 +597,15 @@ int DGSLEffect::Impl::GetCurrentPSPermutation() const noexcept
 //--------------------------------------------------------------------------------------
 // DGSLEffect
 //--------------------------------------------------------------------------------------
-
-DGSLEffect::DGSLEffect(_In_ ID3D11Device* device, _In_opt_ ID3D11PixelShader* pixelShader, _In_ bool enableSkinning)
-    : pImpl(std::make_unique<Impl>(device, pixelShader, enableSkinning))
+DGSLEffect::DGSLEffect(_In_ ID3D11Device* device, _In_opt_ ID3D11PixelShader* pixelShader, bool skinningEnabled)
+    : pImpl(std::make_unique<Impl>(device, pixelShader))
 {
+    pImpl->Initialize(device, skinningEnabled);
 }
 
-
-DGSLEffect::DGSLEffect(DGSLEffect&& moveFrom) noexcept
-    : pImpl(std::move(moveFrom.pImpl))
-{
-}
-
-
-DGSLEffect& DGSLEffect::operator= (DGSLEffect&& moveFrom) noexcept
-{
-    pImpl = std::move(moveFrom.pImpl);
-    return *this;
-}
-
-
-DGSLEffect::~DGSLEffect()
-{
-}
+DGSLEffect::DGSLEffect(DGSLEffect&&) noexcept = default;
+DGSLEffect& DGSLEffect::operator= (DGSLEffect&&) noexcept = default;
+DGSLEffect::~DGSLEffect() = default;
 
 
 // IEffect methods.
@@ -773,7 +792,7 @@ void XM_CALLCONV DGSLEffect::SetAmbientLightColor(FXMVECTOR value)
 void DGSLEffect::SetLightEnabled(int whichLight, bool value)
 {
     if (whichLight < 0 || whichLight >= MaxDirectionalLights)
-        throw std::out_of_range("whichLight parameter out of range");
+        throw std::invalid_argument("whichLight parameter invalid");
 
     if (pImpl->lightEnabled[whichLight] == value)
         return;
@@ -801,7 +820,7 @@ void DGSLEffect::SetLightEnabled(int whichLight, bool value)
 void XM_CALLCONV DGSLEffect::SetLightDirection(int whichLight, FXMVECTOR value)
 {
     if (whichLight < 0 || whichLight >= MaxDirectionalLights)
-        throw std::out_of_range("whichLight parameter out of range");
+        throw std::invalid_argument("whichLight parameter invalid");
 
     // DGSL effects lights do not negate the direction like BasicEffect
     pImpl->constants.light.LightDirection[whichLight] = XMVectorNegate(value);
@@ -813,7 +832,7 @@ void XM_CALLCONV DGSLEffect::SetLightDirection(int whichLight, FXMVECTOR value)
 void XM_CALLCONV DGSLEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR value)
 {
     if (whichLight < 0 || whichLight >= MaxDirectionalLights)
-        throw std::out_of_range("whichLight parameter out of range");
+        throw std::invalid_argument("whichLight parameter invalid");
 
     pImpl->lightDiffuseColor[whichLight] = value;
 
@@ -829,7 +848,7 @@ void XM_CALLCONV DGSLEffect::SetLightDiffuseColor(int whichLight, FXMVECTOR valu
 void XM_CALLCONV DGSLEffect::SetLightSpecularColor(int whichLight, FXMVECTOR value)
 {
     if (whichLight < 0 || whichLight >= MaxDirectionalLights)
-        throw std::out_of_range("whichLight parameter out of range");
+        throw std::invalid_argument("whichLight parameter invalid");
 
     pImpl->lightSpecularColor[whichLight] = value;
 
@@ -870,63 +889,57 @@ void DGSLEffect::SetTexture(_In_opt_ ID3D11ShaderResourceView* value)
 void DGSLEffect::SetTexture(int whichTexture, _In_opt_ ID3D11ShaderResourceView* value)
 {
     if (whichTexture < 0 || whichTexture >= MaxTextures)
-        throw std::out_of_range("whichTexture parameter out of range");
+        throw std::invalid_argument("whichTexture parameter invalid");
 
     pImpl->textures[whichTexture] = value;
 }
 
 
-// Animation settings.
-void DGSLEffect::SetWeightsPerVertex(int value)
-{
-    if (!pImpl->weightsPerVertex)
-    {
-        // Safe to ignore since it's only an optimization hint
-        return;
-    }
+//--------------------------------------------------------------------------------------
+// SkinnedDGSLEffect
+//--------------------------------------------------------------------------------------
 
+// Animation settings.
+void SkinnedDGSLEffect::SetWeightsPerVertex(int value)
+{
     if ((value != 1) &&
         (value != 2) &&
         (value != 4))
     {
-        throw std::out_of_range("WeightsPerVertex must be 1, 2, or 4");
+        throw std::invalid_argument("WeightsPerVertex must be 1, 2, or 4");
     }
 
     pImpl->weightsPerVertex = value;
 }
 
 
-void DGSLEffect::SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count)
+void SkinnedDGSLEffect::SetBoneTransforms(_In_reads_(count) XMMATRIX const* value, size_t count)
 {
-    if (!pImpl->weightsPerVertex)
-        throw std::exception("Skinning not enabled for this effect");
-
     if (count > MaxBones)
-        throw std::out_of_range("count parameter out of range");
+        throw std::invalid_argument("count parameter exceeds MaxBones");
 
     auto boneConstant = pImpl->constants.bones.Bones;
 
     for (size_t i = 0; i < count; i++)
     {
+    #if DIRECTX_MATH_VERSION >= 313
+        XMStoreFloat3x4A(reinterpret_cast<XMFLOAT3X4A*>(&boneConstant[i]), value[i]);
+    #else
+            // Xbox One XDK has an older version of DirectXMath
         XMMATRIX boneMatrix = XMMatrixTranspose(value[i]);
 
         boneConstant[i][0] = boneMatrix.r[0];
         boneConstant[i][1] = boneMatrix.r[1];
         boneConstant[i][2] = boneMatrix.r[2];
+    #endif
     }
 
     pImpl->dirtyFlags |= EffectDirtyFlags::ConstantBufferBones;
 }
 
 
-void DGSLEffect::ResetBoneTransforms()
+void SkinnedDGSLEffect::ResetBoneTransforms()
 {
-    if (!pImpl->weightsPerVertex)
-    {
-        // Safe to ignore since it just returns things back to default settings
-        return;
-    }
-
     auto boneConstant = pImpl->constants.bones.Bones;
 
     for (size_t i = 0; i < MaxBones; ++i)

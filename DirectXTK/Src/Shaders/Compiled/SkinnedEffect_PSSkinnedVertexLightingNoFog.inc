@@ -34,11 +34,11 @@
     dcl t2.xy  // pin<8,9>
     dcl_2d s0
 
-#line 365 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
+#line 350 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\SkinnedEffect.fx"
     texld r0, t2, s0
     mul r0, r0, t0  // ::color<0,1,2,3>
 
-#line 24 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 23 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mad r0.xyz, t1, r0.w, r0  // AddSpecular::color<0,1,2>
     mov oC0, r0  // ::PSSkinnedVertexLightingNoFog<0,1,2,3>
 
@@ -61,10 +61,10 @@ ret
 
 const BYTE SkinnedEffect_PSSkinnedVertexLightingNoFog[] =
 {
-     68,  88,  66,  67, 107, 106, 
-    201, 132, 172,  13,  69, 146, 
-    228, 163, 228, 199, 194, 169, 
-     77,  89,   1,   0,   0,   0, 
+     68,  88,  66,  67, 239, 128, 
+    160, 144, 170, 177, 206, 142, 
+     65,  86, 243, 179, 103,   7, 
+     82,  46,   1,   0,   0,   0, 
     208,   4,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      84,   3,   0,   0,  52,   4, 
@@ -117,11 +117,11 @@ const BYTE SkinnedEffect_PSSkinnedVertexLightingNoFog[] =
     255, 255, 140,   2,   0,   0, 
       0,   0, 255, 255, 152,   2, 
       0,   0,   0,   0, 255, 255, 
-    164,   2,   0,   0, 109,   1, 
+    164,   2,   0,   0,  94,   1, 
       0,   0, 176,   2,   0,   0, 
-    109,   1,   0,   0, 192,   2, 
-      0,   0,  24,   0,   1,   0, 
-    208,   2,   0,   0,  24,   0, 
+     94,   1,   0,   0, 192,   2, 
+      0,   0,  23,   0,   1,   0, 
+    208,   2,   0,   0,  23,   0, 
       1,   0, 228,   2,   0,   0, 
      80,  83,  83, 107, 105, 110, 
     110, 101, 100,  86, 101, 114, 

@@ -8,10 +8,14 @@
 // MS Direct3d lib
 #include "..\..\..\DirectXTK\Inc\BufferHelpers.h"
 
+
+
 // author
 #include "..\..\Tools\tools.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
 #include "..\Types\ShaderFiles.h"
+#include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
+
 
 namespace Rldx {
 
@@ -31,10 +35,7 @@ namespace Rldx {
 		virtual ID3D11PixelShader* GetPixelShader() = 0;
 
 		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
-		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;
-
-		virtual void UpdateVSConstBuffers(ID3D11DeviceContext*) = 0;
-		virtual void UpdatePSConstBuffers(ID3D11DeviceContext*) = 0;
+		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;			
 
 		virtual void GetReady(ID3D11DeviceContext*) = 0;
 

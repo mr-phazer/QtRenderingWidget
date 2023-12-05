@@ -43,28 +43,28 @@
     dcl_texcoord v0  // vin<0,1,2,3>
     dcl_texcoord1 v1  // vin<4,5>
 
-#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 40 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 oPos.z, v0, c5  // ::VSAlphaTest<12>
 
-#line 12
+#line 11
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c7.x
     min oT1.w, r0.x, c7.y  // ::VSAlphaTest<7>
 
-#line 41
+#line 40
     dp4 r0.x, v0, c3  // ::vout<0>
     dp4 r0.y, v0, c4  // ::vout<1>
     dp4 r0.z, v0, c6  // ::vout<3>
 
-#line 27 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
+#line 26 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSAlphaTest<10,11>
     mov oPos.w, r0.z  // ::VSAlphaTest<13>
 
-#line 42 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 41 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     mov oT0, c1  // ::VSAlphaTest<0,1,2,3>
     mov oT1.xyz, c7.x  // ::VSAlphaTest<4,5,6>
 
-#line 34 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
+#line 33 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\AlphaTestEffect.fx"
     mov oT2.xy, v1  // ::VSAlphaTest<8,9>
 
 // approximately 12 instruction slots used
@@ -90,10 +90,10 @@ ret
 
 const BYTE AlphaTestEffect_VSAlphaTest[] =
 {
-     68,  88,  66,  67,  42,  88, 
-    167, 160, 148, 172, 218,  53, 
-    198, 157, 193,  89, 138,  25, 
-    109,  49,   1,   0,   0,   0, 
+     68,  88,  66,  67, 207,  14, 
+    135,  48, 108, 126, 200,  98, 
+     63, 194, 240, 197, 135, 104, 
+    239, 169,   1,   0,   0,   0, 
     252,   6,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
     188,   4,   0,   0,  24,   6, 
@@ -149,22 +149,22 @@ const BYTE AlphaTestEffect_VSAlphaTest[] =
      92,   3,   0,   0,   0,   0, 
     255, 255, 116,   3,   0,   0, 
       0,   0, 255, 255, 128,   3, 
-      0,   0,  41,   0,   0,   0, 
-    140,   3,   0,   0,  12,   0, 
+      0,   0,  40,   0,   0,   0, 
+    140,   3,   0,   0,  11,   0, 
       0,   0, 156,   3,   0,   0, 
-     12,   0,   0,   0, 172,   3, 
-      0,   0,  12,   0,   0,   0, 
-    188,   3,   0,   0,  41,   0, 
+     11,   0,   0,   0, 172,   3, 
+      0,   0,  11,   0,   0,   0, 
+    188,   3,   0,   0,  40,   0, 
       0,   0, 204,   3,   0,   0, 
-     41,   0,   0,   0, 220,   3, 
-      0,   0,  41,   0,   0,   0, 
-    236,   3,   0,   0,  27,   0, 
+     40,   0,   0,   0, 220,   3, 
+      0,   0,  40,   0,   0,   0, 
+    236,   3,   0,   0,  26,   0, 
       1,   0, 252,   3,   0,   0, 
-     27,   0,   1,   0,  16,   4, 
-      0,   0,  42,   0,   0,   0, 
-     28,   4,   0,   0,  43,   0, 
+     26,   0,   1,   0,  16,   4, 
+      0,   0,  41,   0,   0,   0, 
+     28,   4,   0,   0,  42,   0, 
       0,   0,  40,   4,   0,   0, 
-     34,   0,   1,   0,  52,   4, 
+     33,   0,   1,   0,  52,   4, 
       0,   0,  86,  83,  65, 108, 
     112, 104,  97,  84, 101, 115, 
     116,   0,  68, 105, 102, 102, 

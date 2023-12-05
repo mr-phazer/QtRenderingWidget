@@ -6,6 +6,154 @@ Release available for download on [GitHub](https://github.com/microsoft/DirectXT
 
 ## Release History
 
+### October 28, 2023
+* Additional methods for *DirectX Tool Kit for Audio* emitter for linear and inverse-square falloff curves
+* xwbtool: -flist option updated to support filenames with spaces
+
+### September 1, 2023
+* Retired ARM (32-bit) support for the UWP platform
+* CMake project updates
+
+### June 13, 2023
+* CMake project updates
+* xwbtool: Fix minor display issue with error messages
+* xwbtool: Supports Long Paths on Windows 10, Version 1607 or later
+
+### April 28, 2023
+* MapGuard in DirectXHelpers should not support the move ctor or move operator
+* CMake project updates and fixes for clang/LLVM v16 warnings
+* xwbtool: Windows on ARM64 version
+
+### March 30, 2023
+* *DirectX Tool Kit for Audio* updates
+  * Reworked audio device enumeration for XAudio 2.9 to use MMDeviceEnumerator rather than Windows Runtime APIs
+  * ``GetOutputFormat`` now reports sample rate and bit-depth from the audio device properties
+  * New method ``GetOutputSampleRate`` added to return the input sample rate of the mastering voice
+  * ``Resume`` now handles device failure by switching to silent mode
+* CMake project updates
+* Retired VS 2017 legacy Xbox One XDK projects
+* xwbtool: Updated to support Windows or UNIX-style path separators
+
+### February 6, 2023
+* Mouse relative mode now accumulates multiple delta updates per frame. Added new optional but recommended method ``EndOfInputFrame``.
+* Fixed out-of-bounds read bug in the .WAV file reader.
+* Additional checks added to DDSTextureLoader for planar video formats.
+* *DirectX Tool Kit for Audio* updated for XAudio2Redist 1.2.11
+* CMake project updates
+
+### December 15, 2022
+* GamePad, Keyboard, and Mouse headers have ``USING_XINPUT``, ``USING_GAMEINPUT``, ``USING_WINDOWS_GAMING_INPUT`` defines
+* Updates for *GameInputCreate* failure handling on PC
+* *DirectX Tool Kit for Audio* updated for XAudio2Redist 1.2.10
+* CMake project updated to require 3.20 or later
+* CMake and MSBuild project updates
+* Minor MinGW code changes
+* Added Azure Dev Ops Pipeline YAML files
+* Test suite updated with CTest support
+
+### October 17, 2022
+* Additional methods for *DirectX Tool Kit for Audio* emitter and listener for cone and falloff curves
+* Added use of C++11 inline namespaces to make it possible to link both DX11 and DX12 versions at once
+* Minor fix for ``CompileShaders.cmd`` to address additional 'paths with spaces' issues
+* Minor CMake update
+
+### July 29, 2022
+* *breaking change* DDSTextureLoader ``Ex`` functions now use ``DDS_LOADER_FLAGS`` instead of ``bool forceSRGB`` parameter.
+* MapGuard helper class updated with a new ``copy`` method
+* Fixed Mouse race-condition with changing mode and resetting scroll wheel at the same time.
+* CMake and MSBuild project updates
+* Minor code review
+
+### June 15, 2022
+* GamePad, Keyboard, and Mouse updated to use GameInput on PC for the Gaming.Desktop.x64 platform
+* *DirectX Tool Kit for Audio* updated for XAudio2Redist 1.2.9
+* CMake project updates
+
+### May 9, 2022
+* C++20 spaceship operator updates for SimpleMath
+* Minor updates for VS 2022 (17.2)
+* CMake project updates (now supports MSVC, clang/LLVM, and MinGW)
+* Added Microsoft GDK projects using the Gaming.Desktop.x64 platform
+* Retired VS 2017 projects
+* Minor code review
+* Reformat source using updated .editorconfig settings
+
+### March 24, 2022
+* Fixed bug in UWP implementation of Mouse that combined vertical/horizontal scroll-wheel input
+* Code refactoring for input classes (GamePad, Keyboard, and Mouse)
+* Update build switches for SDL recommendations
+* CMake project updates and UWP platform CMakePresets
+* Dropped support for legacy Xbox One XDK prior to April 2018
+
+### February 28, 2022
+* SimpleMath Matrix updated with ToEuler and Vector3 version of CreateFromYawPitchRoll methods
+* SimpleMath Quaternion updated with ToEuler, RotateTowards, FromToRotation, LookRotation, and Angle methods
+* Keyboard updated with new IME On/Off v-keys
+* Win32 Mouse now uses ``WM_ACTIVATE`` for more robust behavior
+* *DirectX Tool Kit for Audio* updated for Advanced Format (4Kn) wavebank streaming
+* Code and project review including fixing clang v13 warnings
+* Added CMakePresets.json
+* xwbtool: Added support for Advanced Format (4Kn) streaming wavebanks with ``-af``
+
+### November 8, 2021
+* VS 2022 support
+* Minor code and project review
+* makespritefont: Updated with 12.2 for FeatureLevel switch
+* xwbtool: Fixed potential locale issue with ``-flist``
+
+### October 18, 2021
+* Fixed loading of skinned PBR models from SDKMESH v2
+* *DirectX Tool Kit for Audio* updated for XAudio2Redist 1.2.8
+* Minor code review updates
+
+### October 13, 2021
+* Added skinning support for **NormalMapEffect** and **PBREffect**
+* Common states updated with support for reverse z-buffer rendering with **DepthReverseZ** and **DepthReadReverseZ** methods.
+* Effect factory updates
+  * Updated to use ``SkinnedNormalMapEffect`` / ``SkinnedPBREffect`` as appropriate.
+  * Automatically disables use of normal mapping on 9.x feature levels
+  * PBR now supports 'untextured' models (always requires texture coordinates) with use of diffuse color for constant albedo, and specular power for an estimated constant roughness.
+* Model loader updates
+  * SDKMESH loader no longer requires precomputed vertex tangents for normal mapping as we don't use them.
+  * Added ``ModelLoader_DisableSkinning`` flag when dealing with legacy SDKMESH files with too many skinning bone influences for _MaxBone_
+* Minor update for the Mouse implementation for GameInput
+* Project and code cleanup
+
+### September 30, 2021
+* Added ModelBone support for transformation hierarchies
+  * Rigid-body & skinned animation Draw support added to Model
+* Added type aliases ``ModelMeshPart::InputLayoutCollection``, ``GeometricPrimitive::VertexCollection`` and ``IndexCollection``.
+* EnvironmentMapEffect and NormalMapEffect will now use default diffuse/normal textures if none are set
+* VS 2017 projects updated to require the Windows 10 SDK (19401)
+* Code review updates
+
+### August 1, 2021
+* DebugEffect, NormalMapEffect, and PBREffect updated with instancing support
+* GeometricPrimitive updated with DrawInstanced method
+* ToneMapPostProcess updated with SetColorRotation method
+* Added VS 2022 Preview projects
+* MakeSpriteFont updated to use .NET 4.7.2
+* Minor code review
+
+### June 9, 2021
+* DirectX Tool Kit for Audio updates:
+  * Fixed mono source panning
+  * Added ``EnableDefaultMultiChannel`` helper to AudioEmitter for multi-channel source setup
+  * Added ``GetChannelCount`` accessor to SoundEffectInstance and SoundStreamInstance
+  * ``Apply3D`` can now use X3DAUDIO_LISTENER and X3DAUDIO_EMITTER directly or the library helper structs.
+* xwbtool: improved ``-flist`` switch to support wildcards and file exclusions
+* CMake updated to support building with XAudio2Redist
+* Minor code review
+
+### April 6, 2021
+* DDSTextureLoader reader updated to accept nVidia Texture Tool v1 single-channel and dual-channel files marked as RGB instead of LUMINANCE
+* Minor code and project cleanup
+* xwbtool: Updated with  descriptions for HRESULT failure codes
+
+### January 9, 2021
+* Code review for improved conformance
+* CMake updated to support package install
+
 ### November 11, 2020
 * Fixed ``/analyze`` warnings in GameInput usage
 * Fixed *DirectX Tool Kit for Audio* use of XAudio 2.8 for Windows 8 w/ Windows 10 SDK

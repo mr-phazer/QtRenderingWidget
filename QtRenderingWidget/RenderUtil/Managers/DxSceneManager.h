@@ -4,7 +4,7 @@
 
 #include "..\DxObjects\DxScene.h"
 #include "..\DxObjects\IDrawable.h"
-#include "..\..\Common\TSmartPointer.h"
+
 
 namespace Rldx {	
 
@@ -13,10 +13,12 @@ namespace Rldx {
 	public:	
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
 		
-		static UniquePtr Create()
+		static UniquePtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
 		{				
 			auto newSceneManager = std::make_unique<DxSceneManager>();
-			newSceneManager->m_scene = HWNDSceneCreator::Create(nullptr, 0);
+
+			BoundToHWNDSceneCreator sceneCreator(nativeWindowHandle);			
+			newSceneManager->m_scene = sceneCreator.Create(poDevice);
 
 			return std::move(newSceneManager);
 		}
@@ -25,7 +27,7 @@ namespace Rldx {
 		void OnResize();
 
 	private:
-		DxScene::UPtr m_scene;
+		DxScene::UniquePtr m_scene;
 	};
 
 

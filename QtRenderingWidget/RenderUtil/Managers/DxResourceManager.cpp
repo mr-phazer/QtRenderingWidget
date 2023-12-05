@@ -1,5 +1,10 @@
 #include "DxResourceManager.h"
 
+#include "..\DxObjects\DxMesh.h"
+#include "..\DxObjects\DxMaterial.h"
+#include "..\DxObjects\DxShaderProgram.h"
+
+
 using namespace Rldx;
 
 //std::unique_ptr<ResourceManagerBase> ResourceManagerBase::sm_spoInstance;

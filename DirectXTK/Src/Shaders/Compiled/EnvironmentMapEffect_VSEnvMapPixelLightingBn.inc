@@ -47,7 +47,7 @@
     dcl_texcoord1 v1  // vin<4,5,6>
     dcl_texcoord2 v2  // vin<7,8>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 oPos.z, v0, c11  // ::VSEnvMapPixelLightingBn<15>
     dp4 oT1.x, v0, c3  // ::VSEnvMapPixelLightingBn<2>
     dp4 oT1.y, v0, c4  // ::VSEnvMapPixelLightingBn<3>
@@ -56,7 +56,7 @@
 #line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Utilities.fxh"
     mad r0.xyz, v1, c13.x, c13.y  // ::BiasX2<0,1,2>
 
-#line 85 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 84 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r1.x, r0, c6
     dp3 r1.y, r0, c7
     dp3 r1.z, r0, c8
@@ -64,21 +64,21 @@
     rsq r0.x, r0.x
     mul oT2.xyz, r0.x, r1  // ::VSEnvMapPixelLightingBn<6,7,8>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c13.z
     min oT1.w, r0.x, c13.w  // ::VSEnvMapPixelLightingBn<5>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 r0.x, v0, c9  // ::vout<0>
     dp4 r0.y, v0, c10  // ::vout<1>
     dp4 r0.z, v0, c12  // ::vout<3>
 
-#line 255 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
+#line 254 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\EnvironmentMapEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSEnvMapPixelLightingBn<13,14>
     mov oPos.w, r0.z  // ::VSEnvMapPixelLightingBn<16>
 
-#line 265
+#line 264
     mov oT0.xy, v2  // ::VSEnvMapPixelLightingBn<0,1>
     mov r0.zw, c13
     mad oT3, c1.w, r0.zzzw, r0.wwwz  // ::VSEnvMapPixelLightingBn<9,10,11,12>
@@ -119,10 +119,10 @@ ret
 
 const BYTE EnvironmentMapEffect_VSEnvMapPixelLightingBn[] =
 {
-     68,  88,  66,  67, 247,  62, 
-    144,  73,   0,  71, 135, 188, 
-     98,  33,  27, 234, 107, 100, 
-    239,  87,   1,   0,   0,   0, 
+     68,  88,  66,  67,  11,  13, 
+     80,  50, 140, 236,  67, 203, 
+     61,  62,  91, 213,  55, 172, 
+    130, 165,   1,   0,   0,   0, 
     252,  10,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      32,   7,   0,   0, 228,   9, 
@@ -209,35 +209,35 @@ const BYTE EnvironmentMapEffect_VSEnvMapPixelLightingBn[] =
       0,   0,   0,   0, 255, 255, 
      36,   5,   0,   0,   0,   0, 
     255, 255,  48,   5,   0,   0, 
-     83,   0,   0,   0,  60,   5, 
-      0,   0,  84,   0,   0,   0, 
-     76,   5,   0,   0,  84,   0, 
-      0,   0,  92,   5,   0,   0, 
-     84,   0,   0,   0, 108,   5, 
-      0,   0,  11,   0,   1,   0, 
-    124,   5,   0,   0,  85,   0, 
-      0,   0, 144,   5,   0,   0, 
-     85,   0,   0,   0, 160,   5, 
-      0,   0,  85,   0,   0,   0, 
-    176,   5,   0,   0,  85,   0, 
-      0,   0, 192,   5,   0,   0, 
-     85,   0,   0,   0, 208,   5, 
-      0,   0,  85,   0,   0,   0, 
-    220,   5,   0,   0,  12,   0, 
-      2,   0, 236,   5,   0,   0, 
-     12,   0,   2,   0, 252,   5, 
-      0,   0,  12,   0,   2,   0, 
-     12,   6,   0,   0,  83,   0, 
-      0,   0,  28,   6,   0,   0, 
-     83,   0,   0,   0,  44,   6, 
+     82,   0,   0,   0,  60,   5, 
       0,   0,  83,   0,   0,   0, 
-     60,   6,   0,   0, 255,   0, 
+     76,   5,   0,   0,  83,   0, 
+      0,   0,  92,   5,   0,   0, 
+     83,   0,   0,   0, 108,   5, 
+      0,   0,  11,   0,   1,   0, 
+    124,   5,   0,   0,  84,   0, 
+      0,   0, 144,   5,   0,   0, 
+     84,   0,   0,   0, 160,   5, 
+      0,   0,  84,   0,   0,   0, 
+    176,   5,   0,   0,  84,   0, 
+      0,   0, 192,   5,   0,   0, 
+     84,   0,   0,   0, 208,   5, 
+      0,   0,  84,   0,   0,   0, 
+    220,   5,   0,   0,  11,   0, 
+      2,   0, 236,   5,   0,   0, 
+     11,   0,   2,   0, 252,   5, 
+      0,   0,  11,   0,   2,   0, 
+     12,   6,   0,   0,  82,   0, 
+      0,   0,  28,   6,   0,   0, 
+     82,   0,   0,   0,  44,   6, 
+      0,   0,  82,   0,   0,   0, 
+     60,   6,   0,   0, 254,   0, 
       3,   0,  76,   6,   0,   0, 
-    255,   0,   3,   0,  96,   6, 
-      0,   0,   9,   1,   3,   0, 
-    108,   6,   0,   0,   8,   1, 
+    254,   0,   3,   0,  96,   6, 
+      0,   0,   8,   1,   3,   0, 
+    108,   6,   0,   0,   7,   1, 
       3,   0, 120,   6,   0,   0, 
-      8,   1,   3,   0, 132,   6, 
+      7,   1,   3,   0, 132,   6, 
       0,   0,  66, 105,  97, 115, 
      88,  50,   0, 171,   1,   0, 
       3,   0,   1,   0,   3,   0, 

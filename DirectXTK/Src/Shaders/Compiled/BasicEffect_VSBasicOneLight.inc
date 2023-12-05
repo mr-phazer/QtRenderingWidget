@@ -46,66 +46,66 @@
     dcl_texcoord v0  // vin<0,1,2,3>
     dcl_texcoord1 v1  // vin<4,5,6>
 
-#line 57 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 56 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r0.x, v1, c12
     dp3 r0.y, v1, c13
     dp3 r0.z, v1, c14
     nrm r1.xyz, r0  // ::worldNormal<0,1,2>
 
-#line 34
+#line 33
     dp3 r0.x, -c4, r1  // ::dotL<0>
 
-#line 37
+#line 36
     sge r0.y, r0.x, c19.x  // ::zeroL<0>
     mul r0.z, r0.x, r0.y  // ::diffuse<0>
 
-#line 44
+#line 43
     mul r2.xyz, r0.z, c5
     mov r3.xyz, c1  // Parameters::DiffuseColor<0,1,2>
     mad oT0.xyz, r2, r3, c2  // ::VSBasicOneLight<0,1,2>
 
-#line 55
+#line 54
     dp4 r2.x, v0, c9  // ::pos_ws<0>
     dp4 r2.y, v0, c10  // ::pos_ws<1>
     dp4 r2.z, v0, c11  // ::pos_ws<2>
     add r2.xyz, -r2, c7
     nrm r3.xyz, r2  // ::eyeVector<0,1,2>
 
-#line 31
+#line 30
     add r2.xyz, r3, -c4
     nrm r3.xyz, r2  // ::halfVectors<0,1,2>
 
-#line 35
+#line 34
     dp3 r0.z, r3, r1  // ::dotH<0>
 
-#line 40
+#line 39
     max r0.z, r0.z, c19.x
     mul r0.y, r0.y, r0.z
     pow r1.x, r0.y, c3.w
     mul r0.x, r0.x, r1.x  // ::specular<0>
 
-#line 45
+#line 44
     mul r0.xyz, r0.x, c6
     mul oT1.xyz, r0, c3  // ::VSBasicOneLight<4,5,6>
 
-#line 61
+#line 60
     dp4 oPos.z, v0, c17  // ::VSBasicOneLight<10>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c8
     max r0.x, r0.x, c19.x
     min oT1.w, r0.x, c19.y  // ::VSBasicOneLight<7>
 
-#line 61 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 60 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 r0.x, v0, c15  // ::vout<0>
     dp4 r0.y, v0, c16  // ::vout<1>
     dp4 r0.z, v0, c18  // ::vout<3>
 
-#line 261 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 260 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicOneLight<8,9>
     mov oPos.w, r0.z  // ::VSBasicOneLight<11>
 
-#line 44 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 43 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     mov oT0.w, c1.w  // ::VSBasicOneLight<3>
 
 // approximately 42 instruction slots used
@@ -160,10 +160,10 @@ ret
 
 const BYTE BasicEffect_VSBasicOneLight[] =
 {
-     68,  88,  66,  67, 104, 196, 
-     67, 196,  85,  26, 109, 101, 
-     23, 177, 150, 114, 133, 180, 
-    161, 202,   1,   0,   0,   0, 
+     68,  88,  66,  67, 250,  40, 
+     33, 106,   3,  46,  82, 210, 
+    125, 107,  68,  93,  92, 228, 
+    215, 196,   1,   0,   0,   0, 
     136,  14,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      16,   9,   0,   0, 200,  13, 
@@ -240,51 +240,51 @@ const BYTE BasicEffect_VSBasicOneLight[] =
       0,   0,   0,   0, 255, 255, 
      60,   6,   0,   0,   0,   0, 
     255, 255,  72,   6,   0,   0, 
-     57,   0,   0,   0,  84,   6, 
-      0,   0,  57,   0,   0,   0, 
-    100,   6,   0,   0,  57,   0, 
-      0,   0, 116,   6,   0,   0, 
-     57,   0,   0,   0, 132,   6, 
-      0,   0,  34,   0,   0,   0, 
-    144,   6,   0,   0,  37,   0, 
-      0,   0, 160,   6,   0,   0, 
-     39,   0,   0,   0, 176,   6, 
-      0,   0,  44,   0,   0,   0, 
-    192,   6,   0,   0,  44,   0, 
-      0,   0, 208,   6,   0,   0, 
-     44,   0,   0,   0, 220,   6, 
-      0,   0,  55,   0,   0,   0, 
-    240,   6,   0,   0,  55,   0, 
-      0,   0,   0,   7,   0,   0, 
-     55,   0,   0,   0,  16,   7, 
+     56,   0,   0,   0,  84,   6, 
       0,   0,  56,   0,   0,   0, 
-     32,   7,   0,   0,  56,   0, 
+    100,   6,   0,   0,  56,   0, 
+      0,   0, 116,   6,   0,   0, 
+     56,   0,   0,   0, 132,   6, 
+      0,   0,  33,   0,   0,   0, 
+    144,   6,   0,   0,  36,   0, 
+      0,   0, 160,   6,   0,   0, 
+     38,   0,   0,   0, 176,   6, 
+      0,   0,  43,   0,   0,   0, 
+    192,   6,   0,   0,  43,   0, 
+      0,   0, 208,   6,   0,   0, 
+     43,   0,   0,   0, 220,   6, 
+      0,   0,  54,   0,   0,   0, 
+    240,   6,   0,   0,  54,   0, 
+      0,   0,   0,   7,   0,   0, 
+     54,   0,   0,   0,  16,   7, 
+      0,   0,  55,   0,   0,   0, 
+     32,   7,   0,   0,  55,   0, 
       0,   0,  48,   7,   0,   0, 
-     31,   0,   0,   0,  60,   7, 
-      0,   0,  31,   0,   0,   0, 
-     76,   7,   0,   0,  35,   0, 
+     30,   0,   0,   0,  60,   7, 
+      0,   0,  30,   0,   0,   0, 
+     76,   7,   0,   0,  34,   0, 
       0,   0,  88,   7,   0,   0, 
-     40,   0,   0,   0, 104,   7, 
-      0,   0,  40,   0,   0,   0, 
-    120,   7,   0,   0,  40,   0, 
+     39,   0,   0,   0, 104,   7, 
+      0,   0,  39,   0,   0,   0, 
+    120,   7,   0,   0,  39,   0, 
       0,   0, 136,   7,   0,   0, 
-     40,   0,   0,   0, 152,   7, 
-      0,   0,  45,   0,   0,   0, 
-    168,   7,   0,   0,  45,   0, 
+     39,   0,   0,   0, 152,   7, 
+      0,   0,  44,   0,   0,   0, 
+    168,   7,   0,   0,  44,   0, 
       0,   0, 184,   7,   0,   0, 
-     61,   0,   0,   0, 200,   7, 
-      0,   0,  12,   0,   1,   0, 
-    216,   7,   0,   0,  12,   0, 
+     60,   0,   0,   0, 200,   7, 
+      0,   0,  11,   0,   1,   0, 
+    216,   7,   0,   0,  11,   0, 
       1,   0, 232,   7,   0,   0, 
-     12,   0,   1,   0, 248,   7, 
-      0,   0,  61,   0,   0,   0, 
-      8,   8,   0,   0,  61,   0, 
+     11,   0,   1,   0, 248,   7, 
+      0,   0,  60,   0,   0,   0, 
+      8,   8,   0,   0,  60,   0, 
       0,   0,  24,   8,   0,   0, 
-     61,   0,   0,   0,  40,   8, 
-      0,   0,   5,   1,   2,   0, 
-     56,   8,   0,   0,   5,   1, 
+     60,   0,   0,   0,  40,   8, 
+      0,   0,   4,   1,   2,   0, 
+     56,   8,   0,   0,   4,   1, 
       2,   0,  76,   8,   0,   0, 
-     44,   0,   0,   0,  88,   8, 
+     43,   0,   0,   0,  88,   8, 
       0,   0,  80,  97, 114,  97, 
     109, 101, 116, 101, 114, 115, 
       0,  68, 105, 102, 102, 117, 

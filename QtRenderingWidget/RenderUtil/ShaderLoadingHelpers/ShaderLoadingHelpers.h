@@ -15,7 +15,10 @@ class ShaderLoaderHelper
 {
 public:
 	static std::vector<uint8_t> GetRawDataFromDisk(const std::wstring& shaderPath);
+};
 
+class PixelShaderLoader
+{
 public:
 	static PixelShaderFile CreatePixelShaderFromDisk(ID3D11Device* poDevice, const std::wstring& wstrPath)
 	{
@@ -40,7 +43,6 @@ public:
 
 		return PixelShaderFile(pDestShader);
 	};
-
 };
 
 class VertexShaderLoader

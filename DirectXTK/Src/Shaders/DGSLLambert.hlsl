@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 //
@@ -6,9 +6,9 @@
 // <Visual Studio install folder>\Common7\IDE\Extensions\Microsoft\VsGraphics\Assets\Effects\Lambert.dgsl 
 //
 
-Texture2D Texture1 : register( t0 );
+Texture2D Texture1 : register(t0);
 
-SamplerState TexSampler : register( s0 );
+SamplerState TexSampler : register(s0);
 
 cbuffer MaterialVars : register (b0)
 {
@@ -61,7 +61,7 @@ struct V2P
 
 struct P2F
 {
-    float4 fragment : SV_Target0;
+    float4 fragment : SV_Target;
 };
 
 //
@@ -72,7 +72,7 @@ float3 LambertLighting(
     float3 surfaceNormal,
     float3 lightColor,
     float3 pixelColor
-    )
+)
 {
     // compute amount of contribution per light
     float diffuseAmount = saturate(dot(lightNormal, surfaceNormal));
@@ -83,9 +83,9 @@ float3 LambertLighting(
 //
 // combines a float3 RGB value with an alpha value into a float4
 //
-float4 CombineRGBWithAlpha(float3 rgb, float a) 
-{ 
-    return float4(rgb.r, rgb.g, rgb.b, a); 
+float4 CombineRGBWithAlpha(float3 rgb, float a)
+{
+    return float4(rgb.r, rgb.g, rgb.b, a);
 }
 
 P2F main(V2P pixel)

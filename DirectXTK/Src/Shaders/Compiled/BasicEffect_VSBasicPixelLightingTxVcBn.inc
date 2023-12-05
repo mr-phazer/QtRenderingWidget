@@ -49,7 +49,7 @@
     dcl_texcoord2 v2  // vin<7,8>
     dcl_texcoord3 v3  // vin<9,10,11,12>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 oPos.z, v0, c11  // ::VSBasicPixelLightingTxVcBn<15>
     dp4 oT1.x, v0, c3  // ::VSBasicPixelLightingTxVcBn<2>
     dp4 oT1.y, v0, c4  // ::VSBasicPixelLightingTxVcBn<3>
@@ -58,7 +58,7 @@
 #line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Utilities.fxh"
     mad r0.xyz, v1, c13.x, c13.y  // ::BiasX2<0,1,2>
 
-#line 85 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 84 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp3 r1.x, r0, c6
     dp3 r1.y, r0, c7
     dp3 r1.z, r0, c8
@@ -66,24 +66,24 @@
     rsq r0.x, r0.x
     mul oT2.xyz, r0.x, r1  // ::VSBasicPixelLightingTxVcBn<6,7,8>
 
-#line 12 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
+#line 11 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Common.fxh"
     dp4 r0.x, v0, c2
     max r0.x, r0.x, c13.z
     min oT1.w, r0.x, c13.w  // ::VSBasicPixelLightingTxVcBn<5>
 
-#line 483 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 482 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mul oT3.w, v3.w, c1.w  // ::VSBasicPixelLightingTxVcBn<12>
 
-#line 83 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
+#line 82 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\Lighting.fxh"
     dp4 r0.x, v0, c9  // ::vout<0>
     dp4 r0.y, v0, c10  // ::vout<1>
     dp4 r0.z, v0, c12  // ::vout<3>
 
-#line 473 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
+#line 472 "K:\Coding\repos\QtRenderingWidget_RPFM\DirectXTK\Src\Shaders\BasicEffect.fx"
     mad oPos.xy, r0.z, c0, r0  // ::VSBasicPixelLightingTxVcBn<13,14>
     mov oPos.w, r0.z  // ::VSBasicPixelLightingTxVcBn<16>
 
-#line 484
+#line 483
     mov oT0.xy, v2  // ::VSBasicPixelLightingTxVcBn<0,1>
     mov oT3.xyz, v3  // ::VSBasicPixelLightingTxVcBn<9,10,11>
 
@@ -124,10 +124,10 @@ ret
 
 const BYTE BasicEffect_VSBasicPixelLightingTxVcBn[] =
 {
-     68,  88,  66,  67, 190, 241, 
-    177, 191, 150,  62,  42,  21, 
-     30,  99,   3,  14,  70,  12, 
-    133,  48,   1,   0,   0,   0, 
+     68,  88,  66,  67,  36,   4, 
+     40, 173,   0, 218,  34, 205, 
+     77, 198, 147, 183,  41, 206, 
+    166, 159,   1,   0,   0,   0, 
      84,  11,   0,   0,   4,   0, 
       0,   0,  48,   0,   0,   0, 
      80,   7,   0,   0,  28,  10, 
@@ -214,35 +214,35 @@ const BYTE BasicEffect_VSBasicPixelLightingTxVcBn[] =
       0,   0,   0,   0, 255, 255, 
      88,   5,   0,   0,   0,   0, 
     255, 255, 100,   5,   0,   0, 
-     83,   0,   0,   0, 112,   5, 
-      0,   0,  84,   0,   0,   0, 
-    128,   5,   0,   0,  84,   0, 
-      0,   0, 144,   5,   0,   0, 
-     84,   0,   0,   0, 160,   5, 
-      0,   0,  11,   0,   1,   0, 
-    176,   5,   0,   0,  85,   0, 
-      0,   0, 196,   5,   0,   0, 
-     85,   0,   0,   0, 212,   5, 
-      0,   0,  85,   0,   0,   0, 
-    228,   5,   0,   0,  85,   0, 
-      0,   0, 244,   5,   0,   0, 
-     85,   0,   0,   0,   4,   6, 
-      0,   0,  85,   0,   0,   0, 
-     16,   6,   0,   0,  12,   0, 
-      2,   0,  32,   6,   0,   0, 
-     12,   0,   2,   0,  48,   6, 
-      0,   0,  12,   0,   2,   0, 
-     64,   6,   0,   0, 227,   1, 
-      3,   0,  80,   6,   0,   0, 
-     83,   0,   0,   0,  96,   6, 
+     82,   0,   0,   0, 112,   5, 
       0,   0,  83,   0,   0,   0, 
-    112,   6,   0,   0,  83,   0, 
+    128,   5,   0,   0,  83,   0, 
+      0,   0, 144,   5,   0,   0, 
+     83,   0,   0,   0, 160,   5, 
+      0,   0,  11,   0,   1,   0, 
+    176,   5,   0,   0,  84,   0, 
+      0,   0, 196,   5,   0,   0, 
+     84,   0,   0,   0, 212,   5, 
+      0,   0,  84,   0,   0,   0, 
+    228,   5,   0,   0,  84,   0, 
+      0,   0, 244,   5,   0,   0, 
+     84,   0,   0,   0,   4,   6, 
+      0,   0,  84,   0,   0,   0, 
+     16,   6,   0,   0,  11,   0, 
+      2,   0,  32,   6,   0,   0, 
+     11,   0,   2,   0,  48,   6, 
+      0,   0,  11,   0,   2,   0, 
+     64,   6,   0,   0, 226,   1, 
+      3,   0,  80,   6,   0,   0, 
+     82,   0,   0,   0,  96,   6, 
+      0,   0,  82,   0,   0,   0, 
+    112,   6,   0,   0,  82,   0, 
       0,   0, 128,   6,   0,   0, 
-    217,   1,   3,   0, 144,   6, 
-      0,   0, 217,   1,   3,   0, 
-    164,   6,   0,   0, 228,   1, 
+    216,   1,   3,   0, 144,   6, 
+      0,   0, 216,   1,   3,   0, 
+    164,   6,   0,   0, 227,   1, 
       3,   0, 176,   6,   0,   0, 
-    226,   1,   3,   0, 188,   6, 
+    225,   1,   3,   0, 188,   6, 
       0,   0,  66, 105,  97, 115, 
      88,  50,   0, 171,   1,   0, 
       3,   0,   1,   0,   3,   0, 

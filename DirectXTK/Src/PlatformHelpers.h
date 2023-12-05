@@ -12,6 +12,7 @@
 
 #pragma warning(disable : 4324)
 
+#include <d3d11.h>
 #include <exception>
 #include <memory>
 
@@ -66,7 +67,7 @@ namespace DirectX
     // Helper for output debug tracing
     inline void DebugTrace(_In_z_ _Printf_format_string_ const char* format, ...) noexcept
     {
-#ifdef _DEBUG
+    #ifdef _DEBUG
         va_list args;
         va_start(args, format);
 
@@ -74,9 +75,9 @@ namespace DirectX
         vsprintf_s(buff, format, args);
         OutputDebugStringA(buff);
         va_end(args);
-#else
+    #else
         UNREFERENCED_PARAMETER(format);
-#endif
+    #endif
     }
 
     // Helper smart-pointers

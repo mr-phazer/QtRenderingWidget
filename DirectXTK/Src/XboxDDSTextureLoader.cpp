@@ -8,7 +8,7 @@
 // module in the DirectXTex package or as part of the DirectXTK library to load
 // these files which use standard Direct3D resource creation APIs.
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -78,10 +78,9 @@ namespace
         }
 
         // open the file
-        ScopedHandle hFile(safe_handle(CreateFile2(fileName,
-            GENERIC_READ,
-            FILE_SHARE_READ,
-            OPEN_EXISTING,
+        ScopedHandle hFile(safe_handle(CreateFile2(
+            fileName,
+            GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING,
             nullptr)));
 
         if (!hFile)

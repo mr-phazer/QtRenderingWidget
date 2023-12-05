@@ -4,12 +4,11 @@
 #include <d3d11.h>
 
 #include "..\DirectXTK\Inc\CommonStates.h"
-
-#include "DxTexture.h"
 #include "..\Managers\DxResourceManager.h"
+#include "DxTexture.h"
 
 namespace Rldx {
-			
+
 	class DxMaterial
 	{
 		struct TextureAndSlot { UINT slot;  DxTexture* pTexture; };
@@ -21,9 +20,9 @@ namespace Rldx {
 			commonStates = DirectX::CommonStates(device);
 		};
 
-		void AddTexture(UINT slot, DxTexture* pTexture)
+		void AddTexture(UINT slot, const DxTexture& pTexture)
 		{
-			DxResourceManager::GetInstance().GetTextures().AddResource(*pTexture);
+			DxResourceManager::GetInstance().GetTextures().AddResource(pTexture);
 		}
 
 		void Bind(ID3D11DeviceContext* poDC)
@@ -33,14 +32,11 @@ namespace Rldx {
 
 			for (auto& tex : m_textures)
 			{
-				tex.pTexture->BindAsShaderResourceView(poDC);
+				tex.pTexture->BindAsShaderResourceView(poDC, tex.slot);
 			}
 		}
 
 		DirectX::CommonStates commonStates;
 	};
-
-	class DxSampler
-
-}
+};
 
