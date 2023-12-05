@@ -20,21 +20,12 @@ namespace Rldx {
 			commonStates = DirectX::CommonStates(device);
 		};
 
-		void AddTexture(UINT slot, const DxTexture& pTexture)
+		void AddTexture(UINT slot, const DxTexture* pTexture)
 		{
-			DxResourceManager::GetInstance().GetTextures().AddResource(pTexture);
+			DxResourceManager::GetInstance()->GetTextures()->AddResource(pTexture);
 		}
 
-		void Bind(ID3D11DeviceContext* poDC)
-		{
-			auto samplerLinearWrap = commonStates.LinearWrap();
-			poDC->PSSetSamplers(0, 1, &samplerLinearWrap);
-
-			for (auto& tex : m_textures)
-			{
-				tex.pTexture->BindAsShaderResourceView(poDC, tex.slot);
-			}
-		}
+		void Bind(ID3D11DeviceContext* poDC);
 
 		DirectX::CommonStates commonStates;
 	};

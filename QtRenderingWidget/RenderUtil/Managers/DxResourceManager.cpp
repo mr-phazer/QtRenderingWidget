@@ -5,6 +5,7 @@
 #include "..\DxObjects\DxShaderProgram.h"
 
 
+
 using namespace Rldx;
 
 //std::unique_ptr<ResourceManagerBase> ResourceManagerBase::sm_spoInstance;
@@ -19,11 +20,19 @@ std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 //	m_spoMeshManager = TResourceManager<DxMesh>::Create();
 //}
 
-inline DxResourceManager& Rldx::DxResourceManager::GetInstance()
+inline DxResourceManager* Rldx::DxResourceManager::GetInstance()
 {
 	if (!sm_spoInstance) {
 		sm_spoInstance = std::unique_ptr<DxResourceManager>(new DxResourceManager);
 	}
 
-	return *sm_spoInstance;
+	return sm_spoInstance.get();
 }
+
+inline TResourceManager<DxMeshData>* Rldx::DxResourceManager::GetMeshes() { return &m_spoMeshManager; }
+
+inline TResourceManager<DxTexture>* Rldx::DxResourceManager::GetTextures() { return &m_spoTextureManager; }
+
+inline TResourceManager<DxMaterial>* Rldx::DxResourceManager::GetMaterialManager() { return &m_spoMaterialManager; }
+
+inline TResourceManager<IDxShaderProgram>* Rldx::DxResourceManager::GetShaderManager() { return &m_spoShaderManager; }

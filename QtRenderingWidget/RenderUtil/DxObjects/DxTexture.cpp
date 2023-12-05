@@ -40,7 +40,7 @@ inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const std::wstr
 		// Handle failure here.
 	}
 
-	DxResourceManager::GetInstance().GetTextures().AddResource(this, objectName);
+	DxResourceManager::GetInstance()->GetTextures()->AddResource(this, objectName);
 }
 
 inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName)
@@ -150,7 +150,3 @@ UINT Rldx::DxTexture::GetSampleCount()
 	return m_textureDesc.SampleDesc.Count;
 }
 
-UINT Rldx::DxTexture::GetSlot()
-{
-	return m_slot;
-}

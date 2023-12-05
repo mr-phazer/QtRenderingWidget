@@ -52,9 +52,6 @@
     <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\SceneGraph\SceneGraph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,9 +124,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderUtil\SceneGraph\SceneGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h">

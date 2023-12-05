@@ -13,14 +13,12 @@
 #include "DxShaderProgram.h"
 #include "..\Types\CommonVertexType.h"
 
-using namespace DirectX;
-
-
 namespace Rldx {
 
 	class DxMeshData
 	{
 	public:	
+		~DxMeshData() = default;
 
 		uint32_t                                                indexCount = 0;
 		uint32_t                                                startIndex = 0;
@@ -34,6 +32,8 @@ namespace Rldx {
 		DXGI_FORMAT m_enumIndexFormat = DXGI_FORMAT::DXGI_FORMAT_R16_UINT;
 		D3D11_PRIMITIVE_TOPOLOGY m_enumTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
+
+		
 	};
 
 	class DxMesh : public IDrawable
@@ -64,10 +64,10 @@ namespace Rldx {
 			poDC->IASetPrimitiveTopology(m_meshData->m_enumTopology);
 		};
 
-		void SetMeshData(const DxMeshData& meshData)
+	/*	void SetMeshData(const DxMeshData& meshData)
 		{
 			m_meshData = DxResourceManager::GetInstance().GetMeshes().AddResource(meshData).GetPtr();
-		};		
+		};		*/
 	};
 
 

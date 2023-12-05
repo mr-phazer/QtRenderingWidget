@@ -34,8 +34,7 @@ namespace Rldx
 		virtual void Reset(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();
 		UINT GetWidth();
-		UINT GetSampleCount();
-		UINT GetSlot();
+		UINT GetSampleCount();		
 		virtual ID3D11RenderTargetView* GetRenderTargetView() const /*override*/ { return m_cpoRenderTargetView.Get();};
 		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  /*override*/ { return m_cpoShaderResourceView.Get();};
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ { return m_cpoRenderTargetView.GetAddressOf(); };

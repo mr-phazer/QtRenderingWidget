@@ -25,30 +25,29 @@ namespace Rldx
 
 			m_shaderProgram->GetReady(poDC);
 
-			m_material->
+			//m_material->
 
-			m_mesh->Draw(poDC, nullptr, destRtV);
-
+			m_mesh->Draw(poDC, destRtV);
 			
 		};
 
 	public:
-		void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
-		{
-			// TODO: finish, draw mesh
+		//void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
+		//{
+		//	// TODO: finish, draw mesh
 
-			// if RTV is supplied set that as active
-			if (destRtV != nullptr) {
-				poDC->OMSetRenderTargets(1, &destRtV, nullptr);
-			}
+		//	// if RTV is supplied set that as active
+		//	if (destRtV != nullptr) {
+		//		poDC->OMSetRenderTargets(1, &destRtV, nullptr);
+		//	}
 
-			GetMeshReadyForDrawing(poDC);
+		//	GetMeshReadyForDrawing(poDC);
 
-			poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
-		};
+		//	poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
+		//};
 
 		
-		virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
+	/*	virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);
 			UINT offset = 0;
@@ -57,7 +56,7 @@ namespace Rldx
 			poDC->IASetIndexBuffer(m_meshData->m_cpoIndexBuffer.Get(), m_meshData->m_enumIndexFormat, 0);
 
 			poDC->IASetPrimitiveTopology(m_meshData->m_enumTopology);
-		};
+		};*/
 
 
 

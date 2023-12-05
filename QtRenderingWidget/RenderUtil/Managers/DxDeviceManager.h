@@ -37,6 +37,7 @@ namespace Rldx
 	/// </summary>
 	class DxDeviceManager
 	{
+		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
 	public:
 		using PUnique = std::unique_ptr<DxDeviceManager>;
 

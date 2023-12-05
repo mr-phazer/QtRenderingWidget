@@ -1,14 +1,25 @@
 #include "DxMaterial.h"
-#include "DxTextureView.h"
+#include "DxTexture.h"
 
-inline void Rldx::DxMaterial::Bind(ID3D11DeviceContext* poDc)
+// TODO: which implementation to keep?
+//inline void Rldx::DxMaterial::Bind(ID3D11DeviceContext* poDc)
+//{
+//
+//	for (auto& tex : m_textures)
+//	{		
+//		poDc->PSSetShaderResources(tex.slot, 1, tex.pTexture->GetAddressOfShaderResourceView());
+//	}
+//
+//
+//}
+
+inline void Rldx::DxMaterial::Bind(ID3D11DeviceContext* poDC)
 {
+	auto samplerLinearWrap = commonStates.LinearWrap();
+	poDC->PSSetSamplers(0, 1, &samplerLinearWrap);
 
-	for (auto& tex : textures)
+	for (auto& tex : m_textures)
 	{
-		auto pSRV = tex.texture->getGetShaderResourceView();
-		poDc->PSSetShaderResources(tex.channel, 1, &pSRV);
+		tex.pTexture->BindAsShaderResourceView(poDC, tex.slot);
 	}
-
-
 }

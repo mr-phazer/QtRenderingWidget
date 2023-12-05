@@ -3,15 +3,23 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <map>
 #include "Helpers/NoCaseMapCompare.h"
 
 
 namespace Rldx {
+	// forward declarations
+	extern class DxMeshData;
+	extern class DxTexture;
+	extern class DxMaterial;
+	extern class IDxShaderProgram;
 
 	template <typename RESOURCE_TYPE>
 	class ResourceHandle
 	{
 	public:
+		~ResourceHandle() = default;
+
 		ResourceHandle(uint32_t id,  RESOURCE_TYPE* ptr) : m_id(id), m_ptr(ptr) {};
 
 		uint32_t GetId() const { return m_id; };
@@ -22,12 +30,7 @@ namespace Rldx {
 		RESOURCE_TYPE* m_ptr;
 	};
 
-	// forward declarations
-	class DxTexture;
-	class DxMeshData;	
-	class DxTexture;
-	class DxMaterial;
-	class IDxShaderProgram;
+	
 
 	// non-template parent, SHOULD? make sure that the static id is unique per instantiation?
 	class ResourceManagerBase
@@ -58,34 +61,35 @@ namespace Rldx {
 			return nullptr;
 		}
 
+		ResourceHandle<RESOURCE_TYPE> AddResource(RESOURCE_TYPE* resource, const std::string& stringId = "")
+		{
+			auto resourceId = GetNextId();
+			m_resourceDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(resource);
+			auto pAllocatedResource = m_resourceDataById[resourceId].get();
+
+			// if string supplied, associate string with raw pointer to resource
+			if (!stringId.empty()) {
+				m_resourceDataByString[stringId] = pAllocatedResource; //m_resourceDataById[resourceId].get();			
+			}
+
+			return { resourceId, pAllocatedResource};
+		}
+
 		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE* resource, const std::string& stringId = "")
 		{
 			auto resourceId = GetNextId();
-			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource, [](RESOURCE_TYPE* p) {delete p; });
+			auto& allocatedResource = m_resourceDataById[resourceId] = std::make_unique<RESOURCE_TYPE>(resource);
 
 			// if string supplied, associate string with raw pointer to resource
 			if (!stringId.empty()) {
 				m_resourceDataByString[stringId] = allocatedResource.get(); //m_resourceDataById[resourceId].get();			
 			}
 
-			return { resourceId, allocatedResource.get() };
-		}
-
-		ResourceHandle<RESOURCE_TYPE> AddResource(const RESOURCE_TYPE& resource, const std::string& stringId = "")
-		{
-			auto resourceId = GetNextId();
-			auto& allocatedResource = m_resourceDataById[resourceId] = std::unique_ptr<RESOURCE_TYPE>(resource, [](RESOURCE_TYPE* p) {delete p; });
-
-			// if string supplied, associate string with raw pointer to resource
-			if (!stringId.empty()) {
-				m_resourceDataByString[stringId] = allocatedResource.get(); //m_resourceDataById[resourceId].get();			
-			}
-
-			return {resourceId, allocatedResource.get()};
+			return {resourceId, allocatedResource.get()};			
 		}
 
 	private:
-		std::unordered_map<uint32_t, std::unique_ptr<RESOURCE_TYPE>> m_resourceDataById;
+		std::map<uint32_t, std::shared_ptr<RESOURCE_TYPE>> m_resourceDataById;
 
 		std::unordered_map<
 			std::string, 
@@ -95,16 +99,15 @@ namespace Rldx {
 	};
 
 	class DxResourceManager : public ResourceManagerBase
-	{
-		DxResourceManager() {};
+	{	
 
 	public:
-		static DxResourceManager& GetInstance();
+		static DxResourceManager* GetInstance();
 
-		TResourceManager<DxMeshData>& GetMeshes() { return m_spoMeshManager; }
-		TResourceManager<DxTexture>& GetTextures() { return m_spoTextureManager; }
-		TResourceManager<DxMaterial>& GetMaterialManager() { return m_spoMaterialManager; }
-		TResourceManager<IDxShaderProgram>& GetShaderManager() { return m_spoShaderManager; }
+		TResourceManager<DxMeshData>* GetMeshes();
+		TResourceManager<DxTexture>* GetTextures();
+		TResourceManager<DxMaterial>* GetMaterialManager();
+		TResourceManager<IDxShaderProgram>* GetShaderManager();
 
 	private:
 		TResourceManager<DxMeshData> m_spoMeshManager;

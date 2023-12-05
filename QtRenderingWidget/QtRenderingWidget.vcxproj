@@ -128,7 +128,6 @@
     <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp" />
     <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp" />
     <ClCompile Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.cpp" />
-    <ClCompile Include="RenderUtil\SceneGraph\SceneGraph.cpp" />
     <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp" />
     <ClCompile Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
     <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp" />
@@ -161,7 +160,6 @@
     <ClInclude Include="RenderUtil\Managers\DxSceneManager.h" />
     <ClInclude Include="RenderUtil\Managers\DxTypes.h" />
     <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h" />
-    <ClInclude Include="RenderUtil\SceneGraph\SceneGraph.h" />
     <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h" />
     <ClInclude Include="RenderUtil\Types\CommonVertexType.h" />
     <ClInclude Include="Tools\COMerrors.h" />
