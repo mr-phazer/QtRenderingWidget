@@ -113,6 +113,8 @@ namespace Rldx {
 			return AddEmpty<SHADER_TYPE>(strId);
 		}
 
+
+
 		TResourceHandle<DxTexture> AllocTexture(const std::string& strId = "");
 		TResourceHandle<DxTexture> AllocMaterial(const std::string& strId = "");
 		TResourceHandle<DxTexture> AllocMesh(const std::string& strId = "");
