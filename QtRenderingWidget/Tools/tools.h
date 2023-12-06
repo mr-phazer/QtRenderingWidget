@@ -27,6 +27,7 @@
 using namespace std;
 
 
+
 static string toUpper(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
@@ -148,6 +149,7 @@ namespace std
 
 namespace tools
 {
+	bool DoesFileExist(const std::wstring& name);
 
 	/// <summary>
 	/// Uses the CPUs high resolution clock, to count time intervals
@@ -479,7 +481,7 @@ namespace tools
 	std::string getLowerAndBackSlash(const std::string& _strInput);
 
 	size_t getFileSize(const std::string& strFileName);
-	size_t getFileSize(const std::wstring& strFileName);
+	size_t GetFileSize(const std::wstring& strFileName);
 
 	static inline size_t getInputFileLength(std::ifstream& is)
 	{
@@ -666,8 +668,4 @@ namespace guard
 			throw out_of_range(strWhat.c_str());
 		};
 	}
-
 }
-
-
-

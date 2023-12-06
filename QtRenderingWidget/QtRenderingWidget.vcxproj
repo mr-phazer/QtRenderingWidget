@@ -34,12 +34,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtInstall>5.15.2__64</QtInstall>
+    <QtInstall>5.15.2_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
-    <QtInstall>5.15.2__64</QtInstall>
+    <QtInstall>5.15.2_64</QtInstall>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -65,18 +65,19 @@
     <Link>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
-      <AdditionalDependencies>$(QMake_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\DirectXTK.lib;%(AdditionalDependencies);comctl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(QMake_LIBS_);$(SolutionDir)DirectXTK\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXTK.lib;%(AdditionalDependencies);comctl32.lib;user32.lib;gdi32.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;dxguid.lib</AdditionalDependencies>
     </Link>
     <ClCompile />
     <ClCompile />
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <LanguageStandard>Default</LanguageStandard>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>$(QMake_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\DirectXTK.lib;%(AdditionalDependencies);comctl32.lib;user32.lib;gdi32.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(QMake_LIBS_);$(Qt_LIBS_);$(SolutionDir)DirectXTK\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXTK.lib;%(AdditionalDependencies);comctl32.lib;user32.lib;gdi32.lib;d3d11.lib;d3dcompiler.lib;dxgi.lib;dxguid.lib</AdditionalDependencies>
     </Link>
     <ClCompile />
     <ClCompile />
@@ -92,10 +93,10 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -113,62 +114,74 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.cpp" />
-    <ClCompile Include="QtObjects\Views\QtRenderingWidget_new.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
+    <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp" />
+    <ClCompile Include="Rldx\DxObjects\DxMaterial.cpp" />
+    <ClCompile Include="Rldx\DxObjects\DxMesh.cpp" />
+    <ClCompile Include="Rldx\DxObjects\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\IDrawable.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\IDrawable.h" />
-    <ClCompile Include="RenderUtil\Managers\DxResourceManager.cpp" />
-    <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp" />
-    <ClCompile Include="RenderUtil\Managers\Helpers\NoCaseMapCompare.h" />
-    <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp" />
-    <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp" />
-    <ClCompile Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.cpp" />
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp" />
-    <ClCompile Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
-    <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp" />
-    <ClCompile Include="RenderUtil\Types\ShaderFiles.cpp" />
+    <ClCompile Include="Rldx\DxObjects\DxScene.cpp" />
+    <ClCompile Include="Rldx\DxObjects\IDrawable.cpp" />
+    <ClCompile Include="Rldx\DxObjects\IDrawable.h" />
+    <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
+    <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
+    <ClCompile Include="Rldx\Managers\Helpers\NoCaseMapCompare.h" />
+    <ClCompile Include="Rldx\DxObjects\DXSwapChain.cpp" />
+    <ClCompile Include="Rldx\DxObjects\DxTexture.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
+    <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
+    <ClCompile Include="Rldx\Types\CommonVertexType.cpp" />
+    <ClCompile Include="Rldx\Types\ShaderFiles.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
     <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc" />
     <QtUic Include="QtObjects\Views\QtRenderingWidget.ui" />
-    <ClCompile Include="RenderUtil\Managers\DxDeviceManager.cpp" />
+    <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.h" />
-    <ClInclude Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
-    <ClInclude Include="QtObjects\Views\QtRenderingWidget_new.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h" />
-    <ClInclude Include="RenderUtil\Types\ShaderFiles.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
+    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
+    <QtMoc Include="QtObjects\Views\QtRenderingWidget.h" />
+    <ClInclude Include="Rldx\DxObjects\DxMaterial.h" />
+    <ClInclude Include="Rldx\Types\ShaderFiles.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="RenderUtil\Types\ConstBuffers\CPUConstBuffers.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h" />
+    <ClInclude Include="Rldx\Types\ConstBuffers\CPUConstBuffers.h" />
+    <ClInclude Include="Rldx\DxObjects\DxMesh.h" />
+    <ClInclude Include="Rldx\DxObjects\DxShaderProgram.h" />
     <ClInclude Include="Logging\Logging.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DXSwapChain.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxTexture.h" />
-    <ClInclude Include="RenderUtil\DxObjects\DxScene.h" />
-    <ClInclude Include="RenderUtil\Managers\DxDeviceManager.h" />
-    <ClInclude Include="RenderUtil\Managers\DxResourceManager.h" />
-    <ClInclude Include="RenderUtil\Managers\DxSceneManager.h" />
-    <ClInclude Include="RenderUtil\Managers\DxTypes.h" />
-    <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h" />
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h" />
-    <ClInclude Include="RenderUtil\Types\CommonVertexType.h" />
+    <ClInclude Include="Rldx\DxObjects\DXSwapChain.h" />
+    <ClInclude Include="Rldx\DxObjects\DxTexture.h" />
+    <ClInclude Include="Rldx\DxObjects\DxScene.h" />
+    <ClInclude Include="Rldx\Managers\DxDeviceManager.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h" />
+    <ClInclude Include="Rldx\Managers\DxSceneManager.h" />
+    <ClInclude Include="Rldx\Managers\DxTypes.h" />
+    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
+    <ClInclude Include="Rldx\Types\CommonVertexType.h" />
     <ClInclude Include="Tools\COMerrors.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
     <None Include="Logging\ConsoleColors.inl" />
     <None Include="Logging\WinConsoleColors.inl" />
     <None Include="myfile.spritefont" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

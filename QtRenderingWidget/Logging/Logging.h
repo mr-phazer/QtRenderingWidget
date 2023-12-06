@@ -45,7 +45,7 @@ namespace logging
 
 #include "WinConsoleColors.inl"
 
-    static string prefix = "[qtRenderingView Debug:]";
+    
 
     class WinConcole
     {
@@ -58,6 +58,7 @@ namespace logging
     class ImplLog
     {
     public:
+        static std::wstring prefix;
 
         static void LogActionInfo(const std::string& _strMsg);
         static void LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
@@ -105,14 +106,14 @@ namespace logging
         {
             TimeLogAction newInstance;
             newInstance.m_message = messageToShow;
-            ImplLog::LogSimpleWithColor(prefix + newInstance.m_message + ".", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + newInstance.m_message + ".", BG_BLACK | FG_WHITE);
 
             return newInstance;
         };
 
         void PrintDone(const std::string& messageToShow = "")
         {
-            ImplLog::LogSimpleWithColor(prefix + m_message + ". Done.", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + m_message + ". Done.", BG_BLACK | FG_WHITE);
 
             auto timeElapsedMessageString = "Time Elapsed: " + std::to_string(m_clock.GetLocalTime()) + " seconds";
             ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);
@@ -120,7 +121,7 @@ namespace logging
 
         void PrintDoneSuccess(const std::string& messageToShow = "")
         {
-            ImplLog::LogSimpleWithColor(prefix + m_message + ". Completed Succesfully.", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + m_message + ". Completed Succesfully.", BG_BLACK | FG_WHITE);
 
             auto timeElapsedMessageString = "Time Elapsed: " + std::to_string(m_clock.GetLocalTime()) + " seconds";
             ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);

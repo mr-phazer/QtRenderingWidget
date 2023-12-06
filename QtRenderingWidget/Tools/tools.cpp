@@ -91,6 +91,12 @@ bool tools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 	return true;
 }
 
+bool tools::DoesFileExist(const std::wstring& name)
+{
+	struct _stat buffer {};
+	return (_wstat(name.c_str(), &buffer) == 0);
+};
+
 std::wstring tools::string_to_wstring(const std::string& str)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -424,7 +430,8 @@ size_t tools::getFileSize(const std::string& strFileName)
 	return (rEnd - rBegin);
 }
 
-size_t tools::getFileSize(const std::wstring& strFileName)
+
+size_t tools::GetFileSize(const std::wstring& strFileName)
 {
 	struct _stat stat_buf {};
 	int rc = _wstat(strFileName.c_str(), &stat_buf);

@@ -3,9 +3,11 @@
 
 using namespace logging;
 
+std::wstring ImplLog::prefix = L"[QRenderingView Debug:] ";
+
 void ImplLog::LogActionInfo(const std::string& _strMsg)
 {
-	WinConcole::Print(L"[FBX SDK Wrapper Dll:] ");
+	WinConcole::Print(prefix);
 	WinConcole::Print(L" ");
 	WinConcole::Print(WidenStr(_strMsg));
 	WinConcole::Print(L"\r\n");
@@ -30,27 +32,27 @@ void ImplLog::LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags)
 
 void ImplLog::LogAction_success(const std::string& _strMsg)
 {	
-	WinConcole::Print(L"[FBX SDK Wrapper Dll:] SUCCESS:", BG_BLACK | FG_GREEN);
+	WinConcole::Print(prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
 	WinConcole::Print(L" ");
 	WinConcole::Print(WidenStr(_strMsg));
 	//WinConcole::Print(L"Success.", BG_BLUE | FG_WHITE);
 	WinConcole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << "[FBX SDK Wrapper Dll:] SUCCESS:" << _strMsg << ". Success.";
+	logString << std::endl << tools::wstring_to_string(prefix) << _strMsg << ". Success.";
 	
 	WriteToLogFile(logString.str());	
 }
 
 bool ImplLog::LogActionErrorFalse(const std::string& _strMsg)
 {	
-	WinConcole::Print(L"[FBX SDK Wrapper Dll:] ERROR:", BG_BLACK | FG_RED);
+	WinConcole::Print(prefix + L"ERROR:", BG_BLACK | FG_RED);
 	WinConcole::Print(L" ");
 	WinConcole::Print(WidenStr(_strMsg));
 	WinConcole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << "[FBX SDK Wrapper Dll:]  ERROR: " << _strMsg;
+	logString << std::endl << tools::wstring_to_string(prefix) +  "ERROR: " << _strMsg;
 
 	WriteToLogFile(logString.str());
 
@@ -59,13 +61,13 @@ bool ImplLog::LogActionErrorFalse(const std::string& _strMsg)
 
 bool ImplLog::LogAction_warning(const std::string& _strMsg)
 {
-	WinConcole::Print(L"[FBX SDK Wrapper Dll:]  WARNING:", BG_BLACK | FG_YELLOW);
+	WinConcole::Print(prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
 	WinConcole::Print(L" ");
 	WinConcole::Print(WidenStr(_strMsg));
 	WinConcole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << "[FBX SDK Wrapper Dll:]  WARNING:: " << _strMsg;
+	logString << std::endl << tools::wstring_to_string(prefix) + "WARNING:: " << _strMsg;
 
 	 WriteToLogFile(logString.str());
 
@@ -79,7 +81,7 @@ void ImplLog::LogWrite(const std::string& _strMsg)
 
 void ImplLog::WriteToLogFile(const std::string& logString)
 {
-    std::ofstream oOutFile(L"fbxsdk.log.txt", std::ios::app);
+    std::ofstream oOutFile(L"log.txt", std::ios::app);
     oOutFile << logString;
     oOutFile.close();
 }

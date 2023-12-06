@@ -34,7 +34,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Managers\DxDeviceManager.cpp">
+    <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tools\tools.cpp">
@@ -43,66 +43,66 @@
     <ClCompile Include="Logging\Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DXSwapChain.cpp">
+    <ClCompile Include="Rldx\DxObjects\DXSwapChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxTexture.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.cpp">
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.cpp">
+    <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Managers\DxSceneManager.cpp">
+    <ClCompile Include="Rldx\Managers\DxSceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxShaderProgram.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxScene.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxMesh.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Types\CommonVertexType.cpp">
+    <ClCompile Include="Rldx\Types\CommonVertexType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Managers\Helpers\NoCaseMapCompare.h">
+    <ClCompile Include="Rldx\Managers\Helpers\NoCaseMapCompare.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Managers\DxResourceManager.cpp">
+    <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\IDrawable.h">
+    <ClCompile Include="Rldx\DxObjects\IDrawable.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\IDrawable.cpp">
+    <ClCompile Include="Rldx\DxObjects\IDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\DxObjects\DxMaterial.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtObjects\Views\QtRenderingWidget_new.cpp">
+    <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
+    <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\Types\ShaderFiles.cpp">
+    <ClCompile Include="Rldx\Types\ShaderFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.cpp">
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RenderUtil\Managers\DxDeviceManager.h">
+    <ClInclude Include="Rldx\Managers\DxDeviceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\tools.h">
@@ -111,37 +111,37 @@
     <ClInclude Include="Logging\Logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DXSwapChain.h">
+    <ClInclude Include="Rldx\DxObjects\DXSwapChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxTexture.h">
+    <ClInclude Include="Rldx\DxObjects\DxTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="asdsass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxScene.h">
+    <ClInclude Include="Rldx\DxObjects\DxScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxSceneNode.h">
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\SceneGraph\NodeTransform\NodeTransform.h">
+    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Managers\DxTypes.h">
+    <ClInclude Include="Rldx\Managers\DxTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Managers\DxSceneManager.h">
+    <ClInclude Include="Rldx\Managers\DxSceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxShaderProgram.h">
+    <ClInclude Include="Rldx\DxObjects\DxShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxMesh.h">
+    <ClInclude Include="Rldx\DxObjects\DxMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Types\CommonVertexType.h">
+    <ClInclude Include="Rldx\Types\CommonVertexType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\COMerrors.h">
@@ -150,28 +150,28 @@
     <ClInclude Include="Common\TSmartPointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Types\ConstBuffers\CPUConstBuffers.h">
+    <ClInclude Include="Rldx\Types\ConstBuffers\CPUConstBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Managers\DxResourceManager.h">
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\DxObjects\DxMaterial.h">
+    <ClInclude Include="Rldx\DxObjects\DxMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QtObjects\Views\QtRenderingWidget_new.h">
+    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
+    <ClInclude Include="Rldx\Types\ShaderFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\Types\ShaderFiles.h">
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderUtil\SceneGraph\SceneNodes\DxMeshNode.h">
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -183,5 +183,15 @@
     <None Include="Logging\ConsoleColors.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QtObjects\Views\QtRenderingWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl" />
+    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl" />
   </ItemGroup>
 </Project>
