@@ -13,13 +13,16 @@ std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
 DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
 {
-	auto poNewInstance = std::make_unique<DxDeviceManager>();
+	auto poNewInstance = std::unique_ptr<DxDeviceManager>(new DxDeviceManager);
 
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
 	if (!SUCCEEDED(hr))	{
 		throw DirectX::com_exception(hr);
 	}
+
+	// Create state objects.
+	poNewInstance->stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
 
 	return poNewInstance;
 }

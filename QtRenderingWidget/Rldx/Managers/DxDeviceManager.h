@@ -4,6 +4,7 @@
 #include <d3d11_1.h>
 #include <D3Dcompiler.h>
 
+
 #include <assert.h>
 
 //  WRL wrappers from COM Objects - smart pointers for Direct3d resources
@@ -21,6 +22,7 @@
 
 #include "..\DxObjects\DXSwapChain.h"
 #include "..\..\..\DirectXTK\Inc\SpriteFont.h"
+#include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\..\Logging\Logging.h"
 
 
@@ -37,14 +39,13 @@ namespace Rldx
 	/// </summary>
 	class DxDeviceManager
 	{
+		DxDeviceManager() {};
 		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
 	public:
 		using PUnique = std::unique_ptr<DxDeviceManager>;
 
 	public:
-		static DxDeviceManager& GetInstance();
-			
-		static PUnique Create();
+		static DxDeviceManager& GetInstance();		
 
 		ID3D11Device* GetDevice() {
 			return m_cpoDevice.Get();
@@ -78,11 +79,17 @@ namespace Rldx
 			return m_cpoDevice;
 		}
 
-		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetReferenceTiDviceContext() {
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetReferenceToDviceContext() {
 			return m_cpoDeviceContext;
-		}
+
+		};		
 	
+		DirectX::CommonStates& GetDxStates() {
+			return *stateObjects;
+		}
+
 	private:
+		static PUnique Create();
 		HRESULT InitDirect3d11();
 		bool InitFont();
 		void RenderText();
@@ -90,6 +97,8 @@ namespace Rldx
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11Device> m_cpoDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_cpoDeviceContext;
+
+		std::unique_ptr<DirectX::CommonStates> stateObjects;
 
 	/*public:
 		struct DepthStencilStates

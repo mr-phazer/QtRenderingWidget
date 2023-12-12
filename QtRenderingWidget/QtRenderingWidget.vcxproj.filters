@@ -70,7 +70,7 @@
     <ClCompile Include="Rldx\Types\CommonVertexType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Managers\Helpers\NoCaseMapCompare.h">
+    <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp">
@@ -172,6 +172,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Types\DxMeshData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Helpers\DxMeshCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

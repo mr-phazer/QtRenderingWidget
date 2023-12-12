@@ -9,15 +9,15 @@
 
 namespace Rldx {
 
-	class DxMaterial
+	class DxMaterial : public IDxResource
 	{
-		struct TextureAndSlot { UINT slot;  DxTexture* pTexture; };
+		struct TextureAndSlot { UINT slot = 0;  DxTexture* pTexture = nullptr; } textureAndSlot;
 		std::vector<TextureAndSlot> m_textures;
 
 	public:
 		void Init(ID3D11Device* device)
 		{
-			commonStates = DirectX::CommonStates(device);
+		
 		};
 
 		void AddTexture(UINT slot, const DxTexture& texture)
@@ -27,9 +27,10 @@ namespace Rldx {
 			m_textures.push_back({ slot, ret.GetPtr()});*/
 		}
 
-		void Bind(ID3D11DeviceContext* poDC);
+		void Bind(ID3D11DeviceContext* poDC);		
 
-		DirectX::CommonStates commonStates;
+		// Inherited via IDxResource
+		ResourceTypeEnum GetType() const override;
 	};
 };
 

@@ -125,7 +125,7 @@
     <ClCompile Include="Rldx\DxObjects\IDrawable.h" />
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
-    <ClCompile Include="Rldx\Managers\Helpers\NoCaseMapCompare.h" />
+    <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h" />
     <ClCompile Include="Rldx\DxObjects\DXSwapChain.cpp" />
     <ClCompile Include="Rldx\DxObjects\DxTexture.cpp" />
     <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp" />
@@ -143,11 +143,13 @@
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
+    <ClInclude Include="Rldx\Helpers\DxMeshCreator.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
     <QtMoc Include="QtObjects\Views\QtRenderingWidget.h" />
     <ClInclude Include="Rldx\DxObjects\DxMaterial.h" />
+    <ClInclude Include="Rldx\Types\DxMeshData.h" />
     <ClInclude Include="Rldx\Types\ShaderFiles.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Rldx\Types\ConstBuffers\CPUConstBuffers.h" />

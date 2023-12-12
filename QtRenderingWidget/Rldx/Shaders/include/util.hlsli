@@ -9,7 +9,7 @@ float getShadow(in PixelInputType input)
 {
     float2 shadow_buffer_UV;
     shadow_buffer_UV.xy = input.position.xy * screenRes.zw;
-    float shadow = float4(Shadow_mapTexture.Sample(s_point, shadow_buffer_UV.xy).rgb, 1);
+    float shadow = float4(Shadow_mapTexture.Sample(s_point, shadow_buffer_UV.xy).rgb, 1).r;
 
     return shadow;
 }                                            
@@ -24,7 +24,7 @@ float getSSAO(PixelInputType input)
     screenUV.y = 0.5f - (input.screenPos.y / input.screenPos.w * 0.5f);
 
     //float2 screenUV = (input.screenPos.xy / input.screenPos.w) * 0.5f + 0.5f;
-    return ao_mapTexture.SampleLevel(SamplerLinear, screenUV, 0);;
+    return ao_mapTexture.SampleLevel(SamplerLinear, screenUV, 0).r;
 }
 
 float getAO_old(in float2 screenUV)

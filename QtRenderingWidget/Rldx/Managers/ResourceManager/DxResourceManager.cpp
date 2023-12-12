@@ -1,15 +1,17 @@
 #include "DxResourceManager.h"
 
+
+// impl of the forward declared resources
 #include "..\..\DxObjects\DxMesh.h"
 #include "..\..\DxObjects\DxMaterial.h"
+#include "..\..\DxObjects\DxTexture.h"
 #include "..\..\DxObjects\DxShaderProgram.h"
-
 
 
 using namespace Rldx;
 
 //std::unique_ptr<ResourceManagerBase> ResourceManagerBase::sm_spoInstance;
-uint32_t IdCounter::sm_nextId;
+uint32_t IdCounterBase::sm_nextId;
 std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
 
@@ -32,6 +34,16 @@ DxResourceManager* Rldx::DxResourceManager::Instance()
 TResourceHandle<DxTexture> Rldx::DxResourceManager::AllocTexture(const std::string& strId)
 {
 	return AddEmpty<DxTexture>(strId);
+}
+
+inline TResourceHandle<DxMaterial> Rldx::DxResourceManager::AllocMaterial(const std::string& strId)
+{
+	return AddEmpty<DxMaterial>(strId);
+}
+
+inline TResourceHandle<DxMesh> Rldx::DxResourceManager::AllocMeshData(const std::string& strId)
+{
+	return AddEmpty<DxMesh>(strId);
 }
 
 

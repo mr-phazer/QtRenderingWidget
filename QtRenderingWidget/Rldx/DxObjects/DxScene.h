@@ -10,6 +10,7 @@ namespace Rldx {
 	
 	class DxScene : public IDrawable
 	{
+		
 	
 	public:	
 		using UniquePtr = std::unique_ptr<DxScene>;
@@ -39,13 +40,18 @@ namespace Rldx {
 		DxSceneNode* GetRootNode();
 		void DeleteNode(DxSceneNode* node);
 
+		DxSwapChain* GetSwapChain()
+		{
+			return m_spoSwapChain.get();
+		}
+
 		DxSwapChain::UPtr& GetRefSwapChain()
 		{
-			return m_swapChain;
+			return m_spoSwapChain;
 		}
 
 	private:
-		DxSwapChain::UPtr m_swapChain; // back buffer
+		DxSwapChain::UPtr m_spoSwapChain; // back buffer
 		DxSceneNode::Sptr m_spoRootNode = DxSceneNode::Create("RootNode");
 
 		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized

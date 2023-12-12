@@ -35,43 +35,44 @@ public:
 			{
 				throw exception("Error Loading Font");
 			}*/
-		m_poDxManager = dxManager;
-		//m_upoScene = Rldx::DxTempDemoRenderer::CreateScene(m_spDxManager, this);
+		m_poDxManager = dxManager;		
 		m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
 
-
+		
 		return true;
+	}
+
+	void timerHandler()
+	{
+		if (!m_bRenderingRunning)
+			return;
+
+//		renderText(_dxManager);		
+
+		m_upoSceneManager->GetScene()->GetSwapChain()->GetBackBuffer()->ClearPixels(m_poDxManager->GetDeviceContext(), { 0, 0.5f, 0, 1 });
+		m_upoSceneManager->GetScene()->GetSwapChain()->Present(m_poDxManager->GetDeviceContext());
+	}
+
+	void startRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 60)
+	{
+		m_timer = new QTimer(this);
+
+		connect(m_timer, &QTimer::timeout, [&]()
+				{
+					timerHandler();
+				}
+		);
+
+		m_timer->start(1000 / _FPS);
 	}
 
 private:
 	Rldx::DxSceneManager::UniquePtr m_upoSceneManager;
-	Rldx::DxDeviceManager* m_poDxManager;
+	Rldx::DxDeviceManager* m_poDxManager = nullptr;
+	bool m_bRenderingRunning = true;	
+	QTimer* m_timer;
 
-
-	//void timerHandler(const Rldx::DXD3DManager::spDXD3DManger& _dxManager)
-	//{
-	//	if (!m_bRenderingRunning)
-	//		return;
-
-	//	renderText(_dxManager);
-	//	spSwapChain->present(_dxManager->deviceContext());
-	//}
-
-	//void startRendering(const Rldx::DXD3DManager::spDXD3DManger& _dxManager, int _FPS = 60)
-	//{
-	//	m_timer = new QTimer(this);
-
-	//	connect(m_timer, &QTimer::timeout, [&]()
-	//			{
-	//				timerHandler(_dxManager);
-	//			}
-	//	);
-
-	//	m_timer->start(1000 / _FPS);
-	//}
-
-
-
+};
 
 
 //	void renderText(const Rldx::DXD3DManager::spDXD3DManger& _dxManager)
@@ -180,9 +181,6 @@ private:
 //	}*/
 //
 //private:
-//	//bool m_bRenderingRunning = true;
-//	//Rldx::DXSwapChain::sptrDXSwapChain spSwapChain;
-//	//QTimer* m_timer;
 //
 //private:
 //	
@@ -194,5 +192,5 @@ private:
 //
 //		std::vector<std::wstring> m_stringsToDraw = { L"D3D\nIt Works\n\r\NOW: Scenegrapdh" };
 //	} fontEngine;
-};
+
 

@@ -99,7 +99,7 @@ namespace Rldx {
 		template <typename SHADER_TYPE>
 		SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{		
-			auto result = Rldx::DxResourceManager::Instance()->AddEmpty<SHADER_TYPE>("shader01");
+			auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 			//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
 			auto newInstance = result.GetPtr();
 
