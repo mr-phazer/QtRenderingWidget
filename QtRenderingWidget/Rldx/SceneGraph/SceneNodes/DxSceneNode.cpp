@@ -10,21 +10,26 @@ DxSceneNode::~DxSceneNode()
 	m_wpoParent->RemoveChild(this);	
 }
 
-inline Rldx::ResourceTypeEnum Rldx::DxSceneNode::GetResourceType() 
+Rldx::ResourceTypeEnum Rldx::DxSceneNode::GetResourceType() 
 {
 	return m_resourceType;
 }
 
-DxSceneNode::Sptr DxSceneNode::Create(std::string name)
+Rldx::DxSceneNode::Sptr DxSceneNode::Create(std::string name)
 {	
 	Sptr newNode= std::make_unique<DxSceneNode>();
-	newNode->m_name = name == ("" ? "SceneNode" : name) + "__" + std::to_string(0/*newNode->GetId()*/);	
+	newNode->SetName(name);
 
 	return newNode;
 }
 
+void Rldx::DxSceneNode::SetName(const std::string& name)
+{
+	m_name = name == ("" ? "SceneNode" : name) + "__" + std::to_string(0/*newNode->GetId()*/);
+}
 
-void DxSceneNode::AddChild(DxSceneNode::Sptr& spoChild)
+
+void DxSceneNode::AddChild(DxSceneNode::Sptr spoChild)
 {		
 	spoChild->SetParent(this);
 	m_children.push_back(spoChild);

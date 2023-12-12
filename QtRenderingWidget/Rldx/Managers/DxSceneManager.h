@@ -20,24 +20,32 @@ namespace Rldx {
 		static UniquePtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
 		{				
 			auto newSceneManager = std::make_unique<DxSceneManager>();
-
-			BoundToHWNDSceneCreator sceneCreator(nativeWindowHandle);			
-			newSceneManager->m_spoScene = sceneCreator.Create(poDevice);
+						
+			newSceneManager->m_spoCurrentScene = newSceneManager->CreateScene(poDevice, nativeWindowHandle);
 
 			return std::move(newSceneManager);
+		}
+
+		DxScene::UniquePtr CreateScene(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		{
+			NativeWindowSceneCreator sceneCreator(nativeWindowHandle);
+			auto newScene = sceneCreator.Create(poDevice);
+			newScene->Init(poDevice, nativeWindowHandle);
+
+			return std::move(newScene);
 		}
 
 		void OnUpdateFrame();
 		void OnResize();
 
-		DxScene* GetScene()
+		DxScene* GetCurrentScene()
 		{
-			return m_spoScene.get();
+			return m_spoCurrentScene.get();
 		}
 
 
 	private:
-		DxScene::UniquePtr m_spoScene;
+		DxScene::UniquePtr m_spoCurrentScene;
 	};
 
 

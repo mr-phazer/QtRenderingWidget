@@ -36,6 +36,8 @@ namespace Rldx
 		UINT GetHeight();
 		UINT GetWidth();
 		UINT GetSampleCount();		
+		float GetAspectRatio();
+
 		virtual ID3D11RenderTargetView* GetRenderTargetView() const /*override*/ { return m_cpoRenderTargetView.Get();};
 		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  /*override*/ { return m_cpoShaderResourceView.Get();};
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ { return m_cpoRenderTargetView.GetAddressOf(); };

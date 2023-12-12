@@ -7,18 +7,24 @@ namespace Rldx
 {
 	class DxMeshNode : public DxSceneNode, IDrawable
 	{
-		DxMesh* m_mesh;
-		DxMaterial* m_material;
-		DxMeshShaderProgam* m_shaderProgram;
+
+		DxMesh* m_mesh = nullptr;
+		DxMaterial* m_material = nullptr;
+		DxMeshShaderProgam* m_shaderProgram = nullptr;
 
 	public:
 		using Sptr = std::shared_ptr<DxMeshNode>;
 	public:
 		DxMeshNode() = default;
 		virtual ~DxMeshNode() = default;
-		
-		static DxMeshNode::Sptr Create(std::string name = "");
-				
+
+		DxMeshNode(const std::string& name) : DxSceneNode(name) {};
+
+		static DxMeshNode::Sptr Create(const std::string& name = "");
+
+		void SetShaderProgram(DxMeshShaderProgam* shaderProgram) { m_shaderProgram = shaderProgram; };
+
+
 		void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) override
 		{
 			// TODO: finish, draw mesh			
@@ -28,7 +34,7 @@ namespace Rldx
 			//m_material->
 
 			m_mesh->Draw(poDC, destRtV);
-			
+
 		};
 
 	public:
@@ -46,7 +52,7 @@ namespace Rldx
 		//	poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
 		//};
 
-		
+
 	/*	virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);

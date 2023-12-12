@@ -35,15 +35,19 @@ namespace Rldx {
 	public:
 		using Sptr = std::shared_ptr<DxSceneNode>;
 	public:		
+		DxSceneNode() = default;
 		virtual ~DxSceneNode();
+		DxSceneNode(const std::string& name) { SetName(name); };
 
 		static DxSceneNode::Sptr Create(std::string name = "");
+
+		void SetName(const std::string& name);
 
 		ResourceTypeEnum GetResourceType();		
 
 		DxSceneNode* GetParent();
 
-		void AddChild(DxSceneNode::Sptr& spoChild);
+		void AddChild(DxSceneNode::Sptr spoChild);
 		//void AddChild(DxSceneNode* poChild); // TODO: should remove? require user always use shared_ptr
 		DxSceneNode* GetChildByPtr(DxSceneNode* poChild);
 		DxSceneNode* GetChild(size_t index = 0);
@@ -88,7 +92,7 @@ namespace Rldx {
 		// node ids	
 		//NodeId m_nodeId = ~0;
 		//static NodeId sm_nextId;		
-
+		
 	};
 
 

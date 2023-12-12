@@ -1,10 +1,21 @@
 #pragma once
 
 #include <DirectXMath.h>
-#include "..\..\..\DirectXTK\Inc\SimpleMath.h"
+#include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
 #include "..\ConstBuffers\CPUConstBuffers.h"
 
 namespace Rldx {
+
+	struct CommonVertex	{
+		
+		DirectX::XMFLOAT4 position = { 0,0,0,0 };
+		DirectX::XMFLOAT3 normal = { 0,0,0 };
+		DirectX::XMFLOAT3 tangent = { 0,0,0 };
+		DirectX::XMFLOAT3 bitangent = { 0,0,0 };
+		DirectX::XMFLOAT2 textureCoordinate = { 0,0 };;
+		DirectX::XMFLOAT4 color = { 1,0,0,1 };
+	};
+
 
 	struct VS_MeshConstantBuffer
 	{
@@ -55,5 +66,12 @@ namespace Rldx {
 
 		uint32_t PisTextureSRGB[64];
 	}; 
+
+
+	struct VS_SceneConstantBuffer{
+		DirectX::XMFLOAT4X4 world;
+		DirectX::XMFLOAT4X4 view;
+		DirectX::XMFLOAT4X4 projection;
+	};
 
 }; // namespace Rldx 

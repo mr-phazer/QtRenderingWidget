@@ -95,7 +95,7 @@ namespace Rldx {
 		return SUCCEEDED(hr);
 	}
 	// TODO: remove once tested
-	static void DEBUG_TestInitMethod(ID3D11Device* poDevice)
+	static DxCommonMeshData DEBUG_MakeCubeMesh(ID3D11Device* poDevice)
 	{
 		DirectX::DX11::GeometricPrimitive::VertexCollection vertices;
 		DirectX::DX11::GeometricPrimitive::IndexCollection indices;
@@ -120,6 +120,6 @@ namespace Rldx {
 		auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
 		auto result = meshCreator.CreateDxMeshData(poDevice, rawMeshData.vertices, rawMeshData.indices);
 
-		auto debug_break = 1;
+		return result;
 	}
 };

@@ -38,28 +38,45 @@ public:
 		m_poDxManager = dxManager;		
 		m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
 
+		auto newShaderProgram =
+			Rldx::DxMeshShaderProgam::Create<Rldx::DxMeshShaderProgam>(
+				m_poDxManager->GetDevice(),
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Default.cso)",
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_Simple.cso)"
+			);
+		auto meshNode = Rldx::DxMeshNode::Create("Test_Mesh_Node");
+
+		meshNode->SetShaderProgram(newShaderProgram);
+
+
+		m_upoSceneManager->GetCurrentScene()->GetRootNode()->AddChild();
+
+
+
+
+
+
 		
 		return true;
 	}
 
-	void timerHandler()
+	void TimerHandler()
 	{
 		if (!m_bRenderingRunning)
 			return;
 
 //		renderText(_dxManager);		
 
-		m_upoSceneManager->GetScene()->GetSwapChain()->GetBackBuffer()->ClearPixels(m_poDxManager->GetDeviceContext(), { 0, 0.5f, 0, 1 });
-		m_upoSceneManager->GetScene()->GetSwapChain()->Present(m_poDxManager->GetDeviceContext());
+		m_upoSceneManager->GetCurrentScene()->Draw(m_poDxManager->GetDeviceContext());	
 	}
 
-	void startRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 60)
+	void StartRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 60)
 	{
 		m_timer = new QTimer(this);
 
 		connect(m_timer, &QTimer::timeout, [&]()
 				{
-					timerHandler();
+					TimerHandler();
 				}
 		);
 

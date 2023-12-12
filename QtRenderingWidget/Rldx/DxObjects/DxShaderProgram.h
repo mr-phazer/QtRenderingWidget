@@ -83,21 +83,28 @@ namespace Rldx {
 		PS_CONST_BUFER pixelShaderConstBuffer;
 
 	public:
-		virtual void Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
+		template <typename SHADER_TYPE>
+		static  SHADER_TYPE* Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
 		{
+			auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+			//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
+			auto newInstance = result.GetPtr();
+
 			if (vertexShaderMem.first != nullptr && vertexShaderMem.second > 0)
-				m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromMemory(poDevice, vertexShaderMem.first, vertexShaderMem.second);
+				newInstance->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromMemory(poDevice, vertexShaderMem.first, vertexShaderMem.second);
 
 			if (pixelShaderMem.first != nullptr && pixelShaderMem.second > 0)
-				m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromMemory(poDevice, pixelShaderMem.first, pixelShaderMem.second);
+				newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromMemory(poDevice, pixelShaderMem.first, pixelShaderMem.second);
 
-			m_pixelShaderConstBuffer.Create(poDevice);
-			m_vertexShaderConstBuffer.Create(poDevice);
+			newInstance->m_pixelShaderConstBuffer.Create(poDevice);
+			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
+
+			return newInstance;
 		};
 
 		
 		template <typename SHADER_TYPE>
-		SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
+		static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{		
 			auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 			//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
@@ -152,13 +159,13 @@ namespace Rldx {
 		}*/
 
 
-		virtual void GetReady(ID3D11DeviceContext* dc) override
+		virtual void GetReady(ID3D11DeviceContext* deviceContext) override
 		{
 			auto& vsCB = GetCSEditableVS();
 			vsCB.mWorld = sm::Matrix::Identity;
 
-			dc->PSSetShader(GetPixelShader(), nullptr, 0);
-			dc->VSSetShader(GetVertexShader(), nullptr, 0);
+			deviceContext->PSSetShader(GetPixelShader(), nullptr, 0);
+			deviceContext->VSSetShader(GetVertexShader(), nullptr, 0);
 		};
 
 	};	

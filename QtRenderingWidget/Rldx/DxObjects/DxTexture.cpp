@@ -156,3 +156,8 @@ UINT Rldx::DxTexture::GetSampleCount()
 	return m_textureDesc.SampleDesc.Count;
 }
 
+float Rldx::DxTexture::GetAspectRatio()
+{
+	return static_cast<float>(GetWidth()) / static_cast<float>(GetHeight());
+}
+

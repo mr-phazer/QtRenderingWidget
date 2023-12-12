@@ -35,6 +35,7 @@ namespace Rldx {
 				&pDestShader
 			);
 
+
 			return PixelShaderFile(pDestShader);
 		};
 
@@ -62,7 +63,10 @@ namespace Rldx {
 				&pDestShader
 			);
 
-			return VertexShaderFile(pDestShader);
+			// -- make input layout from vertex signature in shader code
+ 			auto poInputLayout = CreateInputLayoutDescFromVertexShaderSignature(poDevice, shaderCodeRaw.data(), shaderCodeRaw.size());
+
+			return (poInputLayout) ? VertexShaderFile(pDestShader, poInputLayout) : VertexShaderFile(pDestShader);			
 		};
 
 		static VertexShaderFile CreateVertexShaderFromMemory(ID3D11Device* poDevice, uint8_t* pSource, size_t sizeInBytes)
@@ -75,9 +79,10 @@ namespace Rldx {
 
 
 		static ID3D11InputLayout* CreateInputLayoutDescFromVertexShaderSignature(
+			ID3D11Device* pD3DDevice,
 			void* pMem,
-			size_t buffer_size,
-			ID3D11Device* pD3DDevice)
+			size_t buffer_size
+			)
 		{
 			// Reflect shader info
 			ID3D11ShaderReflection* pVertexShaderReflection = NULL;

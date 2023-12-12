@@ -47,7 +47,7 @@ namespace Rldx
 
 		static DirectX::XMFLOAT4 Debug_GetRandomColor()
 		{
-			DirectX::XMFLOAT4 randomColor;
+			DirectX::XMFLOAT4 randomColor{ };
 			const float divider = 100000;
 			randomColor.x = ((float)(rand() % (int)divider)) / divider;
 			randomColor.y = ((float)(rand() % (int)divider)) / divider;
@@ -62,15 +62,15 @@ namespace Rldx
 			auto poNew = std::make_unique<DxSwapChain>();
 
 			//----------------- get Factory2 interface ---------------
-			IDXGIDevice2* pDXGIDevice;
+			IDXGIDevice2* pDXGIDevice=nullptr;
 			HRESULT hr = poDevice->QueryInterface(__uuidof(IDXGIDevice2), (void**)&pDXGIDevice);
 			assert(SUCCEEDED(hr));
 
-			IDXGIAdapter* pDXGIAdapter;
+			IDXGIAdapter* pDXGIAdapter = nullptr;;
 			hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pDXGIAdapter);
 			assert(SUCCEEDED(hr));
 
-			IDXGIFactory2* pIDXGIFactory;
+			IDXGIFactory2* pIDXGIFactory = nullptr;;
 			pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&pIDXGIFactory);
 
 			//--------- create swap chain ------------------
@@ -121,12 +121,15 @@ namespace Rldx
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
 		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView);
+		
 
 	private:
 		Microsoft::WRL::ComPtr<IDXGISwapChain1> m_cpoSwapChain1;
 		DxTexture m_BackBufferTexture;
 		DXGI_SWAP_CHAIN_DESC1 m_SwapChainDescription = { 0 };
 		DirectX::XMFLOAT4 m_backgroundColor;
+
+		
 
 		// TODO: should be in camera?		
 		D3D11_VIEWPORT m_viewPort;

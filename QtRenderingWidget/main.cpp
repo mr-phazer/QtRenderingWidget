@@ -10,22 +10,21 @@
 
 #include "Logging/Logging.h"
 
-
-
-
-
 int main(int argc, char* argv[]) 
 {	
-	QApplication a(argc, argv);	
+	QApplication testApplication(argc, argv);	
 
+	
 	// -- create the D3D 11 manager, 		
 	auto& spManager = Rldx::DxDeviceManager::GetInstance();	
-
+		
+	
 	// -- create lots of render view, for demo
 	QtRenderingWidget* poNewRenderingWidget = new QtRenderingWidget(nullptr); // nullptr = no parent, free floating window
 	poNewRenderingWidget->Init(&spManager);
-	poNewRenderingWidget->startRendering(&spManager);	
 
-	return a.exec();
+	poNewRenderingWidget->StartRendering(&spManager);	
+
+	return testApplication.exec();
 }
 

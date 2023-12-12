@@ -1,11 +1,11 @@
 #include "ShaderFiles.h"
 
 inline void VertexShaderFile::SetShader(ID3D11VertexShader* poShaderCode) {
-	m_cpoShaderCode = poShaderCode;
+	m_cpoVertexShader = poShaderCode;
 }
 
 ID3D11VertexShader* VertexShaderFile::GetShader() {
-	return m_cpoShaderCode.Get();
+	return m_cpoVertexShader.Get();
 }
 
 inline void PixelShaderFile::SetShader(ID3D11PixelShader* poShaderCode) {

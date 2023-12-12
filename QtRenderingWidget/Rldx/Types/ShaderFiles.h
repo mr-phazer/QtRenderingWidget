@@ -8,14 +8,16 @@ class VertexShaderFile
 {
 public:
 	VertexShaderFile() = default;
-	VertexShaderFile(ID3D11VertexShader* poShaderCode) : m_cpoShaderCode(poShaderCode) {};
+	VertexShaderFile(ID3D11VertexShader* poVertexShader) : m_cpoVertexShader(poVertexShader) {};
+	VertexShaderFile(ID3D11VertexShader* poShaderCode, ID3D11InputLayout* poInputlayout) : m_cpoVertexShader(poShaderCode), m_pInputLayout(poInputlayout) {};
 	
-	void SetShader(ID3D11VertexShader* poShaderCode);;
+	void SetShader(ID3D11VertexShader* poVertexShader);;
 
 	ID3D11VertexShader* GetShader();;
 
 private:
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_cpoShaderCode;
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_cpoVertexShader;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout>  m_pInputLayout;
 };
 
 class PixelShaderFile
