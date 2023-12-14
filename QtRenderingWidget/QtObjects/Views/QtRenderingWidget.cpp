@@ -9,7 +9,7 @@ QtRenderingWidget::QtRenderingWidget(QWidget* parent)
 {
 	setupUi(this);
 	
-	this->setWindowTitle("D3d Rendering Wigdget Test");
+	this->setWindowTitle("RenderView (Testing)");
 	
 	setWindowFlag(Qt::Window, true);
 

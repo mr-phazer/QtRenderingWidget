@@ -30,7 +30,7 @@ float getSSAO(PixelInputType input)
 float getAO_old(in float2 screenUV)
 {
     //float2 screenUV = (input.screenPos.xy / input.screenPos.w) * 0.5f + 0.5f;
-    return ao_mapTexture.SampleLevel(SamplerLinear, screenUV, 0);
+    return ao_mapTexture.SampleLevel(SamplerLinear, screenUV, 0).r;
 }
 
 float3 getBlueFromOrangeNormalMap(float4 _orangeMapSample)

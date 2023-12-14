@@ -47,7 +47,7 @@ namespace logging
 
     
 
-    class WinConcole
+    class WinConsole
     {
     public:
         static void Print(const std::wstring& str, WORD wColorFlags = BG_BLACK | FG_WHITE);

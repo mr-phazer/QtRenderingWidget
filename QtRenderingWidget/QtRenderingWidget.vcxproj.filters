@@ -67,9 +67,6 @@
     <ClCompile Include="Rldx\DxObjects\DxMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Types\CommonVertexType.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,6 +95,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,9 +141,6 @@
     <ClInclude Include="Rldx\DxObjects\DxMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Types\CommonVertexType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tools\COMerrors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -180,6 +177,9 @@
     <ClInclude Include="Rldx\Helpers\DxMeshCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\Helpers\MathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
@@ -198,6 +198,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl" />
-    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl" />
+    <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl" />
+    <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl" />
   </ItemGroup>
 </Project>

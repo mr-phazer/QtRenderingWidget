@@ -2,38 +2,53 @@
 
 #include "DxSceneNode.h"
 #include "..\..\DxObjects\DxMesh.h"
+#include "..\..\..\Logging\Logging.h"
 
 namespace Rldx
 {
 	class DxMeshNode : public DxSceneNode, IDrawable
 	{
 
-		DxMesh* m_mesh = nullptr;
+		DxMesh* m_meshData = nullptr;
 		DxMaterial* m_material = nullptr;
 		DxMeshShaderProgam* m_shaderProgram = nullptr;
 
 	public:
 		using Sptr = std::shared_ptr<DxMeshNode>;
 	public:
-		DxMeshNode() = default;
-		virtual ~DxMeshNode() = default;
+		DxMeshNode()
+		{	// TODO: remove after debugging
+			logging::LogAction("DxMeshNode created.");
+		}
+		virtual ~DxMeshNode()
+		{	// TODO: remove after debugging
+			logging::LogAction("DxMeshNode destroyed.");
+		}
 
 		DxMeshNode(const std::string& name) : DxSceneNode(name) {};
 
 		static DxMeshNode::Sptr Create(const std::string& name = "");
 
 		void SetShaderProgram(DxMeshShaderProgam* shaderProgram) { m_shaderProgram = shaderProgram; };
+		
+		void SetMeshData(const DxCommonMeshData& meshData) 
+		{ 
+			auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
+			m_meshData = newMeshHandle.GetPtr();
+			m_meshData->SetMeshData(meshData);
 
+			// TODO: REMOVE:
+			auto DEBUG_BREAK = 1;
+		};
 
-		void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) override
-		{
-			// TODO: finish, draw mesh			
+		void Draw(ID3D11DeviceContext* poDC) override
+		{		
 
+			// ready shader program
 			m_shaderProgram->GetReady(poDC);
-
-			//m_material->
-
-			m_mesh->Draw(poDC, destRtV);
+						
+			// draw mesh
+			m_meshData->Draw(poDC);
 
 		};
 

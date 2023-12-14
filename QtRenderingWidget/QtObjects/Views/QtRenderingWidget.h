@@ -5,6 +5,7 @@
 #include <qstyleoption.h>
 #include <qmessagebox.h>
 #include <qtimer.h>											   
+#include <qevent.h>											   
 
 #include "ui_QtRenderingWidget.h"
 
@@ -19,6 +20,14 @@ class QtRenderingWidget : public QWidget, public Ui::QtRenderingWidgetClass
 public:
 	QtRenderingWidget(QWidget* parent = Q_NULLPTR);
 
+	void resizeEvent(QResizeEvent* event) override
+	{
+		if (m_upoSceneManager)
+		{
+			m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), event->size().width(), event->size().height());
+		}	
+	}
+
 
 	//void setSwapChain(Rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)
 	//{
@@ -28,6 +37,8 @@ public:
 
 	bool Init(Rldx::DxDeviceManager* dxManager)
 	{
+
+		this->resize(1920, 1080);
 		/*	fontEngine.m_font = std::make_unique<SpriteFont>(_dx->device(), L"myfile.spritefont");
 			fontEngine.m_spriteBatch = std::make_unique<SpriteBatch>(_dx->deviceContext());
 
@@ -36,27 +47,31 @@ public:
 				throw exception("Error Loading Font");
 			}*/
 		m_poDxManager = dxManager;		
-		m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice(), reinterpret_cast<HWND>(this->winId()));
-
+		m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice());
+		
+		Rldx::NativeWindowSceneCreator sceneCreator(reinterpret_cast<HWND>(this->winId()));
+		auto newScene = sceneCreator.Create(m_poDxManager->GetDevice(), "TestScene1");
+		
+		
 		auto newShaderProgram =
 			Rldx::DxMeshShaderProgam::Create<Rldx::DxMeshShaderProgam>(
 				m_poDxManager->GetDevice(),
-				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Default.cso)",
-				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_Simple.cso)"
-			);
-		auto meshNode = Rldx::DxMeshNode::Create("Test_Mesh_Node");
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_NoTextures.cso)"
+			);				
 
+		auto meshNode = Rldx::DxMeshNode::Create("MeshNode_Cube1");
+
+		auto testMeshCube = Rldx::MakeTestCubeMesh(m_poDxManager->GetDevice());
+		meshNode->SetMeshData(testMeshCube);
 		meshNode->SetShaderProgram(newShaderProgram);
 
-
-		m_upoSceneManager->GetCurrentScene()->GetRootNode()->AddChild();
-
-
-
-
-
-
+		newScene->GetRootNode()->AddChild(meshNode);
 		
+		m_upoSceneManager->SetScene(newScene);
+
+		m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+
 		return true;
 	}
 

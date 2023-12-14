@@ -57,7 +57,7 @@ namespace Rldx
 			return randomColor;
 		}
 
-		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND _hwnd, UINT width = 1024, UINT height = 1024)
+		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024)
 		{
 			auto poNew = std::make_unique<DxSwapChain>();
 
@@ -90,7 +90,7 @@ namespace Rldx
 			poNew->m_SwapChainDescription.Flags = 0;
 
 			IDXGISwapChain1** p = &poNew->m_cpoSwapChain1;
-			hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, _hwnd, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
+			hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
 			assert(SUCCEEDED(hr));
 			logging::LogActionSuccess("Created Swap Chain.");
 
@@ -104,10 +104,19 @@ namespace Rldx
 			hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
 			assert(SUCCEEDED(hr));
 
+			// TODO: any way to this more cleverly?
+			// Set the texture descriptor manually in backbuffer DxTexture, so it reports the right dimensions
+			auto& textureDescriptor = poNew->m_BackBufferTexture.GetDescriptionRef();
+			textureDescriptor.Width = poNew->m_SwapChainDescription.Width;
+			textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
+
 			logging::LogActionSuccess("CreateRenderTargetView().");
 
 			//m_oSwapChainData.m_cpoBackBuffer->Release();
 			logging::LogActionSuccess("m_oSwapChainData.m_pBackBuffer->Release().");
+
+
+			poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
 
 			// set render targer
 			//deviceContext()->OMSetRenderTargets(1, po->m_oBackBuffer.getRenderTargetViewCPO(), NULL);

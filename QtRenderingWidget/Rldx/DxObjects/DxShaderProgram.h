@@ -35,6 +35,7 @@ namespace Rldx {
 	public:
 		virtual ID3D11VertexShader* GetVertexShader() = 0;
 		virtual ID3D11PixelShader* GetPixelShader() = 0;
+		virtual ID3D11InputLayout* GetInputLayout() = 0;
 
 		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
 		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;			
@@ -131,6 +132,7 @@ namespace Rldx {
 
 		virtual ID3D11VertexShader* GetVertexShader()  override { return m_vertexShaderFile.GetShader(); };
 		virtual ID3D11PixelShader* GetPixelShader()   override { return m_pixelShaderFile.GetShader(); };
+		virtual ID3D11InputLayout* GetInputLayout()   override { return m_vertexShaderFile.GetInputLayout(); };
 
 		ID3D11Buffer* GetPixelShaderConstBuffer() const { return m_pixelShaderConstBuffer.GetBuffer(); };
 		ID3D11Buffer* GetVertexShaderConstBuffer() const { return m_vertexShaderConstBuffer.GetBuffer(); };
@@ -161,11 +163,15 @@ namespace Rldx {
 
 		virtual void GetReady(ID3D11DeviceContext* deviceContext) override
 		{
+			// TODO: should any const buffer data be sent from here?
 			auto& vsCB = GetCSEditableVS();
 			vsCB.mWorld = sm::Matrix::Identity;
 
 			deviceContext->PSSetShader(GetPixelShader(), nullptr, 0);
 			deviceContext->VSSetShader(GetVertexShader(), nullptr, 0);
+
+			// TODO: should that be here ? It logically belong with the mesh data, but it ubtain from the vertex shader:(
+			deviceContext->IASetInputLayout(GetInputLayout());
 		};
 
 	};	

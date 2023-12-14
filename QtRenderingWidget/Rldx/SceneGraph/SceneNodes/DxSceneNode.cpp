@@ -17,7 +17,7 @@ Rldx::ResourceTypeEnum Rldx::DxSceneNode::GetResourceType()
 
 Rldx::DxSceneNode::Sptr DxSceneNode::Create(std::string name)
 {	
-	Sptr newNode= std::make_unique<DxSceneNode>();
+	auto newNode = std::make_shared<DxSceneNode>();
 	newNode->SetName(name);
 
 	return newNode;
@@ -25,7 +25,7 @@ Rldx::DxSceneNode::Sptr DxSceneNode::Create(std::string name)
 
 void Rldx::DxSceneNode::SetName(const std::string& name)
 {
-	m_name = name == ("" ? "SceneNode" : name) + "__" + std::to_string(0/*newNode->GetId()*/);
+	m_name = GetTypeString() + "__" + name + "_" + std::to_string(GetId());
 }
 
 

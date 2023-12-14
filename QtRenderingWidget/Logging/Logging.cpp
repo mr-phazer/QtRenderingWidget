@@ -7,10 +7,10 @@ std::wstring ImplLog::prefix = L"[QRenderingView Debug:] ";
 
 void ImplLog::LogActionInfo(const std::string& _strMsg)
 {
-	WinConcole::Print(prefix);
-	WinConcole::Print(L" ");
-	WinConcole::Print(WidenStr(_strMsg));
-	WinConcole::Print(L"\r\n");
+	WinConsole::Print(prefix);
+	WinConsole::Print(L" ");
+	WinConsole::Print(WidenStr(_strMsg));
+	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << "ACTION: " << (_strMsg).c_str();
@@ -20,8 +20,8 @@ void ImplLog::LogActionInfo(const std::string& _strMsg)
 
 void ImplLog::LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags)
 {
-	WinConcole::Print(WidenStr(_strMsg), wColorFlags);	
-    WinConcole::Print(L"\r\n");
+	WinConsole::Print(WidenStr(_strMsg), wColorFlags);	
+    WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << (_strMsg).c_str();
@@ -32,11 +32,11 @@ void ImplLog::LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags)
 
 void ImplLog::LogAction_success(const std::string& _strMsg)
 {	
-	WinConcole::Print(prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
-	WinConcole::Print(L" ");
-	WinConcole::Print(WidenStr(_strMsg));
+	WinConsole::Print(prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
+	WinConsole::Print(L" ");
+	WinConsole::Print(WidenStr(_strMsg));
 	//WinConcole::Print(L"Success.", BG_BLUE | FG_WHITE);
-	WinConcole::Print(L"\r\n");
+	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << tools::wstring_to_string(prefix) << _strMsg << ". Success.";
@@ -46,10 +46,10 @@ void ImplLog::LogAction_success(const std::string& _strMsg)
 
 bool ImplLog::LogActionErrorFalse(const std::string& _strMsg)
 {	
-	WinConcole::Print(prefix + L"ERROR:", BG_BLACK | FG_RED);
-	WinConcole::Print(L" ");
-	WinConcole::Print(WidenStr(_strMsg));
-	WinConcole::Print(L"\r\n");
+	WinConsole::Print(prefix + L"ERROR:", BG_BLACK | FG_RED);
+	WinConsole::Print(L" ");
+	WinConsole::Print(WidenStr(_strMsg));
+	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << tools::wstring_to_string(prefix) +  "ERROR: " << _strMsg;
@@ -61,10 +61,10 @@ bool ImplLog::LogActionErrorFalse(const std::string& _strMsg)
 
 bool ImplLog::LogAction_warning(const std::string& _strMsg)
 {
-	WinConcole::Print(prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
-	WinConcole::Print(L" ");
-	WinConcole::Print(WidenStr(_strMsg));
-	WinConcole::Print(L"\r\n");
+	WinConsole::Print(prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
+	WinConsole::Print(L" ");
+	WinConsole::Print(WidenStr(_strMsg));
+	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << tools::wstring_to_string(prefix) + "WARNING:: " << _strMsg;
@@ -99,10 +99,10 @@ void ImplLog::LogActionTimedEnd(const std::string& _strMsg)
     
     auto timeMessage = "Time Elapsed: " + std::to_string(timeElapsed) + " seconds.\n";
 
-    WinConcole::Print(WidenStr(timeMessage), BG_BLACK | FG_GREEN);
+    WinConsole::Print(WidenStr(timeMessage), BG_BLACK | FG_GREEN);
 }
 
-void WinConcole::Print(const std::wstring& str, WORD wColorFlags)
+void WinConsole::Print(const std::wstring& str, WORD wColorFlags)
 {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     /*
@@ -118,7 +118,7 @@ void WinConcole::Print(const std::wstring& str, WORD wColorFlags)
     SetConsoleTextAttribute(h, BG_BLACK | FG_WHITE);
 }
 
-void WinConcole::PrintLn(const std::wstring& str, WORD color)
+void WinConsole::PrintLn(const std::wstring& str, WORD color)
 {
     Print(str + L"\n", color);
 }

@@ -114,6 +114,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp" />
     <ClCompile Include="Rldx\DxObjects\DxMaterial.cpp" />
@@ -131,7 +132,6 @@
     <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
-    <ClCompile Include="Rldx\Types\CommonVertexType.cpp" />
     <ClCompile Include="Rldx\Types\ShaderFiles.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
@@ -144,6 +144,7 @@
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
     <ClInclude Include="Rldx\Helpers\DxMeshCreator.h" />
+    <ClInclude Include="Rldx\Helpers\MathHelper.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
@@ -165,7 +166,6 @@
     <ClInclude Include="Rldx\Managers\DxTypes.h" />
     <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
-    <ClInclude Include="Rldx\Types\CommonVertexType.h" />
     <ClInclude Include="Tools\COMerrors.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
@@ -176,11 +176,15 @@
     <None Include="myfile.spritefont" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl">
+    <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>

@@ -11,23 +11,27 @@
 
 namespace Rldx {
 	
-	using uint32_t = uint32_t;
+	using IntId = uint32_t;
+	static const IntId INVALID_ID = ~0;
 
 	class Identifiable
 	{			
-	public:
+	public:		
+		Identifiable(const std::string& name) : m_id(GetNextId()), m_name(name) {}
 		Identifiable() : m_id(GetNextId()) {}
-		uint32_t GetId() const { return m_id; }		
-	
-	public:
-		static constexpr uint32_t INVALID_ID = ~0;
+		IntId GetId() const { return m_id; }
+		std::string GetName() const { return m_name; }
+		virtual std::string GetTypeString() = 0;
 
 	private:
-		static uint32_t GetNextId() { return sm_nextId++; }
+		static IntId GetNextId() { return sm_nextId++; }
 
 	private:
-		uint32_t m_id = INVALID_ID;
-		static uint32_t sm_nextId;
+		IntId m_id = INVALID_ID;
+		static IntId sm_nextId;
+
+	protected:
+		std::string m_name = "Unnamed_Object";
 	};
 
 	class DxSceneNode : public Identifiable
@@ -44,6 +48,7 @@ namespace Rldx {
 		void SetName(const std::string& name);
 
 		ResourceTypeEnum GetResourceType();		
+		virtual std::string GetTypeString() override { return "DxSceneNode"; }
 
 		DxSceneNode* GetParent();
 
@@ -86,8 +91,6 @@ namespace Rldx {
 		NodeTransform m_nodeTransform;
 	private:
 		int m_resouceType = 0;
-		std::string m_name = "SceneNode";
-
 
 		// node ids	
 		//NodeId m_nodeId = ~0;

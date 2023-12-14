@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\Types\DxMeshData.h"
-#include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
+#include "..\Types\ConstBuffers\CPUConstBuffers.h"
 
 namespace Rldx {
 
@@ -46,7 +46,7 @@ namespace Rldx {
 			return false;
 
 		// Setup the buffer description for "index buffer"
-		D3D11_BUFFER_DESC vertexBufferDesc;
+		D3D11_BUFFER_DESC vertexBufferDesc{};
 		vertexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT; //D3D11_USAGE::D3D11_USAGE_DYNAMIC; // TODO: change to "static" = ?
 		vertexBufferDesc.ByteWidth = indexCount * sizeof(INDEX_TYPE);
 		vertexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
@@ -55,7 +55,7 @@ namespace Rldx {
 		vertexBufferDesc.StructureByteStride = 0;
 
 		// Setup init data
-		D3D11_SUBRESOURCE_DATA indexData;
+		D3D11_SUBRESOURCE_DATA indexData{};
 		indexData.pSysMem = pIndices;
 		indexData.SysMemPitch = 0;
 		indexData.SysMemSlicePitch = 0;
@@ -74,7 +74,7 @@ namespace Rldx {
 			return false;
 
 		// Setup the buffer descript for "vertex buffer"
-		D3D11_BUFFER_DESC vertexBufferDesc;
+		D3D11_BUFFER_DESC vertexBufferDesc{};
 		vertexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 		vertexBufferDesc.ByteWidth = vertexCount * sizeof(VERTEX_TYPE);
 		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -83,7 +83,7 @@ namespace Rldx {
 		vertexBufferDesc.StructureByteStride = 0;
 
 		// Setup init data
-		D3D11_SUBRESOURCE_DATA vertexData;
+		D3D11_SUBRESOURCE_DATA vertexData{};
 		vertexData.pSysMem = pVertices;
 		vertexData.SysMemPitch = 0;
 		vertexData.SysMemSlicePitch = 0;
@@ -95,31 +95,5 @@ namespace Rldx {
 		return SUCCEEDED(hr);
 	}
 	// TODO: remove once tested
-	static DxCommonMeshData DEBUG_MakeCubeMesh(ID3D11Device* poDevice)
-	{
-		DirectX::DX11::GeometricPrimitive::VertexCollection vertices;
-		DirectX::DX11::GeometricPrimitive::IndexCollection indices;
-		DirectX::DX11::GeometricPrimitive::CreateCube(vertices, indices);
-
-		TRawMeshData<CommonVertex, uint32_t> rawMeshData;
-
-		for (size_t iVertex = 0; iVertex < vertices.size(); iVertex++)
-		{
-			auto& inVertex = vertices[iVertex];
-			CommonVertex commonVertex;
-			commonVertex.position = { inVertex.position.x, inVertex.position.y, inVertex.position.z, 1 };
-			commonVertex.normal = inVertex.normal;
-			commonVertex.textureCoordinate = inVertex.textureCoordinate;
-
-			rawMeshData.vertices.push_back(commonVertex);
-		}
-
-		for (size_t iIndex = 0; iIndex < indices.size(); iIndex++) {			
-			rawMeshData.indices.push_back(indices[iIndex]);
-		}
-		auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
-		auto result = meshCreator.CreateDxMeshData(poDevice, rawMeshData.vertices, rawMeshData.indices);
-
-		return result;
-	}
+	extern DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
 };

@@ -20,13 +20,8 @@ namespace Rldx {
 	{
 
 	public:
-		void Draw(ID3D11DeviceContext* poDC, ID3D11RenderTargetView* destRtV = nullptr) override
+		void Draw(ID3D11DeviceContext* poDC) override
 		{	
-			// if RTV is supplied set that as active
-			if (destRtV != nullptr) {
-				poDC->OMSetRenderTargets(1, &destRtV, nullptr);
-			}
-
 			GetMeshReadyForDrawing(poDC);
 
 			poDC->DrawIndexed(m_meshData.indexCount, 0, 0);
@@ -34,11 +29,13 @@ namespace Rldx {
 
 		virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
 		{			
+			
+
 			UINT stride = sizeof(CommonVertex); 
 			UINT offset = 0;
 			poDC->IASetVertexBuffers(0, 1, m_meshData.cpoVertexBuffer.GetAddressOf(), &stride, &offset);
 			poDC->IASetIndexBuffer(m_meshData.cpoIndexBuffer.Get(), m_meshData.enumIndexFormat, 0);
-			poDC->IASetPrimitiveTopology(m_meshData.enumTopology);
+			poDC->IASetPrimitiveTopology(m_meshData.enumTopology);			
 		};
 
 		// Inherited via IDxResource

@@ -36,12 +36,12 @@ TResourceHandle<DxTexture> Rldx::DxResourceManager::AllocTexture(const std::stri
 	return AddEmpty<DxTexture>(strId);
 }
 
-inline TResourceHandle<DxMaterial> Rldx::DxResourceManager::AllocMaterial(const std::string& strId)
+TResourceHandle<DxMaterial> Rldx::DxResourceManager::AllocMaterial(const std::string& strId)
 {
 	return AddEmpty<DxMaterial>(strId);
 }
 
-inline TResourceHandle<DxMesh> Rldx::DxResourceManager::AllocMeshData(const std::string& strId)
+TResourceHandle<DxMesh> Rldx::DxResourceManager::AllocMesh(const std::string& strId)
 {
 	return AddEmpty<DxMesh>(strId);
 }

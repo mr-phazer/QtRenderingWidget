@@ -7,65 +7,28 @@
 #include "IDrawable.h"
 #include "..\SceneGraph\SceneNodes\DxMeshNode.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
+#include "..\Helpers\DxMeshCreator.h"
 
 namespace Rldx {
-
 	
-	class DxScene : public IDrawable
+	class DxScene : public IDrawable, Identifiable, IResizable
 	{
-		friend class NativeWindowSceneCreator;
-	
 	public:	
 		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
+		DxScene(const std::string& name = "") : Identifiable(name) {};
+		virtual std::string GetTypeString() { return "DxScene"; }
+
 		virtual void Draw(
-			ID3D11DeviceContext* poDeviceContext,
-			ID3D11RenderTargetView* destRtV = nullptr
-			) override
-		{
-			// clear back buffer
-			m_spoSwapChain->GetBackBuffer()->ClearPixels(poDeviceContext, { 0, 0.5f, 0, 1 });
-						
-			// set back buffer to active render target
-			m_spoSwapChain->GetBackBuffer()->BindAsRenderTargetView(poDeviceContext);
-
-			// update + set scene constant buffer
-			m_vertexShaderConstantBuffer.SetData(poDeviceContext, m_vertexShaderconstantBufferData);
-			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_vertexShaderConstantBuffer.GetBuffer() };
-			poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
-						
-			DxSceneNode* poChild = GetRootNode()->GetChild();			
-			DxMeshNode* poMeshNode = dynamic_cast<DxMeshNode*>(poChild);
-			if (poMeshNode)
-			{
-				poMeshNode->Draw(poDeviceContext);
-			}
-
-
-			/*
-				- first test, draw one simple mesh.
-
-
-				- process scene graph to get all meshnodes
-				- put mesh nodes in a container "class DxRenderQueue"
-				- for each mesh node in DxRenderQueue
-				  - user DxRenderPass::Draw(DxRenderQueue queueToDraw)
-
-
-
-
-			*/
-
-			m_spoSwapChain->Present(poDeviceContext);
-		};
-
-		virtual void Init(ID3D11Device* poDevice, HWND nativeWindowHandle);
+			ID3D11DeviceContext* poDeviceContext) override;
+		// TODO: needed? all this happens in the DxSceneCreator
+		//virtual void Init(ID3D11Device* poDevice, HWND nativeWindowHandle);
 
 		DxSceneNode* GetRootNode();
 		void DeleteNode(DxSceneNode* node);
 
-		DxSwapChain* GetSwapChain()
+		DxSwapChain* GetSwapChain() const
 		{
 			return m_spoSwapChain.get();
 		}
@@ -75,9 +38,71 @@ namespace Rldx {
 			return m_spoSwapChain;
 		}
 
+		void AllocVertexShaderConstBuffer(ID3D11Device* poDevice);
+
+		void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
+		{			
+			// TODO: should this be here? or in the swapchain? Or somewhere else
+			D3D11_VIEWPORT viewPort;
+			viewPort.TopLeftX = 0;
+			viewPort.TopLeftY = 0;
+			viewPort.Width = (FLOAT)width;
+			viewPort.Height = (FLOAT)height;
+			viewPort.MinDepth  = 0.0f;
+			viewPort.MaxDepth = 1.0f;
+
+			poDeviceContext->RSSetViewports(1, &viewPort);
+		}
+
+	private:
+		void UpdateViewAndPerspective()
+		{
+			// TODO: view should do be done with a "global camera", using a general orbital camera
+			// Use DirectXMath to create view and perspective matrices.
+			
+			m_vertexShaderconstantBufferData.eyePosition = { 0.2f, 1.0f, 0.8 };
+
+			DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+			DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
+
+			DirectX::XMStoreFloat4x4(
+				&m_vertexShaderconstantBufferData.view,
+				DirectX::XMMatrixTranspose(
+					DirectX::XMMatrixLookAtRH(
+						DirectX::XMLoadFloat3(&m_vertexShaderconstantBufferData.eyePosition),
+						at,
+						up
+					)
+				)
+			);
+
+			float aspectRatioX = GetSwapChain()->GetBackBuffer()->GetAspectRatio();
+			float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
+
+			DirectX::XMStoreFloat4x4(
+				&m_vertexShaderconstantBufferData.projection,
+				DirectX::XMMatrixTranspose(
+					DirectX::XMMatrixPerspectiveFovRH(
+						2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
+						aspectRatioX,
+						0.01f,
+						100.0f
+					)
+				)
+			);
+		}
+
+		void UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext)
+		{
+			m_vertexShaderConstantBuffer.SetData(poDeviceContext, m_vertexShaderconstantBufferData);
+			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_vertexShaderConstantBuffer.GetBuffer() };
+			poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
+		}
+		
 	private:
 		DxSwapChain::UPtr m_spoSwapChain; // back buffer
 		DxSceneNode::Sptr m_spoRootNode = DxSceneNode::Create("RootNode");
+		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
 
 		// TODO: iterate over these, call IResizable::rest(width, height)
 		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized
@@ -91,7 +116,7 @@ namespace Rldx {
 	class IDxSceneCreator
 	{
 	public:
-		virtual DxScene::UniquePtr Create(ID3D11Device* poDevice) = 0;
+		virtual DxScene::UniquePtr Create(ID3D11Device* poDevice, const std::string& name = "") = 0;
 		
 
 	};
@@ -102,53 +127,28 @@ namespace Rldx {
 
 	public:
 		NativeWindowSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};
-		DxScene::UniquePtr Create(ID3D11Device* poDevice)
+		
+		DxScene::UniquePtr Create(ID3D11Device* poDevice, const std::string& name = "") override
 		{
-			auto newScene = std::make_unique<DxScene>();
-			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle);
-			CreateViewAndPerspective(*newScene);
+			auto newScene = std::make_unique<DxScene>();	
+
+			RECT windowRect;
+			GetWindowRect(m_nativeWindowHandle, &windowRect);
+
+			UINT width = windowRect.right - windowRect.left;
+			UINT height = windowRect.bottom - windowRect.top;
+
+			// create swap chain
+			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, width, height);
+			
+			// create VS constbuffer
+			newScene->AllocVertexShaderConstBuffer(poDevice);
 
 			return std::move(newScene);
 		};
-	private:
-		void CreateViewAndPerspective(DxScene& scene)
-		{
-			// Use DirectXMath to create view and perspective matrices.
 
-			DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.7f, 1.5f, 0.f);
-			DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, -0.1f, 0.0f, 0.f);
-			DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
-
-			DirectX::XMStoreFloat4x4(
-				&scene.m_vertexShaderconstantBufferData.view,
-				DirectX::XMMatrixTranspose(
-					DirectX::XMMatrixLookAtRH(
-						eye,
-						at,
-						up
-					)
-				)
-			);
-
-			float aspectRatioX = scene.GetSwapChain()->GetBackBuffer()->GetAspectRatio();
-			float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
-
-			DirectX::XMStoreFloat4x4(
-				&scene.m_vertexShaderconstantBufferData.projection,
-				DirectX::XMMatrixTranspose(
-					DirectX::XMMatrixPerspectiveFovRH(
-						2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
-						aspectRatioX,
-						0.01f,
-						100.0f
-					)
-				)
-			);
-		}
-
-
-	private:
-		HWND m_nativeWindowHandle;		
+	private:		
+		HWND m_nativeWindowHandle = static_cast<HWND>(0);		
 	};
 
 }; // end: namespace Rldx

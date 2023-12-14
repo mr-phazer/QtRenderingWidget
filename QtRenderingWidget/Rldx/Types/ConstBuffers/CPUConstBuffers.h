@@ -6,16 +6,21 @@
 
 namespace Rldx {
 
-	struct CommonVertex	{
-		
+	struct CommonVertex	
+	{		
 		DirectX::XMFLOAT4 position = { 0,0,0,0 };
+		DirectX::XMFLOAT2 textureCoordinate = { 0,0 };;
+		DirectX::XMFLOAT2 textureCoordinate2 = { 0,0 };;
 		DirectX::XMFLOAT3 normal = { 0,0,0 };
 		DirectX::XMFLOAT3 tangent = { 0,0,0 };
-		DirectX::XMFLOAT3 bitangent = { 0,0,0 };
-		DirectX::XMFLOAT2 textureCoordinate = { 0,0 };;
-		DirectX::XMFLOAT4 color = { 1,0,0,1 };
-	};
+		DirectX::XMFLOAT3 bitangent = { 0,0,0 };		
 
+		DirectX::XMFLOAT4 color = { 1,0,0,1 };
+
+		// bone indices
+		DirectX::XMUINT4 boneIndices;
+		DirectX::XMFLOAT4 weights;
+	};
 
 	struct VS_MeshConstantBuffer
 	{
@@ -69,9 +74,14 @@ namespace Rldx {
 
 
 	struct VS_SceneConstantBuffer{
-		DirectX::XMFLOAT4X4 world;
-		DirectX::XMFLOAT4X4 view;
-		DirectX::XMFLOAT4X4 projection;
+
+		// TODO: maybe move into camera struct?
+		DirectX::XMFLOAT3 eyePosition = { 0.5,0.1,0.1 };
+		uint32_t reserved1 = 0;
+
+		DirectX::XMFLOAT4X4 world = sm::Matrix::Identity;
+		DirectX::XMFLOAT4X4 view = sm::Matrix::Identity;
+		DirectX::XMFLOAT4X4 projection = sm::Matrix::Identity;
 	};
 
 }; // namespace Rldx 

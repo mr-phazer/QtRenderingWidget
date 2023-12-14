@@ -12,31 +12,33 @@
 
 namespace Rldx {	
 
-	class DxSceneManager
+	class DxSceneManager : public IResizable
 	{	
 	public:	
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
 		
-		static UniquePtr Create(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		static DxSceneManager::UniquePtr Create(ID3D11Device* poDevice)
 		{				
 			auto newSceneManager = std::make_unique<DxSceneManager>();
-						
-			newSceneManager->m_spoCurrentScene = newSceneManager->CreateScene(poDevice, nativeWindowHandle);
-
 			return std::move(newSceneManager);
 		}
 
-		DxScene::UniquePtr CreateScene(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		void SetScene(DxScene::UniquePtr& scene)
 		{
-			NativeWindowSceneCreator sceneCreator(nativeWindowHandle);
-			auto newScene = sceneCreator.Create(poDevice);
-			newScene->Init(poDevice, nativeWindowHandle);
-
-			return std::move(newScene);
-		}
+			m_spoCurrentScene = std::move(scene);
+		}		
 
 		void OnUpdateFrame();
-		void OnResize();
+		
+		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
+		{
+			if (m_spoCurrentScene)
+			{
+				m_spoCurrentScene->Reset(poDevice, poDeviceContext, width, height);
+			}
+		}
+		
+
 
 		DxScene* GetCurrentScene()
 		{

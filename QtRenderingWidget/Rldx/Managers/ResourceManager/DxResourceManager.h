@@ -103,7 +103,7 @@ namespace Rldx {
 
 		TResourceHandle<DxMaterial> AllocMaterial(const std::string& strId = "");;
 
-		TResourceHandle<DxMesh> AllocMeshData(const std::string& strId = "");;
+		TResourceHandle<DxMesh> AllocMesh(const std::string& strId = "");;
 
 		/*TResourceHandle<IDxShaderProgram> GetShaderProgram(const std::string& strId = "")
 		{
@@ -156,7 +156,7 @@ namespace Rldx {
 	template<typename TYPE_DERIVED>
 	inline TYPE_DERIVED* DxResourceManager::GetResourceByString(const::std::string& strId) const
 	{
-		auto whatType = TYPE_DERIVED().GetType();
+		//auto whatType = TYPE_DERIVED().GetType();
 
 		auto it = m_resourceDataByString.find(strId);
 		if (it != m_resourceDataByString.end()) {

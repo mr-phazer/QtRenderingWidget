@@ -44,6 +44,8 @@ namespace Rldx
 	public:
 		using PUnique = std::unique_ptr<DxDeviceManager>;
 
+		
+
 	public:
 		static DxDeviceManager& GetInstance();		
 
