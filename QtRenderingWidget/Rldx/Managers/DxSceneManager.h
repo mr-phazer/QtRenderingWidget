@@ -5,7 +5,8 @@
 
 // athour
 #include "..\DxObjects\DxScene.h"
-#include "..\DxObjects\IDrawable.h"
+#include "..\..\Interfaces\IDrawable.h"
+#include "..\..\Interfaces\IResizable.h"
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 
@@ -25,7 +26,7 @@ namespace Rldx {
 
 		void SetScene(DxScene::UniquePtr& scene)
 		{
-			m_spoCurrentScene = std::move(scene);
+			m_spoCurrentScene = std::move(scene);			
 		}		
 
 		void OnUpdateFrame();
@@ -38,6 +39,13 @@ namespace Rldx {
 			}
 		}
 		
+		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
+		{		
+			if (m_spoCurrentScene != nullptr)
+			{
+				return m_spoCurrentScene->NativeWindowProcedure(hWnd, uMsg, wParam, lParam);
+			}
+		}
 
 
 		DxScene* GetCurrentScene()
@@ -47,7 +55,7 @@ namespace Rldx {
 
 
 	private:
-		DxScene::UniquePtr m_spoCurrentScene;
+		DxScene::UniquePtr m_spoCurrentScene = nullptr;		
 	};
 
 

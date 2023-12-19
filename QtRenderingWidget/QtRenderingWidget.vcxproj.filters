@@ -73,12 +73,6 @@
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\IDrawable.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\IDrawable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,6 +92,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\DxObjects\MyOrbitalCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interfaces\IDrawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interfaces\IDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\DxObjects\DxCameraOrbital.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -180,6 +186,18 @@
     <ClInclude Include="Rldx\Helpers\MathHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\DxObjects\MyOrbitalCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IResizable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IIdentifiable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DxObjects\DxCameraOrbital.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
@@ -190,6 +208,7 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtObjects\Views\QtRenderingWidget.h">

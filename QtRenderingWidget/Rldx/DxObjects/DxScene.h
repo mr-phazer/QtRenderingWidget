@@ -4,20 +4,21 @@
 #include <windows.h>
 
 #include "DXSwapChain.h"
-#include "IDrawable.h"
+#include "..\..\Interfaces\IDrawable.h"
+#include "DxCameraOrbital.h"
 #include "..\SceneGraph\SceneNodes\DxMeshNode.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
 #include "..\Helpers\DxMeshCreator.h"
 
 namespace Rldx {
 	
-	class DxScene : public IDrawable, Identifiable, IResizable
+	class DxScene : public IDrawable, IIdentifiable, IResizable
 	{
 	public:	
 		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
-		DxScene(const std::string& name = "") : Identifiable(name) {};
+		DxScene(const std::string& name = "") : IIdentifiable(name) {};
 		virtual std::string GetTypeString() { return "DxScene"; }
 
 		virtual void Draw(
@@ -36,6 +37,14 @@ namespace Rldx {
 		DxSwapChain::UPtr& GetRefSwapChain()
 		{
 			return m_spoSwapChain;
+		}
+		
+		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		{
+
+			auto ret =  m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
+			
+				return ret;
 		}
 
 		void AllocVertexShaderConstBuffer(ID3D11Device* poDevice);
@@ -65,16 +74,19 @@ namespace Rldx {
 			DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 			DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
 
-			DirectX::XMStoreFloat4x4(
-				&m_vertexShaderconstantBufferData.view,
-				DirectX::XMMatrixTranspose(
-					DirectX::XMMatrixLookAtRH(
-						DirectX::XMLoadFloat3(&m_vertexShaderconstantBufferData.eyePosition),
-						at,
-						up
-					)
-				)
-			);
+			//DirectX::XMStoreFloat4x4(
+			//	&m_vertexShaderconstantBufferData.view,
+			//	DirectX::XMMatrixTranspose(
+			//		DirectX::XMMatrixLookAtRH(
+			//			DirectX::XMLoadFloat3(&m_vertexShaderconstantBufferData.eyePosition),
+			//			at,
+			//			up
+			//		)
+			//	)
+			//);
+
+			m_vertexShaderconstantBufferData.view = m_globalCamera.GetViewMatrix();
+
 
 			float aspectRatioX = GetSwapChain()->GetBackBuffer()->GetAspectRatio();
 			float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
@@ -110,6 +122,8 @@ namespace Rldx {
 		// TODO: should this be 2 member? think about integrated solution
 		VS_SceneConstantBuffer m_vertexShaderconstantBufferData; // constant buffer data for the vertex shader
 		DirectX::ConstantBuffer<VS_SceneConstantBuffer> m_vertexShaderConstantBuffer; // constant buffer for the vertex shader
+
+		DxCameraOrbital m_globalCamera;
 	};
 
 

@@ -9,7 +9,7 @@ QtRenderingWidget::QtRenderingWidget(QWidget* parent)
 {
 	setupUi(this);
 	
-	this->setWindowTitle("RenderView (Testing)");
+	this->setWindowTitle("QRenderenView (Testing) : Sence");
 	
 	setWindowFlag(Qt::Window, true);
 

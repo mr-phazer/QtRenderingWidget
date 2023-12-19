@@ -9,7 +9,7 @@
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 
-#include "IDrawable.h"
+#include "..\..\..\Interfaces\IDrawable.h"
 #include "DxShaderProgram.h"
 #include "DxMaterial.h"
 #include "..\Types\DxMeshData.h"

@@ -7,34 +7,11 @@
 #include "..\NodeTransform\NodeTransform.h"
 #include "..\..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\..\Managers\DxTypes.h"
+#include "..\Interfaces\IIdentifiable.h"
 
 
 namespace Rldx {
-	
-	using IntId = uint32_t;
-	static const IntId INVALID_ID = ~0;
-
-	class Identifiable
-	{			
-	public:		
-		Identifiable(const std::string& name) : m_id(GetNextId()), m_name(name) {}
-		Identifiable() : m_id(GetNextId()) {}
-		IntId GetId() const { return m_id; }
-		std::string GetName() const { return m_name; }
-		virtual std::string GetTypeString() = 0;
-
-	private:
-		static IntId GetNextId() { return sm_nextId++; }
-
-	private:
-		IntId m_id = INVALID_ID;
-		static IntId sm_nextId;
-
-	protected:
-		std::string m_name = "Unnamed_Object";
-	};
-
-	class DxSceneNode : public Identifiable
+	class DxSceneNode : public IIdentifiable
 	{
 	public:
 		using Sptr = std::shared_ptr<DxSceneNode>;
@@ -97,6 +74,5 @@ namespace Rldx {
 		//static NodeId sm_nextId;		
 		
 	};
-
 
 }; // namespace Rldx

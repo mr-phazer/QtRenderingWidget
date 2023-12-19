@@ -5,7 +5,9 @@
 #include <d3d11.h>
 #include "..\..\..\..\DirectXTK\Inc\DDSTextureLoader.h"
 #include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
-#include "IDrawable.h"
+
+#include "..\..\Interfaces\IDrawable.h"
+#include "..\..\Interfaces\IResizable.h"
 
 #include <string>
 

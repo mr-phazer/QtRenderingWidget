@@ -1,9 +1,8 @@
-
 #include "DxSceneNode.h"
 
 using namespace Rldx;
 
-uint32_t Identifiable::sm_nextId = 1;
+uint32_t IIdentifiable::sm_nextId = 1;
 
 DxSceneNode::~DxSceneNode()
 {

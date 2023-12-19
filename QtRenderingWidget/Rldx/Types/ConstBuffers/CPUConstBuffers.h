@@ -1,8 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
-#include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
-#include "..\ConstBuffers\CPUConstBuffers.h"
+#include <SimpleMath.h>
 
 namespace Rldx {
 

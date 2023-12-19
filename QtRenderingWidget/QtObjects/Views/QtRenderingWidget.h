@@ -28,6 +28,31 @@ public:
 		}	
 	}
 
+	//#if QT_VERSION >= 0x050000
+	bool nativeEvent(const QByteArray& eventType,
+		void* message,
+		long* result)
+	{
+		Q_UNUSED(eventType);
+		Q_UNUSED(result);
+		
+		if (m_upoSceneManager)
+		{
+			MSG* pMsg = reinterpret_cast<MSG*>(message);
+			nativeWindowProcedure(pMsg);
+
+			//return 
+		
+		}
+
+		return QWidget::nativeEvent(eventType, message, result);
+	}
+
+	LRESULT WINAPI nativeWindowProcedure(MSG* pMsg)
+	{	
+		return m_upoSceneManager->NativeWindowProcedure(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);	
+	}
+
 
 	//void setSwapChain(Rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)
 	//{
@@ -85,7 +110,7 @@ public:
 		m_upoSceneManager->GetCurrentScene()->Draw(m_poDxManager->GetDeviceContext());	
 	}
 
-	void StartRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 60)
+	void StartRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 10)
 	{
 		m_timer = new QTimer(this);
 
