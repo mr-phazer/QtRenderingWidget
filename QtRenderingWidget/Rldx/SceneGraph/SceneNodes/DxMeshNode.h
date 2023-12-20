@@ -42,6 +42,8 @@ namespace Rldx
 			m_meshData->Draw(poDC);
 
 		};
+		
+		std::string GetTypeString() const override { return "DxMeshNode"; };
 
 	public:
 		//void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override

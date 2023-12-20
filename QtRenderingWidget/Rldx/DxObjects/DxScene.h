@@ -25,7 +25,7 @@ namespace Rldx {
 	public:
 		DxScene(const std::string& name = "") { m_name = name; };
 				
-		//std::string GetTypeString() const override;
+		std::string GetTypeString() const override { return "DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
 		virtual void Draw(
@@ -80,6 +80,7 @@ namespace Rldx {
 
 			poDeviceContext->RSSetViewports(1, &viewPort);
 
+			m_spoSwapChain->Reset(poDevice, poDeviceContext, width, height);
 			m_globalCamera.SetWindow(width, height);
 		}
 

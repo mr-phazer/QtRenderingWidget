@@ -77,7 +77,8 @@ namespace Rldx {
 	public:
 		static IDxSceneNode::Sptr Create(std::string name = "");
 
-		SceneNodeTypeEnum GetType() const { return SceneNodeTypeEnum::Unknown; };
+		std::string GetTypeString() const override { return "DxSceneNode"; };
+		SceneNodeTypeEnum GetType() const { return SceneNodeTypeEnum::EmptyNode; };
 	};
 
 }; // namespace Rldx

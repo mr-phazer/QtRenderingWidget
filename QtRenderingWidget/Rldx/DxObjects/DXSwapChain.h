@@ -57,74 +57,7 @@ namespace Rldx
 			return randomColor;
 		}
 
-		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024)
-		{
-			auto poNew = std::make_unique<DxSwapChain>();
-
-			//----------------- get Factory2 interface ---------------
-			IDXGIDevice2* pDXGIDevice=nullptr;
-			HRESULT hr = poDevice->QueryInterface(__uuidof(IDXGIDevice2), (void**)&pDXGIDevice);
-			assert(SUCCEEDED(hr));
-
-			IDXGIAdapter* pDXGIAdapter = nullptr;;
-			hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pDXGIAdapter);
-			assert(SUCCEEDED(hr));
-
-			IDXGIFactory2* pIDXGIFactory = nullptr;;
-			pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&pIDXGIFactory);
-
-			//--------- create swap chain ------------------
-
-			poNew->m_SwapChainDescription = DXGI_SWAP_CHAIN_DESC1{};
-			poNew->m_SwapChainDescription.Width = width;
-			poNew->m_SwapChainDescription.Height = height;
-			poNew->m_SwapChainDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-			poNew->m_SwapChainDescription.Stereo = FALSE;
-			poNew->m_SwapChainDescription.SampleDesc.Quality = 0;
-			poNew->m_SwapChainDescription.SampleDesc.Count = 1;
-			poNew->m_SwapChainDescription.BufferUsage = DXGI_USAGE_BACK_BUFFER | DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			poNew->m_SwapChainDescription.BufferCount = 3;
-			poNew->m_SwapChainDescription.Scaling = DXGI_SCALING::DXGI_SCALING_STRETCH;
-			poNew->m_SwapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-			poNew->m_SwapChainDescription.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-			poNew->m_SwapChainDescription.Flags = 0;
-
-			IDXGISwapChain1** p = &poNew->m_cpoSwapChain1;
-			hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
-			assert(SUCCEEDED(hr));
-			logging::LogActionSuccess("Created Swap Chain.");
-
-			// Get swap chain's back buffer, create its renderQuad target view and set that view as renderQuad target
-			hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
-			assert(SUCCEEDED(hr));
-
-			logging::LogActionSuccess("m_pSwapChain1->GetBuffer().");
-
-			//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
-			hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
-			assert(SUCCEEDED(hr));
-
-			// TODO: any way to this more cleverly?
-			// Set the texture descriptor manually in backbuffer DxTexture, so it reports the right dimensions
-			auto& textureDescriptor = poNew->m_BackBufferTexture.GetDescriptionRef();
-			textureDescriptor.Width = poNew->m_SwapChainDescription.Width;
-			textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
-
-			logging::LogActionSuccess("CreateRenderTargetView().");
-
-			//m_oSwapChainData.m_cpoBackBuffer->Release();
-			logging::LogActionSuccess("m_oSwapChainData.m_pBackBuffer->Release().");
-
-
-			poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
-
-			// set render targer
-			//deviceContext()->OMSetRenderTargets(1, po->m_oBackBuffer.getRenderTargetViewCPO(), NULL);
-
-			//LogActionSuccess("m_pDeviceContext->OMSetRenderTargets(1, &m_oSwapChainData.m_pRenderTargetView, NULL).");
-
-			return poNew;
-		}
+		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024);
 
 		void Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);

@@ -25,7 +25,7 @@ namespace Rldx {
 		}
 
 		// to force-add a descript, like "MeshNode"
-		//virtual std::string GetTypeString() const = 0;
+		virtual std::string GetTypeString() const = 0;
 
 		virtual ENUM_TYPE GetType() const = 0;
 

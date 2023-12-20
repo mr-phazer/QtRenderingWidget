@@ -5,6 +5,7 @@ namespace Rldx {
 	enum SceneNodeTypeEnum : uint32_t
 	{
 		Unknown,
+		EmptyNode,
 		Texture,
 		Shader,
 		Mesh,

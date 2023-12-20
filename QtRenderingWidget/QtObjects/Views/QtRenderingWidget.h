@@ -121,7 +121,7 @@ public:
 	bool Init(Rldx::DxDeviceManager* dxManager)
 	{
 
-		this->resize(1920, 1080);
+		
 		/*	fontEngine.m_font = std::make_unique<SpriteFont>(_dx->device(), L"myfile.spritefont");
 			fontEngine.m_spriteBatch = std::make_unique<SpriteBatch>(_dx->deviceContext());
 
@@ -153,7 +153,7 @@ public:
 		
 		m_upoSceneManager->SetScene(newScene);
 
-		m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+		//m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
 
 		return true;
 	}
