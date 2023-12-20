@@ -8,43 +8,38 @@
 #include "..\..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\..\Managers\DxTypes.h"
 #include "..\Interfaces\IIdentifiable.h"
-
+#include "..\Rldx\Managers\ResourceManager\IDxResouce.h"
 
 namespace Rldx {
-	class DxSceneNode : public IIdentifiable
+
+
+	class IDxSceneNode : public TIdentifiable<SceneNodeTypeEnum>
 	{
 	public:
-		using Sptr = std::shared_ptr<DxSceneNode>;
+		using Sptr = std::shared_ptr<IDxSceneNode>;
 	public:		
-		DxSceneNode() = default;
-		virtual ~DxSceneNode();
-		DxSceneNode(const std::string& name) { SetName(name); };
+		IDxSceneNode() = default;
+		virtual ~IDxSceneNode();
+		IDxSceneNode(const std::string& name) { SetName(name); };
 
-		static DxSceneNode::Sptr Create(std::string name = "");
+		IDxSceneNode* GetParent();
 
-		void SetName(const std::string& name);
-
-		ResourceTypeEnum GetResourceType();		
-		virtual std::string GetTypeString() override { return "DxSceneNode"; }
-
-		DxSceneNode* GetParent();
-
-		void AddChild(DxSceneNode::Sptr spoChild);
-		//void AddChild(DxSceneNode* poChild); // TODO: should remove? require user always use shared_ptr
-		DxSceneNode* GetChildByPtr(DxSceneNode* poChild);
-		DxSceneNode* GetChild(size_t index = 0);
+		void AddChild(IDxSceneNode::Sptr spoChild);
+		//void AddChild(IDxSceneNode* poChild); // TODO: should remove? require user always use shared_ptr
+		IDxSceneNode* GetChildByPtr(IDxSceneNode* poChild);
+		IDxSceneNode* GetChild(size_t index = 0);
 
 		size_t GetChildCount() const;
 
 		// TODO: test this
-		static DxSceneNode* FindChild(DxSceneNode* nodeToFind, DxSceneNode* currentNode);
+		static IDxSceneNode* FindChild(IDxSceneNode* nodeToFind, IDxSceneNode* currentNode);
 
 
-		const std::vector<DxSceneNode::Sptr>& GetChildren() const;
-		std::vector<DxSceneNode::Sptr>& GetChildren();
+		const std::vector<IDxSceneNode::Sptr>& GetChildren() const;
+		std::vector<IDxSceneNode::Sptr>& GetChildren();
 
-		void RemoveChild(const DxSceneNode::Sptr& spoChild);
-		void RemoveChild(DxSceneNode* poChild);
+		void RemoveChild(const IDxSceneNode::Sptr& spoChild);
+		void RemoveChild(IDxSceneNode* poChild);
 		void RemoveChild(size_t index);
 		void RemoveChildren();
 
@@ -52,27 +47,37 @@ namespace Rldx {
 		const NodeTransform& GetTransform() const;
 
 	private:
-		void SetParent(DxSceneNode* poParent);
+		void SetParent(IDxSceneNode* poParent);
 
 	protected:
 		// node type:
-		ResourceTypeEnum m_resourceType = ResourceTypeEnum::Unknown;
-		uint32_t m_resourceId = 0;
+		//SceneNodeTypeEnum m_resourceType = SceneNodeTypeEnum::Unknown;
+		//uint32_t m_resourceId = 0;
 
 	private:
 		// tree structure
 		std::vector<Sptr> m_children;
-		DxSceneNode* m_wpoParent = nullptr;
+		IDxSceneNode* m_wpoParent = nullptr;
 	private:
 		// geometruy	
 		NodeTransform m_nodeTransform;
-	private:
-		int m_resouceType = 0;
+	//private:
+		//int m_resouceType = 0;
 
 		// node ids	
 		//NodeId m_nodeId = ~0;
 		//static NodeId sm_nextId;		
 		
+	};
+
+	class DxSceneNode : public IDxSceneNode
+	{
+
+	
+	public:
+		static IDxSceneNode::Sptr Create(std::string name = "");
+
+		SceneNodeTypeEnum GetType() const { return SceneNodeTypeEnum::Unknown; };
 	};
 
 }; // namespace Rldx

@@ -115,7 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Rldx\DxObjects\DxCameraOrbital.cpp" />    
+    <ClCompile Include="Rldx\DxObjects\DxCameraOrbital.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp" />
@@ -173,13 +173,15 @@
     <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
     <ClInclude Include="Tools\COMerrors.h" />
+    <ClInclude Include="Tools\ModelImporter.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
-    <None Include="Logging\ConsoleColors.inl" />
-    <None Include="Logging\WinConsoleColors.inl" />
+    <None Include="Logging\Inl\ConsoleColors.inl" />
+    <None Include="Logging\Inl\WinConsoleColors.inl" />
     <None Include="myfile.spritefont" />
+    <None Include="NOT.editorconfig" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

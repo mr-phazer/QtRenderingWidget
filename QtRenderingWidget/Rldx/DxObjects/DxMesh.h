@@ -39,7 +39,7 @@ namespace Rldx {
 		};
 
 		// Inherited via IDxResource
-		ResourceTypeEnum GetType() const override;
+		SceneNodeTypeEnum GetType() const override;
 
 		void SetMeshData(const DxCommonMeshData& meshData);;
 

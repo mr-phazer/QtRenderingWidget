@@ -3,9 +3,10 @@
 #include <vector>
 #include <d3d11.h>
 #include <wrl\client.h>
-#include "..\Types\ConstBuffers\CPUConstBuffers.h"
 
 namespace Rldx {
+
+	struct CommonVertex;
 
 	template <typename VERTEX_TYPE, typename INDEX_TYPE>
 	struct TRawMeshData

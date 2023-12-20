@@ -13,7 +13,6 @@
 using namespace Rldx;
 
 
-
 void DxCameraOrbital::setFieldOfView(float value)
 {
 	geometryData.m_fFieldOfView = value;
@@ -41,9 +40,9 @@ void DxCameraOrbital::SetLookAt(const sm::Vector3& pos)
 const sm::Matrix& DxCameraOrbital::GetViewMatrix()
 {
 
-	//calculateEyePosition_Trigonometric();
+	calculateEyePosition_Trigonometric();
 
-	calculateEyePostion_RotationMatrix();
+	//calculateEyePostion_RotationMatrix();
 
 	using namespace DirectX;
 		
@@ -461,7 +460,7 @@ void DxCameraOrbital::UpdateVelocity(_In_ float fElapsedTime)
 #endif
 }
 
-void DxCameraOrbital::FrameMove(float fElapsedTime)
+void Rldx::DxCameraOrbital::FrameMove(float fElapsedTime)
 {
 	if (IsMouseMButtonDown())
 	{

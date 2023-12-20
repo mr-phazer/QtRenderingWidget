@@ -66,7 +66,7 @@ namespace Rldx
 		{
 			DirectX::SimpleMath::Vector3 m_v3Origin = { 0,0,0 };
 			sm::Vector3 m_v3NewPosition;
-			sm::Vector3 v3EyePosition; // = sm::Vector3(0.30336335f, 5.1672184f, -3.3106112f);
+			sm::Vector3 v3EyePosition;// = sm::Vector3(0.30336335f, 5.1672184f, 2.3106112f);
 			sm::Vector3 m_v3Up = { 0, 1, 0 };
 
 			float fYaw = 0 * -DirectX::XM_PIDIV4;; // -0.949992001;
@@ -81,9 +81,9 @@ namespace Rldx
 			sm::Vector3 v3LookAt = sm::Vector3(0.f, 0.f, 0.f);
 			float m_fFieldOfView = DirectX::XM_PI / 4.f;
 			float m_nearDistance = 0.01f;
-			float m_farDistance = 100.f;
+			float m_farDistance = 10.f;
 
-			float fRadius;                        // Distance from the camera to model
+			float fRadius = 1.0;                        // Distance from the camera to model
 			float m_fDefaultRadius;                 // Distance from the camera to model
 			float m_fMinRadius;                     // Min radius
 			float m_fMaxRadius;                     // Max radius

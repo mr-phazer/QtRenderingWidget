@@ -1,7 +1,11 @@
 #pragma once
 
+#include <map>
+
 #include "..\Types\DxMeshData.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
+#include "..\Types\DxMeshData.h"
+
 
 namespace Rldx {
 
@@ -22,8 +26,8 @@ namespace Rldx {
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
 
 	inline TDxMeshData<VERTEX_TYPE, INDEX_TYPE> DxMeshDataCreator<VERTEX_TYPE, INDEX_TYPE>::CreateDxMeshData(
-		ID3D11Device* _poDevice, 
-		const std::vector<VERTEX_TYPE>& vertices, 
+		ID3D11Device* _poDevice,
+		const std::vector<VERTEX_TYPE>& vertices,
 		const std::vector<INDEX_TYPE>& indices)
 	{
 		m_meshData.originalMeshData.vertices = vertices;
@@ -95,5 +99,11 @@ namespace Rldx {
 		return SUCCEEDED(hr);
 	}
 	// TODO: remove once tested
-	extern DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
+
+	class ModelCreator
+	{
+	public:
+		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
+		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
+	};
 };

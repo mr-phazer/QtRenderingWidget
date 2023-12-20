@@ -142,7 +142,7 @@ namespace Rldx {
 			
 		virtual void GetReady(ID3D11DeviceContext* dc) override {};
 
-		virtual ResourceTypeEnum GetType() const override { return ResourceTypeEnum::Shader; };
+		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::Shader; };
 
 	};
 

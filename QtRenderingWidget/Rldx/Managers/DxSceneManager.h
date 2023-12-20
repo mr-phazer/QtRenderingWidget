@@ -5,9 +5,6 @@
 
 // athour
 #include "..\DxObjects\DxScene.h"
-#include "..\..\Interfaces\IDrawable.h"
-#include "..\..\Interfaces\IResizable.h"
-
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 
 
@@ -20,7 +17,7 @@ namespace Rldx {
 		
 		static DxSceneManager::UniquePtr Create(ID3D11Device* poDevice)
 		{				
-			auto newSceneManager = std::make_unique<DxSceneManager>();
+			auto newSceneManager = std::make_unique<DxSceneManager>();			
 			return std::move(newSceneManager);
 		}
 
@@ -29,7 +26,13 @@ namespace Rldx {
 			m_spoCurrentScene = std::move(scene);			
 		}		
 
-		void OnUpdateFrame();
+		void FrameMove(float elapsedTime)
+		{
+			if (m_spoCurrentScene)
+			{
+				m_spoCurrentScene->DoFrameMovement(elapsedTime);
+			}
+		}
 		
 		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
 		{
@@ -45,6 +48,8 @@ namespace Rldx {
 			{
 				return m_spoCurrentScene->NativeWindowProcedure(hWnd, uMsg, wParam, lParam);
 			}
+
+			return false;
 		}
 
 

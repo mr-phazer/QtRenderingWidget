@@ -159,6 +159,7 @@ void alpha_test(in const float pixel_alpha)
 
 float substance_smoothness_get_our_smoothness(in float substance_smoothness)
 {
+
 	//	This value is correct for roughnesses from second_join_pos to 1.0.  This is valid for
 	//	the end of the roughness curve...
     float original_roughness = 1.0f - substance_smoothness;
@@ -205,6 +206,8 @@ float3 get_reflectivity_env_light_material(in float3 light_vec, in float3 normal
 
 float4 main(in PixelInputType input) : SV_TARGET
 {
+
+    return float4(input.color.rgb, 1);
     //float4 color_in = input.color;
     // sample textures
     float4 SpecTex = float4(0.2, 0.2, 0.2, 1); //float4(0.1, 0, 0, 1); //shaderTextures[t_Specular].Sample(s_anisotropic, input.tex1);

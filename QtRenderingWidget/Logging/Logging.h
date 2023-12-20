@@ -43,7 +43,7 @@ namespace logging
 
 #define LogActionWarning(message) ImplLog::LogAction_warning(message);
 
-#include "WinConsoleColors.inl"
+#include "inl\WinConsoleColors.inl"
 
     
 

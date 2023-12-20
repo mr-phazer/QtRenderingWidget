@@ -22,6 +22,8 @@ using namespace Rldx;
 //	auto debug_1 = 1;
 //}
 
+//std::string Rldx::DxScene::GetTypeString() const { return "DxScene"; }
+
 void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
 	auto rasterizerStateNoCull = m_upoCommonStates->CullNone();
@@ -36,13 +38,13 @@ void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	
 
 	// update + set scene constant buffer
-	UpdateViewAndPerspective(); // TODO: this should be done with a camera class
+	
 	UpdateVSConstBuffer(poDeviceContext);
 
 	// parse graph and draw
 	// TODO: remove, this is just a stand-in for a scene-graph parser
-	DxSceneNode* poChild = GetRootNode()->GetChild();
-	DxMeshNode* poMeshNode = dynamic_cast<DxMeshNode*>(poChild);
+	auto poChild = GetRootNode()->GetChild();
+	auto poMeshNode = dynamic_cast<DxMeshNode*>(poChild);
 	if (poMeshNode)
 	{
 		poMeshNode->Draw(poDeviceContext);
@@ -66,12 +68,15 @@ void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_spoSwapChain->Present(poDeviceContext);
 }
 
-DxSceneNode* Rldx::DxScene::GetRootNode() { return m_spoRootNode.get(); }
+IDxSceneNode* Rldx::DxScene::GetRootNode() 
+{ 
+	return m_spoRootNode.get(); 
+}
 
 // TODO: test this
-void Rldx::DxScene::DeleteNode(DxSceneNode* node)
+void Rldx::DxScene::DeleteNode(IDxSceneNode* node)
 {
-	auto nodeResult = DxSceneNode::FindChild(node, GetRootNode());
+	auto nodeResult = IDxSceneNode::FindChild(node, GetRootNode());
 
 	if (nodeResult != nullptr)
 	{
@@ -80,6 +85,12 @@ void Rldx::DxScene::DeleteNode(DxSceneNode* node)
 			nodeResult->GetParent()->RemoveChild(nodeResult);
 		}
 	}
+}
+
+void Rldx::DxScene::DoFrameMovement(float elapsedTime)
+{
+	m_globalCamera.FrameMove(elapsedTime);
+	UpdateViewAndPerspective();
 }
 
 void Rldx::DxScene::AllocVertexShaderConstBuffer(ID3D11Device* poDevice)

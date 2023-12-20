@@ -18,7 +18,7 @@ float4 main(in PixelInputType input) : SV_TARGET0
     //return float4(ssao.xxx, 1.0f);
     
         
-    return float4(1, 0, 0, 1);
+    return float4(input.color.rgb, 1);
 
     //float3 pxieLnormal = getPixelNormal(input);;
 

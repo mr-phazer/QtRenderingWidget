@@ -2,7 +2,7 @@
 
 namespace Rldx {
 
-	enum ResourceTypeEnum : uint32_t
+	enum SceneNodeTypeEnum : uint32_t
 	{
 		Unknown,
 		Texture,
@@ -14,7 +14,7 @@ namespace Rldx {
 	class IDxResource
 	{
 	public:
-		virtual ResourceTypeEnum GetType() const = 0;
+		virtual SceneNodeTypeEnum GetType() const = 0;
 
 	};
 }; // namespce Rldx

@@ -94,9 +94,6 @@
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\MyOrbitalCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Interfaces\IDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -198,17 +195,21 @@
     <ClInclude Include="Rldx\DxObjects\DxCameraOrbital.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\ModelImporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
-    <None Include="Logging\WinConsoleColors.inl">
+    <None Include="Logging\Inl\WinConsoleColors.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="Logging\ConsoleColors.inl">
+    <None Include="Logging\Inl\ConsoleColors.inl">
       <Filter>Header Files</Filter>
     </None>
     <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
     <None Include="packages.config" />
+    <None Include="NOT.editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtObjects\Views\QtRenderingWidget.h">

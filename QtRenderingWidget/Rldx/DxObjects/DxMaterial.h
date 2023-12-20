@@ -30,7 +30,7 @@ namespace Rldx {
 		void Bind(ID3D11DeviceContext* poDC);		
 
 		// Inherited via IDxResource
-		ResourceTypeEnum GetType() const override;
+		SceneNodeTypeEnum GetType() const override;
 	};
 };
 

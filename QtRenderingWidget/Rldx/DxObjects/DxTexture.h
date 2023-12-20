@@ -31,7 +31,7 @@ namespace Rldx
 	class DxTexture : public IResizable, public IDxResource
 	{
 	public:		
-		ResourceTypeEnum GetType() const override;
+		SceneNodeTypeEnum GetType() const override;
 
 		virtual void Reset(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();

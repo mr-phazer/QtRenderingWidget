@@ -16,23 +16,14 @@ namespace Rldx
 	public:
 		using Sptr = std::shared_ptr<DxMeshNode>;
 	public:
-		DxMeshNode()
-		{	// TODO: remove after debugging
-			logging::LogAction("DxMeshNode created.");
-		}
-		virtual ~DxMeshNode()
-		{	// TODO: remove after debugging
-			logging::LogAction("DxMeshNode destroyed.");
-		}
-
-		DxMeshNode(const std::string& name) : DxSceneNode(name) {};
+		DxMeshNode(const std::string& name) { SetName(name); };
 
 		static DxMeshNode::Sptr Create(const std::string& name = "");
 
 		void SetShaderProgram(DxMeshShaderProgam* shaderProgram) { m_shaderProgram = shaderProgram; };
-		
-		void SetMeshData(const DxCommonMeshData& meshData) 
-		{ 
+
+		void SetMeshData(const DxCommonMeshData& meshData)
+		{
 			auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
 			m_meshData = newMeshHandle.GetPtr();
 			m_meshData->SetMeshData(meshData);
@@ -42,11 +33,11 @@ namespace Rldx
 		};
 
 		void Draw(ID3D11DeviceContext* poDC) override
-		{		
+		{
 
 			// ready shader program
 			m_shaderProgram->GetReady(poDC);
-						
+
 			// draw mesh
 			m_meshData->Draw(poDC);
 

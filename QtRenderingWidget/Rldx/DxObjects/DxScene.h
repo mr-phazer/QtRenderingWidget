@@ -12,22 +12,38 @@
 
 namespace Rldx {
 	
-	class DxScene : public IDrawable, IIdentifiable, IResizable
+	enum class DxSceneTypeEnum
+	{
+		Normal
+	};
+
+	class DxScene : public IDrawable, TIdentifiable<DxSceneTypeEnum>, IResizable
 	{
 	public:	
 		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
-		DxScene(const std::string& name = "") : IIdentifiable(name) {};
-		virtual std::string GetTypeString() { return "DxScene"; }
+		DxScene(const std::string& name = "") { m_name = name; };
+				
+		//std::string GetTypeString() const override;
+		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
 		virtual void Draw(
 			ID3D11DeviceContext* poDeviceContext) override;
 		// TODO: needed? all this happens in the DxSceneCreator
-		//virtual void Init(ID3D11Device* poDevice, HWND nativeWindowHandle);
+		virtual void Init(ID3D11Device* poDevice, HWND nativeWindowHandle)
+		{
+			//m_globalCamera.SetProjParams(DirectX::XM_PI / 4, 1.0f, 1.0f, 1000.0f);
+			
+			map<int, std::string> testMap = {{1, "one"}, {2, "two"}, {3, "three"}};
 
-		DxSceneNode* GetRootNode();
-		void DeleteNode(DxSceneNode* node);
+			auto& stuff = testMap[10];
+
+
+		}
+
+		IDxSceneNode* GetRootNode();
+		void DeleteNode(IDxSceneNode* node);
 
 		DxSwapChain* GetSwapChain() const
 		{
@@ -47,12 +63,14 @@ namespace Rldx {
 				return ret;
 		}
 
+		void DoFrameMovement(float elapsedTime);
+
 		void AllocVertexShaderConstBuffer(ID3D11Device* poDevice);
 
-		void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
+		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
 		{			
 			// TODO: should this be here? or in the swapchain? Or somewhere else
-			D3D11_VIEWPORT viewPort;
+			D3D11_VIEWPORT viewPort{};
 			viewPort.TopLeftX = 0;
 			viewPort.TopLeftY = 0;
 			viewPort.Width = (FLOAT)width;
@@ -61,6 +79,8 @@ namespace Rldx {
 			viewPort.MaxDepth = 1.0f;
 
 			poDeviceContext->RSSetViewports(1, &viewPort);
+
+			m_globalCamera.SetWindow(width, height);
 		}
 
 	private:
@@ -85,23 +105,26 @@ namespace Rldx {
 			//	)
 			//);
 
-			m_vertexShaderconstantBufferData.view = m_globalCamera.GetViewMatrix();
+			m_vertexShaderconstantBufferData.view = m_globalCamera.GetViewMatrix().Transpose();
+
+			m_vertexShaderconstantBufferData.projection = m_globalCamera.GetProjMatrix().Transpose();
+			m_vertexShaderconstantBufferData.eyePosition = m_globalCamera.GetEyePt();
 
 
-			float aspectRatioX = GetSwapChain()->GetBackBuffer()->GetAspectRatio();
-			float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
+			//float aspectRatioX = GetSwapChain()->GetBackBuffer()->GetAspectRatio();
+			//float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
 
-			DirectX::XMStoreFloat4x4(
-				&m_vertexShaderconstantBufferData.projection,
-				DirectX::XMMatrixTranspose(
-					DirectX::XMMatrixPerspectiveFovRH(
-						2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
-						aspectRatioX,
-						0.01f,
-						100.0f
-					)
-				)
-			);
+			//DirectX::XMStoreFloat4x4(
+			//	&m_vertexShaderconstantBufferData.projection,
+			//	DirectX::XMMatrixTranspose(
+			//		DirectX::XMMatrixPerspectiveFovRH(
+			//			2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
+			//			aspectRatioX,
+			//			0.01f,
+			//			100.0f
+			//		)
+			//	)
+			//);
 		}
 
 		void UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext)
@@ -125,7 +148,6 @@ namespace Rldx {
 
 		DxCameraOrbital m_globalCamera;
 	};
-
 
 	class IDxSceneCreator
 	{
@@ -156,8 +178,7 @@ namespace Rldx {
 			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, width, height);
 			
 			// create VS constbuffer
-			newScene->AllocVertexShaderConstBuffer(poDevice);
-
+			newScene->AllocVertexShaderConstBuffer(poDevice);			
 			return std::move(newScene);
 		};
 
