@@ -2,9 +2,14 @@
 
 using namespace Rldx;
 
-SceneNodeTypeEnum Rldx::DxMesh::GetType() const
+ResourceTypeEnum Rldx::DxMesh::GetType() const
 {
-    return SceneNodeTypeEnum::Mesh;
+	return ResourceTypeEnum::MeshData;
+}
+
+std::string Rldx::DxMesh::GetTypeString() const
+{
+	return "DxMesh";
 }
 
 void Rldx::DxMesh::SetMeshData(const DxCommonMeshData& meshData)

@@ -14,9 +14,7 @@
 #include "..\Managers\ResourceManager\IDxResouce.h"
 
 
-namespace Rldx
-{
-
+namespace Rldx {
 
 	class IDxTexture
 	{
@@ -31,7 +29,8 @@ namespace Rldx
 	class DxTexture : public IResizable, public IDxResource
 	{
 	public:		
-		SceneNodeTypeEnum GetType() const override;
+		ResourceTypeEnum GetType() const override;
+		std::string GetTypeString() const override;
 
 		virtual void Reset(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();
@@ -53,6 +52,10 @@ namespace Rldx
 
 		virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetComPtrShaderResourceView() /*override*/{
 			return m_cpoShaderResourceView;
+		};
+
+		virtual Microsoft::WRL::ComPtr<ID3D11DepthStencilView>& GetComPtrDepthStencil() /*override*/{
+			return m_cpoDepthStencilView;
 		};
 
 		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrTexture() /*override*/{

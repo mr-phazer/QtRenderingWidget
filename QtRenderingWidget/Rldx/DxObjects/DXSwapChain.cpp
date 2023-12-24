@@ -75,73 +75,62 @@ DxSwapChain::UPtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 
 void DxSwapChain::Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height)
 {
-	//ID3D11Texture2D* pBackBuffer = nullptr;
+	deviceContext->OMSetRenderTargets(0, 0, 0);
 
-	////m_oSwapChainData.m_pRenderTargetView->AddRef();
-	////if (m_oSwapChainData.m_pRenderTargetView->Release() > 0)
-	////{
-	////	m_oSwapChainData.m_pRenderTargetView->Release();
-	////}
-	////else
-	////	m_oSwapChainData.m_pRenderTargetView = nullptr;
+	// Release all outstanding references to the swap chain's buffers.
+	//g_pRenderTargetView->Release();
+	m_BackBufferTexture.GetComPtrRenderTargetView().Reset();
+	m_BackBufferTexture.GetComPtrRenderTargetView().Reset();
+	m_BackBufferTexture.GetComPtrTexture().Reset();
+	m_BackBufferTexture.GetComPtrDepthStencil().Reset();
 
+	HRESULT hr; 
+	// Preserve the existing buffer count and format.
+	// Automatically choose the width and height to match the client rect for HWNDs.
+	//hr = g_pSwapChain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
 
-	//*m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf() = nullptr;
-	////m_BackBufferTexture.GetComPtrTexture().ReleaseAndGetAddressOf();
-	////m_oBackBuffer.m_cpoRenderTargetView = nullptr;
+	hr = m_cpoSwapChain1->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
 
+	// Perform error handling here!
+	assert(SUCCEEDED(hr));	
 
+	// Get buffer and create a render-target-view.
+	//ID3D11Texture2D* pBuffer;
+	//hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
+	//	(void**)&pBuffer);
+	hr = m_cpoSwapChain1->GetBuffer(0, __uuidof(ID3D11Texture2D),
+		(void**)&m_BackBufferTexture.GetComPtrTexture());
+	// Perform error handling here!
+	
 
-	//////m_poDepthStencilView->AddRef();
-	////m_poDepthStencilView.ReleaseAndGetAddressOf();
-	////m_poDepthStencilView = nullptr;
-	////m_cpoDepthShaderResourceView.ReleaseAndGetAddressOf();
-	////m_cpoDepthShaderResourceView = nullptr;
+	assert(SUCCEEDED(hr));
 
-	////m_cpoDepthViewTexture.ReleaseAndGetAddressOf();
+	//hr = g_pd3dDevice->CreateRenderTargetView(pBuffer, NULL,
+	//	&g_pRenderTargetView);
+	hr = device->CreateRenderTargetView(m_BackBufferTexture.GetComPtrTexture().Get(), NULL,
+		&m_BackBufferTexture.GetComPtrRenderTargetView());
+	// Perform error handling here!
 
-	//deviceContext->ClearState();
-	//deviceContext->Flush();
+	//pBuffer->Release();
 
-	////HRESULT hr = m_oSwapChainData.m_pSwapChain1->GetBuffer(0, __uuidof(*m_oSwapChainData.m_cpoBackBuffer.GetAddressOf()), (void**)m_oSwapChainData.m_cpoBackBuffer.GetAddressOf());
-	////auto po = m_oSwapChainData.m_cpoBackBuffer.Reset();
+	UpdateViewPort(deviceContext, nullptr );
 
-	//HRESULT hrResize = (m_cpoSwapChain1->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0));
-	////std::wstring wstrErrorMsghrResize = _com_error(hrResize).ErrorMessage();
+	m_BackBufferTexture.InitDepthStencilView(device, m_textureDesc.Width, m_textureDesc.Height);
 
-	//HRESULT hrGetBuffer = (m_cpoSwapChain1->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer)));
-	////std::wstring	wstrErrorMsghrhrGetBuffer = _com_error(hrResize).ErrorMessage();
+	//g_pd3dDeviceContext->OMSetRenderTargets(1, &g_pRenderTargetView, NULL);
+	//auto tempRTV = m_BackBufferTexture.GetRenderTargetView();
 
-	//HRESULT hrCreateRRTV = device->CreateRenderTargetView(pBackBuffer, NULL, &m_BackBufferTexture.GetComPtrRenderTargetView());
-	////HRESULT hrCreateRRTV = device->CreateRenderTargetView(pBackBuffer, NULL, &m_oBackBuffer.m_cpoRenderTargetView);
-	//pBackBuffer->Release();
+	//deviceContext->OMSetRenderTargets(1, &tempRTV, m_BackBufferTexture.GetDepthStencilView());
 
-	//m_BackBufferTexture.InitDepthStencilView(device, width, height);
-
-	//// TODO: are those to be part of 'DXSwapChain' ?
-	////updateViewPort();
-	////createDeptBufferAndhStencil();
-
-
-			//ID3D11Texture2D* pBackBuffer = Q_NULLPTR;			
-	ID3D11Texture2D* pBackBuffer = nullptr;
-
-	//ReleaseObject(m_oSwapChainData.m_pRenderTargetView);
-	m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf();
-
-	//DXCall(m_pSwapChain->ResizeBuffers(0, width(), height(), DXGI_FORMAT_UNKNOWN, 0));
-	m_cpoSwapChain1->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
-
-	//DXCall(m_pSwapChain->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer)));
-	m_cpoSwapChain1->GetBuffer(0, IID_PPV_ARGS(&pBackBuffer));
-
-	//DXCall(m_cpoDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_oSwapChainData.m_pRenderTargetView));
-	device->CreateRenderTargetView(pBackBuffer, NULL, &m_BackBufferTexture.GetComPtrRenderTargetView());
-
-	pBackBuffer->Release();
-
-	m_BackBufferTexture.InitDepthStencilView(device, width, height);
-
+	//// Set up the viewport.
+	//D3D11_VIEWPORT vp;
+	//vp.Width = width;
+	//vp.Height = height;
+	//vp.MinDepth = 0.0f;
+	//vp.MaxDepth = 1.0f;
+	//vp.TopLeftX = 0;
+	//vp.TopLeftY = 0;
+	//deviceContext->RSSetViewports(1, &vp);
 }
 
 void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
@@ -149,14 +138,15 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 	m_cpoSwapChain1->Present(1, 0);
 }
 
-inline void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
+void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
 {
-	//// Set viewport
-	m_viewPort.TopLeftX = 0;
-	m_viewPort.TopLeftY = 0;
-	m_viewPort.Width = (FLOAT)_renderView->width();
-	m_viewPort.Height = (FLOAT)_renderView->height();
-	m_viewPort.MinDepth = 0.f;
-	m_viewPort.MaxDepth = 1.f;
+	m_BackBufferTexture.GetTexture()->GetDesc(&m_textureDesc);
+	
+	memset(&m_viewPort, 0, sizeof(D3D11_VIEWPORT));
+	m_viewPort.Height = (float)m_textureDesc.Height;
+	m_viewPort.Width = (float)m_textureDesc.Width;
+	m_viewPort.MinDepth = 0;
+	m_viewPort.MaxDepth = 1;
+
 	_pDeviceContext->RSSetViewports(1, &m_viewPort);
 }

@@ -64,6 +64,11 @@ namespace Rldx {
 		//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
 		//	}
 
+
+		// Inherited via IDxResource
+		std::string GetTypeString() const override;
+		ResourceTypeEnum GetType() const override;
+
 		//	virtual  void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
 		//	{
 		//		auto pConstBufferTemp = GetPixelShaderConstBuffer();
@@ -124,7 +129,7 @@ namespace Rldx {
 			newInstance->m_pixelShaderConstBuffer.Create(poDevice);
 			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 
-			// TODO: remve debuggin code
+			// TODO: remove debugging  code
 			auto DEBUGGIN_retrievedId = Rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
 
 			return newInstance;
@@ -142,11 +147,11 @@ namespace Rldx {
 			
 		virtual void GetReady(ID3D11DeviceContext* dc) override {};
 
-		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::Shader; };
+		virtual ResourceTypeEnum GetType() const override { return ResourceTypeEnum::ShaderProgram; };
 
 	};
 
-	class DxMeshShaderProgam : public TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>
+	class DxMeshShaderProgram : public TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>
 	{
 	public:
 		/*virtual void Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)

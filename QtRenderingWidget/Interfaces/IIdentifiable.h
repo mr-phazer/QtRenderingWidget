@@ -46,7 +46,7 @@ namespace Rldx {
 	{
 		// TODO: remove after debugging
 #if _DEBUG
-		logging::LogAction(/*GetTypeString()*/ + "# " + std::to_string(GetId()) + ": created.");
+		logging::LogAction(/*this->GetTypeString() + */"# " + std::to_string(GetId()) + ": created.");
 #endif
 	}
 

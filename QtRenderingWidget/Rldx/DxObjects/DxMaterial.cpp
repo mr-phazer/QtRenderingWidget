@@ -26,7 +26,12 @@ inline void Rldx::DxMaterial::Bind(ID3D11DeviceContext* poDC)
 	}
 }
 
-Rldx::SceneNodeTypeEnum Rldx::DxMaterial::GetType() const
+Rldx::ResourceTypeEnum Rldx::DxMaterial::GetType() const
 {
-	return SceneNodeTypeEnum::Material;
+	return ResourceTypeEnum::Material;
+}
+
+std::string Rldx::DxMaterial::GetTypeString() const
+{
+	return "DxMaterial";
 }

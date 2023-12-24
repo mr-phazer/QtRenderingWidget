@@ -52,7 +52,7 @@ namespace Rldx
 
 		void save_to_disk(const std::wstring& _path);
 
-		float m_fDeAccellerate = 0.01f;
+		float m_fDeAccelerate = 0.01f;
 
 		//float m_fAspect;                        // Aspect ratio
 		//float m_fNearPlane;                     // Near plane
@@ -69,21 +69,21 @@ namespace Rldx
 			sm::Vector3 v3EyePosition;// = sm::Vector3(0.30336335f, 5.1672184f, 2.3106112f);
 			sm::Vector3 m_v3Up = { 0, 1, 0 };
 
-			float fYaw = 0 * -DirectX::XM_PIDIV4;; // -0.949992001;
-			float fPitch = 0 * -DirectX::XM_PIDIV4;; // -0.410030514;
+			float fYaw = 0;// *-DirectX::XM_PIDIV4;; // -0.949992001;
+			float fPitch = 0;// *-DirectX::XM_PIDIV4;; // -0.410030514;
 			float fRoll = 0.0f;
 
-			float m_world_yaw = DirectX::XM_PIDIV4;;
-			float m_world_pitch = -DirectX::XM_PIDIV4;
+			float m_world_yaw = 0; // DirectX::XM_PIDIV4;;
+			float m_world_pitch = 0; // -DirectX::XM_PIDIV4;
 			float m_world_roll = 0;
-			float m_zoom = 1.0f;
+			float m_zoom = 0.0f;
 
 			sm::Vector3 v3LookAt = sm::Vector3(0.f, 0.f, 0.f);
 			float m_fFieldOfView = DirectX::XM_PI / 4.f;
 			float m_nearDistance = 0.01f;
-			float m_farDistance = 10.f;
+			float m_farDistance = 100.f;
 
-			float fRadius = 1.0;                        // Distance from the camera to model
+			float fRadius = 0.1;                        // Distance from the camera to model
 			float m_fDefaultRadius;                 // Distance from the camera to model
 			float m_fMinRadius;                     // Min radius
 			float m_fMaxRadius;                     // Max radius

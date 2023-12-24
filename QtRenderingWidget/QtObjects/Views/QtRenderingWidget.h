@@ -25,7 +25,9 @@ public:
 	{
 		if (m_upoSceneManager)
 		{
-			m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), event->size().width(), event->size().height());
+			m_timer->stop();
+			m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+			m_timer->start();
 		}	
 	}
 
@@ -120,6 +122,7 @@ public:
 
 	bool Init(Rldx::DxDeviceManager* dxManager)
 	{
+		
 
 		
 		/*	fontEngine.m_font = std::make_unique<SpriteFont>(_dx->device(), L"myfile.spritefont");
@@ -137,23 +140,28 @@ public:
 		
 		
 		auto newShaderProgram =
-			Rldx::DxMeshShaderProgam::Create<Rldx::DxMeshShaderProgam>(
+			Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
 				m_poDxManager->GetDevice(),
 				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
 				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_NoTextures.cso)"
 			);				
 
 		auto meshNode = Rldx::DxMeshNode::Create("MeshNode_Cube1");
+		auto meshNode2 = Rldx::DxMeshNode::Create("MeshNode_Cube1");
 
-		auto testMeshCube = Rldx::ModelCreator::MakeGrid(m_poDxManager->GetDevice());
+		auto testMeshCube = Rldx::ModelCreator::MakeTestCubeMesh(m_poDxManager->GetDevice());
 		meshNode->SetMeshData(testMeshCube);
 		meshNode->SetShaderProgram(newShaderProgram);
 
-		newScene->GetRootNode()->AddChild(meshNode);
+		auto testMeshGrid = Rldx::ModelCreator::MakeGrid(m_poDxManager->GetDevice());
+		meshNode2->SetMeshData(testMeshGrid);
+		meshNode2->SetShaderProgram(newShaderProgram);
+
+		newScene->GetRootNode()->AddChild(meshNode2);
 		
 		m_upoSceneManager->SetScene(newScene);
 
-		//m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+		m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());		
 
 		return true;
 	}

@@ -18,7 +18,6 @@ namespace Rldx {
 
 	class DxMesh : public IDrawable, public IDxResource
 	{
-
 	public:
 		void Draw(ID3D11DeviceContext* poDC) override
 		{	
@@ -28,9 +27,7 @@ namespace Rldx {
 		};
 
 		virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
-		{			
-			
-
+		{		
 			UINT stride = sizeof(CommonVertex); 
 			UINT offset = 0;
 			poDC->IASetVertexBuffers(0, 1, m_meshData.cpoVertexBuffer.GetAddressOf(), &stride, &offset);
@@ -39,12 +36,16 @@ namespace Rldx {
 		};
 
 		// Inherited via IDxResource
-		SceneNodeTypeEnum GetType() const override;
+		ResourceTypeEnum GetType() const override;
+
 
 		void SetMeshData(const DxCommonMeshData& meshData);;
 
 	private:
 		DxCommonMeshData m_meshData;
+
+		// Inherited via IDxResource
+		std::string GetTypeString() const override;
 	};
 
 	// TODO: use or delete?

@@ -1,21 +1,20 @@
 #pragma once
 
+#include "..\Interfaces\IIdentifiable.h"
+
 namespace Rldx {
 
-	enum SceneNodeTypeEnum : uint32_t
+	enum class ResourceTypeEnum
 	{
-		Unknown,
-		EmptyNode,
+		MeshData,
+		ShaderProgram,
 		Texture,
-		Shader,
-		Mesh,
 		Material
 	};
 
-	class IDxResource
+	class IDxResource : public TIdentifiable<ResourceTypeEnum>
 	{
-	public:
-		virtual SceneNodeTypeEnum GetType() const = 0;
-
+		
+	
 	};
 }; // namespce Rldx

@@ -6,12 +6,11 @@
 
 namespace Rldx
 {
-	class DxMeshNode : public DxSceneNode, IDrawable
+	class DxMeshNode final : public IDxSceneNode, IDrawable 
 	{
-
 		DxMesh* m_meshData = nullptr;
 		DxMaterial* m_material = nullptr;
-		DxMeshShaderProgam* m_shaderProgram = nullptr;
+		DxMeshShaderProgram* m_shaderProgram = nullptr;
 
 	public:
 		using Sptr = std::shared_ptr<DxMeshNode>;
@@ -20,7 +19,7 @@ namespace Rldx
 
 		static DxMeshNode::Sptr Create(const std::string& name = "");
 
-		void SetShaderProgram(DxMeshShaderProgam* shaderProgram) { m_shaderProgram = shaderProgram; };
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_shaderProgram = shaderProgram; };
 
 		void SetMeshData(const DxCommonMeshData& meshData)
 		{
@@ -32,47 +31,9 @@ namespace Rldx
 			auto DEBUG_BREAK = 1;
 		};
 
-		void Draw(ID3D11DeviceContext* poDC) override
-		{
-
-			// ready shader program
-			m_shaderProgram->GetReady(poDC);
-
-			// draw mesh
-			m_meshData->Draw(poDC);
-
-		};
+		void Draw(ID3D11DeviceContext* poDC) override;;
 		
+		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::Mesh; }
 		std::string GetTypeString() const override { return "DxMeshNode"; };
-
-	public:
-		//void Draw(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram = nullptr, ID3D11RenderTargetView* destRtV = nullptr) override
-		//{
-		//	// TODO: finish, draw mesh
-
-		//	// if RTV is supplied set that as active
-		//	if (destRtV != nullptr) {
-		//		poDC->OMSetRenderTargets(1, &destRtV, nullptr);
-		//	}
-
-		//	GetMeshReadyForDrawing(poDC);
-
-		//	poDC->DrawIndexed(m_meshData->indexCount, 0, 0);
-		//};
-
-
-	/*	virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
-		{
-			UINT stride = sizeof(CommonVertex);
-			UINT offset = 0;
-
-			poDC->IASetVertexBuffers(0, 1, m_meshData->m_cpoVertexBuffer.GetAddressOf(), &stride, &offset);
-			poDC->IASetIndexBuffer(m_meshData->m_cpoIndexBuffer.Get(), m_meshData->m_enumIndexFormat, 0);
-
-			poDC->IASetPrimitiveTopology(m_meshData->m_enumTopology);
-		};*/
-
-
-
 	};
 };

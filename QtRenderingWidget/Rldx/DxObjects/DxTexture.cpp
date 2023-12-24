@@ -125,9 +125,14 @@ inline HRESULT Rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3D
 	return hr;
 }
 
-Rldx::SceneNodeTypeEnum Rldx::DxTexture::GetType() const
+Rldx::ResourceTypeEnum Rldx::DxTexture::GetType() const
 {
-	return SceneNodeTypeEnum::Texture;
+	return ResourceTypeEnum::Texture;
+}
+
+std::string Rldx::DxTexture::GetTypeString() const
+{
+	return "DxTexture";
 }
 
 void Rldx::DxTexture::Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)

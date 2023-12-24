@@ -12,7 +12,7 @@ Rldx::DxCommonMeshData Rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevi
 {
 	DirectX::DX11::GeometricPrimitive::VertexCollection vertices;
 	DirectX::DX11::GeometricPrimitive::IndexCollection indices;
-	DirectX::DX11::GeometricPrimitive::CreateTeapot(vertices, indices, 0.1, false);
+	DirectX::DX11::GeometricPrimitive::CreateTeapot(vertices, indices, 0.1);
 
 	TRawMeshData<Rldx::CommonVertex, uint32_t> rawMeshData;
 

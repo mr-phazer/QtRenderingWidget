@@ -97,10 +97,10 @@
     <ClCompile Include="Interfaces\IDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interfaces\IDrawable.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\DxObjects\DxCameraOrbital.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -196,6 +196,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\ModelImporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

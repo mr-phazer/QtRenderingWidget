@@ -9,6 +9,7 @@
 #include "..\SceneGraph\SceneNodes\DxMeshNode.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
 #include "..\Helpers\DxMeshCreator.h"
+#include "..\SceneGraph\Helpers\SceneGraphParser.h"
 
 namespace Rldx {
 	
@@ -67,75 +68,15 @@ namespace Rldx {
 
 		void AllocVertexShaderConstBuffer(ID3D11Device* poDevice);
 
-		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
-		{			
-			// TODO: should this be here? or in the swapchain? Or somewhere else
-			D3D11_VIEWPORT viewPort{};
-			viewPort.TopLeftX = 0;
-			viewPort.TopLeftY = 0;
-			viewPort.Width = (FLOAT)width;
-			viewPort.Height = (FLOAT)height;
-			viewPort.MinDepth  = 0.0f;
-			viewPort.MaxDepth = 1.0f;
-
-			poDeviceContext->RSSetViewports(1, &viewPort);
-
-			m_spoSwapChain->Reset(poDevice, poDeviceContext, width, height);
-			m_globalCamera.SetWindow(width, height);
-		}
+		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
 	private:
-		void UpdateViewAndPerspective()
-		{
-			// TODO: view should do be done with a "global camera", using a general orbital camera
-			// Use DirectXMath to create view and perspective matrices.
-			
-			m_vertexShaderconstantBufferData.eyePosition = { 0.2f, 1.0f, 0.8 };
+		void UpdateViewAndPerspective();
 
-			DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-			DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
-
-			//DirectX::XMStoreFloat4x4(
-			//	&m_vertexShaderconstantBufferData.view,
-			//	DirectX::XMMatrixTranspose(
-			//		DirectX::XMMatrixLookAtRH(
-			//			DirectX::XMLoadFloat3(&m_vertexShaderconstantBufferData.eyePosition),
-			//			at,
-			//			up
-			//		)
-			//	)
-			//);
-
-			m_vertexShaderconstantBufferData.view = m_globalCamera.GetViewMatrix().Transpose();
-
-			m_vertexShaderconstantBufferData.projection = m_globalCamera.GetProjMatrix().Transpose();
-			m_vertexShaderconstantBufferData.eyePosition = m_globalCamera.GetEyePt();
-
-
-			//float aspectRatioX = GetSwapChain()->GetBackBuffer()->GetAspectRatio();
-			//float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
-
-			//DirectX::XMStoreFloat4x4(
-			//	&m_vertexShaderconstantBufferData.projection,
-			//	DirectX::XMMatrixTranspose(
-			//		DirectX::XMMatrixPerspectiveFovRH(
-			//			2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
-			//			aspectRatioX,
-			//			0.01f,
-			//			100.0f
-			//		)
-			//	)
-			//);
-		}
-
-		void UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext)
-		{
-			m_vertexShaderConstantBuffer.SetData(poDeviceContext, m_vertexShaderconstantBufferData);
-			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_vertexShaderConstantBuffer.GetBuffer() };
-			poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
-		}
+		void UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext);
 		
 	private:
+		SceneGraphParser m_sceneGraphParser;
 		DxSwapChain::UPtr m_spoSwapChain; // back buffer
 		DxSceneNode::Sptr m_spoRootNode = DxSceneNode::Create("RootNode");
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
@@ -177,6 +118,7 @@ namespace Rldx {
 
 			// create swap chain
 			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, width, height);
+			
 			
 			// create VS constbuffer
 			newScene->AllocVertexShaderConstBuffer(poDevice);			

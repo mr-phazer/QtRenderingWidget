@@ -125,7 +125,7 @@
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\DxObjects\DxScene.cpp" />
     <ClCompile Include="Interfaces\IDrawable.cpp" />
-    <ClCompile Include="Interfaces\IDrawable.h" />
+    <ClInclude Include="Interfaces\IDrawable.h" />
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
     <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h" />
@@ -135,6 +135,7 @@
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
     <ClCompile Include="Rldx\Types\ShaderFiles.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
     <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Rldx\DxObjects\DxMaterial.h" />
     <ClInclude Include="Rldx\Types\DxMeshData.h" />
     <ClInclude Include="Rldx\Types\ShaderFiles.h" />
+    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Rldx\Types\ConstBuffers\CPUConstBuffers.h" />
     <ClInclude Include="Rldx\DxObjects\DxMesh.h" />

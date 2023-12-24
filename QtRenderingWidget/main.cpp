@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	QtRenderingWidget* poNewRenderingWidget = new QtRenderingWidget(nullptr); // nullptr = no parent, free floating window
 	poNewRenderingWidget->Init(&spManager);
 
-	poNewRenderingWidget->StartRendering(&spManager);	
+	poNewRenderingWidget->StartRendering(&spManager);		
 
 	return testApplication.exec();
 }

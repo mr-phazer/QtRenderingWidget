@@ -12,6 +12,15 @@
 
 namespace Rldx {
 
+	enum SceneNodeTypeEnum : uint32_t
+	{
+		Unknown,
+		EmptyNode,
+		Texture,
+		Shader,
+		Mesh,
+		Material
+	};
 
 	class IDxSceneNode : public TIdentifiable<SceneNodeTypeEnum>
 	{
@@ -55,25 +64,16 @@ namespace Rldx {
 		//uint32_t m_resourceId = 0;
 
 	private:
-		// tree structure
+		// -- tree structure
 		std::vector<Sptr> m_children;
 		IDxSceneNode* m_wpoParent = nullptr;
-	private:
-		// geometruy	
-		NodeTransform m_nodeTransform;
-	//private:
-		//int m_resouceType = 0;
-
-		// node ids	
-		//NodeId m_nodeId = ~0;
-		//static NodeId sm_nextId;		
-		
+	private:	
+		// -- Node geometry, translation, rotation,s cale
+		NodeTransform m_nodeTransform;		
 	};
 
 	class DxSceneNode : public IDxSceneNode
-	{
-
-	
+	{	
 	public:
 		static IDxSceneNode::Sptr Create(std::string name = "");
 

@@ -64,6 +64,9 @@ namespace Rldx
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
 		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView);
 		
+		// TODO: should be in camera?		
+		D3D11_VIEWPORT m_viewPort;
+		D3D11_TEXTURE2D_DESC m_textureDesc = { 0 };
 
 	private:
 		Microsoft::WRL::ComPtr<IDXGISwapChain1> m_cpoSwapChain1;
@@ -73,7 +76,5 @@ namespace Rldx
 
 		
 
-		// TODO: should be in camera?		
-		D3D11_VIEWPORT m_viewPort;
 	};
 };
