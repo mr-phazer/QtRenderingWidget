@@ -36,6 +36,19 @@ namespace Rldx
 
 	public:		
 
+		//MyOrbitalCamera(float yaw = 0.8f, float pitch = -0.32f, float currentZoom = 1)
+		DxCameraOrbital(float yaw = 0.0, float pitch = 0.0, float currentZoom = 0.1)
+		{
+			geometryData.m_zoom = currentZoom;
+			geometryData.fYaw = yaw;
+			geometryData.fPitch = pitch;
+			//_lookAt = lookAt;
+
+			SetRadius();
+			//   UpdateOrder = (int)ComponentUpdateOrderEnum.Camera;
+		}
+
+
 		sm::Vector3 WorldSpaceToScreenSpace(const sm::Vector3& worldPosition, const sm::Matrix& worldMatrix)
 		{
 			//poView->m_poD3DWidget->scene()->getDeviceContext()->RSGetViewports(&viewPortCount, &dxViewPort);
@@ -95,17 +108,6 @@ namespace Rldx
 		bool m_bLimitPitch;
 		bool m_bDragSinceLastUpdate;            // True if mouse drag has happened since last time FrameMove is called.
 
-		//MyOrbitalCamera(float yaw = 0.8f, float pitch = -0.32f, float currentZoom = 1)
-		DxCameraOrbital(float yaw = 0.0 * -DirectX::XM_PIDIV4, float pitch = 0.1 * -DirectX::XM_PIDIV4, float currentZoom = 1)
-		{
-			geometryData.m_zoom = currentZoom;
-			geometryData.fYaw = yaw;
-			geometryData.fPitch = pitch;
-			//_lookAt = lookAt;
-
-			SetRadius();
-			//   UpdateOrder = (int)ComponentUpdateOrderEnum.Camera;
-		}
 
 		void MoveCameraRight(float amount);
 	public:
@@ -225,9 +227,11 @@ namespace Rldx
 			m_nRotateCameraButtonMask = nRotateCameraButtonMask;
 		}
 
-		void SetRadius(_In_ float fDefaultRadius = 1.0f, _In_ float fMinRadius = 1.0f, _In_ float fMaxRadius = FLT_MAX)
+		void SetRadius(_In_ float fDefaultRadius = 0.5f, _In_ float fMinRadius = 1.0f, _In_ float fMaxRadius = FLT_MAX)
 		{
-			geometryData.m_fDefaultRadius = geometryData.fRadius = fDefaultRadius; geometryData.m_fMinRadius = fMinRadius; geometryData.m_fMaxRadius = fMaxRadius;
+			geometryData.m_fDefaultRadius = geometryData.fRadius = fDefaultRadius; 
+			geometryData.m_fMinRadius = fMinRadius; 
+			geometryData.m_fMaxRadius = fMaxRadius;
 			m_bDragSinceLastUpdate = true;
 		}
 

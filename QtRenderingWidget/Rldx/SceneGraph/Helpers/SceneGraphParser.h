@@ -6,15 +6,16 @@
 namespace Rldx {
 
 	class SceneGraphParser
-	{
+	{	
 	public:
 		bool FindMeshNodes(IDxSceneNode* pRootNode);
-
-		std::vector<DxMeshNode*> GetResult();;
-
+		std::vector<DxMeshNode*> GetResult();
 
 	private:
-		std::vector<DxMeshNode*> m_meshNodes = {};
+		bool FindMeshNodesRecursive(IDxSceneNode* pNode);
+	
+	private:
+		std::vector<DxMeshNode*> m_meshNodes;
 	};
 
 }

@@ -2,6 +2,17 @@
 
 bool Rldx::SceneGraphParser::FindMeshNodes(IDxSceneNode* pRootNode)
 {
+	m_meshNodes.clear();
+	return FindMeshNodesRecursive(pRootNode);
+}
+
+std::vector<Rldx::DxMeshNode*> Rldx::SceneGraphParser::GetResult()
+{
+	return m_meshNodes;
+}
+
+bool Rldx::SceneGraphParser::FindMeshNodesRecursive(IDxSceneNode* pRootNode)
+{
 	bool bError = false;
 
 	if (pRootNode->GetType() == SceneNodeTypeEnum::Mesh)
@@ -12,13 +23,8 @@ bool Rldx::SceneGraphParser::FindMeshNodes(IDxSceneNode* pRootNode)
 
 	for (auto& child : pRootNode->GetChildren())
 	{
-		FindMeshNodes(child.get());
+		FindMeshNodesRecursive(child.get());
 	}
 
 	return true;
-}
-
-std::vector<Rldx::DxMeshNode*> Rldx::SceneGraphParser::GetResult() 
-{ 
-	return m_meshNodes; 
 }

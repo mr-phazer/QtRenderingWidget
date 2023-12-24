@@ -6,7 +6,9 @@ using namespace Rldx;
 
 IDxSceneNode::~IDxSceneNode()
 {
-	m_wpoParent->RemoveChild(this);	
+	if (m_wpoParent) {
+		m_wpoParent->RemoveChild(this);
+	};	
 }
 
 

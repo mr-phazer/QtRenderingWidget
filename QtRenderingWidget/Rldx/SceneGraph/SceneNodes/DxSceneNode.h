@@ -28,8 +28,12 @@ namespace Rldx {
 		using Sptr = std::shared_ptr<IDxSceneNode>;
 	public:		
 		IDxSceneNode() = default;
-		virtual ~IDxSceneNode();
-		IDxSceneNode(const std::string& name) { SetName(name); };
+		virtual ~IDxSceneNode();		
+
+		virtual void SetName(const std::string& name)
+		{
+			m_name = this->GetTypeString() +" # " + name + " # " + std::to_string(GetId());
+		}
 
 		IDxSceneNode* GetParent();
 

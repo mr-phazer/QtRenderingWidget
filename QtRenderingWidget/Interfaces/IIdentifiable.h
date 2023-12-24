@@ -19,10 +19,6 @@ namespace Rldx {
 
 		std::string GetName() const { return m_name; }
 
-		void SetName(const std::string& name)
-		{
-			m_name = /*GetTypeString() +*/ "__" + name + "_" + std::to_string(GetId());
-		}
 
 		// to force-add a descript, like "MeshNode"
 		virtual std::string GetTypeString() const = 0;

@@ -139,25 +139,33 @@ public:
 		auto newScene = sceneCreator.Create(m_poDxManager->GetDevice(), "TestScene1");
 		
 		
-		auto newShaderProgram =
+		auto newPbrShaderProgram =
 			Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
 				m_poDxManager->GetDevice(),
 				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
 				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_NoTextures.cso)"
 			);				
 
-		auto meshNode = Rldx::DxMeshNode::Create("MeshNode_Cube1");
-		auto meshNode2 = Rldx::DxMeshNode::Create("MeshNode_Cube1");
+		auto newSimpleShaderProgram =
+			Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
+				m_poDxManager->GetDevice(),
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
+				LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_Simple.cso)"
+			);				
+
+		auto meshNodeGrid = Rldx::DxMeshNode::Create("Grid");
+		auto meshNodeCube = Rldx::DxMeshNode::Create("Cube");
 
 		auto testMeshCube = Rldx::ModelCreator::MakeTestCubeMesh(m_poDxManager->GetDevice());
-		meshNode->SetMeshData(testMeshCube);
-		meshNode->SetShaderProgram(newShaderProgram);
+		meshNodeCube->SetMeshData(testMeshCube);
+		meshNodeCube->SetShaderProgram(newPbrShaderProgram);
 
-		auto testMeshGrid = Rldx::ModelCreator::MakeGrid(m_poDxManager->GetDevice());
-		meshNode2->SetMeshData(testMeshGrid);
-		meshNode2->SetShaderProgram(newShaderProgram);
+		auto testMeshGrid = Rldx::ModelCreator::MakeGrid(m_poDxManager->GetDevice(), 20);
+		meshNodeGrid->SetMeshData(testMeshGrid);
+		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 
-		newScene->GetRootNode()->AddChild(meshNode2);
+		newScene->GetRootNode()->AddChild(meshNodeGrid);
+		newScene->GetRootNode()->AddChild(meshNodeCube);
 		
 		m_upoSceneManager->SetScene(newScene);
 

@@ -39,8 +39,6 @@ namespace Rldx {
 			map<int, std::string> testMap = {{1, "one"}, {2, "two"}, {3, "three"}};
 
 			auto& stuff = testMap[10];
-
-
 		}
 
 		IDxSceneNode* GetRootNode();
@@ -58,10 +56,9 @@ namespace Rldx {
 		
 		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
-
 			auto ret =  m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
 			
-				return ret;
+			return ret;
 		}
 
 		void DoFrameMovement(float elapsedTime);

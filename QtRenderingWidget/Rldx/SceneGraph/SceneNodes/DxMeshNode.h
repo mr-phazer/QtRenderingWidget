@@ -15,8 +15,6 @@ namespace Rldx
 	public:
 		using Sptr = std::shared_ptr<DxMeshNode>;
 	public:
-		DxMeshNode(const std::string& name) { SetName(name); };
-
 		static DxMeshNode::Sptr Create(const std::string& name = "");
 
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_shaderProgram = shaderProgram; };

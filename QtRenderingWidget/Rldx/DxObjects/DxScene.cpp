@@ -55,12 +55,19 @@ void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_sceneGraphParser.FindMeshNodes(GetRootNode());
 	auto meshNodes = m_sceneGraphParser.GetResult();
 
-	auto poChild = GetRootNode()->GetChild();
+
+	for (auto& meshNode : meshNodes)
+	{
+		meshNode->Draw(poDeviceContext);
+	};
+
+	// TODO: remove once stuff works
+	/*auto poChild = GetRootNode()->GetChild();
 	auto poMeshNode = dynamic_cast<DxMeshNode*>(poChild);
 	if (poMeshNode)
 	{
 		poMeshNode->Draw(poDeviceContext);
-	}
+	}*/
 
 
 	/*
@@ -114,19 +121,6 @@ void Rldx::DxScene::AllocVertexShaderConstBuffer(ID3D11Device* poDevice)
 
 void Rldx::DxScene::Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {
-
-	//
-	//// TODO: should this be here? or in the SwapChain? Or somewhere else
-	//D3D11_VIEWPORT viewPort{};
-	//viewPort.TopLeftX = 0;
-	//viewPort.TopLeftY = 0;
-	//viewPort.Width = (FLOAT)width;
-	//viewPort.Height = (FLOAT)height;
-	//viewPort.MinDepth  = 0.0f;
-	//viewPort.MaxDepth = 1.0f;
-
-	//poDeviceContext->RSSetViewports(1, &viewPort);
-
 	m_spoSwapChain->Reset(poDevice, poDeviceContext, width, height);
 	m_globalCamera.SetWindow(width, height);
 }
