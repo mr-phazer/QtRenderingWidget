@@ -2,7 +2,7 @@
 
 
 // impl of the forward declared resources
-#include "..\..\DxObjects\DxMesh.h"
+#include "..\..\DxObjects\DxMeshData.h"
 #include "..\..\DxObjects\DxMaterial.h"
 #include "..\..\DxObjects\DxTexture.h"
 #include "..\..\DxObjects\DxShaderProgram.h"
@@ -48,7 +48,7 @@ TResourceHandle<DxMesh> Rldx::DxResourceManager::AllocMesh(const std::string& st
 
 
 // TODO: remove
-//TResourceManager<DxMeshData>* Rldx::DxResourceManager::GetMeshes() { return &m_spoMeshManager; }
+//TResourceManager<DxMesh>* Rldx::DxResourceManager::GetMeshes() { return &m_spoMeshManager; }
 //
 //TResourceManager<DxTexture>* Rldx::DxResourceManager::GetTextures() { return &m_spoTextureManager; }
 //

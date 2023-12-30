@@ -1,22 +1,26 @@
 #pragma once
 
 #include "DxSceneNode.h"
-#include "..\..\DxObjects\DxMesh.h"
+#include "..\..\DxObjects\DxMeshData.h"
 #include "..\..\..\Logging\Logging.h"
+#include "..\..\SceneGraph\BaseNode\DxBaseNode.h"
 
-namespace Rldx
+namespace Rldx 
 {
-	class DxMeshNode final : public IDxSceneNode, IDrawable 
-	{
+
+	class DxMeshNode : public DxBaseNode
+	{		
 		DxMesh* m_meshData = nullptr;
 		DxMaterial* m_material = nullptr;
 		DxMeshShaderProgram* m_shaderProgram = nullptr;
+		// DxBoundingBox
+		// DxNodeCube
 
 	public:
-		using Sptr = std::shared_ptr<DxMeshNode>;
+		using SharedPointerMesh = std::shared_ptr<DxMeshNode>;
 	public:
-		static DxMeshNode::Sptr Create(const std::string& name = "");
-
+		static SharedPointerMesh Create(const std::string& name = "");
+		
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_shaderProgram = shaderProgram; };
 
 		void SetMeshData(const DxCommonMeshData& meshData)
@@ -27,11 +31,15 @@ namespace Rldx
 
 			// TODO: REMOVE:
 			auto DEBUG_BREAK = 1;
-		};
-
-		void Draw(ID3D11DeviceContext* poDC) override;;
+		};		
 		
-		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::Mesh; }
+		// implemation of type/string
+		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
 		std::string GetTypeString() const override { return "DxMeshNode"; };
+				
+		// udpate/flush impl
+		void Update(float timeElapsed) override;
+		void FlushToRenderQueue(IDxRenderQueue* pRenderQueue) override;		
 	};
 };
+

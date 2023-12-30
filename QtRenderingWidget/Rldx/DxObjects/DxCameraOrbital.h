@@ -10,7 +10,7 @@
 #include <string>
 //#include "TextOutDebug.h"
 //#include "..\SystemLib\tools.h"
-//#include "Scene/SceneGraph/NodeTransform/NodeTransform.h"
+//#include "Scene/DxSceneGraph/NodeTransform/NodeTransform.h"
 
 #define MOUSE_LEFT_BUTTON   0x01
 #define MOUSE_MIDDLE_BUTTON 0x02
@@ -39,9 +39,9 @@ namespace Rldx
 		//MyOrbitalCamera(float yaw = 0.8f, float pitch = -0.32f, float currentZoom = 1)
 		DxCameraOrbital(float yaw = 0.0, float pitch = 0.0, float currentZoom = 0.1)
 		{
-			geometryData.m_zoom = currentZoom;
-			geometryData.fYaw = yaw;
-			geometryData.fPitch = pitch;
+			m_geometryData.m_zoom = currentZoom;
+			m_geometryData.fYaw = yaw;
+			m_geometryData.fPitch = pitch;
 			//_lookAt = lookAt;
 
 			SetRadius();
@@ -78,12 +78,12 @@ namespace Rldx
 		struct GeometryData
 		{
 			DirectX::SimpleMath::Vector3 m_v3Origin = { 0,0,0 };
-			sm::Vector3 m_v3NewPosition;
+			sm::Vector3 v3NewPosition = { 0,0,0 };
 			sm::Vector3 v3EyePosition;// = sm::Vector3(0.30336335f, 5.1672184f, 2.3106112f);
-			sm::Vector3 m_v3Up = { 0, 1, 0 };
+			sm::Vector3 v3Up = { 0, 1, 0 };
 
-			float fYaw = 0;// *-DirectX::XM_PIDIV4;; // -0.949992001;
-			float fPitch = 0;// *-DirectX::XM_PIDIV4;; // -0.410030514;
+			float fYaw = -DirectX::XM_PIDIV4;; // -0.949992001;
+			float fPitch = -DirectX::XM_PIDIV4;; // -0.410030514;
 			float fRoll = 0.0f;
 
 			float m_world_yaw = 0; // DirectX::XM_PIDIV4;;
@@ -92,21 +92,21 @@ namespace Rldx
 			float m_zoom = 0.0f;
 
 			sm::Vector3 v3LookAt = sm::Vector3(0.f, 0.f, 0.f);
-			float m_fFieldOfView = DirectX::XM_PI / 4.f;
-			float m_nearDistance = 0.01f;
-			float m_farDistance = 100.f;
+			float fFieldOfView = DirectX::XM_PI / 4.f;
+			float nearDistance = 0.01f;
+			float farDistance = 100.f;
 
 			float fRadius = 0.1;                        // Distance from the camera to model
-			float m_fDefaultRadius;                 // Distance from the camera to model
-			float m_fMinRadius;                     // Min radius
-			float m_fMaxRadius;                     // Max radius
+			float fDefaultRadius = 1.0;                 // Distance from the camera to model
+			float fMinRadius = 0.00001;                     // Min radius
+			float fMaxRadius = 10;                     // Max radius
 
-		} geometryData;
+		} m_geometryData;
 
 		bool m_bLHCoords = true;
 		bool m_bAttachCameraToModel;
 		bool m_bLimitPitch;
-		bool m_bDragSinceLastUpdate;            // True if mouse drag has happened since last time FrameMove is called.
+		bool m_bDragSinceLastUpdate;            // True if mouse drag has happened since last time MoveFrame is called.
 
 
 		void MoveCameraRight(float amount);
@@ -123,7 +123,7 @@ namespace Rldx
 
 		void MoveCameraUp(float amount)
 		{
-			geometryData.v3LookAt.y += amount;
+			m_geometryData.v3LookAt.y += amount;
 			//m_bIsViewMatrixDirty = true;
 		}
 
@@ -141,7 +141,7 @@ namespace Rldx
 		void SetEyePosition(const sm::Vector3& pos);
 		void SetLookAt(const sm::Vector3& lookAt);
 
-		void setFieldOfView(float value);
+		void SetFieldOfView(float value);
 
 		void SetViewParams(const sm::Vector3& pos, const sm::Vector3& lookAt)
 		{
@@ -150,12 +150,12 @@ namespace Rldx
 		}
 
 		const sm::Matrix& GetViewMatrix();
-		void calculateEyePostion_RotationMatrix();
-		void calculateEyePosition_Trigonometric();
+		void CalculateEyePostion_RotationMatrix();
+		void CalculateEyePosition_Trigonometric();
 		const sm::Matrix& GetWorldMatrix();
 
-		const sm::Vector3& GetEyePt() const;
-		const sm::Vector3& GetLookAt() const;
+		sm::Vector3 GetEyePt() const;
+		sm::Vector3 GetLookAt() const;
 
 		DirectX::XMVECTOR ScreenToVector(float screenx, float screeny) const;
 
@@ -199,7 +199,7 @@ namespace Rldx
 		virtual void SetProjParams(_In_ float fFOV, _In_ float fAspect, _In_ float fNearPlane, _In_ float fFarPlane);
 		//void SetScalers(float )
 
-		void FrameMove(float time);
+		void MoveFrame(float time);
 
 
 
@@ -229,9 +229,9 @@ namespace Rldx
 
 		void SetRadius(_In_ float fDefaultRadius = 0.5f, _In_ float fMinRadius = 1.0f, _In_ float fMaxRadius = FLT_MAX)
 		{
-			geometryData.m_fDefaultRadius = geometryData.fRadius = fDefaultRadius; 
-			geometryData.m_fMinRadius = fMinRadius; 
-			geometryData.m_fMaxRadius = fMaxRadius;
+			m_geometryData.fDefaultRadius = m_geometryData.fRadius = fDefaultRadius; 
+			m_geometryData.fMinRadius = fMinRadius; 
+			m_geometryData.fMaxRadius = fMaxRadius;
 			m_bDragSinceLastUpdate = true;
 		}
 

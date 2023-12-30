@@ -8,8 +8,6 @@
 // MS Direct3d lib
 #include "..\..\..\DirectXTK\Inc\BufferHelpers.h"
 
-
-
 // author
 #include "..\..\Tools\tools.h"
 #include "..\Types\ConstBuffers\CPUConstBuffers.h"
@@ -135,9 +133,15 @@ namespace Rldx {
 			return newInstance;
 		}
 
-		virtual ID3D11VertexShader* GetVertexShader()  override { return m_vertexShaderFile.GetShader(); };
-		virtual ID3D11PixelShader* GetPixelShader()   override { return m_pixelShaderFile.GetShader(); };
-		virtual ID3D11InputLayout* GetInputLayout()   override { return m_vertexShaderFile.GetInputLayout(); };
+		virtual ID3D11VertexShader* GetVertexShader()  override { 
+			return m_vertexShaderFile.GetShader(); 
+		};
+		virtual ID3D11PixelShader* GetPixelShader()   override { 
+			return m_pixelShaderFile.GetShader(); 
+		};
+		virtual ID3D11InputLayout* GetInputLayout()   override { 
+			return m_vertexShaderFile.GetInputLayout(); 
+		};
 
 		ID3D11Buffer* GetPixelShaderConstBuffer() const { return m_pixelShaderConstBuffer.GetBuffer(); };
 		ID3D11Buffer* GetVertexShaderConstBuffer() const { return m_vertexShaderConstBuffer.GetBuffer(); };

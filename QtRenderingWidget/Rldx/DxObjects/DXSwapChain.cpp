@@ -73,7 +73,7 @@ DxSwapChain::UPtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	return poNew;
 }
 
-void DxSwapChain::Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height)
+void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height)
 {
 	deviceContext->OMSetRenderTargets(0, 0, 0);
 

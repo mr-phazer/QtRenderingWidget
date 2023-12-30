@@ -59,7 +59,7 @@ namespace Rldx
 
 		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024);
 
-		void Reset(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
+		void Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
 		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView);

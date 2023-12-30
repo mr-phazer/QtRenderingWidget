@@ -26,19 +26,19 @@ namespace Rldx {
 			m_spoCurrentScene = std::move(scene);			
 		}		
 
-		void FrameMove(float elapsedTime)
+		void MoveFrame()
 		{
 			if (m_spoCurrentScene)
 			{
-				m_spoCurrentScene->DoFrameMovement(elapsedTime);
+				m_spoCurrentScene->Update(m_systemClock.GetLocalTime());
 			}
 		}
 		
-		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
+		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
 		{
 			if (m_spoCurrentScene)
 			{
-				m_spoCurrentScene->Reset(poDevice, poDeviceContext, width, height);
+				m_spoCurrentScene->Resize(poDevice, poDeviceContext, width, height);
 			}
 		}
 		
@@ -61,6 +61,7 @@ namespace Rldx {
 
 	private:
 		DxScene::UniquePtr m_spoCurrentScene = nullptr;		
+		tools::SystemClock m_systemClock;
 	};
 
 

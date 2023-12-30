@@ -253,13 +253,13 @@ namespace Rldx {
 //};
 //
 //
-//TResourceManager<DxMeshData>* GetMeshes();
+//TResourceManager<DxMesh>* GetMeshes();
 //TResourceManager<DxTexture>* GetTextures();
 //TResourceManager<DxMaterial>* GetMaterialManager();
 //TResourceManager<IDxShaderProgram>* Shaders();
 //
 //	private:
-//		TResourceManager<DxMeshData> m_spoMeshManager;
+//		TResourceManager<DxMesh> m_spoMeshManager;
 //		TResourceManager<DxTexture> m_spoTextureManager;
 //		TResourceManager<DxMaterial> m_spoMaterialManager;
 //		TResourceManager<IDxShaderProgram> m_spoShaderManager;

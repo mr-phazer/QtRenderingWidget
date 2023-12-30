@@ -82,12 +82,12 @@ Rldx::DxCommonMeshData Rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int 
 			z * spacing,0
 		};
 
-		vertex1.color = { c, c, c, 1 };
-		vertex2.color = { c, c, c, 1 };
+		vertex2.color = vertex1.color = { c, c, c, 1 };
+	
 		if (z == 0) // make center line a different color
 		{
-			vertex1.color = { 0, 0, 0.9, 1 };
-			vertex2.color = { 0, 0, 0.9, 1 };
+			vertex2.color = vertex1.color = { 0, 0, 0.9, 1 };
+		
 		}
 
 		// -- store line
@@ -100,7 +100,7 @@ Rldx::DxCommonMeshData Rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int 
 	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
 	auto result = meshCreator.CreateDxMeshData(poDevice, vecVertex, vecIndex);
 
-	result.enumTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+	result.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 
 	return result;
 }

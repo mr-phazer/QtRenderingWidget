@@ -45,10 +45,10 @@ PixelInputType main(in VertexInputType input)
     PixelInputType output;
                                                                                              // "combine" perFrame and perModel world
     //float4x4 mWorld = mPerMesh_World /* * mPerFrameWorld*/;
-    float4x4 mWorldMultipled = mPerMesh_World;
+    //float4x4 mWorldMultipled = mPerMesh_World;
     //float4x4 mWorld = mPerMesh_World;
 
-    output.position = mul(float4(input.position.xyz + pivot.xyz, 1), mWorldMultipled);
+    output.position = mul(float4(input.position.xyz/* + pivot.xyz */, 1), mWorld);
 
     // save world space position for camera calculations
     output.Wpos.xyz = output.position.xyz;
@@ -67,13 +67,13 @@ PixelInputType main(in VertexInputType input)
     output.tangent.xyz = input.tangent.xyz;;
     output.binormal.xyz = input.binormal.xyz;;
     // ---- tranform normal, tangent, bitagent  (only world for normal and tangents, as they are not drawn) -----
-    output.normal.xyz = mul(output.normal.xyz, (float3x3) mWorldMultipled);
+    output.normal.xyz = mul(output.normal.xyz, (float3x3) mWorld);
     output.normal.xyz = normalize(output.normal.xyz);
 
-    output.tangent.xyz = mul(output.tangent.xyz, (float3x3) mWorldMultipled);
+    output.tangent.xyz = mul(output.tangent.xyz, (float3x3) mWorld);
     output.tangent.xyz = normalize(output.tangent.xyz);
 
-    output.binormal.xyz = mul(output.binormal.xyz, (float3x3) mWorldMultipled);
+    output.binormal.xyz = mul(output.binormal.xyz, (float3x3) mWorld);
     output.binormal.xyz = normalize(output.binormal.xyz);
 
     

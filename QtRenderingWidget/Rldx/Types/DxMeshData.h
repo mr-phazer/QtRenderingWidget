@@ -15,7 +15,7 @@ namespace Rldx {
 		std::vector<INDEX_TYPE> indices;
 	};
 
-
+	// TODO: clean up, remove out-commented, at the very least!
 	template <typename VERTEX_TYPE, typename INDEX_TYPE>
 	struct TDxMeshData
 	{
@@ -25,10 +25,10 @@ namespace Rldx {
 		uint32_t                                                startIndex = 0;
 		int32_t                                                 vertexOffset = 0;
 		uint32_t                                                vertexStride = sizeof(VERTEX_TYPE);
-		DXGI_FORMAT                                             indexFormat = DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
-		DXGI_FORMAT												enumIndexFormat = sizeof(INDEX_TYPE) == 2 ? DXGI_FORMAT::DXGI_FORMAT_R16_UINT : DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
-		D3D11_PRIMITIVE_TOPOLOGY								enumTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		Microsoft::WRL::ComPtr<ID3D11InputLayout>               cpoInputLayout;
+		//DXGI_FORMAT                                             indexFormat = DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
+		DXGI_FORMAT												indexFormat = sizeof(INDEX_TYPE) == 2 ? DXGI_FORMAT::DXGI_FORMAT_R16_UINT : DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
+		D3D11_PRIMITIVE_TOPOLOGY								primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		//Microsoft::WRL::ComPtr<ID3D11InputLayout>               cpoInputLayout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>					cpoIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>					cpoVertexBuffer;
 

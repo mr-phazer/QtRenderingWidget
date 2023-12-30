@@ -3,46 +3,46 @@
 #include <memory>
 #include <windows.h>
 
-#include "DXSwapChain.h"
+
 #include "..\..\Interfaces\IDrawable.h"
-#include "DxCameraOrbital.h"
-#include "..\SceneGraph\SceneNodes\DxMeshNode.h"
-#include "..\Types\ConstBuffers\CPUConstBuffers.h"
 #include "..\Helpers\DxMeshCreator.h"
-#include "..\SceneGraph\Helpers\SceneGraphParser.h"
+#include "..\SceneGraph\BaseNode\DxBaseNode.h"
+#include "..\SceneGraph\SceneGraph.h"
+#include "..\Types\ConstBuffers\CPUConstBuffers.h"
+#include "DxCameraOrbital.h"
+#include "DXSwapChain.h"
+#include "DxConstBuffer.h"
 
 namespace Rldx {
-	
+
 	enum class DxSceneTypeEnum
 	{
 		Normal
 	};
 
-	class DxScene : public IDrawable, TIdentifiable<DxSceneTypeEnum>, IResizable
+	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable
 	{
-	public:	
+	public:
 		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
-		DxScene(const std::string& name = "") { m_name = name; };
-				
+		DxScene(const std::string& name = "") { 
+			m_name = name; 
+			
+		};
+
+		void Init(ID3D11Device* poDevice);
+
 		std::string GetTypeString() const override { return "DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
-		virtual void Draw(
-			ID3D11DeviceContext* poDeviceContext) override;
-		// TODO: needed? all this happens in the DxSceneCreator
-		virtual void Init(ID3D11Device* poDevice, HWND nativeWindowHandle)
-		{
-			//m_globalCamera.SetProjParams(DirectX::XM_PI / 4, 1.0f, 1.0f, 1000.0f);
-			
-			map<int, std::string> testMap = {{1, "one"}, {2, "two"}, {3, "three"}};
+		virtual void Update(float timeElapsed) override;
+		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
+		
+		
 
-			auto& stuff = testMap[10];
-		}
-
-		IDxSceneNode* GetRootNode();
-		void DeleteNode(IDxSceneNode* node);
+		DxBaseNode* GetRootNode();
+		void DeleteNode(DxBaseNode* node);
 
 		DxSwapChain* GetSwapChain() const
 		{
@@ -53,59 +53,98 @@ namespace Rldx {
 		{
 			return m_spoSwapChain;
 		}
+
+		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 		
-		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-		{
-			auto ret =  m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
-			
-			return ret;
-		}
 
-		void DoFrameMovement(float elapsedTime);
+		
 
-		void AllocVertexShaderConstBuffer(ID3D11Device* poDevice);
-
-		virtual void Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
+		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
 	private:
 		void UpdateViewAndPerspective();
+		void UpdateAndBindVSConstBuffer();
+		void DEBUGGING_SetViewAndPerspective()
+		{
+			// Use DirectXMath to create view and perspective matrices.
 
-		void UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext);
-		
+			DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.7f, 1.5f, 0.f);
+			DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, -0.1f, 0.0f, 0.f);
+			DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
+
+			DirectX::XMStoreFloat4x4(
+				&m_sceneFrameVSConstBuffer.data.view,
+				DirectX::XMMatrixTranspose(
+					DirectX::XMMatrixLookAtRH(
+						eye,
+						at,
+						up
+					)
+				)
+			);
+
+			m_sceneFrameVSConstBuffer.data.view = sm::Matrix::Identity;
+
+			float aspectRatioX = m_spoSwapChain->GetBackBuffer()->GetAspectRatio();
+			float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
+
+			DirectX::XMStoreFloat4x4(
+				&m_sceneFrameVSConstBuffer.data.projection,
+				DirectX::XMMatrixTranspose(
+					DirectX::XMMatrixPerspectiveFovRH(
+						2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
+						aspectRatioX,
+						0.01f,
+						100.0f
+					)
+				)
+			);
+		}
+
+		//------------------------
 	private:
-		SceneGraphParser m_sceneGraphParser;
+		// TODO: remove?
+		//SceneGraphParser m_sceneGraphParser;
+		//DxSceneNode::SharedPointer m_spoRootNode = DxSceneNode::Create("RootNode");
+
+		DxSceneGraph m_sceneGraph;
+		DxStandardRenderQueue m_renderQueue;
+
 		DxSwapChain::UPtr m_spoSwapChain; // back buffer
-		DxSceneNode::Sptr m_spoRootNode = DxSceneNode::Create("RootNode");
+		
+		
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
 
 		// TODO: iterate over these, call IResizable::rest(width, height)
 		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized
-		
+
 		// TODO: should this be 2 member? think about integrated solution
-		VS_SceneConstantBuffer m_vertexShaderconstantBufferData; // constant buffer data for the vertex shader
-		DirectX::ConstantBuffer<VS_SceneConstantBuffer> m_vertexShaderConstantBuffer; // constant buffer for the vertex shader
+		TConstBuffer<VS_PerScene_ConstantBuffer> m_sceneFrameVSConstBuffer;
+		TConstBuffer<LightStruct> m_sceneFramePSConstBuffer;
 
 		DxCameraOrbital m_globalCamera;
+		DxCameraOrbital m_globalLighting;
 	};
 
 	class IDxSceneCreator
 	{
 	public:
 		virtual DxScene::UniquePtr Create(ID3D11Device* poDevice, const std::string& name = "") = 0;
-		
+
 
 	};
 
 	class NativeWindowSceneCreator : IDxSceneCreator
 	{
-		NativeWindowSceneCreator() {};	
+		NativeWindowSceneCreator() {};
 
 	public:
 		NativeWindowSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};
-		
+
 		DxScene::UniquePtr Create(ID3D11Device* poDevice, const std::string& name = "") override
 		{
-			auto newScene = std::make_unique<DxScene>();	
+			auto newScene = std::make_unique<DxScene>();
 
 			RECT windowRect;
 			GetWindowRect(m_nativeWindowHandle, &windowRect);
@@ -115,15 +154,14 @@ namespace Rldx {
 
 			// create swap chain
 			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, width, height);
-			
-			
+
+
 			// create VS constbuffer
-			newScene->AllocVertexShaderConstBuffer(poDevice);			
+			newScene->Init(poDevice);
 			return std::move(newScene);
 		};
 
-	private:		
-		HWND m_nativeWindowHandle = static_cast<HWND>(0);		
+	private:
+		HWND m_nativeWindowHandle = static_cast<HWND>(0);
 	};
-
-}; // end: namespace Rldx
+};

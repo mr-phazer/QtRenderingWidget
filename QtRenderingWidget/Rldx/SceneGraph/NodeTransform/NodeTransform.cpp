@@ -1,8 +1,9 @@
 #include "NodeTransform.h"
 
 using namespace Rldx;
+using namespace DirectX;
 
-sm::Matrix NodeTransform::GetTransform() const
+sm::Matrix NodeTransform::GetLocalTransform() const
 {
 	auto mLocalTransformMatrix =
 		sm::Matrix::CreateTranslation(local.translation) *
@@ -12,7 +13,7 @@ sm::Matrix NodeTransform::GetTransform() const
 	return mLocalTransformMatrix;
 }
 
-void NodeTransform::SetTransForm(const sm::Matrix& _mIn)
+void NodeTransform::SetTransformFromMatrix(const sm::Matrix& _mIn) 
 {
 	sm::Matrix tempMatrix = _mIn;
     tempMatrix.Decompose(local.scale, local.rotation, local.translation);	
@@ -20,7 +21,7 @@ void NodeTransform::SetTransForm(const sm::Matrix& _mIn)
 
 sm::Matrix NodeTransform::GetGlobalTransform(const sm::Matrix& _parent)
 {
-	return _parent * GetTransform();
+	return _parent * GetLocalTransform();
 }
 
 void NodeTransform::SetRotation(const sm::Quaternion& q)

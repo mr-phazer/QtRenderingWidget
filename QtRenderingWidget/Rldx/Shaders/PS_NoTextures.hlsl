@@ -215,7 +215,7 @@ float4 main(in PixelInputType input) : SV_TARGET
     float4 MaskTex = 0; //    shaderTextures[t_Mask].Sample(s_anisotropic, input.tex1);
 
     //float3 RGB = MaskTex.r;
-    //return float4(RGB, MaskTex.r);
+    //return float4(lightDirection.rgb, 1);
     //return   float4(1, 0, 0, 1);
 
     //if (PisTextureSRGB[t_Diffuse] != 0)
@@ -308,7 +308,8 @@ float4 main(in PixelInputType input) : SV_TARGET
     {
         // TODO: re-enable
         //float3 Li = normalize(-LightData[i].lightDirection);
-        float3 Li = normalize(-float3(1, -1, -1));
+        float3 Li = normalize(-+lightDirection);
+        //float3 Li = normalize(-float3(1, -1, -1));
         
         // TODO: re-enable
         float3 Lradiance = 1; //LightData[i].radiannce * 10;

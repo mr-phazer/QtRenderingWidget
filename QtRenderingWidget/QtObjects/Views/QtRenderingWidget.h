@@ -8,11 +8,13 @@
 #include <qevent.h>
 #include <mouse.h>
 
+#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
+
 #include "ui_QtRenderingWidget.h"
 
 #include "..\..\Rldx\Managers\DxDeviceManager.h"
-#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 #include "..\..\Rldx\Managers\DxSceneManager.h"
+#include "..\..\Rldx\SceneGraph\SceneNodes\DxMeshNode.h"
 
 class QtRenderingWidget : public QWidget, public Ui::QtRenderingWidgetClass
 {
@@ -26,7 +28,7 @@ public:
 		if (m_upoSceneManager)
 		{
 			m_timer->stop();
-			m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+			m_upoSceneManager->Resize(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
 			m_timer->start();
 		}	
 	}
@@ -169,7 +171,7 @@ public:
 		
 		m_upoSceneManager->SetScene(newScene);
 
-		m_upoSceneManager->Reset(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());		
+		m_upoSceneManager->Resize(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());		
 
 		return true;
 	}
@@ -182,7 +184,7 @@ public:
 //		renderText(_dxManager);		
 
 		m_upoSceneManager->GetCurrentScene()->Draw(m_poDxManager->GetDeviceContext());	
-		m_upoSceneManager->GetCurrentScene()->DoFrameMovement(m_frameTime);
+		m_upoSceneManager->MoveFrame();
 	}
 	
 

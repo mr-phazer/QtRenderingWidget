@@ -9,9 +9,9 @@ QtRenderingWidget::QtRenderingWidget(QWidget* parent)
 {
 	setupUi(this);
 	
-	this->setWindowTitle("QRenderenView (Testing) : Sence");
+	/*this->setWindowTitle("QRenderenView (Testing) : Sence");
 	
-	setWindowFlag(Qt::Window, true);
+	setWindowFlag(Qt::Window, true);*/
 
 	show();
 

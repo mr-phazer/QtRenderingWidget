@@ -64,7 +64,7 @@
     <ClCompile Include="Rldx\DxObjects\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxMesh.cpp">
+    <ClCompile Include="Rldx\DxObjects\DxMeshData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h">
@@ -101,6 +101,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -141,7 +147,7 @@
     <ClInclude Include="Rldx\DxObjects\DxShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxMesh.h">
+    <ClInclude Include="Rldx\DxObjects\DxMeshData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\COMerrors.h">
@@ -204,6 +210,24 @@
     <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IUpdateable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IFlushable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IRenderQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DxObjects\DxConstBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
@@ -216,6 +240,15 @@
     <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
     <None Include="packages.config" />
     <None Include="NOT.editorconfig" />
+    <None Include="Rldx\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\Shaders\include\util.hlsli" />
+    <None Include="Rldx\Shaders\include\VS_ConstBuffers.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtObjects\Views\QtRenderingWidget.h">
@@ -226,5 +259,6 @@
     <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl" />
     <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl" />
     <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl" />
+    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl" />
   </ItemGroup>
 </Project>

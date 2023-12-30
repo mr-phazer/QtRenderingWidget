@@ -1,17 +1,32 @@
+struct LightStruct
+{
+    float3 position;
+    uint reserved1;
+    
+    float3 direction;    
+    float radiance;
+};
+
+
 cbuffer VS_PerScene_ConstantBuffer : register(b0)
 {
     float3 eyePosition;
     uint reserved1;
-    float4x4 mWorld;    
-    float4x4 mView;    
+                                                 
+    float3 eyeDirection;
+    uint radiance;
+    
+    float4x4 mWorld;
+    float4x4 mView;
     float4x4 mProjection;
-};
 
+    LightStruct light[1];
+};
 
 
 //cbuffer VS_PerMesh_ConstantBuffer : register(b0)
 //{
-//    float4x4 mPerMesh_World;               
+//    float4x4 mPerMesh_World;
 //    float4 color;
 
 //    float4x4 rot_x;
@@ -26,9 +41,11 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 //    uint is_diffuse_gamma;
 //    uint is_specular_gamma;
 //    uint has_alpha;
-
-//    float4x4 __tranforms[256];           // TODO: Delete ( move to skeleton buffer)
-//    float4x4 __inverse[256];              // TODO: Delete ( move to skeleton buffer)
+    
+//    LightStruct light;
+    
+//    float4x4 __tranforms[256]; // TODO: Delete ( move to skeleton buffer)
+//    float4x4 __inverse[256]; // TODO: Delete ( move to skeleton buffer)    
 //};
 
 //cbuffer VS_PerFrame_ConstantBuffer : register(b1)
@@ -51,7 +68,7 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 //    float4 screenRes;
 //}
 
-//cbuffer VS_PerFrame_ConstantBuffer : register(b1)
+//cbuffer VVS_PerFrame_ConstantBuffer : register(b1)
 //{
 //    float4x4 mView;
 //    float4x4 mProjection;

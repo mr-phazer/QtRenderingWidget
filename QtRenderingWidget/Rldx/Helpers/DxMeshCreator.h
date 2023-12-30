@@ -38,7 +38,7 @@ namespace Rldx {
 
 		m_meshData.indexCount = static_cast<uint32_t>(indices.size());
 		m_meshData.indexFormat = DXGI_FORMAT_R32_UINT;
-		m_meshData.enumTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		m_meshData.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 		return m_meshData;
 	}

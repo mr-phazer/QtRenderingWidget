@@ -25,27 +25,26 @@ namespace Rldx {
 
 			poDC->DrawIndexed(m_meshData.indexCount, 0, 0);
 		};
-
-		virtual void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
-		{		
-			UINT stride = sizeof(CommonVertex); 
+		
+		ResourceTypeEnum GetType() const override;		
+		std::string GetTypeString() const override;
+		
+		void SetMeshData(const DxCommonMeshData& meshData);		
+		
+	
+	private:
+		void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
+		{
+			UINT stride = sizeof(CommonVertex);
 			UINT offset = 0;
 			poDC->IASetVertexBuffers(0, 1, m_meshData.cpoVertexBuffer.GetAddressOf(), &stride, &offset);
-			poDC->IASetIndexBuffer(m_meshData.cpoIndexBuffer.Get(), m_meshData.enumIndexFormat, 0);
-			poDC->IASetPrimitiveTopology(m_meshData.enumTopology);			
+			poDC->IASetIndexBuffer(m_meshData.cpoIndexBuffer.Get(), m_meshData.indexFormat, 0);
+			poDC->IASetPrimitiveTopology(m_meshData.primitiveTopology);
 		};
 
-		// Inherited via IDxResource
-		ResourceTypeEnum GetType() const override;
-
-
-		void SetMeshData(const DxCommonMeshData& meshData);;
 
 	private:
-		DxCommonMeshData m_meshData;
-
-		// Inherited via IDxResource
-		std::string GetTypeString() const override;
+		DxCommonMeshData m_meshData;		
 	};
 
 	// TODO: use or delete?

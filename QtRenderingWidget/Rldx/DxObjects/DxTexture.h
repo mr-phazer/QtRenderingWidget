@@ -32,7 +32,7 @@ namespace Rldx {
 		ResourceTypeEnum GetType() const override;
 		std::string GetTypeString() const override;
 
-		virtual void Reset(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
+		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();
 		UINT GetWidth();
 		UINT GetSampleCount();		

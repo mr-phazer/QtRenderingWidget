@@ -13,72 +13,36 @@
 using namespace Rldx;
 
 
-void DxCameraOrbital::setFieldOfView(float value)
+void DxCameraOrbital::SetFieldOfView(float value)
 {
-	geometryData.m_fFieldOfView = value;
+	m_geometryData.fFieldOfView = value;
 }
 
 void DxCameraOrbital::SetWindow(int width, int height)
-
 {
 	m_width = width;
 	m_height = height;
 }
 
-
-
-
 void DxCameraOrbital::SetLookAt(const sm::Vector3& pos)
-{
-
-	//m_v3LookAt = pos;
+{	
+	m_geometryData.v3LookAt = pos;
 }
-
-
 
 
 const sm::Matrix& DxCameraOrbital::GetViewMatrix()
 {
+	CalculateEyePosition_Trigonometric();
+	DirectX::XMStoreFloat4x4(&m_mView, DirectX::XMMatrixLookAtLH(m_geometryData.v3EyePosition, m_geometryData.v3LookAt, sm::Vector3::Up));
 
-	calculateEyePosition_Trigonometric();
-
-	//calculateEyePostion_RotationMatrix();
-
-	using namespace DirectX;
-		
-	DirectX::XMStoreFloat4x4(&m_mView, DirectX::XMMatrixLookAtLH(geometryData.v3EyePosition, geometryData.v3LookAt, sm::Vector3::Up));
-	
 	return m_mView;
 }
-
-void DxCameraOrbital::calculateEyePostion_RotationMatrix()
-{
-	//------------------------------
-	// sm::Matrix bases eye placesment
-	//------------------------------
-
-	geometryData.v3EyePosition = sm::Vector3::Transform(sm::Vector3::Backward, sm::Matrix::CreateFromYawPitchRoll(geometryData.fYaw, geometryData.fPitch, 0));
-
-	geometryData.v3EyePosition *= geometryData.fRadius;
-	geometryData.v3EyePosition += geometryData.v3LookAt;
-	//	 ------------------
-	//	------------
-}
-//double modulo(stdVector <double> xyz) { return sqrt(xyz[0] * xyz[0] + xyz[1] * xyz[1] + xyz[2] * xyz[2] + 1e-130); }
-//void cartesian_to_polar(sm::Vector <double> a, double& r, double& lat, double& lon) { r = modulo(a); lon = atan2(a[1], a[0]); lat = acos(a[2] / r); }
-//void polar_to_cartesian(double r, double lat, double lon, sm::Vector <double>& a) {
-//	a[2] = r * cos(lat);
-//	a[0] = r * sin(lat) * cos(lon);
-//	a[1] = r * sin(lat) * sin(lon);
-//}
-//
 
 /// <summary>
 /// Calculate eye position using "pythoras"
 /// </summary>
-void DxCameraOrbital::calculateEyePosition_Trigonometric()
-{
-	/*
+void DxCameraOrbital::CalculateEyePosition_Trigonometric()
+{	/*
 		Based on math:
 
 		x = rsin θ cos φ
@@ -86,24 +50,24 @@ void DxCameraOrbital::calculateEyePosition_Trigonometric()
 		z = rcos θ
 	*/
 
-	auto y = -geometryData.fYaw;
-	auto p = -geometryData.fPitch;
-	auto r = geometryData.fRadius;
+	auto y = -m_geometryData.fYaw;
+	auto p = -m_geometryData.fPitch;	
+	auto r = m_geometryData.fRadius;
 
-	auto& eye = geometryData.v3EyePosition; // for zoom/pan
+	auto& eye = m_geometryData.v3EyePosition; // for zoom/pan
 
 	// the reason why this is NOT just the simple expression above, is that is gives a very wonky eye movement
+	// TODO: this works:
 	eye.x = r * cos(p) * cos(y);
 	eye.y = r * sin(p);
 	eye.z = r * cos(p) * sin(y);
 
-	eye += geometryData.v3LookAt; // add zoom/pan
+	eye += m_geometryData.v3LookAt; // add zoom/pan
 }
 
-
-void DxCameraOrbital::SetEyePosition(const sm::Vector3& pos)
+void DxCameraOrbital::SetEyePosition(const sm::Vector3& position)
 {
-	/* --------------------------------------------
+	/*---------------------------------------------	
 	cartesian (x,y,z) to spherical (r, theta, phi):
 
 	r = sqrt(x^2 + y^2 + z^2)
@@ -111,24 +75,26 @@ void DxCameraOrbital::SetEyePosition(const sm::Vector3& pos)
 	phi = acos(z/r)
 
 	z / radius = cos(p) *sin(y)
-
 	------------------------------------------------*/
-	auto _pos = (pos)-geometryData.v3LookAt;
+	auto eye = (position) - m_geometryData.v3LookAt;	
 
-	geometryData.fRadius = sqrt(
-		_pos.x * _pos.x +
-		_pos.y * _pos.y +
-		_pos.z * _pos.z
-	);
-
-	geometryData.fPitch = -asin(_pos.y / geometryData.fRadius);
-	geometryData.fYaw = -atan2(_pos.z, _pos.x);
-
+	m_geometryData.fRadius = sqrt(eye.x * eye.x + eye.y * eye.y + eye.z * eye.z);
+	m_geometryData.fPitch = -asin(eye.y / m_geometryData.fRadius);
+	m_geometryData.fYaw = -atan2(eye.z, eye.x);
 
 	// update stuff
-	calculateEyePosition_Trigonometric();
-
+	CalculateEyePosition_Trigonometric();
 }
+
+
+void DxCameraOrbital::CalculateEyePostion_RotationMatrix()
+{
+	m_geometryData.v3EyePosition = sm::Vector3::Transform(sm::Vector3::Backward, sm::Matrix::CreateFromYawPitchRoll(m_geometryData.fYaw, m_geometryData.fPitch, 0));
+	m_geometryData.v3EyePosition *= m_geometryData.fRadius;
+	m_geometryData.v3EyePosition += m_geometryData.v3LookAt;
+}
+
+
 
 const sm::Matrix& DxCameraOrbital::GetWorldMatrix()
 {
@@ -160,26 +126,26 @@ const sm::Matrix& DxCameraOrbital::GetWorldMatrix()
 	//m_mView = sm::Matrix::CreateLookAt(m_v3EyePosition, m_v3LookAt, sm::Vector3::Up);
 
 	using namespace DirectX;
-	XMStoreFloat4x4(&m_mWorld, sm::Matrix::CreateFromYawPitchRoll(geometryData.m_world_yaw, geometryData.m_world_pitch, 0));
+	XMStoreFloat4x4(&m_mWorld, sm::Matrix::CreateFromYawPitchRoll(m_geometryData.m_world_yaw, m_geometryData.m_world_pitch, 0));
 
 	return m_mWorld;
 }
 ;
 
-const sm::Vector3& DxCameraOrbital::GetEyePt() const
+sm::Vector3 DxCameraOrbital::GetEyePt() const
 {
-	return geometryData.v3EyePosition;
+	return m_geometryData.v3EyePosition;
 }
 
-const sm::Vector3& Rldx::DxCameraOrbital::GetLookAt() const
+sm::Vector3 Rldx::DxCameraOrbital::GetLookAt() const
 {
-	return geometryData.v3LookAt;
+	return m_geometryData.v3LookAt;
 }
 
 DirectX::XMVECTOR DxCameraOrbital::ScreenToVector(float screenx, float screeny) const
 {
-	float x = -(screenx - m_width / 2.f) / (geometryData.fRadius * m_width / 2.f);
-	float y = (screeny - m_height / 2.f) / (geometryData.fRadius * m_height / 2.f);
+	float x = -(screenx - m_width / 2.f) / (m_geometryData.fRadius * m_width / 2.f);
+	float y = (screeny - m_height / 2.f) / (m_geometryData.fRadius * m_height / 2.f);
 
 	float z = 0.0f;
 	float mag = x * x + y * y;
@@ -243,7 +209,7 @@ void DxCameraOrbital::OnEnd()
 	//m_vMouseDelta = { 0,0 };
 	m_bDrag = false;
 
-	//m_v3EyePosition = m_v3NewPosition;
+	//m_v3EyePosition = v3NewPosition;
 }
 
 void Rldx::DxCameraOrbital::RotateCamera()
@@ -252,26 +218,26 @@ void Rldx::DxCameraOrbital::RotateCamera()
 	rotateCamera_Pitch(m_vRotVelocity.y);
 
 	// TODO: renabel
-	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ geometryData.fPitch, geometryData.fYaw, geometryData.fRoll }) + ")");
+	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")");
 }
 
 void DxCameraOrbital::rotateCamera_Yaw(float angle)
 {
 	if (SHIFT_BUTTON_DOWN)
 	{
-		geometryData.m_world_yaw += angle;
+		m_geometryData.m_world_yaw += angle;
 	}
 	else
 	{
-		geometryData.fYaw += angle;
+		m_geometryData.fYaw += angle;
 	}
 
 	return;
 
 	//const auto fullCircle = 2.0f * DirectX::XM_PI;
-	//geometryData.fYaw = fmodf(geometryData.fYaw, fullCircle);
-	//if (geometryData.fYaw < 0.0f) {
-	//	geometryData.fYaw = fullCircle + geometryData.fYaw;
+	//m_geometryData.fYaw = fmodf(m_geometryData.fYaw, fullCircle);
+	//if (m_geometryData.fYaw < 0.0f) {
+	//	m_geometryData.fYaw = fullCircle + m_geometryData.fYaw;
 	//}
 
 }
@@ -280,33 +246,33 @@ void DxCameraOrbital::rotateCamera_Pitch(float angle)
 {
 	if (SHIFT_BUTTON_DOWN)
 	{
-		geometryData.m_world_pitch -= angle;
+		m_geometryData.m_world_pitch -= angle;
 	}
 	else
 	{
-		geometryData.fPitch -= angle;
+		m_geometryData.fPitch -= angle;
 	}
 
 
 
 
 	//const auto fullCircle = 2.0f * DirectX::XM_PI;	
-	//geometryData.fPitch = fmodf(geometryData.fPitch, fullCircle);
-	//if (geometryData.fPitch < 0.0f) {
-	//	geometryData.fPitch = fullCircle + geometryData.fPitch;
+	//m_geometryData.fPitch = fmodf(m_geometryData.fPitch, fullCircle);
+	//if (m_geometryData.fPitch < 0.0f) {
+	//	m_geometryData.fPitch = fullCircle + m_geometryData.fPitch;
 	//}
 
 	//return;
 
 
-	if (geometryData.fPitch > DirectX::XM_PIDIV2 - 0.01)
+	if (m_geometryData.fPitch > DirectX::XM_PIDIV2 - 0.01)
 	{
-		geometryData.fPitch = DirectX::XM_PIDIV2 - 0.01;
+		m_geometryData.fPitch = DirectX::XM_PIDIV2 - 0.01;
 	}
 
-	if (geometryData.fPitch < -(DirectX::XM_PIDIV2 - 0.01))
+	if (m_geometryData.fPitch < -(DirectX::XM_PIDIV2 - 0.01))
 	{
-		geometryData.fPitch = -(DirectX::XM_PIDIV2 - 0.01);
+		m_geometryData.fPitch = -(DirectX::XM_PIDIV2 - 0.01);
 	}
 
 	//if (Data.m_world_pitch > DirectX::XM_PIDIV2 - 0.01)
@@ -356,7 +322,7 @@ sm::Matrix& DxCameraOrbital::GetProjMatrix()
 	//if (m_bLHCcoords) // Lefthanded coord sys?
 	//{
 	//	DirectX::XMStoreFloat4x4((DirectX::XMFLOAT4X4*)&m_mProjection,
-	//		DirectX::XMMatrixPerspectiveFovLH(m_fFieldOfView, aspectRatio, m_nearDistance, m_farDistance)
+	//		DirectX::XMMatrixPerspectiveFovLH(fFieldOfView, aspectRatio, nearDistance, farDistance)
 	//	);
 
 	//	return m_mProjection;
@@ -364,25 +330,25 @@ sm::Matrix& DxCameraOrbital::GetProjMatrix()
 	//else
 	//{
 		/*DirectX::XMStoreFloat4x4((DirectX::XMFLOAT4X4*)&m_mProjection,
-			DirectX::XMMatrixPerspectiveFovLH(m_fFieldOfView, aspectRatio, m_nearDistance, m_farDistance)
+			DirectX::XMMatrixPerspectiveFovLH(fFieldOfView, aspectRatio, nearDistance, farDistance)
 		);*/
 
 	using namespace DirectX;
-	XMStoreFloat4x4(&m_mProjection, DirectX::XMMatrixPerspectiveFovLH(geometryData.m_fFieldOfView, aspectRatio, geometryData.m_nearDistance, geometryData.m_farDistance));
+	XMStoreFloat4x4(&m_mProjection, DirectX::XMMatrixPerspectiveFovLH(m_geometryData.fFieldOfView, aspectRatio, m_geometryData.nearDistance, m_geometryData.farDistance));
 
 	return m_mProjection;
 	//}
 }
 
-void DxCameraOrbital::SetProjParams(_In_ float fFOV, _In_ float fAspect, _In_ float fNearPlane, _In_ float fFarPlane)
+void DxCameraOrbital::SetProjParams(_In_ float fFOV, _In_ float fAspect, _In_ float fNearPlane = 0.01f, _In_ float fFarPlane = 100.0f)
 {
 	// Set attributes for the projection matrix
-	geometryData.m_fFieldOfView = fFOV;
+	m_geometryData.fFieldOfView = fFOV;
 	//m_fAsp = fAspect;
-	geometryData.m_nearDistance = fNearPlane;
-	geometryData.m_farDistance = fFarPlane;
+	m_geometryData.nearDistance = fNearPlane;
+	m_geometryData.farDistance = fFarPlane;
 
-	DirectX::XMMATRIX mProj = DirectX::XMMatrixPerspectiveFovLH(geometryData.m_fFieldOfView, fAspect, geometryData.m_nearDistance, geometryData.m_farDistance);
+	DirectX::XMMATRIX mProj = DirectX::XMMatrixPerspectiveFovLH(m_geometryData.fFieldOfView, fAspect, m_geometryData.nearDistance, m_geometryData.farDistance);
 
 	//m_mProjection = mProj;
 	XMStoreFloat4x4(&m_mProjection, mProj);
@@ -460,7 +426,7 @@ void DxCameraOrbital::UpdateVelocity(_In_ float fElapsedTime)
 #endif
 }
 
-void Rldx::DxCameraOrbital::FrameMove(float fElapsedTime)
+void Rldx::DxCameraOrbital::MoveFrame(float fElapsedTime)
 {
 	if (IsMouseMButtonDown())
 	{
@@ -487,18 +453,18 @@ void Rldx::DxCameraOrbital::MoveLookAt()
 	MoveCameraRight(static_cast<float>(m_vMouseDelta.x) * 0.01f);// *0.1f * m_zoom * 1.0f);
 	MoveCameraUp(static_cast<float>(m_vMouseDelta.y) * 0.01f);// *0.1f * m_zoom * 1.0f);		
 	// TODO: reablke
-	//TextOutDebug::AddFadingString("Look-At: (" + std::to_string(geometryData.v3LookAt.x) + ", " + std::to_string(geometryData.v3LookAt.x) + " )");
+	//TextOutDebug::AddFadingString("Look-At: (" + std::to_string(m_geometryData.v3LookAt.x) + ", " + std::to_string(m_geometryData.v3LookAt.x) + " )");
 }
 
 void Rldx::DxCameraOrbital::Zoom()
 {
-	//geometryData.m_zoom += -(static_cast<float>(m_nMouseWheelDelta) * 0.005f) * 0.1 * geometryData.m_zoom;
+	//m_geometryData.m_zoom += -(static_cast<float>(m_nMouseWheelDelta) * 0.005f) * 0.1 * m_geometryData.m_zoom;
 
-	geometryData.fRadius -= static_cast<float>(m_nMouseWheelDelta) * geometryData.fRadius * 0.1f / 220.0f;
+	m_geometryData.fRadius -= static_cast<float>(m_nMouseWheelDelta) * m_geometryData.fRadius * 0.1f / 220.0f;
 	m_nMouseWheelDelta = 0;
 
 	// TODO: renable
-	//TextOutDebug::AddFadingString("Zoom: (" + std::to_string(geometryData.fRadius) + " )");
+	//TextOutDebug::AddFadingString("Zoom: (" + std::to_string(m_geometryData.fRadius) + " )");
 }
 
 void DxCameraOrbital::UpdateMouseDelta()
@@ -552,8 +518,8 @@ void DxCameraOrbital::UpdateMouseDelta()
 		//{
 		//	m_fRadius -= static_cast<float>(m_nMouseWheelDelta) * 0.1f;//m_fRadius * 0.1f / 220.0f;
 		//}
-		///*m_fRadius = std::min<float>(m_fMaxRadius, m_fRadius);
-		//m_fRadius = std::max<float>(m_fMinRadius, m_fRadius);*/
+		///*m_fRadius = std::min<float>(fMaxRadius, m_fRadius);
+		//m_fRadius = std::max<float>(fMinRadius, m_fRadius);*/
 		//m_nMouseWheelDelta = 0;
 
 		//// Get the inverse of the arcball's rotation matrix
@@ -576,7 +542,7 @@ void DxCameraOrbital::UpdateMouseDelta()
 		//XMVector vLookAt = XMLoadFloat3(&m_vLookAt);
 	}
 };
-//void NewCamera::FrameMove(float time)
+//void NewCamera::MoveFrame(float time)
 //{
 //	//m_vMouseDelta *= time;
 //}
@@ -606,12 +572,12 @@ void DxCameraOrbital::save_to_disk(const std::wstring& _path)
 
 void Rldx::DxCameraOrbital::MoveCameraRight(float amount)
 {
-	sm::Vector3 right = (geometryData.v3LookAt - geometryData.v3EyePosition); //calculate forward
+	sm::Vector3 right = (m_geometryData.v3LookAt - m_geometryData.v3EyePosition); //calculate forward
 	right.Normalize();
 	right = right.Cross(sm::Vector3::Up); //calculate the real right
 	right.y = 0;
 	right.Normalize();
-	geometryData.v3LookAt += (right * amount);
+	m_geometryData.v3LookAt += (right * amount);
 
 
 }
@@ -642,7 +608,7 @@ void Rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor
 	auto mouseNear = DirectX::XMVectorSet((float)ptCursor.x, (float)ptCursor.y, 0.0f, 0.0f);
 	auto mouseFar = DirectX::XMVectorSet((float)ptCursor.x, (float)ptCursor.y, 1.0f, 0.0f);
 	auto unprojectedNear = DirectX::XMVector3Unproject(mouseNear, 0, 0, screenDims.x, screenDims.y, 0.0f, 1.0f,
-	GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
+		GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
 
 	auto unprojectedFar = DirectX::XMVector3Unproject(mouseFar, 0, 0, screenDims.x, screenDims.y, 0.0f, 1.0f,
 		GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
@@ -658,10 +624,10 @@ void Rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor
 
 void DxCameraOrbital::MoveCameraForward(float amount)
 {
-	sm::Vector3 forward = geometryData.v3LookAt - geometryData.v3EyePosition;	
+	sm::Vector3 forward = m_geometryData.v3LookAt - m_geometryData.v3EyePosition;
 	forward.Normalize();
 
-	geometryData.v3LookAt += forward * amount;
+	m_geometryData.v3LookAt += forward * amount;
 };
 
 HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -764,7 +730,7 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 		case VK_HOME:
 			//m_v3LookAt = { 0, 0, 0 };
-			SetEyePosition(geometryData.v3EyePosition);
+			SetEyePosition(m_geometryData.v3EyePosition);
 			break;
 
 		case 'W':
@@ -1000,3 +966,12 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 //	return FALSE;
 //}
 
+
+//double modulo(stdVector <double> xyz) { return sqrt(xyz[0] * xyz[0] + xyz[1] * xyz[1] + xyz[2] * xyz[2] + 1e-130); }
+//void cartesian_to_polar(sm::Vector <double> a, double& r, double& lat, double& lon) { r = modulo(a); lon = atan2(a[1], a[0]); lat = acos(a[2] / r); }
+//void polar_to_cartesian(double r, double lat, double lon, sm::Vector <double>& a) {
+//	a[2] = r * cos(lat);
+//	a[0] = r * sin(lat) * cos(lon);
+//	a[1] = r * sin(lat) * sin(lon);
+//}
+//

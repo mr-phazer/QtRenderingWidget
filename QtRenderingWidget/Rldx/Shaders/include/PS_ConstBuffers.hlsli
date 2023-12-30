@@ -1,5 +1,14 @@
 #define NUMBER_OF_LIGHTS 1
 
+cbuffer PS_LightSourceBuffer : register(b0)
+{
+    float3 lightDirection;
+    float radiannce;
+    
+    float4 lightColor;    
+};
+
+
 struct LightSourceData
 {
     float3 lightDirection;
@@ -7,7 +16,8 @@ struct LightSourceData
     float4 lightColor;
 };
 
-cbuffer PS_LightBuffer : register(b0)
+
+cbuffer PS_LightBuffer
 {
     LightSourceData LightData[NUMBER_OF_LIGHTS];
     float4 env_color;
@@ -38,26 +48,26 @@ cbuffer PS_LightBuffer : register(b0)
     float4 colorTable[3];
 };
 
-//cbuffer PS_PerFrame_ConstBuffer : register(b0)
-//{
-//    float4x4 rotEnv;
+////cbuffer PS_PerFrame_ConstBuffer : register(b0)
+////{
+////    float4x4 rotEnv;
 
-//    float3 lightDirection;
-//    float radiannce;
+////    float3 lightDirection;
+////    float radiannce;
 
-//    float4 ambientLight;
-//    float4 diffuseColor;
-//    float4 specularColor;
+////    float4 ambientLight;
+////    float4 diffuseColor;
+////    float4 specularColor;
 
-//    float ambientFactor;
-//    float diffuseFactor;
-//    float specularFactor;
-//    float roughnessFactor;
+////    float ambientFactor;
+////    float diffuseFactor;
+////    float specularFactor;
+////    float roughnessFactor;
 
-//}
+////}
 
 cbuffer PS_PerMesh_ConstBuffer : register(b1)
-{    
+{
     float reflectivity;
     float ambientlight;
     float reserved1;
@@ -84,7 +94,7 @@ cbuffer PS_PerMesh_ConstBuffer : register(b1)
 
     float4 tint_color1;
     float4 tint_color2;
-    float4 tint_color3;   
+    float4 tint_color3;
 
     uint4 puiMaskIndices = { 0, 1, 2, 0 };
 

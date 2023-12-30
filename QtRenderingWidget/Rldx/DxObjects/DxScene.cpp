@@ -28,74 +28,34 @@ using namespace Rldx;
 void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
 	auto rasterizerStateNoCull = m_upoCommonStates->CullNone();
-	poDeviceContext->RSSetState(rasterizerStateNoCull);	
+	poDeviceContext->RSSetState(rasterizerStateNoCull);
 
+	// -- set target, and clear pixels and depth buffer
 	m_spoSwapChain->GetBackBuffer()->BindAsRenderTargetViewWithDepthBuffer(poDeviceContext);
-	// clear back buffer
 	m_spoSwapChain->GetBackBuffer()->ClearPixelsAndDepthBuffer(poDeviceContext, { 0.1, 0.1f, 0.1, 1 });
-
-	// set back buffer to active render target
-	// TODO: should this be here? or in the SwapChain? Or somewhere else
-	
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
 
-	
 
+	m_sceneGraph.FetchNodes(GetRootNode(), &m_renderQueue);
 
-	
+	// -- update + set scene (per frame) constant buffer	
+	UpdateAndBindVSConstBuffer();
 
-	// update + set scene constant buffer
-	
-	UpdateVSConstBuffer(poDeviceContext);
-
-	// parse graph and draw
-	// TODO: remove, this is just a stand-in for a scene-graph parser
-		
-
-	m_sceneGraphParser.FindMeshNodes(GetRootNode());
-	auto meshNodes = m_sceneGraphParser.GetResult();
-
-
-	for (auto& meshNode : meshNodes)
-	{
-		meshNode->Draw(poDeviceContext);
-	};
-
-	// TODO: remove once stuff works
-	/*auto poChild = GetRootNode()->GetChild();
-	auto poMeshNode = dynamic_cast<DxMeshNode*>(poChild);
-	if (poMeshNode)
-	{
-		poMeshNode->Draw(poDeviceContext);
-	}*/
-
-
-	/*
-	- first test, draw one simple mesh.
-
-
-	- process scene graph to get all meshnodes
-	- put mesh nodes in a container "class DxRenderQueue"
-	- for each mesh node in DxRenderQueue
-	- user DxRenderPass::Draw(DxRenderQueue queueToDraw)
-
-
-
-
-	*/
+	m_renderQueue.Draw(poDeviceContext);
 
 	m_spoSwapChain->Present(poDeviceContext);
 }
 
-IDxSceneNode* Rldx::DxScene::GetRootNode() 
-{ 
-	return m_spoRootNode.get(); 
+
+DxBaseNode* Rldx::DxScene::GetRootNode()
+{
+	return m_sceneGraph.GetRootNode();
 }
 
 // TODO: test this
-void Rldx::DxScene::DeleteNode(IDxSceneNode* node)
+void Rldx::DxScene::DeleteNode(DxBaseNode* node)
 {
-	auto nodeResult = IDxSceneNode::FindChild(node, GetRootNode());
+	auto nodeResult = DxBaseNode::FindChild(node, GetRootNode());
 
 	if (nodeResult != nullptr)
 	{
@@ -106,36 +66,78 @@ void Rldx::DxScene::DeleteNode(IDxSceneNode* node)
 	}
 }
 
-void Rldx::DxScene::DoFrameMovement(float elapsedTime)
+static bool bCtrlDown = false;
+LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	m_globalCamera.FrameMove(elapsedTime);
+	if (uMsg == WM_KEYDOWN && wParam == 'A')
+	{
+		bCtrlDown = true;
+	}
+
+	if (uMsg == WM_KEYUP && wParam == 'A')
+	{
+		bCtrlDown = false;
+	}
+
+	if (bCtrlDown)
+	{
+		return m_globalLighting.HandleMessages(hWnd, uMsg, wParam, lParam);
+	}
+
+	auto ret = m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
+
+	return ret;
+}
+
+void Rldx::DxScene::Update(float timeElapsed)
+{	
 	UpdateViewAndPerspective();
+	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
+
+	m_globalCamera.MoveFrame(timeElapsed);
+	m_globalLighting.MoveFrame(timeElapsed);
 }
 
-void Rldx::DxScene::AllocVertexShaderConstBuffer(ID3D11Device* poDevice)
+void Rldx::DxScene::Init(ID3D11Device* poDevice)
 {
-	m_upoCommonStates = std::unique_ptr<DirectX::CommonStates>(new DirectX::CommonStates(poDevice));
+	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 
-	m_vertexShaderConstantBuffer.Create(poDevice);
+	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
+
+	m_sceneFrameVSConstBuffer.buffer.Create(poDevice);
+	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 }
 
-void Rldx::DxScene::Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
+void Rldx::DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {
-	m_spoSwapChain->Reset(poDevice, poDeviceContext, width, height);
+	m_spoSwapChain->Resize(poDevice, poDeviceContext, width, height);
 	m_globalCamera.SetWindow(width, height);
 }
 
 void Rldx::DxScene::UpdateViewAndPerspective()
 {
-	m_vertexShaderconstantBufferData.view = m_globalCamera.GetViewMatrix().Transpose();
-	m_vertexShaderconstantBufferData.projection = m_globalCamera.GetProjMatrix().Transpose();
-	m_vertexShaderconstantBufferData.eyePosition = m_globalCamera.GetEyePt();
+	m_sceneFrameVSConstBuffer.data.view = m_globalCamera.GetViewMatrix().Transpose();
+	m_sceneFrameVSConstBuffer.data.projection = m_globalCamera.GetProjMatrix().Transpose();
+	m_sceneFrameVSConstBuffer.data.eyePosition = m_globalCamera.GetEyePt();
+
+	m_globalLighting.GetViewMatrix();
+	m_sceneFramePSConstBuffer.data.direction = m_globalLighting.GetEyePt();
+
+	// TODO: DEBUG: "Sub in MS Demo "rendering framework" projectiong and view matrix, and see which one is wrong"
+	// _DEBUGGING_SetViewAndPerspective();
 }
 
-inline void Rldx::DxScene::UpdateVSConstBuffer(ID3D11DeviceContext* poDeviceContext)
+inline void Rldx::DxScene::UpdateAndBindVSConstBuffer()
 {
-	m_vertexShaderConstantBuffer.SetData(poDeviceContext, m_vertexShaderconstantBufferData);
-	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_vertexShaderConstantBuffer.GetBuffer() };
-	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
-}
+	auto poDeviceContext = DxDeviceManager::DeviceContext();
 
+	//m_sceneFrameVSConstBuffer.buffer.SetData(poDeviceContext, m_sceneFrameVSConstBuffer.data);
+	m_sceneFrameVSConstBuffer.CopyDataToGPU(poDeviceContext);
+	m_sceneFramePSConstBuffer.CopyDataToGPU(poDeviceContext);
+	
+	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
+	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
+	
+	ID3D11Buffer* pixelShaderSceneConstBuffers[1] = { m_sceneFramePSConstBuffer.buffer.GetBuffer() };
+	poDeviceContext->PSSetConstantBuffers(0, 1, pixelShaderSceneConstBuffers);
+}

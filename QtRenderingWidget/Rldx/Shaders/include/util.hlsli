@@ -1,4 +1,4 @@
-//#pragma once                                           
+ //#pragma once                                           
 
 #include "layout.hlsli"
 #include "textures.hlsli"

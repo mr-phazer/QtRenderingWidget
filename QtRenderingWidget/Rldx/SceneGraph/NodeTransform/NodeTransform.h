@@ -25,9 +25,9 @@ namespace Rldx {
 		/// <param name="_m"></param>
 		/// <returns></returns>
 		sm::Matrix GetGlobalTransform(const sm::Matrix& _m);		
+		sm::Matrix GetLocalTransform() const;		
 
-		sm::Matrix GetTransform() const;		
-		void SetTransForm(const sm::Matrix& _mIn);		
+		void SetTransformFromMatrix(const sm::Matrix& _mIn);
 		
 		void SetTranslation(const sm::Vector3 _translation);
 		void SetTranslation(float x, float y, float z);
@@ -37,12 +37,15 @@ namespace Rldx {
 
 		void SetScale(const sm::Vector3& _scale);
 		void SetScale(float _scale);
-				
+			
+
 		sm::Vector3 GetTranslation();
 		sm::Quaternion GetRotation();
 		sm::Vector3 GetScale();
+	
+
 
 	private:
-		TransformState local;
+		TransformState local;		
 	};
 };

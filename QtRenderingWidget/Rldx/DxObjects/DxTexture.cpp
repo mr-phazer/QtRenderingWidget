@@ -135,7 +135,7 @@ std::string Rldx::DxTexture::GetTypeString() const
 	return "DxTexture";
 }
 
-void Rldx::DxTexture::Reset(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
+void Rldx::DxTexture::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {	
 	CreateBuffers(
 		poDevice, 

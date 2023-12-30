@@ -6,7 +6,7 @@ namespace Rldx {
 
 	using IntId = uint32_t;
 	static const IntId INVALID_ID = ~0;
-
+		
 	template  <typename ENUM_TYPE>
 	class TIdentifiable
 	{
@@ -19,10 +19,7 @@ namespace Rldx {
 
 		std::string GetName() const { return m_name; }
 
-
-		// to force-add a descript, like "MeshNode"
-		virtual std::string GetTypeString() const = 0;
-
+		virtual std::string GetTypeString() const = 0;		
 		virtual ENUM_TYPE GetType() const = 0;
 
 	private: // in C++ is convention so seperate method from variable with and access modifier
