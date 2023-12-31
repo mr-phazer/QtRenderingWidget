@@ -12,7 +12,7 @@
 #include "..\..\..\Interfaces\IDrawable.h"
 #include "DxShaderProgram.h"
 #include "DxMaterial.h"
-#include "..\Types\DxMeshData.h"
+#include "..\DataTypes\DxMeshData.h"
 
 namespace Rldx {
 
@@ -29,8 +29,7 @@ namespace Rldx {
 		ResourceTypeEnum GetType() const override;		
 		std::string GetTypeString() const override;
 		
-		void SetMeshData(const DxCommonMeshData& meshData);		
-		
+		void SetMeshData(const DxCommonMeshData& meshData);				
 	
 	private:
 		void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
@@ -42,42 +41,16 @@ namespace Rldx {
 			poDC->IASetPrimitiveTopology(m_meshData.primitiveTopology);
 		};
 
-
 	private:
 		DxCommonMeshData m_meshData;		
 	};
 
-	// TODO: use or delete?
-	//class MeshRenderer
-	//{
-	//public:
-	//	static void Draw(
-	//		ID3D11DeviceContext* poDC,
-	//		DxMesh* poMesh,
-	//		IDxShaderProgram* poShaderProgram,
-	//		DxMaterial* poMaterial,
-	//		ID3D11RenderTargetView* destRtV = nullptr
-	//	)
-	//	{
-	//		// if RTV is supplied set that as active
-	//		if (destRtV != nullptr) {
-	//			poDC->OMSetRenderTargets(1, &destRtV, nullptr);
-	//		}
-
-	//		GetMeshReadyForDrawing(poDC);
-
-	//		poDC->DrawIndexed(m_meshData.indexCount, 0, 0);
-
-
-	//	}
-
-	//private:
-	//	static void GetMaterialReady(ID3D11DeviceContext* poDC, DxMaterial* material);
-	//	static void GetShadersReady(ID3D11DeviceContext* poDC, IDxShaderProgram* shaderProgram);
-	//	static void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
-	//	{
-
-	//	}
-	//};
 }; // namespace Rldx
 
+// Could be: material, shader, mesh, texture, etc.
+class DxSomeRenderThing
+{
+public:	
+	void Bind(); // Mesh: Setup drawcall / Shader: bind shader / Material: bind textures 
+	void Flush(); // Mesh: Draw 
+};

@@ -3,7 +3,7 @@
 
 
 #include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
-#include "..\Types\ConstBuffers\CPUConstBuffers.h"
+#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 
 
 

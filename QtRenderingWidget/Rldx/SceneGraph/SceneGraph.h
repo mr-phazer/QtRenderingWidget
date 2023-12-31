@@ -1,6 +1,6 @@
 #pragma once
-#include "..\DxObjects\DxMeshData.h"
-#include "..\DxObjects\DxShaderProgram.h"
+#include "..\Rendering\DxMesh.h"
+#include "..\Rendering\DxShaderProgram.h"
 #include "..\Interfaces\IDrawable.h"
 #include "..\Interfaces\IFlushable.h"
 #include "..\Interfaces\IRenderQueue.h"

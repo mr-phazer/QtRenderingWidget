@@ -10,8 +10,8 @@
 
 // author
 #include "..\..\Tools\tools.h"
-#include "..\Types\ConstBuffers\CPUConstBuffers.h"
-#include "..\Types\ShaderFiles.h"
+#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
+#include "..\DataTypes\ShaderFiles.h"
 #include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\ResourceManager\IDxResouce.h"

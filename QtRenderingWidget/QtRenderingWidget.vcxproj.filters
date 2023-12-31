@@ -43,10 +43,10 @@
     <ClCompile Include="Logging\Logging.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DXSwapChain.cpp">
+    <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxTexture.cpp">
+    <ClCompile Include="Rldx\Rendering\DxTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp">
@@ -58,13 +58,10 @@
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxShaderProgram.cpp">
+    <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxMeshData.cpp">
+    <ClCompile Include="Rldx\Rendering\DxScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h">
@@ -76,7 +73,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxMaterial.cpp">
+    <ClCompile Include="Rldx\Rendering\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp">
@@ -85,7 +82,7 @@
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Types\ShaderFiles.cpp">
+    <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp">
@@ -97,7 +94,7 @@
     <ClCompile Include="Interfaces\IDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\DxObjects\DxCameraOrbital.cpp">
+    <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp">
@@ -107,6 +104,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Rendering\DxMesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -120,16 +120,16 @@
     <ClInclude Include="Logging\Logging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DXSwapChain.h">
+    <ClInclude Include="Rldx\Rendering\DXSwapChain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxTexture.h">
+    <ClInclude Include="Rldx\Rendering\DxTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="asdsass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxScene.h">
+    <ClInclude Include="Rldx\Rendering\DxScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h">
@@ -144,10 +144,7 @@
     <ClInclude Include="Rldx\Managers\DxSceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxShaderProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxMeshData.h">
+    <ClInclude Include="Rldx\Rendering\DxShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\COMerrors.h">
@@ -156,7 +153,7 @@
     <ClInclude Include="Common\TSmartPointer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Types\ConstBuffers\CPUConstBuffers.h">
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPUConstBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
@@ -165,13 +162,13 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxMaterial.h">
+    <ClInclude Include="Rldx\Rendering\DxMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Types\ShaderFiles.h">
+    <ClInclude Include="Rldx\DataTypes\ShaderFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h">
@@ -180,7 +177,7 @@
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Types\DxMeshData.h">
+    <ClInclude Include="Rldx\DataTypes\DxMeshData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Helpers\DxMeshCreator.h">
@@ -198,7 +195,7 @@
     <ClInclude Include="Interfaces\IIdentifiable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxCameraOrbital.h">
+    <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tools\ModelImporter.h">
@@ -225,7 +222,13 @@
     <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\DxConstBuffer.h">
+    <ClInclude Include="Rldx\Rendering\DxConstBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -27,21 +27,32 @@ using namespace Rldx;
 
 void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
-	auto rasterizerStateNoCull = m_upoCommonStates->CullNone();
-	poDeviceContext->RSSetState(rasterizerStateNoCull);
-
+	
 	// -- set target, and clear pixels and depth buffer
 	m_spoSwapChain->GetBackBuffer()->BindAsRenderTargetViewWithDepthBuffer(poDeviceContext);
 	m_spoSwapChain->GetBackBuffer()->ClearPixelsAndDepthBuffer(poDeviceContext, { 0.1, 0.1f, 0.1, 1 });
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
+	
 
+	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
+
+	auto textWriter = DxDeviceManager::GetInstance().GetDebugTextWriter();
+	textWriter->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.");
+	textWriter->RenderText();
+
+	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthDefault(), 0);
+
+	auto rasterizerStateNoCull = m_upoCommonStates->CullNone();
+	poDeviceContext->RSSetState(rasterizerStateNoCull);
 
 	m_sceneGraph.FetchNodes(GetRootNode(), &m_renderQueue);
-
+	
 	// -- update + set scene (per frame) constant buffer	
 	UpdateAndBindVSConstBuffer();
 
 	m_renderQueue.Draw(poDeviceContext);
+
+	
 
 	m_spoSwapChain->Present(poDeviceContext);
 }
@@ -81,7 +92,7 @@ LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPA
 
 	if (bCtrlDown)
 	{
-		return m_globalLighting.HandleMessages(hWnd, uMsg, wParam, lParam);
+		return m_globalDirectionalLight.HandleMessages(hWnd, uMsg, wParam, lParam);
 	}
 
 	auto ret = m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
@@ -95,7 +106,7 @@ void Rldx::DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
 
 	m_globalCamera.MoveFrame(timeElapsed);
-	m_globalLighting.MoveFrame(timeElapsed);
+	m_globalDirectionalLight.MoveFrame(timeElapsed);
 }
 
 void Rldx::DxScene::Init(ID3D11Device* poDevice)
@@ -120,8 +131,8 @@ void Rldx::DxScene::UpdateViewAndPerspective()
 	m_sceneFrameVSConstBuffer.data.projection = m_globalCamera.GetProjMatrix().Transpose();
 	m_sceneFrameVSConstBuffer.data.eyePosition = m_globalCamera.GetEyePt();
 
-	m_globalLighting.GetViewMatrix();
-	m_sceneFramePSConstBuffer.data.direction = m_globalLighting.GetEyePt();
+	m_globalDirectionalLight.GetViewMatrix();
+	m_sceneFramePSConstBuffer.data.direction = m_globalDirectionalLight.GetEyePt();
 
 	// TODO: DEBUG: "Sub in MS Demo "rendering framework" projectiong and view matrix, and see which one is wrong"
 	// _DEBUGGING_SetViewAndPerspective();
@@ -140,4 +151,41 @@ inline void Rldx::DxScene::UpdateAndBindVSConstBuffer()
 	
 	ID3D11Buffer* pixelShaderSceneConstBuffers[1] = { m_sceneFramePSConstBuffer.buffer.GetBuffer() };
 	poDeviceContext->PSSetConstantBuffers(0, 1, pixelShaderSceneConstBuffers);
+}
+
+inline void Rldx::DxScene::DEBUGGING_SetViewAndPerspective()
+{
+	// Use DirectXMath to create view and perspective matrices.
+
+	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.7f, 1.5f, 0.f);
+	DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, -0.1f, 0.0f, 0.f);
+	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);
+
+	DirectX::XMStoreFloat4x4(
+		&m_sceneFrameVSConstBuffer.data.view,
+		DirectX::XMMatrixTranspose(
+			DirectX::XMMatrixLookAtRH(
+				eye,
+				at,
+				up
+			)
+		)
+	);
+
+	m_sceneFrameVSConstBuffer.data.view = sm::Matrix::Identity;
+
+	float aspectRatioX = m_spoSwapChain->GetBackBuffer()->GetAspectRatio();
+	float aspectRatioY = aspectRatioX < (16.0f / 9.0f) ? aspectRatioX / (16.0f / 9.0f) : 1.0f;
+
+	DirectX::XMStoreFloat4x4(
+		&m_sceneFrameVSConstBuffer.data.projection,
+		DirectX::XMMatrixTranspose(
+			DirectX::XMMatrixPerspectiveFovRH(
+				2.0f * std::atan(std::tan(DirectX::XMConvertToRadians(70) * 0.5f) / aspectRatioY),
+				aspectRatioX,
+				0.01f,
+				100.0f
+			)
+		)
+	);
 }

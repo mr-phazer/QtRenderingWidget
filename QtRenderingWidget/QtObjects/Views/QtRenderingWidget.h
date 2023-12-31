@@ -127,10 +127,10 @@ public:
 		
 
 		
-		/*	fontEngine.m_font = std::make_unique<SpriteFont>(_dx->device(), L"myfile.spritefont");
-			fontEngine.m_spriteBatch = std::make_unique<SpriteBatch>(_dx->deviceContext());
+		/*	fontEngine.m_upoFont = std::make_unique<SpriteFont>(_dx->device(), L"myfile.spritefont");
+			fontEngine.m_upoSpriteBatch = std::make_unique<SpriteBatch>(_dx->deviceContext());
 
-			if (!(fontEngine.m_font && fontEngine.m_spriteBatch))
+			if (!(fontEngine.m_upoFont && fontEngine.m_upoSpriteBatch))
 			{
 				throw exception("Error Loading Font");
 			}*/
@@ -232,7 +232,7 @@ private:
 //
 //		
 //
-//		DirectX::SimpleMath::Vector2 origin = { 0,0 }; // m_font->MeasureString(output) / 2.f;
+//		DirectX::SimpleMath::Vector2 origin = { 0,0 }; // m_upoFont->MeasureString(output) / 2.f;
 //
 //		DirectX::SimpleMath::Vector3 vScale = { 5.f, 5.f, 5.f };
 //		DirectX::SimpleMath::Vector2 vPosition = { 0.f, 0.f };
@@ -246,13 +246,13 @@ private:
 //		_dxManager->deviceContext()->OMSetDepthStencilState(_dxManager->depthStencilStates.Off.Get(), 1);
 //		
 //
-//		fontEngine.m_spriteBatch->Begin();			   
-//		for (auto& itStr : fontEngine.m_stringsToDraw)
+//		fontEngine.m_upoSpriteBatch->Begin();			   
+//		for (auto& itStr : fontEngine.m_stringRenderQueue)
 //		{
-//			auto boundRect = fontEngine.m_font->MeasureDrawBounds(itStr.c_str(), vPosition, false);
+//			auto boundRect = fontEngine.m_upoFont->MeasureDrawBounds(itStr.c_str(), vPosition, false);
 //
-//			fontEngine.m_font->DrawString(
-//				fontEngine.m_spriteBatch.get(),
+//			fontEngine.m_upoFont->DrawString(
+//				fontEngine.m_upoSpriteBatch.get(),
 //				itStr.c_str(),
 //				vPosition,
 //				vColor,
@@ -265,18 +265,18 @@ private:
 //			vPosition.y += boundRect.bottom;
 //		}
 //
-//		//float y = Vector3(m_font->MeasureString(TextOutDebug::strStringToRender.c_str())).y;
+//		//float y = Vector3(m_upoFont->MeasureString(TextOutDebug::strStringToRender.c_str())).y;
 //
 //		//for (auto& it : TextOutDebug::vecStringsToRender) {
-//		//	/*m_font->DrawString(m_spriteBatch.get(), it.c_str(),
+//		//	/*m_upoFont->DrawString(m_upoSpriteBatch.get(), it.c_str(),
 //		//		{ 0,y }, vColor, 0.f, origin, xmColor, DirectX::SpriteEffects::SpriteEffects_None);*/
 //
 //		//	auto tempColor = vColor;
 //		//	tempColor.w = it.second;
 //		//	tempColor.x = it.second;
 //
-//		//	m_font->DrawString(
-//		//		m_spriteBatch.get(),
+//		//	m_upoFont->DrawString(
+//		//		m_upoSpriteBatch.get(),
 //		//		(it.first + ": alpha: " + to_string(it.second)).c_str(),
 //		//		{ 0, y },
 //		//		tempColor,
@@ -291,10 +291,10 @@ private:
 //		//		it.second -= 0.01;
 //		//	}
 //
-//		//	y += Vector3(m_font->MeasureString(it.first.c_str())).y;;
+//		//	y += Vector3(m_upoFont->MeasureString(it.first.c_str())).y;;
 //		//}
 //
-//		fontEngine.m_spriteBatch->End();
+//		fontEngine.m_upoSpriteBatch->End();
 //
 //		_dxManager->deviceContext()->OMSetDepthStencilState(_dxManager->depthStencilStates.On.Get(), 1);
 //
@@ -334,10 +334,10 @@ private:
 //
 //	struct FontEngine
 //	{
-//		std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-//		std::unique_ptr<DirectX::SpriteFont> m_font;
+//		std::unique_ptr<DirectX::SpriteBatch> m_upoSpriteBatch;
+//		std::unique_ptr<DirectX::SpriteFont> m_upoFont;
 //
-//		std::vector<std::wstring> m_stringsToDraw = { L"D3D\nIt Works\n\r\NOW: Scenegrapdh" };
+//		std::vector<std::wstring> m_stringRenderQueue = { L"D3D\nIt Works\n\r\NOW: Scenegrapdh" };
 //	} fontEngine;
 
 

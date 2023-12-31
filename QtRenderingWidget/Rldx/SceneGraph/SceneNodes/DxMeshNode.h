@@ -1,12 +1,11 @@
 #pragma once
 
 #include "DxSceneNode.h"
-#include "..\..\DxObjects\DxMeshData.h"
+#include "..\..\Rendering\DxMesh.h"
 #include "..\..\..\Logging\Logging.h"
 #include "..\..\SceneGraph\BaseNode\DxBaseNode.h"
 
-namespace Rldx 
-{
+namespace Rldx {
 
 	class DxMeshNode : public DxBaseNode
 	{		

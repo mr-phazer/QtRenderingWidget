@@ -38,7 +38,7 @@ namespace Rldx
 	{
 	public:
 		// TODO: is this relly needeed? How often do you need use the smart pointer type?
-		using UPtr = std::unique_ptr<DxSwapChain>;
+		using UniquePtr = std::unique_ptr<DxSwapChain>;
 	public:
 		DxSwapChain()
 		{
@@ -57,7 +57,7 @@ namespace Rldx
 			return randomColor;
 		}
 
-		static UPtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024);
+		static UniquePtr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width = 1024, UINT height = 1024);
 
 		void Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);

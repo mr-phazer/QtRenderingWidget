@@ -2,10 +2,10 @@
 
 
 // impl of the forward declared resources
-#include "..\..\DxObjects\DxMeshData.h"
-#include "..\..\DxObjects\DxMaterial.h"
-#include "..\..\DxObjects\DxTexture.h"
-#include "..\..\DxObjects\DxShaderProgram.h"
+#include "..\..\Rendering\DxMesh.h"
+#include "..\..\Rendering\DxMaterial.h"
+#include "..\..\Rendering\DxTexture.h"
+#include "..\..\Rendering\DxShaderProgram.h"
 
 
 using namespace Rldx;

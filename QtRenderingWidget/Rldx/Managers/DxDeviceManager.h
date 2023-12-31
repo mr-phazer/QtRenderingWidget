@@ -1,39 +1,19 @@
 #pragma once
 
+// Standard lib headers
+#include <memory>
+
 #include <d3d11.h>
-#include <d3d11_1.h>
-#include <D3Dcompiler.h>
-
-
-#include <assert.h>
-
 //  WRL wrappers from COM Objects - smart pointers for Direct3d resources
 #include <wrl/client.h>
-#include <wrl/wrappers/corewrappers.h>
-
-// Standard lib headers
-#include <stdexcept>
-#include <memory>
-#include <functional>
-#include <vector>
-#include <memory>
 
 #pragma comment(lib, "d3d11.lib")
 
-#include "..\DxObjects\DXSwapChain.h"
-#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
-#include "..\..\Logging\Logging.h"
-
-
-
-#include <iostream>
-
-
+#include "DxDebugTextWriter.h"
 
 namespace Rldx
 {
-
 	/// <summary>
 	/// singleton only 1 device per .exe
 	/// </summary>
@@ -54,6 +34,11 @@ namespace Rldx
 		static ID3D11Device* Device() {
 			return GetInstance().GetDevice();
 		}
+
+		DxDebugTextWriter* GetDebugTextWriter()
+		{
+			return m_upoDebugTextWriter.get();
+		}		
 
 		ID3D11Device* GetDevice() {
 			return m_cpoDevice.Get();
@@ -93,7 +78,7 @@ namespace Rldx
 		};		
 	
 		DirectX::CommonStates& GetDxStates() {
-			return *stateObjects;
+			return *m_stateObjects;
 		}
 
 	private:
@@ -105,10 +90,9 @@ namespace Rldx
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11Device> m_cpoDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_cpoDeviceContext;
+		std::unique_ptr<DirectX::CommonStates> m_stateObjects;		
 
-		std::unique_ptr<DirectX::CommonStates> stateObjects;
-
-	/*public:
+	public:
 		struct DepthStencilStates
 		{
 			Microsoft::WRL::ComPtr <ID3D11DepthStencilState> On;
@@ -116,17 +100,10 @@ namespace Rldx
 		} depthStencilStates;
 
 	private:
-
-		struct FontEngine
-		{
-			std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-			std::unique_ptr<DirectX::SpriteFont> m_font;
-
-			std::vector<std::wstring> m_stringsToDraw = { L"D3D\nIt Works\nNOW: Scenegrapdh" };
-		} fontEngine;*/
-
+		std::unique_ptr<DxDebugTextWriter> m_upoDebugTextWriter;
 	};
 };
+
 
 
 

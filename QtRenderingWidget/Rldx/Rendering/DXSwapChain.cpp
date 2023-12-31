@@ -4,7 +4,7 @@
 
 using namespace Rldx;
 
-DxSwapChain::UPtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width, UINT height)
+DxSwapChain::UniquePtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width, UINT height)
 {
 	auto poNew = std::make_unique<DxSwapChain>();
 

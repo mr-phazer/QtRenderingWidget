@@ -1,6 +1,6 @@
 
 #include "DxSceneManager.h"
-#include "..\DxObjects\DXSwapChain.h"
+#include "..\Rendering\DXSwapChain.h"
 #include "DxDeviceManager.h"
 #include "..\..\Logging\Logging.h"
 #include "..\..\Tools\tools.h"
@@ -22,7 +22,8 @@ DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
 	}
 
 	// Create state objects.
-	poNewInstance->stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
+	poNewInstance->m_stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
+	poNewInstance->m_upoDebugTextWriter = DxDebugTextWriter::Create(poNewInstance->GetDevice(), poNewInstance->GetDeviceContext());
 
 	return poNewInstance;
 }
@@ -110,10 +111,10 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 bool Rldx::DxDeviceManager::InitFont()
 {
 	// TODO: exception?
-	/*fontEngine.m_font = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
-	fontEngine.m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(GetDeviceContext());
+	/*fontEngine.m_upoFont = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
+	fontEngine.m_upoSpriteBatch = std::make_unique<DirectX::SpriteBatch>(GetDeviceContext());
 
-	if (!(fontEngine.m_font && fontEngine.m_spriteBatch))
+	if (!(fontEngine.m_upoFont && fontEngine.m_upoSpriteBatch))
 	{
 		throw exception("Error Loading Font");
 	}*/
@@ -131,7 +132,7 @@ void Rldx::DxDeviceManager::RenderText()
 
 
 
-	DirectX::SimpleMath::Vector2 origin = { 0,0 }; // m_font->MeasureString(output) / 2.f;
+	DirectX::SimpleMath::Vector2 origin = { 0,0 }; // m_upoFont->MeasureString(output) / 2.f;
 
 	DirectX::SimpleMath::Vector3 vScale = { 5.f, 5.f, 5.f };
 	DirectX::SimpleMath::Vector2 vPosition = { 0.f, 0.f };
@@ -145,13 +146,13 @@ void Rldx::DxDeviceManager::RenderText()
 	//GetDeviceContext()->OMSetDepthStencilState(depthStencilStates.Off.Get(), 1);
 
 
-	//fontEngine.m_spriteBatch->Begin();
-	//for (auto& itStr : fontEngine.m_stringsToDraw)
+	//fontEngine.m_upoSpriteBatch->Begin();
+	//for (auto& itStr : fontEngine.m_stringRenderQueue)
 	//{
-	//	auto boundRect = fontEngine.m_font->MeasureDrawBounds(itStr.c_str(), vPosition, false);
+	//	auto boundRect = fontEngine.m_upoFont->MeasureDrawBounds(itStr.c_str(), vPosition, false);
 
-	//	fontEngine.m_font->DrawString(
-	//		fontEngine.m_spriteBatch.get(),
+	//	fontEngine.m_upoFont->DrawString(
+	//		fontEngine.m_upoSpriteBatch.get(),
 	//		itStr.c_str(),
 	//		vPosition,
 	//		vColor,
@@ -163,5 +164,5 @@ void Rldx::DxDeviceManager::RenderText()
 
 	//	vPosition.y += boundRect.bottom;
 	//}
-	//fontEngine.m_spriteBatch->End();
+	//fontEngine.m_upoSpriteBatch->End();
 }

@@ -9,7 +9,7 @@
 #include <d3dcompiler.h>
 
 // Author
-#include "..\Types\ShaderFiles.h"
+#include "..\DataTypes\ShaderFiles.h"
 
 namespace Rldx {
 

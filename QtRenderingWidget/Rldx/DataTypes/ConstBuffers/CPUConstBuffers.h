@@ -14,7 +14,7 @@ namespace Rldx {
 	using float4x4 = DirectX::XMFLOAT4X4;
 	using float3x3 = DirectX::XMFLOAT3X3;
 
-	struct LightStruct
+	struct PS_LightData_ConstBuffer
 	{
 		DirectX::XMFLOAT3 direction;
 		float radiance;		
@@ -90,7 +90,6 @@ namespace Rldx {
 
 	struct VS_PerScene_ConstantBuffer
 	{
-
 		// TODO: maybe move into camera struct?
 		DirectX::XMFLOAT3 eyePosition = { 0.5,0.1,0.1 };
 		uint32_t reserved1 = 0;
@@ -102,7 +101,7 @@ namespace Rldx {
 		DirectX::XMFLOAT4X4 view = sm::Matrix::Identity;
 		DirectX::XMFLOAT4X4 projection = sm::Matrix::Identity;
 
-		LightStruct light[1];
+		PS_LightData_ConstBuffer light[1];
 	};
 
 }; // namespace Rldx 

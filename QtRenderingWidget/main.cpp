@@ -8,7 +8,7 @@
 #include <QtWidgets/qlineedit.h>
 
 #include "Rldx/Managers/DxDeviceManager.h"
-#include "Rldx/DxObjects/DxShaderProgram.h"
+#include "Rldx/Rendering/DxShaderProgram.h"
 #include "Rldx/Helpers/DxMeshCreator.h"
 
 #include "Logging/Logging.h"

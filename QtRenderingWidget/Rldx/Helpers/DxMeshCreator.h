@@ -1,11 +1,7 @@
 #pragma once
 
-#include <map>
-
-#include "..\Types\DxMeshData.h"
-#include "..\Types\ConstBuffers\CPUConstBuffers.h"
-#include "..\Types\DxMeshData.h"
-
+#include <assert.h>
+#include "..\DataTypes\DxMeshData.h"
 
 namespace Rldx {
 

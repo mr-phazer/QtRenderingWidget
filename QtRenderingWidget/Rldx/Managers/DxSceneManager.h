@@ -4,7 +4,7 @@
 #include <qobject.h>
 
 // athour
-#include "..\DxObjects\DxScene.h"
+#include "..\Rendering\DxScene.h"
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 
 

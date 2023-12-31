@@ -13,14 +13,15 @@ namespace Rldx {
 	struct TConstBuffer
 	{
 		/// <summary>
-		/// CPU Asssessible data
+		/// Data, typically a struct, to be copied to the GPU
+		/// Stored on and editable from the CPU
 		/// </summary>
 		DATA_TYPE data;
 
 		/// <summary>
-		/// Wraps GPU data buffer
+		/// Wraps GPU data buffer (MS DirectXTK class
 		/// </summary>
-		DirectX::ConstantBuffer<DATA_TYPE> buffer; // constant buffer for the vertex shader
+		DirectX::ConstantBuffer<DATA_TYPE> buffer; 
 
 		void CopyDataToGPU(ID3D11DeviceContext* poDeviceContext)
 		{
