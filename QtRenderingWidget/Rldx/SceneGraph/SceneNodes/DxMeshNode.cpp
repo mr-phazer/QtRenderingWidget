@@ -1,5 +1,5 @@
 #include "DxMeshNode.h"
-#include "..\Interfaces\IRenderQueue.h"
+#include "..\Rldx\Interfaces\IRenderBucket.h"
 
 using namespace Rldx;
 
@@ -19,17 +19,16 @@ DxMeshNode::SharedPointerMesh DxMeshNode::Create(const std::string& name)
 //	m_meshData->Draw(poDC);
 //}
 
-void Rldx::DxMeshNode::FlushToRenderQueue(IDxRenderQueue* pRenderQueue)
+void Rldx::DxMeshNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
 {	
 	sm::Matrix mWorld = GetCurrentGlobalTransForm();
 
-	DxRenderQueueItem newRenderQueueItem;
-	newRenderQueueItem.meshData = m_meshData;
-	newRenderQueueItem.shaderProgram = m_shaderProgram;
-	newRenderQueueItem.material = m_material;
-	newRenderQueueItem.worldMatrix = mWorld;
-	newRenderQueueItem.pivotPoint = { 0,0,0 };
-
+	DxRenderItemMesh newRenderQueueItem(
+		m_meshData, 
+		m_shaderProgram, 
+		m_material, 
+		(m_pDeformerNode) ? &m_pDeformerNode->m_deformerDataBuffer : nullptr);
+	
 	pRenderQueue->AddItem(newRenderQueueItem);
 }
 

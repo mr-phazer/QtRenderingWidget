@@ -3,19 +3,20 @@
 
 #include <d3d11.h>
 #include <string>
-#include <vector>
+
 
 // MS Direct3d lib
 #include "..\..\..\DirectXTK\Inc\BufferHelpers.h"
 
 // author
-#include "..\..\Tools\tools.h"
+
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\DataTypes\ShaderFiles.h"
 #include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\ResourceManager\IDxResouce.h"
 
+#include "..\Interfaces\IBindable.h"
 
 namespace Rldx {
 
@@ -28,7 +29,7 @@ namespace Rldx {
 	//};
 
 
-	class IDxShaderProgram : public IDxResource
+	class IDxShaderProgram : public IDxResource, public IBindable
 	{
 	public:
 		virtual ID3D11VertexShader* GetVertexShader() = 0;
@@ -36,9 +37,7 @@ namespace Rldx {
 		virtual ID3D11InputLayout* GetInputLayout() = 0;
 
 		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
-		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;			
-
-		virtual void GetReady(ID3D11DeviceContext*) = 0;
+		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;					
 
 		//	virtual void SetVSConstBufferAsActive(ID3D11DeviceContext* poDC) const
 		//	{
@@ -149,7 +148,7 @@ namespace Rldx {
 		VS_CONST_BUFER& GetCSEditableVS() { return vertexShaderConstBuffer; };
 		PS_CONST_BUFER& GetCSEditablePS() { return pixelShaderConstBuffer; };
 			
-		virtual void GetReady(ID3D11DeviceContext* dc) override {};
+		virtual void BindToDC(ID3D11DeviceContext* dc) override {};
 
 		virtual ResourceTypeEnum GetType() const override { return ResourceTypeEnum::ShaderProgram; };
 
@@ -170,7 +169,7 @@ namespace Rldx {
 		}*/
 
 
-		virtual void GetReady(ID3D11DeviceContext* deviceContext) override
+		virtual void BindToDC(ID3D11DeviceContext* deviceContext) override
 		{
 			// TODO: should any const buffer data be sent from here?
 			auto& vsCB = GetCSEditableVS();

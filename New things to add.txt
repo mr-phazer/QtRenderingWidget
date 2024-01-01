@@ -1,0 +1,24 @@
+Deformers
+
+A rendering of a mesh, uses these const buffer, send 
+
+VS_MeshDerformerConstBuffer
+VS_MeshConstBuffer
+
+PS_MeshConstBuffer: for lighting stuff like decals, coloring etc
+
+
+MeshNode
+   DerformerNode* pDeformerNode;   // skeleton somewhere
+   MeshConstBuffer* pMeshConstBuffer; // mesh PS const buffer data
+
+
+class MeshRenderItem
+{
+   virtual void Bind()
+   {
+		derformer
+   }
+   
+}
+

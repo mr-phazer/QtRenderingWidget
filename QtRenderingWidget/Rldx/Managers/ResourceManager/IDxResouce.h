@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\Interfaces\IIdentifiable.h"
+#include "..\Interfaces\TIdentifiable.h"
 
 namespace Rldx {
 

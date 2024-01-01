@@ -29,7 +29,7 @@
 //#include "DxTextureView.h"
 #include "DxTexture.h"
 
-#include "..\..\Interfaces\IDrawable.h"
+#include "..\..\Rldx\Interfaces\IDrawable.h"
 
 
 namespace Rldx

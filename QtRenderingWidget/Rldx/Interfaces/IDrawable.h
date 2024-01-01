@@ -7,11 +7,11 @@ class ID3D11RenderTargetView;
 namespace Rldx {
 	
 	/// <summary>
-	/// Base for anything that be draw with a shader program
+	/// Interface for objects that can be drawn on/with a D3d11 device context
 	/// </summary>
 	class IDrawable
 	{
-	public:
+	public:		
 		virtual void Draw(ID3D11DeviceContext* poDC) = 0;		
 	};
 };

@@ -6,21 +6,14 @@ namespace Rldx {
 
 	using IntId = uint32_t;
 	static const IntId INVALID_ID = ~0;
-		
-	template  <typename ENUM_TYPE>
-	class TIdentifiable
+
+	class IdentifiableBase
 	{
 	public:
-		TIdentifiable(const std::string& name) : m_id(GetNextId()), m_name(name) {}
-		TIdentifiable();
-		virtual ~TIdentifiable();
+		IdentifiableBase() : m_id(GetNextId()) {}
+		virtual ~IdentifiableBase() {};
 
-		IntId GetId() const { return m_id; }
-
-		std::string GetName() const { return m_name; }
-
-		virtual std::string GetTypeString() const = 0;		
-		virtual ENUM_TYPE GetType() const = 0;
+		IntId GetId() const { return m_id; }		
 
 	private: // in C++ is convention so seperate method from variable with and access modifier
 		static IntId GetNextId() { return sm_nextId++; }
@@ -28,6 +21,19 @@ namespace Rldx {
 	private:
 		IntId m_id = INVALID_ID;
 		static IntId sm_nextId;
+	};
+
+	template  <typename ENUM_TYPE>
+	class TIdentifiable : public IdentifiableBase
+
+	{
+	public:
+		TIdentifiable(const std::string& name) : IdentifiableBase(), m_name(name) {}
+		TIdentifiable();
+		virtual ~TIdentifiable();
+
+		virtual std::string GetTypeString() const = 0;
+		virtual ENUM_TYPE GetType() const = 0;
 
 	protected:
 		std::string m_name = "Unnamed_Object";
@@ -35,7 +41,7 @@ namespace Rldx {
 
 	template<typename ENUM_TYPE>
 	inline TIdentifiable<ENUM_TYPE>::TIdentifiable()
-		: m_id(GetNextId())
+		: IdentifiableBase()
 	{
 		// TODO: remove after debugging
 #if _DEBUG
@@ -47,10 +53,7 @@ namespace Rldx {
 	inline TIdentifiable<ENUM_TYPE>::~TIdentifiable()
 	{
 #if _DEBUG
-		logging::LogAction(/*GetTypeString()*/ + "# " + std::to_string(GetId()) + ": deallocated.");
+		logging::LogAction(/*GetTypeString()*/ +"# " + std::to_string(GetId()) + ": deallocated.");
 #endif
-	};
-
-	template<typename T>
-	uint32_t TIdentifiable<T>::sm_nextId = 1;
+	};	
 };

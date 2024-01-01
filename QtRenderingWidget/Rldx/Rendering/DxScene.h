@@ -3,8 +3,9 @@
 #include <memory>
 #include <windows.h>
 
+#include <CommonStates.h>
 
-#include "..\..\Interfaces\IDrawable.h"
+#include "..\..\Rldx\Interfaces\IDrawable.h"
 #include "..\Helpers\DxMeshCreator.h"
 #include "..\SceneGraph\BaseNode\DxBaseNode.h"
 #include "..\SceneGraph\SceneGraph.h"
@@ -60,7 +61,7 @@ namespace Rldx {
 		
 	private:
 		DxSceneGraph m_sceneGraph;
-		DxStandardRenderQueue m_renderQueue;
+		DxMeshRenderBucket m_renderQueue;
 		DxSwapChain::UniquePtr m_spoSwapChain; // back buffer	
 		
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;

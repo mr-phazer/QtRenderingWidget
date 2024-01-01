@@ -6,8 +6,8 @@
 #include "..\..\..\..\DirectXTK\Inc\DDSTextureLoader.h"
 #include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
 
-#include "..\..\Interfaces\IDrawable.h"
-#include "..\..\Interfaces\IResizable.h"
+#include "..\..\Rldx\Interfaces\IDrawable.h"
+#include "..\..\Rldx\Interfaces\IResizable.h"
 
 #include <string>
 

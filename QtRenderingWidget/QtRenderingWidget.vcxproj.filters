@@ -91,9 +91,6 @@
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interfaces\IDrawable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -107,6 +104,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -189,10 +192,10 @@
     <ClInclude Include="Rldx\DxObjects\MyOrbitalCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IResizable.h">
+    <ClInclude Include="Rldx\Interfaces\IResizable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IIdentifiable.h">
+    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h">
@@ -201,7 +204,7 @@
     <ClInclude Include="Tools\ModelImporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IDrawable.h">
+    <ClInclude Include="Rldx\Interfaces\IDrawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
@@ -210,13 +213,13 @@
     <ClInclude Include="Rldx\SceneGraph\SceneGraph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IUpdateable.h">
+    <ClInclude Include="Rldx\Interfaces\IUpdateable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IFlushable.h">
+    <ClInclude Include="Rldx\Interfaces\IFlushable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IRenderQueue.h">
+    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h">
@@ -229,6 +232,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IBindable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\DerformerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

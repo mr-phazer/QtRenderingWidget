@@ -3,7 +3,6 @@
 #include <DirectXMath.h>
 #include <SimpleMath.h>
 
-
 namespace Rldx {
 
 	using float2 = DirectX::XMFLOAT2;

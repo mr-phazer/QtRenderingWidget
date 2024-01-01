@@ -1,32 +1,35 @@
 #pragma once
-#include "..\Rendering\DxMesh.h"
-#include "..\Rendering\DxShaderProgram.h"
-#include "..\Interfaces\IDrawable.h"
-#include "..\Interfaces\IFlushable.h"
-#include "..\Interfaces\IRenderQueue.h"
-#include "..\Interfaces\IUpdateable.h"
-#include "..\Managers\DxDeviceManager.h"
+//#include "..\Rendering\DxMesh.h"
+//#include "..\Rendering\DxShaderProgram.h"
+//#include "..\Interfaces\IDrawable.h"
+//#include "..\Interfaces\IFlushable.h"
+#include "..\Interfaces\IRenderBucket.h"
+//#include "..\Interfaces\IUpdateable.h"
+//#include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\BaseNode\DxBaseNode.h"
 
 namespace Rldx {
 
-	class DxStandardRenderQueue : public IDxRenderQueue
+	class DxMeshRenderBucket : public IRenderBucket
 	{
-		std::vector<DxRenderQueueItem> m_queueItems;
+		// TODO: maybe use pointers instance of instantiating objects  ?
+		// TODO: maybe copy DxMeshNode* into a vector of IDrawable*  ?
+		std::vector<DxRenderItemMesh> m_renderItems;
 
 	public:
-		virtual void AddItem(const DxRenderQueueItem& item) override { m_queueItems.push_back(item); };
-		virtual void Clear() override { m_queueItems.clear(); };
+		// TODO: maybe use pointers instance of instantiating objects?
+		virtual void AddItem(const DxRenderItemMesh& renderItem) override { m_renderItems.push_back(renderItem); };
+		virtual void Clear() override { m_renderItems.clear(); };
 
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override
 		{
-			for (auto& itItem : m_queueItems)
+			for (auto& itItem : m_renderItems)
 			{
 				// ready shader program
-				itItem.shaderProgram->GetReady(poDeviceContext);
+				itItem.BindToDC(poDeviceContext);
 
 				// draw mesh
-				itItem.meshData->Draw(poDeviceContext);
+				itItem.Draw(poDeviceContext);
 			}
 
 			// -- clear queue after each full draw
@@ -58,7 +61,7 @@ namespace Rldx {
 			}
 		}
 
-		void FetchNodes(DxBaseNode* pRootNode, IDxRenderQueue* pRenderQueue)
+		void FetchNodes(DxBaseNode* pRootNode, IRenderBucket* pRenderQueue)
 		{
 			pRootNode->FlushToRenderQueue(pRenderQueue);
 

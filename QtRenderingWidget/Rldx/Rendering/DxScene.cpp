@@ -1,5 +1,7 @@
 
 #include "DxScene.h"
+#include "..\Managers\DxDeviceManager.h"
+
 #include "..\Helpers\DxMeshCreator.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
 

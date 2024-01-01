@@ -14,6 +14,6 @@ void Rldx::DxBaseNode::Update(float timeElapsed)
 {
 }
 
-void Rldx::DxBaseNode::FlushToRenderQueue(IDxRenderQueue* pRenderQueue)
+void Rldx::DxBaseNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
 {
 }

@@ -9,19 +9,19 @@
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 
-#include "..\..\..\Interfaces\IDrawable.h"
+#include "..\Interfaces\IDrawable.h"
 #include "DxShaderProgram.h"
 #include "DxMaterial.h"
 #include "..\DataTypes\DxMeshData.h"
 
 namespace Rldx {
 
-	class DxMesh : public IDrawable, public IDxResource
+	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
 	public:
 		void Draw(ID3D11DeviceContext* poDC) override
 		{	
-			GetMeshReadyForDrawing(poDC);
+			BindToDC(poDC);
 
 			poDC->DrawIndexed(m_meshData.indexCount, 0, 0);
 		};
@@ -32,7 +32,7 @@ namespace Rldx {
 		void SetMeshData(const DxCommonMeshData& meshData);				
 	
 	private:
-		void GetMeshReadyForDrawing(ID3D11DeviceContext* poDC)
+		void BindToDC(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);
 			UINT offset = 0;
@@ -46,11 +46,3 @@ namespace Rldx {
 	};
 
 }; // namespace Rldx
-
-// Could be: material, shader, mesh, texture, etc.
-class DxSomeRenderThing
-{
-public:	
-	void Bind(); // Mesh: Setup drawcall / Shader: bind shader / Material: bind textures 
-	void Flush(); // Mesh: Draw 
-};

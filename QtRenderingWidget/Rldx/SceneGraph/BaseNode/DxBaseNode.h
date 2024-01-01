@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "..\Interfaces\IIdentifiable.h"
-#include "..\Interfaces\IUpdateable.h"
-#include "..\Interfaces\IFlushable.h"
+#include "..\Rldx\Interfaces\TIdentifiable.h"
+#include "..\Rldx\Interfaces\IUpdateable.h"
+#include "..\Rldx\Interfaces\IFlushable.h"
+
 #include "..\..\SceneGraph\NodeTransform\NodeTransform.h"
 
 namespace Rldx {
@@ -185,7 +186,7 @@ namespace Rldx {
 		}
 				
 		void Update(float timeElapsed) override;		
-		void FlushToRenderQueue(IDxRenderQueue* pRenderQueue) override;
+		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;
 
 	private:
 		void SetParent(DxBaseNode* poParent)

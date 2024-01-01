@@ -115,6 +115,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
+    <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
     <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp" />
@@ -125,8 +127,8 @@
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
-    <ClCompile Include="Interfaces\IDrawable.cpp" />
-    <ClInclude Include="Interfaces\IDrawable.h" />
+    <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
+    <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
     <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h" />
@@ -148,11 +150,12 @@
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
-    <ClInclude Include="Interfaces\IIdentifiable.h" />
-    <ClInclude Include="Interfaces\IFlushable.h" />
-    <ClInclude Include="Interfaces\IRenderQueue.h" />
-    <ClInclude Include="Interfaces\IResizable.h" />
-    <ClInclude Include="Interfaces\IUpdateable.h" />
+    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h" />
+    <ClInclude Include="Rldx\Interfaces\IFlushable.h" />
+    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h" />
+    <ClInclude Include="Rldx\Interfaces\IResizable.h" />
+    <ClInclude Include="Rldx\Interfaces\IBindable.h" />
+    <ClInclude Include="Rldx\Interfaces\IUpdateable.h" />
     <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h" />
     <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h" />
     <ClInclude Include="Rldx\Rendering\DxConstBuffer.h" />

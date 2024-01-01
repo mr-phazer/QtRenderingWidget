@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\SceneNodes\DxMeshNode.h"
-#include "..\Interfaces\IRenderQueue.h"
+#include "..\Rldx\Interfaces\IRenderBucket.h"
 #include <vector>
 
 //namespace Rldx {
