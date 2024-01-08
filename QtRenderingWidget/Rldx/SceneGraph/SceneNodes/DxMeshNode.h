@@ -2,7 +2,7 @@
 
 #include "..\..\Rendering\DxMeshDrawable.h"
 #include "..\BaseNode\DxBaseNode.h"
-#include "K:\Coding\repos\QtRenderingWidget_RPFM\QtRenderingWidget\Rldx\DataTypes\DxMeshData.h"
+#include "..\..\DataTypes\DxMeshData.h"
 
 namespace Rldx {		
 

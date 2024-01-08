@@ -4,3 +4,4 @@
 class QWidget;
 extern "C" QWidget * CreateQRenderingWidget(QWidget * parent);
 
+	
