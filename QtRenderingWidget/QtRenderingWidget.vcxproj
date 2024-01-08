@@ -75,6 +75,9 @@
       <LanguageStandard>Default</LanguageStandard>
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
     </ClCompile>
+    <Lib>
+      <SubSystem>Windows</SubSystem>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
@@ -87,6 +90,9 @@
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
+    <Lib>
+      <SubSystem>Windows</SubSystem>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
