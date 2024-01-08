@@ -50,10 +50,11 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 		//D3D_FEATURE_LEVEL_9_1,
 	};
 
-#ifdef _DEBUG
 	HRESULT hr = S_OK;
 	try
 	{
+
+#ifdef _DEBUG
 		hr = D3D11CreateDevice(
 			NULL,
 			D3D_DRIVER_TYPE_HARDWARE,
@@ -66,7 +67,6 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 			NULL,
 			&m_cpoDeviceContext
 		);
-
 #else
 	HRESULT hr = D3D11CreateDevice(
 		NULL,
@@ -78,10 +78,8 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 		D3D11_SDK_VERSION,
 		&m_cpoDevice,
 		NULL,
-		&m_cpoDeviceContext);
-	assert(SUCCEEDED(hr));;
+		&m_cpoDeviceContext);	
 #endif
-
 	}
 	catch (tools::COMException& comException)
 	{
