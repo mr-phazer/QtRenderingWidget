@@ -8,7 +8,7 @@
 // full-featured texture capture, DDS writer, and texture processing pipeline,
 // see the 'Texconv' sample and the 'DirectXTex' library.
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -17,16 +17,31 @@
 
 #pragma once
 
-#ifdef WIN32
-#include <d3d12.h>
+#ifdef __MINGW32__
+#include <unknwn.h>
+#endif
 
-#include <OCIdl.h>
-
-#include <functional>
-#else
+#ifndef _WIN32
 #include <wsl/winadapter.h>
 #include <wsl/wrladapter.h>
+#endif
+
+#if !defined(_WIN32) || defined(USING_DIRECTX_HEADERS)
 #include <directx/d3d12.h>
+#include <dxguids/dxguids.h>
+#else
+#include <d3d12.h>
+#pragma comment(lib,"dxguid.lib")
+#endif
+
+#ifdef _WIN32
+#if defined(NTDDI_WIN10_FE) || defined(__MINGW32__)
+#include <ocidl.h>
+#else
+#include <OCIdl.h>
+#endif
+
+#include <functional>
 #endif
 
 
@@ -39,7 +54,7 @@ namespace DirectX
         D3D12_RESOURCE_STATES beforeState = D3D12_RESOURCE_STATE_RENDER_TARGET,
         D3D12_RESOURCE_STATES afterState = D3D12_RESOURCE_STATE_RENDER_TARGET) noexcept;
 
-#ifdef WIN32
+#ifdef _WIN32
     HRESULT __cdecl SaveWICTextureToFile(
         _In_ ID3D12CommandQueue* pCommandQ,
         _In_ ID3D12Resource* pSource,

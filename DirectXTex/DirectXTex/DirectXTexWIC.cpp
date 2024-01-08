@@ -3,7 +3,7 @@
 //
 // DirectX Texture Library - WIC-based file reader/writer
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -11,89 +11,15 @@
 
 #include "DirectXTexP.h"
 
-//-------------------------------------------------------------------------------------
-// IStream support for WIC Memory routines
-//-------------------------------------------------------------------------------------
-
-#if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP) && (WINAPI_FAMILY != WINAPI_FAMILY_PHONE_APP)
-
-    #include <shcore.h>
-    #pragma comment(lib,"shcore.lib")
-
-#ifdef __cplusplus_winrt
-
-    static inline HRESULT CreateMemoryStream(_Outptr_ IStream** stream)
-    {
-        auto randomAccessStream = ref new ::Windows::Storage::Streams::InMemoryRandomAccessStream();
-        return CreateStreamOverRandomAccessStream(randomAccessStream, IID_PPV_ARGS(stream));
-    }
-
-#else
-
-#pragma warning(push)
-#pragma warning(disable : 4619 5038)
-    #include <wrl\client.h>
-    #include <wrl\wrappers\corewrappers.h>
-#pragma warning(pop)
-
-#pragma warning(push)
-#pragma warning(disable : 4471 5204)
-    #include <windows.storage.streams.h>
-#pragma warning(pop)
-
-    static inline HRESULT CreateMemoryStream(_Outptr_ IStream** stream)
-    {
-        Microsoft::WRL::ComPtr<ABI::Windows::Storage::Streams::IRandomAccessStream> abiStream;
-        HRESULT hr = Windows::Foundation::ActivateInstance(
-            Microsoft::WRL::Wrappers::HStringReference(RuntimeClass_Windows_Storage_Streams_InMemoryRandomAccessStream).Get(),
-            abiStream.GetAddressOf());
-
-        if (SUCCEEDED(hr))
-        {
-            hr = CreateStreamOverRandomAccessStream(abiStream.Get(), IID_PPV_ARGS(stream));
-        }
-        return hr;
-    }
-
-#endif // __cplusplus_winrt
-
-#elif (!defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)) && (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
-
-#include <Shlwapi.h>
-#pragma comment(lib,"shlwapi.lib")
-
-    static inline HRESULT CreateMemoryStream(_Outptr_ IStream** stream) noexcept
-    {
-        if (!stream)
-            return E_INVALIDARG;
-
-        *stream = SHCreateMemStream(nullptr, 0u);
-        if (!*stream)
-            return E_OUTOFMEMORY;
-
-        return S_OK;
-    }
-
-#else
-
-    #pragma prefast(suppress:6387 28196, "a simple wrapper around an existing annotated function" );
-    static inline HRESULT CreateMemoryStream(_Outptr_ IStream** stream) noexcept
-    {
-        return CreateStreamOnHGlobal(nullptr, TRUE, stream);
-    }
-
-#endif
-
 using namespace DirectX;
+using namespace DirectX::Internal;
 using Microsoft::WRL::ComPtr;
 
 namespace
 {
-
     //-------------------------------------------------------------------------------------
     // WIC Pixel Format nearest conversion table
     //-------------------------------------------------------------------------------------
-
     struct WICConvert
     {
         const GUID&     source;
@@ -174,13 +100,13 @@ namespace
 
         *alphaMode = TEX_ALPHA_MODE_UNKNOWN;
 
-        DXGI_FORMAT format = _WICToDXGI(pixelFormat);
+        DXGI_FORMAT format = WICToDXGI(pixelFormat);
 
         if (format == DXGI_FORMAT_UNKNOWN)
         {
             if (memcmp(&GUID_WICPixelFormat96bppRGBFixedPoint, &pixelFormat, sizeof(WICPixelFormatGUID)) == 0)
             {
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN8) || defined(_WIN7_PLATFORM_UPDATE)
+            #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8) || defined(_WIN7_PLATFORM_UPDATE)
                 if (iswic2)
                 {
                     if (pConvert)
@@ -188,9 +114,9 @@ namespace
                     format = DXGI_FORMAT_R32G32B32_FLOAT;
                 }
                 else
-#else
+                #else
                 UNREFERENCED_PARAMETER(iswic2);
-#endif
+            #endif
                 {
                     if (pConvert)
                         memcpy_s(pConvert, sizeof(WICPixelFormatGUID), &GUID_WICPixelFormat128bppRGBAFloat, sizeof(GUID));
@@ -207,7 +133,7 @@ namespace
                         if (pConvert)
                             memcpy_s(pConvert, sizeof(WICPixelFormatGUID), &g_WICConvert[i].target, sizeof(GUID));
 
-                        format = _WICToDXGI(g_WICConvert[i].target);
+                        format = WICToDXGI(g_WICConvert[i].target);
                         assert(format != DXGI_FORMAT_UNKNOWN);
                         *alphaMode = g_WICConvert[i].alphaMode;
                         break;
@@ -267,6 +193,329 @@ namespace
 
 
     //-------------------------------------------------------------------------------------
+    // IStream over a Blob for WIC in-memory write functions
+    //-------------------------------------------------------------------------------------
+    class MemoryStreamOnBlob : public IStream
+    {
+        MemoryStreamOnBlob(Blob& blob) noexcept :
+            mBlob(blob),
+            m_streamPosition(0),
+            m_streamEOF(0),
+            mRefCount(1)
+        {
+            assert(mBlob.GetBufferPointer() && mBlob.GetBufferSize() > 0);
+        }
+
+    public:
+        virtual ~MemoryStreamOnBlob() = default;
+
+        MemoryStreamOnBlob(MemoryStreamOnBlob&&) = delete;
+        MemoryStreamOnBlob& operator= (MemoryStreamOnBlob&&) = delete;
+
+        MemoryStreamOnBlob(MemoryStreamOnBlob const&) = delete;
+        MemoryStreamOnBlob& operator= (MemoryStreamOnBlob const&) = delete;
+
+        // IUnknown
+        HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void** ppvObject) override
+        {
+            if (iid == __uuidof(IUnknown)
+                || iid == __uuidof(IStream)
+                || iid == __uuidof(ISequentialStream))
+            {
+                *ppvObject = static_cast<IStream*>(this);
+                AddRef();
+                return S_OK;
+            }
+            else
+                return E_NOINTERFACE;
+        }
+
+        ULONG STDMETHODCALLTYPE AddRef() override
+        {
+            return InterlockedIncrement(&mRefCount);
+        }
+
+        ULONG STDMETHODCALLTYPE Release() override
+        {
+            const ULONG res = InterlockedDecrement(&mRefCount);
+            if (res == 0)
+            {
+                delete this;
+            }
+            return res;
+        }
+
+        // ISequentialStream
+        HRESULT STDMETHODCALLTYPE Read(void* pv, ULONG cb, ULONG* pcbRead) override
+        {
+            size_t maxRead = m_streamEOF - m_streamPosition;
+            auto ptr = static_cast<const uint8_t*>(mBlob.GetBufferPointer());
+            if (cb > maxRead)
+            {
+                const uint64_t pos = uint64_t(m_streamPosition) + uint64_t(maxRead);
+                if (pos > UINT32_MAX)
+                    return HRESULT_E_ARITHMETIC_OVERFLOW;
+
+                memcpy(pv, &ptr[m_streamPosition], maxRead);
+
+                m_streamPosition = static_cast<size_t>(pos);
+
+                if (pcbRead)
+                {
+                    *pcbRead = static_cast<ULONG>(maxRead);
+                }
+                return E_BOUNDS;
+            }
+            else
+            {
+                const uint64_t pos = uint64_t(m_streamPosition) + uint64_t(cb);
+                if (pos > UINT32_MAX)
+                    return HRESULT_E_ARITHMETIC_OVERFLOW;
+
+                memcpy(pv, &ptr[m_streamPosition], cb);
+
+                m_streamPosition = static_cast<size_t>(pos);
+
+                if (pcbRead)
+                {
+                    *pcbRead = cb;
+                }
+                return S_OK;
+            }
+        }
+
+        HRESULT STDMETHODCALLTYPE Write(void const* pv, ULONG cb, ULONG* pcbWritten) override
+        {
+            const size_t blobSize = mBlob.GetBufferSize();
+            const size_t spaceAvailable = blobSize - m_streamPosition;
+            size_t growAmount = cb;
+
+            if (spaceAvailable > 0)
+            {
+                if (spaceAvailable >= growAmount)
+                {
+                    growAmount = 0;
+                }
+                else
+                {
+                    growAmount -= spaceAvailable;
+                }
+            }
+
+            if (growAmount > 0)
+            {
+                uint64_t newSize = uint64_t(blobSize);
+                const uint64_t targetSize = uint64_t(blobSize) + growAmount;
+                HRESULT hr = ComputeGrowSize(newSize, targetSize);
+                if (FAILED(hr))
+                    return hr;
+
+                hr = mBlob.Resize(static_cast<size_t>(newSize));
+                if (FAILED(hr))
+                    return hr;
+            }
+
+            const uint64_t pos = uint64_t(m_streamPosition) + uint64_t(cb);
+            if (pos > UINT32_MAX)
+                return HRESULT_E_ARITHMETIC_OVERFLOW;
+
+            auto ptr = static_cast<uint8_t*>(mBlob.GetBufferPointer());
+            memcpy(&ptr[m_streamPosition], pv, cb);
+
+            m_streamPosition = static_cast<size_t>(pos);
+            m_streamEOF = std::max(m_streamEOF, m_streamPosition);
+
+            if (pcbWritten)
+            {
+                *pcbWritten = cb;
+            }
+            return S_OK;
+        }
+
+        // IStream
+        HRESULT STDMETHODCALLTYPE SetSize(ULARGE_INTEGER size) override
+        {
+            if (size.HighPart > 0)
+                return E_OUTOFMEMORY;
+
+            const size_t blobSize = mBlob.GetBufferSize();
+
+            if (blobSize >= size.LowPart)
+            {
+                auto ptr = static_cast<uint8_t*>(mBlob.GetBufferPointer());
+                if (m_streamEOF < size.LowPart)
+                {
+                    memset(&ptr[m_streamEOF], 0, size.LowPart - m_streamEOF);
+                }
+
+                m_streamEOF = static_cast<size_t>(size.LowPart);
+            }
+            else
+            {
+                uint64_t newSize = uint64_t(blobSize);
+                const uint64_t targetSize = uint64_t(size.QuadPart);
+                HRESULT hr = ComputeGrowSize(newSize, targetSize);
+                if (FAILED(hr))
+                    return hr;
+
+                hr = mBlob.Resize(static_cast<size_t>(newSize));
+                if (FAILED(hr))
+                    return hr;
+
+                auto ptr = static_cast<uint8_t*>(mBlob.GetBufferPointer());
+                if (m_streamEOF < size.LowPart)
+                {
+                    memset(&ptr[m_streamEOF], 0, size.LowPart - m_streamEOF);
+                }
+
+                m_streamEOF = static_cast<size_t>(size.LowPart);
+            }
+
+            if (m_streamPosition > m_streamEOF)
+            {
+                m_streamPosition = m_streamEOF;
+            }
+
+            return S_OK;
+        }
+
+        HRESULT STDMETHODCALLTYPE CopyTo(IStream*, ULARGE_INTEGER, ULARGE_INTEGER*, ULARGE_INTEGER*) override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE Commit(DWORD) override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE Revert() override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE LockRegion(ULARGE_INTEGER, ULARGE_INTEGER, DWORD) override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE UnlockRegion(ULARGE_INTEGER, ULARGE_INTEGER, DWORD) override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE Clone(IStream**) override
+        {
+            return E_NOTIMPL;
+        }
+
+        HRESULT STDMETHODCALLTYPE Seek(LARGE_INTEGER liDistanceToMove, DWORD dwOrigin, ULARGE_INTEGER* lpNewFilePointer) override
+        {
+            LONGLONG newPosition = 0;
+
+            switch (dwOrigin)
+            {
+            case STREAM_SEEK_SET:
+                newPosition = liDistanceToMove.QuadPart;
+                break;
+
+            case STREAM_SEEK_CUR:
+                newPosition = static_cast<LONGLONG>(m_streamPosition) + liDistanceToMove.QuadPart;
+                break;
+
+            case STREAM_SEEK_END:
+                newPosition = static_cast<LONGLONG>(m_streamEOF) + liDistanceToMove.QuadPart;
+                break;
+
+            default:
+                return STG_E_INVALIDFUNCTION;
+            }
+
+            HRESULT result = S_OK;
+
+            if (newPosition > static_cast<LONGLONG>(m_streamEOF))
+            {
+                m_streamPosition = m_streamEOF;
+                result = E_BOUNDS;
+            }
+            else if (newPosition < 0)
+            {
+                m_streamPosition = 0;
+                result = E_BOUNDS;
+            }
+            else
+            {
+                m_streamPosition = static_cast<size_t>(newPosition);
+            }
+
+            if (lpNewFilePointer)
+            {
+                lpNewFilePointer->QuadPart = static_cast<ULONGLONG>(m_streamPosition);
+            }
+
+            return result;
+        }
+
+        HRESULT STDMETHODCALLTYPE Stat(STATSTG* pStatstg, DWORD) override
+        {
+            if (!pStatstg)
+                return E_INVALIDARG;
+            pStatstg->cbSize.QuadPart = static_cast<ULONGLONG>(m_streamEOF);
+            return S_OK;
+        }
+
+        HRESULT Finialize() noexcept
+        {
+            if (mRefCount > 1)
+                return E_FAIL;
+
+            return mBlob.Trim(m_streamEOF);
+        }
+
+        static HRESULT CreateMemoryStream(_Outptr_ MemoryStreamOnBlob** stream, Blob& blob) noexcept
+        {
+            if (!stream)
+                return E_INVALIDARG;
+
+            *stream = nullptr;
+
+            auto ptr = new (std::nothrow) MemoryStreamOnBlob(blob);
+            if (!ptr)
+                return E_OUTOFMEMORY;
+
+            *stream = ptr;
+
+            return S_OK;
+        }
+
+    private:
+        Blob& mBlob;
+        size_t m_streamPosition;
+        size_t m_streamEOF;
+        ULONG mRefCount;
+
+        static HRESULT ComputeGrowSize(uint64_t& newSize, const uint64_t targetSize) noexcept
+        {
+            // We grow by doubling until we hit 256MB, then we add 16MB at a time.
+            while (newSize < targetSize)
+            {
+                if (newSize < (256 * 1024 * 1024))
+                {
+                    newSize <<= 1;
+                }
+                else
+                {
+                    newSize += 16 * 1024 * 1024;
+                }
+                if (newSize > UINT32_MAX)
+                    return E_OUTOFMEMORY;
+            }
+
+            return S_OK;
+        }
+    };
+
+    //-------------------------------------------------------------------------------------
     // Determines metadata for image
     //-------------------------------------------------------------------------------------
     HRESULT DecodeMetadata(
@@ -276,7 +525,7 @@ namespace
         _In_ IWICBitmapFrameDecode *frame,
         _Out_ TexMetadata& metadata,
         _Out_opt_ WICPixelFormatGUID* pConvert,
-        _In_opt_ std::function<void(IWICMetadataQueryReader*)> getMQR)
+        _In_ std::function<void(IWICMetadataQueryReader*)> getMQR)
     {
         if (!decoder || !frame)
             return E_POINTER;
@@ -351,7 +600,7 @@ namespace
                         sRGB = (flags & WIC_FLAGS_DEFAULT_SRGB) != 0;
                     }
                 }
-#if (defined(_XBOX_ONE) && defined(_TITLE)) || defined(_GAMING_XBOX)
+            #if (defined(_XBOX_ONE) && defined(_TITLE)) || defined(_GAMING_XBOX)
                 else if (memcmp(&containerFormat, &GUID_ContainerFormatJpeg, sizeof(GUID)) == 0)
                 {
                     if (SUCCEEDED(metareader->GetMetadataByName(L"/app1/ifd/exif/{ushort=40961}", &value)) && value.vt == VT_UI2)
@@ -374,7 +623,7 @@ namespace
                         sRGB = (flags & WIC_FLAGS_DEFAULT_SRGB) != 0;
                     }
                 }
-#else
+            #else
                 else if (SUCCEEDED(metareader->GetMetadataByName(L"System.Image.ColorSpace", &value)) && value.vt == VT_UI2)
                 {
                     sRGB = (value.uiVal == 1);
@@ -383,9 +632,9 @@ namespace
                 {
                     sRGB = (flags & WIC_FLAGS_DEFAULT_SRGB) != 0;
                 }
-#endif
+            #endif
 
-                (void)PropVariantClear(&value);
+                std::ignore = PropVariantClear(&value);
 
                 if (sRGB)
                     metadata.format = MakeSRGB(metadata.format);
@@ -464,7 +713,8 @@ namespace
                 return E_UNEXPECTED;
             }
 
-            hr = FC->Initialize(frame, convertGUID, _GetWICDither(flags), nullptr, 0, WICBitmapPaletteTypeMedianCut);
+            hr = FC->Initialize(frame, convertGUID, GetWICDither(flags), nullptr,
+                0, WICBitmapPaletteTypeMedianCut);
             if (FAILED(hr))
                 return hr;
 
@@ -499,7 +749,7 @@ namespace
             return E_NOINTERFACE;
 
         WICPixelFormatGUID sourceGUID;
-        if (!_DXGIToWIC(metadata.format, sourceGUID))
+        if (!DXGIToWIC(metadata.format, sourceGUID))
             return E_FAIL;
 
         for (size_t index = 0; index < metadata.arraySize; ++index)
@@ -549,7 +799,8 @@ namespace
                         return E_UNEXPECTED;
                     }
 
-                    hr = FC->Initialize(frame.Get(), sourceGUID, _GetWICDither(flags), nullptr, 0, WICBitmapPaletteTypeMedianCut);
+                    hr = FC->Initialize(frame.Get(), sourceGUID, GetWICDither(flags), nullptr,
+                        0, WICBitmapPaletteTypeMedianCut);
                     if (FAILED(hr))
                         return hr;
 
@@ -566,7 +817,9 @@ namespace
                 if (FAILED(hr))
                     return hr;
 
-                hr = scaler->Initialize(frame.Get(), static_cast<UINT>(metadata.width), static_cast<UINT>(metadata.height), _GetWICInterp(flags));
+                hr = scaler->Initialize(frame.Get(),
+                    static_cast<UINT>(metadata.width), static_cast<UINT>(metadata.height),
+                    GetWICInterp(flags));
                 if (FAILED(hr))
                     return hr;
 
@@ -597,7 +850,8 @@ namespace
                         return E_UNEXPECTED;
                     }
 
-                    hr = FC->Initialize(scaler.Get(), sourceGUID, _GetWICDither(flags), nullptr, 0, WICBitmapPaletteTypeMedianCut);
+                    hr = FC->Initialize(scaler.Get(), sourceGUID, GetWICDither(flags), nullptr,
+                        0, WICBitmapPaletteTypeMedianCut);
                     if (FAILED(hr))
                         return hr;
 
@@ -631,7 +885,7 @@ namespace
             PROPVARIANT value;
             PropVariantInit(&value);
 
-            bool sRGB = ((flags & WIC_FLAGS_FORCE_LINEAR) == 0) && ((flags & WIC_FLAGS_FORCE_SRGB) != 0 || IsSRGB(format));
+            const bool sRGB = ((flags & WIC_FLAGS_FORCE_LINEAR) == 0) && ((flags & WIC_FLAGS_FORCE_SRGB) != 0 || IsSRGB(format));
 
             value.vt = VT_LPSTR;
             value.pszVal = const_cast<char*>("DirectXTex");
@@ -639,68 +893,68 @@ namespace
             if (memcmp(&containerFormat, &GUID_ContainerFormatPng, sizeof(GUID)) == 0)
             {
                 // Set Software name
-                (void)metawriter->SetMetadataByName(L"/tEXt/{str=Software}", &value);
+                std::ignore = metawriter->SetMetadataByName(L"/tEXt/{str=Software}", &value);
 
                 // Set sRGB chunk
                 if (sRGB)
                 {
                     value.vt = VT_UI1;
                     value.bVal = 0;
-                    (void)metawriter->SetMetadataByName(L"/sRGB/RenderingIntent", &value);
+                    std::ignore = metawriter->SetMetadataByName(L"/sRGB/RenderingIntent", &value);
                 }
                 else
                 {
                     // add gAMA chunk with gamma 1.0
                     value.vt = VT_UI4;
                     value.uintVal = 100000; // gama value * 100,000 -- i.e. gamma 1.0
-                    (void)metawriter->SetMetadataByName(L"/gAMA/ImageGamma", &value);
+                    std::ignore = metawriter->SetMetadataByName(L"/gAMA/ImageGamma", &value);
 
                     // remove sRGB chunk which is added by default.
-                    (void)metawriter->RemoveMetadataByName(L"/sRGB/RenderingIntent");
+                    std::ignore = metawriter->RemoveMetadataByName(L"/sRGB/RenderingIntent");
                 }
             }
-#if (defined(_XBOX_ONE) && defined(_TITLE)) || defined(_GAMING_XBOX)
+        #if (defined(_XBOX_ONE) && defined(_TITLE)) || defined(_GAMING_XBOX)
             else if (memcmp(&containerFormat, &GUID_ContainerFormatJpeg, sizeof(GUID)) == 0)
             {
                 // Set Software name
-                (void)metawriter->SetMetadataByName(L"/app1/ifd/{ushort=305}", &value);
+                std::ignore = metawriter->SetMetadataByName(L"/app1/ifd/{ushort=305}", &value);
 
                 if (sRGB)
                 {
                     // Set EXIF Colorspace of sRGB
                     value.vt = VT_UI2;
                     value.uiVal = 1;
-                    (void)metawriter->SetMetadataByName(L"/app1/ifd/exif/{ushort=40961}", &value);
+                    std::ignore = metawriter->SetMetadataByName(L"/app1/ifd/exif/{ushort=40961}", &value);
                 }
             }
             else if (memcmp(&containerFormat, &GUID_ContainerFormatTiff, sizeof(GUID)) == 0)
             {
                 // Set Software name
-                (void)metawriter->SetMetadataByName(L"/ifd/{ushort=305}", &value);
+                std::ignore = metawriter->SetMetadataByName(L"/ifd/{ushort=305}", &value);
 
                 if (sRGB)
                 {
                     // Set EXIF Colorspace of sRGB
                     value.vt = VT_UI2;
                     value.uiVal = 1;
-                    (void)metawriter->SetMetadataByName(L"/ifd/exif/{ushort=40961}", &value);
+                    std::ignore = metawriter->SetMetadataByName(L"/ifd/exif/{ushort=40961}", &value);
                 }
             }
-#else
+        #else
             else
             {
                 // Set Software name
-                (void)metawriter->SetMetadataByName(L"System.ApplicationName", &value);
+                std::ignore = metawriter->SetMetadataByName(L"System.ApplicationName", &value);
 
                 if (sRGB)
                 {
                     // Set EXIF Colorspace of sRGB
                     value.vt = VT_UI2;
                     value.uiVal = 1;
-                    (void)metawriter->SetMetadataByName(L"System.Image.ColorSpace", &value);
+                    std::ignore = metawriter->SetMetadataByName(L"System.Image.ColorSpace", &value);
                 }
             }
-#endif
+        #endif
         }
         else if (hr == WINCODEC_ERR_UNSUPPORTEDOPERATION)
         {
@@ -730,7 +984,7 @@ namespace
             return E_POINTER;
 
         WICPixelFormatGUID pfGuid;
-        if (!_DXGIToWIC(image.format, pfGuid))
+        if (!DXGIToWIC(image.format, pfGuid))
             return HRESULT_E_NOT_SUPPORTED;
 
         HRESULT hr = frame->Initialize(props);
@@ -793,7 +1047,8 @@ namespace
                 return E_UNEXPECTED;
             }
 
-            hr = FC->Initialize(source.Get(), targetGuid, _GetWICDither(flags), nullptr, 0, WICBitmapPaletteTypeMedianCut);
+            hr = FC->Initialize(source.Get(), targetGuid, GetWICDither(flags), nullptr,
+                0, WICBitmapPaletteTypeMedianCut);
             if (FAILED(hr))
                 return hr;
 
@@ -824,7 +1079,7 @@ namespace
         _In_ REFGUID containerFormat,
         _Inout_ IStream* stream,
         _In_opt_ const GUID* targetFormat,
-        _In_opt_ std::function<void(IPropertyBag2*)> setCustomProps)
+        _In_ std::function<void(IPropertyBag2*)> setCustomProps)
     {
         if (!stream)
             return E_INVALIDARG;
@@ -859,7 +1114,7 @@ namespace
             VARIANT varValue;
             varValue.vt = VT_BOOL;
             varValue.boolVal = VARIANT_TRUE;
-            (void)props->Write(1, &option, &varValue);
+            std::ignore = props->Write(1, &option, &varValue);
         }
 
         if (setCustomProps)
@@ -889,7 +1144,7 @@ namespace
         _In_ REFGUID containerFormat,
         _Inout_ IStream* stream,
         _In_opt_ const GUID* targetFormat,
-        _In_opt_ std::function<void(IPropertyBag2*)> setCustomProps)
+        _In_ std::function<void(IPropertyBag2*)> setCustomProps)
     {
         if (!stream || nimages < 2)
             return E_INVALIDARG;
@@ -1198,42 +1453,33 @@ HRESULT DirectX::SaveToWICMemory(
     if (!image.pixels)
         return E_POINTER;
 
-    blob.Release();
-
-    ComPtr<IStream> stream;
-    HRESULT hr = CreateMemoryStream(stream.GetAddressOf());
+    HRESULT hr = blob.Initialize(65535u);
     if (FAILED(hr))
         return hr;
+
+    ComPtr<MemoryStreamOnBlob> stream;
+    hr = MemoryStreamOnBlob::CreateMemoryStream(&stream, blob);
+    if (FAILED(hr))
+    {
+        blob.Release();
+        return hr;
+    }
 
     hr = EncodeSingleFrame(image, flags, containerFormat, stream.Get(), targetFormat, setCustomProps);
     if (FAILED(hr))
+    {
+        blob.Release();
         return hr;
+    }
 
-    // Copy stream data into blob
-    STATSTG stat;
-    hr = stream->Stat(&stat, STATFLAG_NONAME);
+    hr = stream->Finialize();
     if (FAILED(hr))
+    {
+        blob.Release();
         return hr;
+    }
 
-    if (stat.cbSize.HighPart > 0)
-        return HRESULT_E_FILE_TOO_LARGE;
-
-    hr = blob.Initialize(stat.cbSize.LowPart);
-    if (FAILED(hr))
-        return hr;
-
-    LARGE_INTEGER li = {};
-    hr = stream->Seek(li, STREAM_SEEK_SET, nullptr);
-    if (FAILED(hr))
-        return hr;
-
-    DWORD bytesRead;
-    hr = stream->Read(blob.GetBufferPointer(), static_cast<ULONG>(blob.GetBufferSize()), &bytesRead);
-    if (FAILED(hr))
-        return hr;
-
-    if (bytesRead != blob.GetBufferSize())
-        return E_FAIL;
+    stream.Reset();
 
     return S_OK;
 }
@@ -1251,12 +1497,17 @@ HRESULT DirectX::SaveToWICMemory(
     if (!images || nimages == 0)
         return E_INVALIDARG;
 
-    blob.Release();
-
-    ComPtr<IStream> stream;
-    HRESULT hr = CreateMemoryStream(stream.GetAddressOf());
+    HRESULT hr = blob.Initialize(65535u);
     if (FAILED(hr))
         return hr;
+
+    ComPtr<MemoryStreamOnBlob> stream;
+    hr = MemoryStreamOnBlob::CreateMemoryStream(&stream, blob);
+    if (FAILED(hr))
+    {
+        blob.Release();
+        return hr;
+    }
 
     if (nimages > 1)
         hr = EncodeMultiframe(images, nimages, flags, containerFormat, stream.Get(), targetFormat, setCustomProps);
@@ -1264,33 +1515,19 @@ HRESULT DirectX::SaveToWICMemory(
         hr = EncodeSingleFrame(images[0], flags, containerFormat, stream.Get(), targetFormat, setCustomProps);
 
     if (FAILED(hr))
+    {
+        blob.Release();
         return hr;
+    }
 
-    // Copy stream data into blob
-    STATSTG stat;
-    hr = stream->Stat(&stat, STATFLAG_NONAME);
+    hr = stream->Finialize();
     if (FAILED(hr))
+    {
+        blob.Release();
         return hr;
+    }
 
-    if (stat.cbSize.HighPart > 0)
-        return HRESULT_E_FILE_TOO_LARGE;
-
-    hr = blob.Initialize(stat.cbSize.LowPart);
-    if (FAILED(hr))
-        return hr;
-
-    LARGE_INTEGER li = {};
-    hr = stream->Seek(li, STREAM_SEEK_SET, nullptr);
-    if (FAILED(hr))
-        return hr;
-
-    DWORD bytesRead;
-    hr = stream->Read(blob.GetBufferPointer(), static_cast<ULONG>(blob.GetBufferSize()), &bytesRead);
-    if (FAILED(hr))
-        return hr;
-
-    if (bytesRead != blob.GetBufferSize())
-        return E_FAIL;
+    stream.Reset();
 
     return S_OK;
 }
@@ -1332,7 +1569,7 @@ HRESULT DirectX::SaveToWICFile(
     if (FAILED(hr))
     {
         stream.Reset();
-        DeleteFileW(szFile);
+        std::ignore = DeleteFileW(szFile);
         return hr;
     }
 
@@ -1374,9 +1611,62 @@ HRESULT DirectX::SaveToWICFile(
     if (FAILED(hr))
     {
         stream.Reset();
-        DeleteFileW(szFile);
+        std::ignore = DeleteFileW(szFile);
         return hr;
     }
 
     return S_OK;
 }
+
+
+//--------------------------------------------------------------------------------------
+// Adapters for /Zc:wchar_t- clients
+
+#if defined(_MSC_VER) && !defined(_NATIVE_WCHAR_T_DEFINED)
+
+namespace DirectX
+{
+    HRESULT __cdecl GetMetadataFromWICFile(
+        _In_z_ const __wchar_t* szFile,
+        _In_ WIC_FLAGS flags,
+        _Out_ TexMetadata& metadata,
+        _In_ std::function<void __cdecl(IWICMetadataQueryReader*)> getMQR)
+    {
+        return GetMetadataFromWICFile(reinterpret_cast<const unsigned short*>(szFile), flags, metadata, getMQR);
+    }
+
+    HRESULT __cdecl LoadFromWICFile(
+        _In_z_ const __wchar_t* szFile,
+        _In_ WIC_FLAGS flags,
+        _Out_opt_ TexMetadata* metadata,
+        _Out_ ScratchImage& image,
+        _In_ std::function<void __cdecl(IWICMetadataQueryReader*)> getMQR)
+    {
+        return LoadFromWICFile(reinterpret_cast<const unsigned short*>(szFile), flags, metadata, image, getMQR);
+    }
+
+    HRESULT __cdecl SaveToWICFile(
+        _In_ const Image& image,
+        _In_ WIC_FLAGS flags,
+        _In_ REFGUID guidContainerFormat,
+        _In_z_ const __wchar_t* szFile,
+        _In_opt_ const GUID* targetFormat,
+        _In_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps)
+    {
+        return SaveToWICFile(image, flags, guidContainerFormat, reinterpret_cast<const unsigned short*>(szFile), targetFormat, setCustomProps);
+    }
+
+    HRESULT __cdecl SaveToWICFile(
+        _In_count_(nimages) const Image* images,
+        _In_ size_t nimages,
+        _In_ WIC_FLAGS flags,
+        _In_ REFGUID guidContainerFormat,
+        _In_z_ const __wchar_t* szFile,
+        _In_opt_ const GUID* targetFormat,
+        _In_ std::function<void __cdecl(IPropertyBag2*)> setCustomProps)
+    {
+        return SaveToWICFile(images, nimages, flags, guidContainerFormat, reinterpret_cast<const unsigned short*>(szFile), targetFormat, setCustomProps);
+    }
+}
+
+#endif // !_NATIVE_WCHAR_T_DEFINED

@@ -1,7 +1,7 @@
 
 #include <string>
 
-#include "QtObjects/Views/QtRenderingWidget.h"
+#include "QtObjects/Views/QtRenderingViewWidget.h"
 #include <QtWidgets/QApplication>
 #include <QWindow>
 #include <QtWidgets/qboxlayout.h>
@@ -12,6 +12,7 @@
 #include "Rldx/Helpers/DxMeshCreator.h"
 
 #include "Logging/Logging.h"
+#include "ExternFunctions\Creators.h"
 
 int main(int argc, char* argv[]) 
 {	
@@ -26,29 +27,31 @@ int main(int argc, char* argv[])
 	*/
 	// -- create the D3D 11 manager, 		
 	auto& spManager = Rldx::DxDeviceManager::GetInstance();	
-		
 	
-	// -- create lots of render view, for demo
-	QtRenderingWidget* poNewRenderingWidget = new QtRenderingWidget(nullptr); // nullptr = no parent, free floating window	
-	
-	
-	poNewRenderingWidget->setWindowFlag(Qt::WindowType::Window);
-	poNewRenderingWidget->setWindowTitle("QRenderingWidget (testing, with various stuff in layout, for testin.");
-	poNewRenderingWidget->show();
+	auto windows = CreateQRenderingWidget(nullptr);
 
-	//auto poFrame = new QFrame(poContainerWindow);
-	//poFrame->setFrameStyle(QFrame::Box | QFrame::Raised);
+	//
+	//// -- create lots of render view, for demo
+	//QtRenderingViewWidget* poNewRenderingWidget = new QtRenderingViewWidget(nullptr); // nullptr = no parent, free floating window	
+	//
+	//
+	//poNewRenderingWidget->setWindowFlag(Qt::WindowType::Window);
+	//poNewRenderingWidget->setWindowTitle("QRenderingWidget (testing, with various stuff in layout, for testin.");
+	//poNewRenderingWidget->show();
 
-	//poContainerWindow->layout()->addWidget(poFrame);
+	////auto poFrame = new QFrame(poContainerWindow);
+	////poFrame->setFrameStyle(QFrame::Box | QFrame::Raised);
 
-	//poFrame->setLayout(new QVBoxLayout(poFrame));
+	////poContainerWindow->layout()->addWidget(poFrame);
 
-	////poFrame->layout()->addWidget(new QLineEdit("Stuff in Layout", poContainerWindow));
-	////poFrame->layout()->addWidget(new QLineEdit("Stuff in Layout", poContainerWindow));
-	//poFrame->layout()->addWidget(poNewRenderingWidget);
+	////poFrame->setLayout(new QVBoxLayout(poFrame));
 
-	poNewRenderingWidget->Init(&spManager);
-	poNewRenderingWidget->StartRendering(&spManager);
+	//////poFrame->layout()->addWidget(new QLineEdit("Stuff in Layout", poContainerWindow));
+	//////poFrame->layout()->addWidget(new QLineEdit("Stuff in Layout", poContainerWindow));
+	////poFrame->layout()->addWidget(poNewRenderingWidget);
+
+	//poNewRenderingWidget->Init(&spManager);
+	//poNewRenderingWidget->StartRendering(&spManager);
 
 		
 

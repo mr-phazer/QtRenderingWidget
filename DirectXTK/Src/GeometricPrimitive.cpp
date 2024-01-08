@@ -68,7 +68,7 @@ private:
         ComPtr<ID3D11InputLayout> inputLayoutTextured;
         ComPtr<ID3D11InputLayout> inputLayoutUntextured;
 
-        std::unique_ptr<CommonStates> m_stateObjects;
+        std::unique_ptr<CommonStates> stateObjects;
     };
 
 
@@ -96,7 +96,7 @@ GeometricPrimitive::Impl::SharedResources::SharedResources(_In_ ID3D11DeviceCont
     effect->EnableDefaultLighting();
 
     // Create state objects.
-    m_stateObjects = std::make_unique<CommonStates>(device.Get());
+    stateObjects = std::make_unique<CommonStates>(device.Get());
 
     // Create input layouts.
     effect->SetTextureEnabled(true);
@@ -125,14 +125,14 @@ void GeometricPrimitive::Impl::SharedResources::PrepareForRendering(bool alpha, 
     if (alpha)
     {
         // Alpha blended rendering.
-        blendState = m_stateObjects->AlphaBlend();
-        depthStencilState = s_reversez ? m_stateObjects->DepthReadReverseZ() : m_stateObjects->DepthRead();
+        blendState = stateObjects->AlphaBlend();
+        depthStencilState = s_reversez ? stateObjects->DepthReadReverseZ() : stateObjects->DepthRead();
     }
     else
     {
         // Opaque rendering.
-        blendState = m_stateObjects->Opaque();
-        depthStencilState = s_reversez ? m_stateObjects->DepthReverseZ() : m_stateObjects->DepthDefault();
+        blendState = stateObjects->Opaque();
+        depthStencilState = s_reversez ? stateObjects->DepthReverseZ() : stateObjects->DepthDefault();
     }
 
     mDeviceContext->OMSetBlendState(blendState, nullptr, 0xFFFFFFFF);
@@ -140,11 +140,11 @@ void GeometricPrimitive::Impl::SharedResources::PrepareForRendering(bool alpha, 
 
     // Set the rasterizer state.
     if (wireframe)
-        mDeviceContext->RSSetState(m_stateObjects->Wireframe());
+        mDeviceContext->RSSetState(stateObjects->Wireframe());
     else
-        mDeviceContext->RSSetState(m_stateObjects->CullCounterClockwise());
+        mDeviceContext->RSSetState(stateObjects->CullCounterClockwise());
 
-    ID3D11SamplerState* samplerState = m_stateObjects->LinearWrap();
+    ID3D11SamplerState* samplerState = stateObjects->LinearWrap();
 
     mDeviceContext->PSSetSamplers(0, 1, &samplerState);
 }

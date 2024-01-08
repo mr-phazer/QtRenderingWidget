@@ -3,7 +3,7 @@
 //
 // DirectX Texture Library - Texture compression
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -19,10 +19,11 @@
 #include "BC.h"
 
 using namespace DirectX;
+using namespace DirectX::Internal;
 
 namespace
 {
-    inline uint32_t GetBCFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
+    constexpr uint32_t GetBCFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
     {
         static_assert(static_cast<int>(TEX_COMPRESS_RGB_DITHER) == static_cast<int>(BC_FLAGS_DITHER_RGB), "TEX_COMPRESS_* flags should match BC_FLAGS_*");
         static_assert(static_cast<int>(TEX_COMPRESS_A_DITHER) == static_cast<int>(BC_FLAGS_DITHER_A), "TEX_COMPRESS_* flags should match BC_FLAGS_*");
@@ -33,7 +34,7 @@ namespace
         return (compress & (BC_FLAGS_DITHER_RGB | BC_FLAGS_DITHER_A | BC_FLAGS_UNIFORM | BC_FLAGS_USE_3SUBSETS | BC_FLAGS_FORCE_BC7_MODE6));
     }
 
-    inline TEX_FILTER_FLAGS GetSRGBFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
+    constexpr TEX_FILTER_FLAGS GetSRGBFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
     {
         static_assert(TEX_FILTER_SRGB_IN == 0x1000000, "TEX_FILTER_SRGB flag values don't match TEX_FILTER_SRGB_MASK");
         static_assert(static_cast<int>(TEX_COMPRESS_SRGB_IN) == static_cast<int>(TEX_FILTER_SRGB_IN), "TEX_COMPRESS_SRGB* should match TEX_FILTER_SRGB*");
@@ -73,7 +74,8 @@ namespace
         const Image& result,
         uint32_t bcflags,
         TEX_FILTER_FLAGS srgb,
-        float threshold) noexcept
+        float threshold,
+        const std::function<bool __cdecl(size_t, size_t)>& statusCallback) noexcept
     {
         if (!image.pixels || !result.pixels)
             return E_POINTER;
@@ -110,37 +112,45 @@ namespace
         const size_t rowPitch = image.rowPitch;
         for (size_t h = 0; h < image.height; h += 4)
         {
+            if (statusCallback)
+            {
+                if (!statusCallback(h, image.height))
+                {
+                    return E_ABORT;
+                }
+            }
+
             const uint8_t *sptr = pSrc;
             uint8_t* dptr = pDest;
-            size_t ph = std::min<size_t>(4, image.height - h);
+            const size_t ph = std::min<size_t>(4, image.height - h);
             size_t w = 0;
             for (size_t count = 0; (count < result.rowPitch) && (w < image.width); count += blocksize, w += 4)
             {
-                size_t pw = std::min<size_t>(4, image.width - w);
+                const size_t pw = std::min<size_t>(4, image.width - w);
                 assert(pw > 0 && ph > 0);
 
-                ptrdiff_t bytesLeft = pEnd - sptr;
+                const ptrdiff_t bytesLeft = pEnd - sptr;
                 assert(bytesLeft > 0);
                 size_t bytesToRead = std::min<size_t>(rowPitch, static_cast<size_t>(bytesLeft));
-                if (!_LoadScanline(&temp[0], pw, sptr, bytesToRead, format))
+                if (!LoadScanline(&temp[0], pw, sptr, bytesToRead, format))
                     return E_FAIL;
 
                 if (ph > 1)
                 {
                     bytesToRead = std::min<size_t>(rowPitch, static_cast<size_t>(bytesLeft) - rowPitch);
-                    if (!_LoadScanline(&temp[4], pw, sptr + rowPitch, bytesToRead, format))
+                    if (!LoadScanline(&temp[4], pw, sptr + rowPitch, bytesToRead, format))
                         return E_FAIL;
 
                     if (ph > 2)
                     {
                         bytesToRead = std::min<size_t>(rowPitch, static_cast<size_t>(bytesLeft) - rowPitch * 2);
-                        if (!_LoadScanline(&temp[8], pw, sptr + rowPitch * 2, bytesToRead, format))
+                        if (!LoadScanline(&temp[8], pw, sptr + rowPitch * 2, bytesToRead, format))
                             return E_FAIL;
 
                         if (ph > 3)
                         {
                             bytesToRead = std::min<size_t>(rowPitch, static_cast<size_t>(bytesLeft) - rowPitch * 3);
-                            if (!_LoadScanline(&temp[12], pw, sptr + rowPitch * 3, bytesToRead, format))
+                            if (!LoadScanline(&temp[12], pw, sptr + rowPitch * 3, bytesToRead, format))
                                 return E_FAIL;
                         }
                     }
@@ -157,7 +167,7 @@ namespace
                         {
                             for (size_t s = pw; s < 4; ++s)
                             {
-#pragma prefast(suppress: 26000, "PREFAST false positive")
+                            #pragma prefast(suppress: 26000, "PREFAST false positive")
                                 temp[(t << 2) | s] = temp[(t << 2) | uSrc[s]];
                             }
                         }
@@ -169,14 +179,14 @@ namespace
                         {
                             for (size_t s = 0; s < 4; ++s)
                             {
-#pragma prefast(suppress: 26000, "PREFAST false positive")
+                            #pragma prefast(suppress: 26000, "PREFAST false positive")
                                 temp[(t << 2) | s] = temp[(uSrc[t] << 2) | s];
                             }
                         }
                     }
                 }
 
-                _ConvertScanline(temp, 16, result.format, format, cflags | srgb);
+                ConvertScanline(temp, 16, result.format, format, cflags | srgb);
 
                 if (pfEncode)
                     pfEncode(dptr, temp, bcflags);
@@ -202,7 +212,8 @@ namespace
         const Image& result,
         uint32_t bcflags,
         TEX_FILTER_FLAGS srgb,
-        float threshold) noexcept
+        float threshold,
+        const std::function<bool __cdecl(size_t, size_t)>& statusCallback) noexcept
     {
         if (!image.pixels || !result.pixels)
             return E_POINTER;
@@ -238,51 +249,64 @@ namespace
 
         bool fail = false;
 
-#pragma omp parallel for
+        size_t progress = 0;
+        bool abort = false;
+
+        const size_t progressTotal = std::max<size_t>(1, (image.height + 3) / 4);
+
+#pragma omp parallel for shared(progress)
         for (int nb = 0; nb < static_cast<int>(nBlocks); ++nb)
         {
-            int nbWidth = std::max<int>(1, int((image.width + 3) / 4));
+#pragma omp flush (abort)
+            if (abort)
+            {
+                // Short circuit the loop body if an abort is requested.
+                // OpenMP 2.0 does not support cancellation of a 'parallel for' loop.
+                continue;
+            }
+
+            const int nbWidth = std::max<int>(1, int((image.width + 3) / 4));
 
             int y = nb / nbWidth;
-            int x = (nb - (y*nbWidth)) * 4;
+            const int x = (nb - (y*nbWidth)) * 4;
             y *= 4;
 
             assert((x >= 0) && (x < int(image.width)));
             assert((y >= 0) && (y < int(image.height)));
 
-            size_t rowPitch = image.rowPitch;
+            const size_t rowPitch = image.rowPitch;
             const uint8_t *pSrc = image.pixels + (size_t(y)*rowPitch) + (size_t(x)*sbpp);
 
             uint8_t *pDest = result.pixels + (size_t(nb)*blocksize);
 
-            size_t ph = std::min<size_t>(4, image.height - size_t(y));
-            size_t pw = std::min<size_t>(4, image.width - size_t(x));
+            const size_t ph = std::min<size_t>(4, image.height - size_t(y));
+            const size_t pw = std::min<size_t>(4, image.width - size_t(x));
             assert(pw > 0 && ph > 0);
 
-            ptrdiff_t bytesLeft = pEnd - pSrc;
+            const ptrdiff_t bytesLeft = pEnd - pSrc;
             assert(bytesLeft > 0);
             size_t bytesToRead = std::min<size_t>(rowPitch, size_t(bytesLeft));
 
             XM_ALIGNED_DATA(16) XMVECTOR temp[16];
-            if (!_LoadScanline(&temp[0], pw, pSrc, bytesToRead, format))
+            if (!LoadScanline(&temp[0], pw, pSrc, bytesToRead, format))
                 fail = true;
 
             if (ph > 1)
             {
                 bytesToRead = std::min<size_t>(rowPitch, size_t(bytesLeft) - rowPitch);
-                if (!_LoadScanline(&temp[4], pw, pSrc + rowPitch, bytesToRead, format))
+                if (!LoadScanline(&temp[4], pw, pSrc + rowPitch, bytesToRead, format))
                     fail = true;
 
                 if (ph > 2)
                 {
                     bytesToRead = std::min<size_t>(rowPitch, size_t(bytesLeft) - rowPitch * 2);
-                    if (!_LoadScanline(&temp[8], pw, pSrc + rowPitch * 2, bytesToRead, format))
+                    if (!LoadScanline(&temp[8], pw, pSrc + rowPitch * 2, bytesToRead, format))
                         fail = true;
 
                     if (ph > 3)
                     {
                         bytesToRead = std::min<size_t>(rowPitch, size_t(bytesLeft) - rowPitch * 3);
-                        if (!_LoadScanline(&temp[12], pw, pSrc + rowPitch * 3, bytesToRead, format))
+                        if (!LoadScanline(&temp[12], pw, pSrc + rowPitch * 3, bytesToRead, format))
                             fail = true;
                     }
                 }
@@ -316,15 +340,35 @@ namespace
                 }
             }
 
-            _ConvertScanline(temp, 16, result.format, format, cflags | srgb);
+            ConvertScanline(temp, 16, result.format, format, cflags | srgb);
 
             if (pfEncode)
                 pfEncode(pDest, temp, bcflags);
             else
                 D3DXEncodeBC1(pDest, temp, threshold, bcflags);
+
+            // Report progress when a new row is reached.
+            if (x == 0 && statusCallback)
+            {
+#pragma omp atomic
+                progress += 4;
+
+                if (!statusCallback(progress, progressTotal))
+                {
+                    abort = true;
+#pragma omp flush (abort)
+                }
+            }
         }
 
-        return (fail) ? E_FAIL : S_OK;
+        if (abort)
+        {
+            return E_ABORT;
+        }
+        else
+        {
+            return (fail) ? E_FAIL : S_OK;
+        }
     }
 #endif // _OPENMP
 
@@ -448,32 +492,32 @@ namespace
         {
             const uint8_t *sptr = pSrc;
             uint8_t* dptr = pDest;
-            size_t ph = std::min<size_t>(4, cImage.height - h);
+            const size_t ph = std::min<size_t>(4, cImage.height - h);
             size_t w = 0;
             for (size_t count = 0; (count < cImage.rowPitch) && (w < cImage.width); count += sbpp, w += 4)
             {
                 pfDecode(temp, sptr);
-                _ConvertScanline(temp, 16, format, cformat, TEX_FILTER_DEFAULT);
+                ConvertScanline(temp, 16, format, cformat, TEX_FILTER_DEFAULT);
 
-                size_t pw = std::min<size_t>(4, cImage.width - w);
+                const size_t pw = std::min<size_t>(4, cImage.width - w);
                 assert(pw > 0 && ph > 0);
 
-                if (!_StoreScanline(dptr, rowPitch, format, &temp[0], pw))
+                if (!StoreScanline(dptr, rowPitch, format, &temp[0], pw))
                     return E_FAIL;
 
                 if (ph > 1)
                 {
-                    if (!_StoreScanline(dptr + rowPitch, rowPitch, format, &temp[4], pw))
+                    if (!StoreScanline(dptr + rowPitch, rowPitch, format, &temp[4], pw))
                         return E_FAIL;
 
                     if (ph > 2)
                     {
-                        if (!_StoreScanline(dptr + rowPitch * 2, rowPitch, format, &temp[8], pw))
+                        if (!StoreScanline(dptr + rowPitch * 2, rowPitch, format, &temp[8], pw))
                             return E_FAIL;
 
                         if (ph > 3)
                         {
-                            if (!_StoreScanline(dptr + rowPitch * 3, rowPitch, format, &temp[12], pw))
+                            if (!StoreScanline(dptr + rowPitch * 3, rowPitch, format, &temp[12], pw))
                                 return E_FAIL;
                         }
                     }
@@ -492,95 +536,89 @@ namespace
 }
 
 //-------------------------------------------------------------------------------------
-namespace DirectX
+bool DirectX::Internal::IsAlphaAllOpaqueBC(_In_ const Image& cImage) noexcept
 {
-    bool _IsAlphaAllOpaqueBC(_In_ const Image& cImage) noexcept;
-        // Also used by Image
+    if (!cImage.pixels)
+        return false;
 
-    bool _IsAlphaAllOpaqueBC(_In_ const Image& cImage) noexcept
+    // Promote "typeless" BC formats
+    DXGI_FORMAT cformat;
+    switch (cImage.format)
     {
-        if (!cImage.pixels)
-            return false;
+    case DXGI_FORMAT_BC1_TYPELESS:  cformat = DXGI_FORMAT_BC1_UNORM; break;
+    case DXGI_FORMAT_BC2_TYPELESS:  cformat = DXGI_FORMAT_BC2_UNORM; break;
+    case DXGI_FORMAT_BC3_TYPELESS:  cformat = DXGI_FORMAT_BC3_UNORM; break;
+    case DXGI_FORMAT_BC7_TYPELESS:  cformat = DXGI_FORMAT_BC7_UNORM; break;
+    default:                        cformat = cImage.format;         break;
+    }
 
-        // Promote "typeless" BC formats
-        DXGI_FORMAT cformat;
-        switch (cImage.format)
+    // Determine BC format decoder
+    BC_DECODE pfDecode;
+    size_t sbpp;
+    switch (cformat)
+    {
+    case DXGI_FORMAT_BC1_UNORM:
+    case DXGI_FORMAT_BC1_UNORM_SRGB:    pfDecode = D3DXDecodeBC1;   sbpp = 8;   break;
+    case DXGI_FORMAT_BC2_UNORM:
+    case DXGI_FORMAT_BC2_UNORM_SRGB:    pfDecode = D3DXDecodeBC2;   sbpp = 16;  break;
+    case DXGI_FORMAT_BC3_UNORM:
+    case DXGI_FORMAT_BC3_UNORM_SRGB:    pfDecode = D3DXDecodeBC3;   sbpp = 16;  break;
+    case DXGI_FORMAT_BC7_UNORM:
+    case DXGI_FORMAT_BC7_UNORM_SRGB:    pfDecode = D3DXDecodeBC7;   sbpp = 16;  break;
+    default:
+        // BC4, BC5, and BC6 don't have alpha channels
+        return false;
+    }
+
+    // Scan blocks for non-opaque alpha
+    static const XMVECTORF32 threshold = { { { 0.99f, 0.99f, 0.99f, 0.99f } } };
+
+    XM_ALIGNED_DATA(16) XMVECTOR temp[16];
+    const uint8_t* pPixels = cImage.pixels;
+    for (size_t h = 0; h < cImage.height; h += 4)
+    {
+        const uint8_t* ptr = pPixels;
+        const size_t ph = std::min<size_t>(4, cImage.height - h);
+        size_t w = 0;
+        for (size_t count = 0; (count < cImage.rowPitch) && (w < cImage.width); count += sbpp, w += 4)
         {
-        case DXGI_FORMAT_BC1_TYPELESS:  cformat = DXGI_FORMAT_BC1_UNORM; break;
-        case DXGI_FORMAT_BC2_TYPELESS:  cformat = DXGI_FORMAT_BC2_UNORM; break;
-        case DXGI_FORMAT_BC3_TYPELESS:  cformat = DXGI_FORMAT_BC3_UNORM; break;
-        case DXGI_FORMAT_BC7_TYPELESS:  cformat = DXGI_FORMAT_BC7_UNORM; break;
-        default:                        cformat = cImage.format;         break;
-        }
+            pfDecode(temp, ptr);
 
-        // Determine BC format decoder
-        BC_DECODE pfDecode;
-        size_t sbpp;
-        switch (cformat)
-        {
-        case DXGI_FORMAT_BC1_UNORM:
-        case DXGI_FORMAT_BC1_UNORM_SRGB:    pfDecode = D3DXDecodeBC1;   sbpp = 8;   break;
-        case DXGI_FORMAT_BC2_UNORM:
-        case DXGI_FORMAT_BC2_UNORM_SRGB:    pfDecode = D3DXDecodeBC2;   sbpp = 16;  break;
-        case DXGI_FORMAT_BC3_UNORM:
-        case DXGI_FORMAT_BC3_UNORM_SRGB:    pfDecode = D3DXDecodeBC3;   sbpp = 16;  break;
-        case DXGI_FORMAT_BC7_UNORM:
-        case DXGI_FORMAT_BC7_UNORM_SRGB:    pfDecode = D3DXDecodeBC7;   sbpp = 16;  break;
-        default:
-            // BC4, BC5, and BC6 don't have alpha channels
-            return false;
-        }
+            const size_t pw = std::min<size_t>(4, cImage.width - w);
+            assert(pw > 0 && ph > 0);
 
-        // Scan blocks for non-opaque alpha
-        static const XMVECTORF32 threshold = { { { 0.99f, 0.99f, 0.99f, 0.99f } } };
-
-        XM_ALIGNED_DATA(16) XMVECTOR temp[16];
-        const uint8_t *pPixels = cImage.pixels;
-        for (size_t h = 0; h < cImage.height; h += 4)
-        {
-            const uint8_t *ptr = pPixels;
-            size_t ph = std::min<size_t>(4, cImage.height - h);
-            size_t w = 0;
-            for (size_t count = 0; (count < cImage.rowPitch) && (w < cImage.width); count += sbpp, w += 4)
+            if (pw == 4 && ph == 4)
             {
-                pfDecode(temp, ptr);
-
-                size_t pw = std::min<size_t>(4, cImage.width - w);
-                assert(pw > 0 && ph > 0);
-
-                if (pw == 4 && ph == 4)
+                // Full blocks
+                for (size_t j = 0; j < 16; ++j)
                 {
-                    // Full blocks
-                    for (size_t j = 0; j < 16; ++j)
+                    const XMVECTOR alpha = XMVectorSplatW(temp[j]);
+                    if (XMVector4Less(alpha, threshold))
+                        return false;
+                }
+            }
+            else
+            {
+                // Handle partial blocks
+                for (size_t y = 0; y < ph; ++y)
+                {
+                    for (size_t x = 0; x < pw; ++x)
                     {
-                        XMVECTOR alpha = XMVectorSplatW(temp[j]);
+                        const XMVECTOR alpha = XMVectorSplatW(temp[y * 4 + x]);
                         if (XMVector4Less(alpha, threshold))
                             return false;
                     }
                 }
-                else
-                {
-                    // Handle partial blocks
-                    for (size_t y = 0; y < ph; ++y)
-                    {
-                        for (size_t x = 0; x < pw; ++x)
-                        {
-                            XMVECTOR alpha = XMVectorSplatW(temp[y * 4 + x]);
-                            if (XMVector4Less(alpha, threshold))
-                                return false;
-                        }
-                    }
-                }
-
-                ptr += sbpp;
             }
 
-            pPixels += cImage.rowPitch;
+            ptr += sbpp;
         }
 
-        return true;
+        pPixels += cImage.rowPitch;
     }
-};
+
+    return true;
+}
 
 
 //=====================================================================================
@@ -597,6 +635,38 @@ HRESULT DirectX::Compress(
     TEX_COMPRESS_FLAGS compress,
     float threshold,
     ScratchImage& image) noexcept
+{
+    CompressOptions options = {};
+    options.flags = compress;
+    options.threshold = threshold;
+
+    return CompressEx(srcImage, format, options, image, nullptr);
+}
+
+_Use_decl_annotations_
+HRESULT DirectX::Compress(
+    const Image* srcImages,
+    size_t nimages,
+    const TexMetadata& metadata,
+    DXGI_FORMAT format,
+    TEX_COMPRESS_FLAGS compress,
+    float threshold,
+    ScratchImage& cImages) noexcept
+{
+    CompressOptions options = {};
+    options.flags = compress;
+    options.threshold = threshold;
+
+    return CompressEx(srcImages, nimages, metadata, format, options, cImages, nullptr);
+}
+
+_Use_decl_annotations_
+HRESULT DirectX::CompressEx(
+    const Image& srcImage,
+    DXGI_FORMAT format,
+    const CompressOptions& options,
+    ScratchImage& image,
+    std::function<bool __cdecl(size_t, size_t)> statusCallback)
 {
     if (IsCompressed(srcImage.format) || !IsCompressed(format))
         return E_INVALIDARG;
@@ -617,35 +687,56 @@ HRESULT DirectX::Compress(
         return E_POINTER;
     }
 
-    // Compress single image
-    if (compress & TEX_COMPRESS_PARALLEL)
+    if (statusCallback)
     {
-#ifndef _OPENMP
-        return E_NOTIMPL;
-#else
-        hr = CompressBC_Parallel(srcImage, *img, GetBCFlags(compress), GetSRGBFlags(compress), threshold);
-#endif // _OPENMP
+        if (!statusCallback(0, img->height))
+        {
+            image.Release();
+            return E_ABORT;
+        }
+    }
+
+    // Compress single image
+    if (options.flags & TEX_COMPRESS_PARALLEL)
+    {
+    #ifndef _OPENMP
+        hr = E_NOTIMPL;
+    #else
+        hr = CompressBC_Parallel(srcImage, *img, GetBCFlags(options.flags), GetSRGBFlags(options.flags), options.threshold, statusCallback);
+    #endif // _OPENMP
     }
     else
     {
-        hr = CompressBC(srcImage, *img, GetBCFlags(compress), GetSRGBFlags(compress), threshold);
+        hr = CompressBC(srcImage, *img, GetBCFlags(options.flags), GetSRGBFlags(options.flags), options.threshold, statusCallback);
     }
 
     if (FAILED(hr))
+    {
         image.Release();
+        return hr;
+    }
 
-    return hr;
+    if (statusCallback)
+    {
+        if (!statusCallback(img->height, img->height))
+        {
+            image.Release();
+            return E_ABORT;
+        }
+    }
+
+    return S_OK;
 }
 
 _Use_decl_annotations_
-HRESULT DirectX::Compress(
+HRESULT DirectX::CompressEx(
     const Image* srcImages,
     size_t nimages,
     const TexMetadata& metadata,
     DXGI_FORMAT format,
-    TEX_COMPRESS_FLAGS compress,
-    float threshold,
-    ScratchImage& cImages) noexcept
+    const CompressOptions& options,
+    ScratchImage& cImages,
+    std::function<bool __cdecl(size_t, size_t)> statusCallback)
 {
     if (!srcImages || !nimages)
         return E_INVALIDARG;
@@ -658,6 +749,19 @@ HRESULT DirectX::Compress(
         return HRESULT_E_NOT_SUPPORTED;
 
     cImages.Release();
+
+    if (statusCallback
+        && nimages == 1
+        && !metadata.IsVolumemap()
+        && metadata.mipLevels == 1
+        && metadata.arraySize == 1)
+    {
+        // If progress reporting is requested when compressing a single 1D or 2D image, call
+        // the CompressEx overload that takes a single image.
+        // This provides a better user experience as progress will be reported as the image
+        // is being processed, instead of after processing has been completed.
+        return CompressEx(srcImages[0], format, options, cImages, statusCallback);
+    }
 
     TexMetadata mdata2 = metadata;
     mdata2.format = format;
@@ -678,6 +782,15 @@ HRESULT DirectX::Compress(
         return E_POINTER;
     }
 
+    if (statusCallback)
+    {
+        if (!statusCallback(0, nimages))
+        {
+            cImages.Release();
+            return E_ABORT;
+        }
+    }
+
     for (size_t index = 0; index < nimages; ++index)
     {
         assert(dest[index].format == format);
@@ -690,30 +803,41 @@ HRESULT DirectX::Compress(
             return E_FAIL;
         }
 
-        if ((compress & TEX_COMPRESS_PARALLEL))
+        if (options.flags & TEX_COMPRESS_PARALLEL)
         {
-#ifndef _OPENMP
-            return E_NOTIMPL;
-#else
-            if (compress & TEX_COMPRESS_PARALLEL)
-            {
-                hr = CompressBC_Parallel(src, dest[index], GetBCFlags(compress), GetSRGBFlags(compress), threshold);
-                if (FAILED(hr))
-                {
-                    cImages.Release();
-                    return  hr;
-                }
-            }
-#endif // _OPENMP
+        #ifndef _OPENMP
+            hr = E_NOTIMPL;
+        #else
+            hr = CompressBC_Parallel(src, dest[index], GetBCFlags(options.flags), GetSRGBFlags(options.flags), options.threshold, nullptr);
+        #endif // _OPENMP
         }
         else
         {
-            hr = CompressBC(src, dest[index], GetBCFlags(compress), GetSRGBFlags(compress), threshold);
-            if (FAILED(hr))
+            hr = CompressBC(src, dest[index], GetBCFlags(options.flags), GetSRGBFlags(options.flags), options.threshold, nullptr);
+        }
+
+        if (FAILED(hr))
+        {
+            cImages.Release();
+            return hr;
+        }
+
+        if (statusCallback)
+        {
+            if (!statusCallback(index, nimages))
             {
                 cImages.Release();
-                return hr;
+                return E_ABORT;
             }
+        }
+    }
+
+    if (statusCallback)
+    {
+        if (!statusCallback(nimages, nimages))
+        {
+            cImages.Release();
+            return E_ABORT;
         }
     }
 

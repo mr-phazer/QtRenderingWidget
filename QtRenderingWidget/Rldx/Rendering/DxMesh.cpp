@@ -14,5 +14,5 @@ std::string Rldx::DxMesh::GetTypeString() const
 
 void Rldx::DxMesh::SetMeshData(const DxCommonMeshData& meshData)
 {
-	m_meshData = meshData;
+	m_poMesh = meshData;
 }

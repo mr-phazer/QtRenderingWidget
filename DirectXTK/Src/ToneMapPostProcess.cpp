@@ -188,7 +188,7 @@ namespace
     {
     public:
         DeviceResources(_In_ ID3D11Device* device)
-            : m_stateObjects(device),
+            : stateObjects(device),
             mDevice(device),
             mVertexShader{},
             mPixelShaders{},
@@ -229,7 +229,7 @@ namespace
                 });
         }
 
-        CommonStates                m_stateObjects;
+        CommonStates                stateObjects;
 
     protected:
         ComPtr<ID3D11Device>        mDevice;
@@ -310,13 +310,13 @@ void ToneMapPostProcess::Impl::Process(
     ID3D11ShaderResourceView* textures[1] = { hdrTexture.Get() };
     deviceContext->PSSetShaderResources(0, 1, textures);
 
-    auto sampler = mDeviceResources->m_stateObjects.PointClamp();
+    auto sampler = mDeviceResources->stateObjects.PointClamp();
     deviceContext->PSSetSamplers(0, 1, &sampler);
 
     // Set state objects.
-    deviceContext->OMSetBlendState(mDeviceResources->m_stateObjects.Opaque(), nullptr, 0xffffffff);
-    deviceContext->OMSetDepthStencilState(mDeviceResources->m_stateObjects.DepthNone(), 0);
-    deviceContext->RSSetState(mDeviceResources->m_stateObjects.CullNone());
+    deviceContext->OMSetBlendState(mDeviceResources->stateObjects.Opaque(), nullptr, 0xffffffff);
+    deviceContext->OMSetDepthStencilState(mDeviceResources->stateObjects.DepthNone(), 0);
+    deviceContext->RSSetState(mDeviceResources->stateObjects.CullNone());
 
     // Set shaders.
     auto vertexShader = mDeviceResources->GetVertexShader();

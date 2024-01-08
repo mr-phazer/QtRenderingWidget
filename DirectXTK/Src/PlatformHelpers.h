@@ -12,7 +12,6 @@
 
 #pragma warning(disable : 4324)
 
-#include <d3d11.h>
 #include <exception>
 #include <memory>
 

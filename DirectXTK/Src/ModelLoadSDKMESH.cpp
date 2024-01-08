@@ -758,7 +758,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH(
 
                 if (model->meshes[index]->boneIndex == ModelBone::c_Invalid)
                 {
-                    // Bind the first bone that links to a given mesh
+                    // BindToDC the first bone that links to a given mesh
                     model->meshes[index]->boneIndex = j;
                 }
             }

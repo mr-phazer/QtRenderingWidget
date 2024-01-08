@@ -6,6 +6,152 @@ Release available for download on [GitHub](https://github.com/microsoft/DirectXT
 
 ## Release History
 
+### December 31, 2023
+* TGA reader bug fix for offset boundary check
+* PPM/PFM reader bug fixes for bounds checking
+* Xbox-specific functionality added to Auxiliary folder
+* CMake project updates including pkg-config file generation
+* Code review
+
+### October 28, 2023
+* New ``DDS_PERMISSIVE_FLAG`` to allow reading of various DDS DX9 file variants
+  * *breaking change* required to accept reading *Unreal Tournament 2004* DDS files
+  * Allows cases where DDS_HEADER size is incorrectly set to 24
+  * Allows cases where DDPIXELFORMAT size is incorrectly set to 24
+  * Allows cases where DDS_HEADER.MipMapCount is set to the wrong value
+* texassemble/texconv/texdiag: -flist option updated to support filenames with spaces
+* texconv: -permissive switch added to opt-in use of new flag when reading DDS files
+
+### September 1, 2023
+* ``CompressEx`` and ``ConvertEx`` functions added with status callback and options structs
+* Added optional ``DDSMetaData`` return for Ex versions of DDS loader functions
+* Added ``TEX_ALPHA_WEIGHT_DEFAULT`` constant (set to 1.0)
+* DDS reader updated to support variant used by *Unreal Tournament 2004*
+* Fixed overvalidation bug with BC7 GPU compressor with SRGB formats
+* Retired ARM (32-bit) support for the UWP platform
+* CMake project updates
+
+### June 13, 2023
+* Added ``TEX_FILTER_RGB_COPY_ALPHA`` flag and support for ``DXGI_FORMAT_A4B4G4R4_UNORM``
+* DDS loader now supports 'swizzled' DXT5 variant FourCCs
+* CMake project updates
+* texconv: Added ``-f BC3n``,  ``-f DXT5nm``, and ``-f RXBG`` support; ``.ddx`` file extension; and ``-tgazeroalpha`` switch
+* texassemble/texconv/texdiag: Fix minor display issue with error messages
+* texassemble/texconv/texdiag: Supports Long Paths on Windows 10, Version 1607 or later
+
+### April 28, 2023
+* Updated D3DX12 internal copy with latest changes from DirectX-Headers GitHub
+* CMake project updates and fixes for clang/LLVM v16 warnings
+* texassemble/texconv/texdiag: Windows on ARM64 version
+
+### March 30, 2023
+* Fix for `SRGB_IN` / `SRGB_OUT` flag handling for GPU BC7 compressor
+* Fix to clamp negative values when encoding with the GPU BC6H compressor
+* GPU BC6H/BC7 encoder updated to make optional use of DirectCompute 5.0
+* CMake project updates
+* Code review
+* Retired VS 2017 legacy Xbox One XDK projects
+* texassemble/texconv/texdiag: Updated to support Windows or UNIX-style path separators
+
+### January 31, 2023
+* Fixed memory overwrite bug in **ConvertToSinglePlane** that can lead to a potential security issue for untrusted planar video format DDS files
+* Make sure ScratchImage zero-fills image memory
+* Fix DirectX12 GPU-validation warnings for texture loaders
+* Minor fix for non-Win32 builds
+* ddsview: Updated sample app with a ``-forcesrgb`` command-line switch
+
+### December 15, 2022
+* ARM/ARM64 platform fix for 16bpp pixel conversion
+* Updated D3DX12 internal copy with latest changes from DirectX-Headers GitHub
+* CMake project updated to require 3.20 or later
+* CMake and MSBuild project updates
+* Added Azure Dev Ops Pipeline YAML files
+* ``Auxiliary`` folder added with DirectXEXR.h/.cpp optional module
+* Test suite updated with CTest support
+* Spectre-mitigated libraries added to NuGet packages
+* texassemble: added commands *v-cross-fnz*, *h-tee*, and *cube-from-\**
+* texconv: Fixed minor printf output issue
+
+### October 17, 2022
+* Minor fix for ``CompileShaders.cmd`` to address additional 'paths with spaces' issues
+* Minor CMake and CMakePresets updates
+* Code review
+
+### July 29, 2022
+* Added ``MakeLinear`` DXGI_FORMAT utility function.
+* *breaking change* ``CreateTextureEx`` and ``CreateShaderResourceViewEx`` functions now use ``CREATETEX_FLAGS`` instead of a ``bool forceSRGB`` parameter.
+* Updates for MinGW ABI fixes for DirectX12 in the latest DirectX-Headers.
+* CMake and MSBuild project updates
+* Code review
+* `DDSTextureLoader11` and ``DDSTextureLoader12`` sync'd up with *DirectX Tool Kit* July 2022 changes.
+
+### May 9, 2022
+* TGA reader updated to support 24-bit paletted uncompressed color-mapped images (used by a DCC application)
+* Added `IsBGR` utility method
+* Workaround for driver issue on some systems using DirectX 11 `Capture` method
+* Fix for problem with resizing/mipmaps generation for HDR content using box/fant filter which should avoid going through WIC code paths
+* Minor updates for VS 2022 (17.2)
+* CMake project updates (now supports MSVC, clang/LLVM, and MinGW)
+* Updated D3DX12 internal copy with latest changes from DirectX-Headers GitHub
+* Retired VS 2017 projects
+* Code cleanup
+* Reformat source using updated .editorconfig settings
+* texconv: Improve `-nmap` handling for 16-bit sources going to BC formats
+
+### March 24, 2022
+* Fixed end-point bounds issue with BC6H CPU compressor if none of the pixels are in 0-1 range
+* Fixed bug in alpha-to-coverage computation
+* Add support for installable WIC codecs for HEIF and WEBP (if present)
+* Update build switches for SDL recommendations
+* CMake project updates and UWP platform CMakePresets
+* Code cleaup for tools
+* Optional C++17 usage in a few places
+
+### February 28, 2022
+* Updated D3DX12 internal copy with latest changes from GitHub
+* Code and project review including fixing clang v13 warnings
+* Added CMakePresets.json
+
+### November 8, 2021
+* VS 2022 support
+* Updated D3DX12 internal copy with latest change from GitHubf
+* Minor code and project review
+* VS 2017 projects updated to require the Windows 10 SDK (19401)
+* texassemble/texconv: Updated with 12.2 for ``-fl`` switch
+* texassemble/texconv/texdiag: Fixed potential locale issue with ``-flist``
+
+### September 28, 2021
+* Minor code and project cleanup
+
+### August 1, 2021
+* Fixed weighting bug in custom linear filtering for wrap/mirroring
+* Added VS 2022 Preview projects
+* texconv: Made default output extension to be lower-case like most Windows applications
+* texconv: updated colorspace rotation names for -rotatecolor switch
+* texassemble, texconv: Order of operations fix for -swizzle using 0, 1
+* Minor code review
+
+### June 9, 2021
+* Minor bug fix for metadata behavior when using ``DDS_FLAGS_NO_16BPP`` flag for B5G6R5 content
+* texdiag: added ``-c`` and ``-t`` switches for diff command
+* texconv: Fixed bug in ``-m`` switch handling when resizing changes the max mipmap count
+* texconv et al: improved ``-flist`` switch to support wildcards and file exclusions
+* texconv et al: Added 'BGR' alias to ``-f`` switch for the B8G8R8X8_UNORM format
+* WICTextureLoader / DDSTextureLoader12 updated to use typed enum bitmask flags for loadFlags parameter
+* Minor code review
+
+### April 6, 2021
+* DDS reader updated to accept nVidia Texture Tool v1 single-channel and dual-channel files marked as RGB instead of LUMINANCE
+* Fixed TGA reader regression with files smaller than 26 bytes total
+* Removed use of ``CreateStreamOnHGlobal``, ``CreateStreamOverRandomAccessStream``, and ``SHCreateMemStream`` for WICToMemory functions
+* Fix for the DirectX 12 ``CaptureTexture`` for reserved and MSAA resources
+* Minor code and project cleanup
+* texassemble: added ``-stripmips`` switch
+* texassemble, texconv: the ``swizzle`` switch now accepts ``0`` and ``1`` values in swizzle masks
+* texconv: added "709toDisplayP3" and "DisplayP3to709" to ``-rotatecolor`` switch
+* texconv: Fixed ``-reconstructz`` for UNORM formats
+* texassemble, texconv, texdiag: Updated with  descriptions for HRESULT failure codes, and always uses exit code 1 on failure
+
 ### January 9, 2021
 * Windows Subsystem for Linux support
 * Code review for improved conformance
@@ -185,7 +331,7 @@ Release available for download on [GitHub](https://github.com/microsoft/DirectXT
 ### July 26, 2017
 * Support for reading non-standard DDS files written by nVidia Texture Tools (NVTT)
 * Fix for **ComputeMSE** when using ``CMSE_IMAGE2_X2_BIAS``
-* Fix for WIC writer then codec target format requires a palette    
+* Fix for WIC writer then codec target format requires a palette
 * Code cleanup
 
 ### April 24, 2017

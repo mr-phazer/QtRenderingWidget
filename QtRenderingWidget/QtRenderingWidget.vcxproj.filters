@@ -23,10 +23,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc">
+    <QtRcc Include="QtObjects\Views\QtRenderingViewWidget.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="QtObjects\Views\QtRenderingWidget.ui">
+    <QtUic Include="QtObjects\Views\QtRenderingViewWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -76,7 +76,7 @@
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp">
+    <ClCompile Include="QtObjects\Views\QtRenderingViewWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
@@ -110,6 +110,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExternFunctions\Creators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -240,6 +246,15 @@
     <ClInclude Include="Rldx\DataTypes\DerformerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExternFunctions\Creators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="myfile.spritefont" />
@@ -263,7 +278,7 @@
     <None Include="Rldx\Shaders\include\VS_ConstBuffers.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtObjects\Views\QtRenderingWidget.h">
+    <QtMoc Include="QtObjects\Views\QtRenderingViewWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

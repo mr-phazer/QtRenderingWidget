@@ -21,11 +21,11 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -115,18 +115,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
     <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp" />
     <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
-    <ClCompile Include="QtObjects\Views\QtRenderingWidget.cpp" />
+    <ClCompile Include="QtObjects\Views\QtRenderingViewWidget.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp" />
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
+    <ClInclude Include="ExternFunctions\Creators.h" />
     <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
     <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
@@ -142,14 +145,15 @@
     <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Tools\tools.cpp" />
-    <QtRcc Include="QtObjects\Views\QtRenderingWidget.qrc" />
-    <QtUic Include="QtObjects\Views\QtRenderingWidget.ui" />
+    <QtRcc Include="QtObjects\Views\QtRenderingViewWidget.qrc" />
+    <QtUic Include="QtObjects\Views\QtRenderingViewWidget.ui" />
     <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="asdsass.h" />
     <ClInclude Include="Common\TSmartPointer.h" />
+    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h" />
     <ClInclude Include="Rldx\Interfaces\TIdentifiable.h" />
     <ClInclude Include="Rldx\Interfaces\IFlushable.h" />
     <ClInclude Include="Rldx\Interfaces\IRenderBucket.h" />
@@ -163,10 +167,11 @@
     <ClInclude Include="Rldx\Helpers\DxMeshCreator.h" />
     <ClInclude Include="Rldx\Helpers\MathHelper.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
+    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h" />
     <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
-    <QtMoc Include="QtObjects\Views\QtRenderingWidget.h" />
+    <QtMoc Include="QtObjects\Views\QtRenderingViewWidget.h" />
     <ClInclude Include="Rldx\Rendering\DxMaterial.h" />
     <ClInclude Include="Rldx\DataTypes\DxMeshData.h" />
     <ClInclude Include="Rldx\DataTypes\ShaderFiles.h" />

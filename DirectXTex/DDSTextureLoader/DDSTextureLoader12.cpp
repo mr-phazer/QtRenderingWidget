@@ -7,7 +7,7 @@
 // a full-featured DDS file reader, writer, and texture processing pipeline see
 // the 'Texconv' sample and the 'DirectXTex' library.
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -21,9 +21,20 @@
 #include <memory>
 #include <new>
 
-#ifndef WIN32
+#ifndef _WIN32
 #include <fstream>
 #include <filesystem>
+#endif
+
+#ifdef _MSC_VER
+// Off by default warnings
+#pragma warning(disable : 4619 4616 4061 4062 4623 4626 5027)
+// C4619/4616 #pragma warning warnings
+// C4061 enumerator 'x' in switch of enum 'y' is not explicitly handled by a case label
+// C4062 enumerator 'x' in switch of enum 'y' is not handled
+// C4623 default constructor was implicitly defined as deleted
+// C4626 assignment operator was implicitly defined as deleted
+// C5027 move assignment operator was implicitly defined as deleted
 #endif
 
 #ifdef __clang__
@@ -31,16 +42,15 @@
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
 #pragma clang diagnostic ignored "-Wswitch"
 #pragma clang diagnostic ignored "-Wswitch-enum"
+#pragma clang diagnostic ignored "-Wunused-macros"
 #endif
 
-#pragma warning(disable : 4062)
-
 #define D3DX12_NO_STATE_OBJECT_HELPERS
-
-#ifdef WIN32
-#include "d3dx12.h"
-#else
+#define D3DX12_NO_CHECK_FEATURE_SUPPORT_CLASS
+#if !defined(_WIN32) || defined(USING_DIRECTX_HEADERS)
 #include "directx/d3dx12.h"
+#else
+#include "d3dx12.h"
 #endif
 
 using namespace DirectX;
@@ -73,7 +83,7 @@ using namespace DirectX;
 //--------------------------------------------------------------------------------------
 #pragma pack(push,1)
 
-const uint32_t DDS_MAGIC = 0x20534444; // "DDS "
+constexpr uint32_t DDS_MAGIC = 0x20534444; // "DDS "
 
 struct DDS_PIXELFORMAT
 {
@@ -147,7 +157,7 @@ struct DDS_HEADER_DXT10
 //--------------------------------------------------------------------------------------
 namespace
 {
-#ifdef WIN32
+#ifdef _WIN32
     struct handle_closer { void operator()(HANDLE h) noexcept { if (h) CloseHandle(h); } };
 
     using ScopedHandle = std::unique_ptr<void, handle_closer>;
@@ -155,16 +165,18 @@ namespace
     inline HANDLE safe_handle(HANDLE h) noexcept { return (h == INVALID_HANDLE_VALUE) ? nullptr : h; }
 #endif
 
+    #if !defined(NO_D3D12_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
     template<UINT TNameLength>
     inline void SetDebugObjectName(_In_ ID3D12DeviceChild* resource, _In_z_ const wchar_t(&name)[TNameLength]) noexcept
     {
-        #if !defined(NO_D3D12_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-            resource->SetName(name);
-        #else
-            UNREFERENCED_PARAMETER(resource);
-            UNREFERENCED_PARAMETER(name);
-        #endif
+        resource->SetName(name);
     }
+    #else
+    template<UINT TNameLength>
+    inline void SetDebugObjectName(_In_ ID3D12DeviceChild*, _In_z_ const wchar_t(&)[TNameLength]) noexcept
+    {
+    }
+    #endif
 
     inline uint32_t CountMips(uint32_t width, uint32_t height) noexcept
     {
@@ -208,7 +220,7 @@ namespace
         }
 
         // DDS files always start with the same magic number ("DDS ")
-        auto dwMagicNumber = *reinterpret_cast<const uint32_t*>(ddsData);
+        auto const dwMagicNumber = *reinterpret_cast<const uint32_t*>(ddsData);
         if (dwMagicNumber != DDS_MAGIC)
         {
             return E_FAIL;
@@ -241,7 +253,7 @@ namespace
         *header = hdr;
         auto offset = sizeof(uint32_t)
             + sizeof(DDS_HEADER)
-            + (bDXT10Header ? sizeof(DDS_HEADER_DXT10) : 0);
+            + (bDXT10Header ? sizeof(DDS_HEADER_DXT10) : 0u);
         *bitData = ddsData + offset;
         *bitSize = ddsDataSize - offset;
 
@@ -264,12 +276,11 @@ namespace
 
         *bitSize = 0;
 
-#ifdef WIN32
-        // open the file
-        ScopedHandle hFile(safe_handle(CreateFile2(fileName,
-            GENERIC_READ,
-            FILE_SHARE_READ,
-            OPEN_EXISTING,
+    #ifdef _WIN32
+            // open the file
+        ScopedHandle hFile(safe_handle(CreateFile2(
+            fileName,
+            GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING,
             nullptr)));
 
         if (!hFile)
@@ -324,7 +335,7 @@ namespace
 
         size_t len = fileInfo.EndOfFile.LowPart;
 
-#else // !WIN32
+    #else // !WIN32
         std::ifstream inFile(std::filesystem::path(fileName), std::ios::in | std::ios::binary | std::ios::ate);
         if (!inFile)
             return E_FAIL;
@@ -348,20 +359,20 @@ namespace
             return E_FAIL;
         }
 
-       inFile.read(reinterpret_cast<char*>(ddsData.get()), fileLen);
-       if (!inFile)
-       {
-           ddsData.reset();
-           return E_FAIL;
-       }
+        inFile.read(reinterpret_cast<char*>(ddsData.get()), fileLen);
+        if (!inFile)
+        {
+            ddsData.reset();
+            return E_FAIL;
+        }
 
-       inFile.close();
+        inFile.close();
 
-       size_t len = fileLen;
-#endif
+        size_t len = fileLen;
+    #endif
 
         // DDS files always start with the same magic number ("DDS ")
-        auto dwMagicNumber = *reinterpret_cast<const uint32_t*>(ddsData.get());
+        auto const dwMagicNumber = *reinterpret_cast<const uint32_t*>(ddsData.get());
         if (dwMagicNumber != DDS_MAGIC)
         {
             ddsData.reset();
@@ -396,7 +407,7 @@ namespace
         // setup the pointers in the process request
         *header = hdr;
         auto offset = sizeof(uint32_t) + sizeof(DDS_HEADER)
-            + (bDXT10Header ? sizeof(DDS_HEADER_DXT10) : 0);
+            + (bDXT10Header ? sizeof(DDS_HEADER_DXT10) : 0u);
         *bitData = ddsData.get() + offset;
         *bitSize = len - offset;
 
@@ -407,9 +418,9 @@ namespace
     //--------------------------------------------------------------------------------------
     // Return the BPP for a particular format
     //--------------------------------------------------------------------------------------
-    size_t BitsPerPixel( _In_ DXGI_FORMAT fmt ) noexcept
+    size_t BitsPerPixel(_In_ DXGI_FORMAT fmt) noexcept
     {
-        switch( fmt )
+        switch (fmt)
         {
         case DXGI_FORMAT_R32G32B32A32_TYPELESS:
         case DXGI_FORMAT_R32G32B32A32_FLOAT:
@@ -620,6 +631,15 @@ namespace
 
         case DXGI_FORMAT_NV12:
         case DXGI_FORMAT_420_OPAQUE:
+            if ((height % 2) != 0)
+            {
+                // Requires a height alignment of 2.
+                return E_INVALIDARG;
+            }
+            planar = true;
+            bpe = 2;
+            break;
+
         case DXGI_FORMAT_P208:
             planar = true;
             bpe = 2;
@@ -627,6 +647,11 @@ namespace
 
         case DXGI_FORMAT_P010:
         case DXGI_FORMAT_P016:
+            if ((height % 2) != 0)
+            {
+                // Requires a height alignment of 2.
+                return E_INVALIDARG;
+            }
             planar = true;
             bpe = 4;
             break;
@@ -671,7 +696,7 @@ namespace
         }
         else
         {
-            size_t bpp = BitsPerPixel(fmt);
+            const size_t bpp = BitsPerPixel(fmt);
             if (!bpp)
                 return E_INVALIDARG;
 
@@ -680,13 +705,13 @@ namespace
             numBytes = rowBytes * height;
         }
 
-#if defined(_M_IX86) || defined(_M_ARM) || defined(_M_HYBRID_X86_ARM64)
+    #if defined(_M_IX86) || defined(_M_ARM) || defined(_M_HYBRID_X86_ARM64)
         static_assert(sizeof(size_t) == 4, "Not a 32-bit platform!");
         if (numBytes > UINT32_MAX || rowBytes > UINT32_MAX || numRows > UINT32_MAX)
             return HRESULT_E_ARITHMETIC_OVERFLOW;
-#else
+    #else
         static_assert(sizeof(size_t) == 8, "Not a 64-bit platform!");
-#endif
+    #endif
 
         if (outNumBytes)
         {
@@ -706,9 +731,9 @@ namespace
 
 
     //--------------------------------------------------------------------------------------
-    #define ISBITMASK( r,g,b,a ) ( ddpf.RBitMask == r && ddpf.GBitMask == g && ddpf.BBitMask == b && ddpf.ABitMask == a )
+#define ISBITMASK( r,g,b,a ) ( ddpf.RBitMask == r && ddpf.GBitMask == g && ddpf.BBitMask == b && ddpf.ABitMask == a )
 
-    DXGI_FORMAT GetDXGIFormat( const DDS_PIXELFORMAT& ddpf ) noexcept
+    DXGI_FORMAT GetDXGIFormat(const DDS_PIXELFORMAT& ddpf) noexcept
     {
         if (ddpf.flags & DDS_RGB)
         {
@@ -717,17 +742,17 @@ namespace
             switch (ddpf.RGBBitCount)
             {
             case 32:
-                if (ISBITMASK(0x000000ff,0x0000ff00,0x00ff0000,0xff000000))
+                if (ISBITMASK(0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000))
                 {
                     return DXGI_FORMAT_R8G8B8A8_UNORM;
                 }
 
-                if (ISBITMASK(0x00ff0000,0x0000ff00,0x000000ff,0xff000000))
+                if (ISBITMASK(0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000))
                 {
                     return DXGI_FORMAT_B8G8R8A8_UNORM;
                 }
 
-                if (ISBITMASK(0x00ff0000,0x0000ff00,0x000000ff,0))
+                if (ISBITMASK(0x00ff0000, 0x0000ff00, 0x000000ff, 0))
                 {
                     return DXGI_FORMAT_B8G8R8X8_UNORM;
                 }
@@ -741,19 +766,19 @@ namespace
                 // header extension and specify the DXGI_FORMAT_R10G10B10A2_UNORM format directly
 
                 // For 'correct' writers, this should be 0x000003ff,0x000ffc00,0x3ff00000 for RGB data
-                if (ISBITMASK(0x3ff00000,0x000ffc00,0x000003ff,0xc0000000))
+                if (ISBITMASK(0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000))
                 {
                     return DXGI_FORMAT_R10G10B10A2_UNORM;
                 }
 
                 // No DXGI format maps to ISBITMASK(0x000003ff,0x000ffc00,0x3ff00000,0xc0000000) aka D3DFMT_A2R10G10B10
 
-                if (ISBITMASK(0x0000ffff,0xffff0000,0,0))
+                if (ISBITMASK(0x0000ffff, 0xffff0000, 0, 0))
                 {
                     return DXGI_FORMAT_R16G16_UNORM;
                 }
 
-                if (ISBITMASK(0xffffffff,0,0,0))
+                if (ISBITMASK(0xffffffff, 0, 0, 0))
                 {
                     // Only 32-bit color channel format in D3D9 was R32F
                     return DXGI_FORMAT_R32_FLOAT; // D3DX writes this out as a FourCC of 114
@@ -765,33 +790,65 @@ namespace
                 break;
 
             case 16:
-                if (ISBITMASK(0x7c00,0x03e0,0x001f,0x8000))
+                if (ISBITMASK(0x7c00, 0x03e0, 0x001f, 0x8000))
                 {
                     return DXGI_FORMAT_B5G5R5A1_UNORM;
                 }
-                if (ISBITMASK(0xf800,0x07e0,0x001f,0))
+                if (ISBITMASK(0xf800, 0x07e0, 0x001f, 0))
                 {
                     return DXGI_FORMAT_B5G6R5_UNORM;
                 }
 
                 // No DXGI format maps to ISBITMASK(0x7c00,0x03e0,0x001f,0) aka D3DFMT_X1R5G5B5
 
-                if (ISBITMASK(0x0f00,0x00f0,0x000f,0xf000))
+                if (ISBITMASK(0x0f00, 0x00f0, 0x000f, 0xf000))
                 {
                     return DXGI_FORMAT_B4G4R4A4_UNORM;
                 }
 
+                // NVTT versions 1.x wrote this as RGB instead of LUMINANCE
+                if (ISBITMASK(0x00ff, 0, 0, 0xff00))
+                {
+                    return DXGI_FORMAT_R8G8_UNORM;
+                }
+                if (ISBITMASK(0xffff, 0, 0, 0))
+                {
+                    return DXGI_FORMAT_R16_UNORM;
+                }
+
                 // No DXGI format maps to ISBITMASK(0x0f00,0x00f0,0x000f,0) aka D3DFMT_X4R4G4B4
 
-                // No 3:3:2, 3:3:2:8, or paletted DXGI formats aka D3DFMT_A8R3G3B2, D3DFMT_R3G3B2, D3DFMT_P8, D3DFMT_A8P8, etc.
+                // No 3:3:2:8 or paletted DXGI formats aka D3DFMT_A8R3G3B2, D3DFMT_A8P8, etc.
+                break;
+
+            case 8:
+                // NVTT versions 1.x wrote this as RGB instead of LUMINANCE
+                if (ISBITMASK(0xff, 0, 0, 0))
+                {
+                    return DXGI_FORMAT_R8_UNORM;
+                }
+
+                // No 3:3:2 or paletted DXGI formats aka D3DFMT_R3G3B2, D3DFMT_P8
                 break;
             }
         }
         else if (ddpf.flags & DDS_LUMINANCE)
         {
-            if (8 == ddpf.RGBBitCount)
+            switch (ddpf.RGBBitCount)
             {
-                if (ISBITMASK(0xff,0,0,0))
+            case 16:
+                if (ISBITMASK(0xffff, 0, 0, 0))
+                {
+                    return DXGI_FORMAT_R16_UNORM; // D3DX10/11 writes this out as DX10 extension
+                }
+                if (ISBITMASK(0x00ff, 0, 0, 0xff00))
+                {
+                    return DXGI_FORMAT_R8G8_UNORM; // D3DX10/11 writes this out as DX10 extension
+                }
+                break;
+
+            case 8:
+                if (ISBITMASK(0xff, 0, 0, 0))
                 {
                     return DXGI_FORMAT_R8_UNORM; // D3DX10/11 writes this out as DX10 extension
                 }
@@ -802,18 +859,7 @@ namespace
                 {
                     return DXGI_FORMAT_R8G8_UNORM; // Some DDS writers assume the bitcount should be 8 instead of 16
                 }
-            }
-
-            if (16 == ddpf.RGBBitCount)
-            {
-                if (ISBITMASK(0xffff,0,0,0))
-                {
-                    return DXGI_FORMAT_R16_UNORM; // D3DX10/11 writes this out as DX10 extension
-                }
-                if (ISBITMASK(0x00ff,0,0,0xff00))
-                {
-                    return DXGI_FORMAT_R8G8_UNORM; // D3DX10/11 writes this out as DX10 extension
-                }
+                break;
             }
         }
         else if (ddpf.flags & DDS_ALPHA)
@@ -825,16 +871,9 @@ namespace
         }
         else if (ddpf.flags & DDS_BUMPDUDV)
         {
-            if (16 == ddpf.RGBBitCount)
+            switch (ddpf.RGBBitCount)
             {
-                if (ISBITMASK(0x00ff, 0xff00, 0, 0))
-                {
-                    return DXGI_FORMAT_R8G8_SNORM; // D3DX10/11 writes this out as DX10 extension
-                }
-            }
-
-            if (32 == ddpf.RGBBitCount)
-            {
+            case 32:
                 if (ISBITMASK(0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000))
                 {
                     return DXGI_FORMAT_R8G8B8A8_SNORM; // D3DX10/11 writes this out as DX10 extension
@@ -845,80 +884,88 @@ namespace
                 }
 
                 // No DXGI format maps to ISBITMASK(0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000) aka D3DFMT_A2W10V10U10
+                break;
+
+            case 16:
+                if (ISBITMASK(0x00ff, 0xff00, 0, 0))
+                {
+                    return DXGI_FORMAT_R8G8_SNORM; // D3DX10/11 writes this out as DX10 extension
+                }
+                break;
             }
 
             // No DXGI format maps to DDPF_BUMPLUMINANCE aka D3DFMT_L6V5U5, D3DFMT_X8L8V8U8
         }
         else if (ddpf.flags & DDS_FOURCC)
         {
-            if (MAKEFOURCC( 'D', 'X', 'T', '1' ) == ddpf.fourCC)
+            if (MAKEFOURCC('D', 'X', 'T', '1') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC1_UNORM;
             }
-            if (MAKEFOURCC( 'D', 'X', 'T', '3' ) == ddpf.fourCC)
+            if (MAKEFOURCC('D', 'X', 'T', '3') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC2_UNORM;
             }
-            if (MAKEFOURCC( 'D', 'X', 'T', '5' ) == ddpf.fourCC)
+            if (MAKEFOURCC('D', 'X', 'T', '5') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC3_UNORM;
             }
 
             // While pre-multiplied alpha isn't directly supported by the DXGI formats,
             // they are basically the same as these BC formats so they can be mapped
-            if (MAKEFOURCC( 'D', 'X', 'T', '2' ) == ddpf.fourCC)
+            if (MAKEFOURCC('D', 'X', 'T', '2') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC2_UNORM;
             }
-            if (MAKEFOURCC( 'D', 'X', 'T', '4' ) == ddpf.fourCC)
+            if (MAKEFOURCC('D', 'X', 'T', '4') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC3_UNORM;
             }
 
-            if (MAKEFOURCC( 'A', 'T', 'I', '1' ) == ddpf.fourCC)
+            if (MAKEFOURCC('A', 'T', 'I', '1') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC4_UNORM;
             }
-            if (MAKEFOURCC( 'B', 'C', '4', 'U' ) == ddpf.fourCC)
+            if (MAKEFOURCC('B', 'C', '4', 'U') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC4_UNORM;
             }
-            if (MAKEFOURCC( 'B', 'C', '4', 'S' ) == ddpf.fourCC)
+            if (MAKEFOURCC('B', 'C', '4', 'S') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC4_SNORM;
             }
 
-            if (MAKEFOURCC( 'A', 'T', 'I', '2' ) == ddpf.fourCC)
+            if (MAKEFOURCC('A', 'T', 'I', '2') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC5_UNORM;
             }
-            if (MAKEFOURCC( 'B', 'C', '5', 'U' ) == ddpf.fourCC)
+            if (MAKEFOURCC('B', 'C', '5', 'U') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC5_UNORM;
             }
-            if (MAKEFOURCC( 'B', 'C', '5', 'S' ) == ddpf.fourCC)
+            if (MAKEFOURCC('B', 'C', '5', 'S') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_BC5_SNORM;
             }
 
             // BC6H and BC7 are written using the "DX10" extended header
 
-            if (MAKEFOURCC( 'R', 'G', 'B', 'G' ) == ddpf.fourCC)
+            if (MAKEFOURCC('R', 'G', 'B', 'G') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_R8G8_B8G8_UNORM;
             }
-            if (MAKEFOURCC( 'G', 'R', 'G', 'B' ) == ddpf.fourCC)
+            if (MAKEFOURCC('G', 'R', 'G', 'B') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_G8R8_G8B8_UNORM;
             }
 
-            if (MAKEFOURCC('Y','U','Y','2') == ddpf.fourCC)
+            if (MAKEFOURCC('Y', 'U', 'Y', '2') == ddpf.fourCC)
             {
                 return DXGI_FORMAT_YUY2;
             }
 
             // Check for D3DFORMAT enums being set here
-            switch( ddpf.fourCC )
+            switch (ddpf.fourCC)
             {
             case 36: // D3DFMT_A16B16G16R16
                 return DXGI_FORMAT_R16G16B16A16_UNORM;
@@ -951,13 +998,13 @@ namespace
         return DXGI_FORMAT_UNKNOWN;
     }
 
-    #undef ISBITMASK
+#undef ISBITMASK
 
 
     //--------------------------------------------------------------------------------------
-    DXGI_FORMAT MakeSRGB( _In_ DXGI_FORMAT format ) noexcept
+    DXGI_FORMAT MakeSRGB(_In_ DXGI_FORMAT format) noexcept
     {
-        switch( format )
+        switch (format)
         {
         case DXGI_FORMAT_R8G8B8A8_UNORM:
             return DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
@@ -979,6 +1026,38 @@ namespace
 
         case DXGI_FORMAT_BC7_UNORM:
             return DXGI_FORMAT_BC7_UNORM_SRGB;
+
+        default:
+            return format;
+        }
+    }
+
+
+    //--------------------------------------------------------------------------------------
+    inline DXGI_FORMAT MakeLinear(_In_ DXGI_FORMAT format) noexcept
+    {
+        switch (format)
+        {
+        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+            return DXGI_FORMAT_R8G8B8A8_UNORM;
+
+        case DXGI_FORMAT_BC1_UNORM_SRGB:
+            return DXGI_FORMAT_BC1_UNORM;
+
+        case DXGI_FORMAT_BC2_UNORM_SRGB:
+            return DXGI_FORMAT_BC2_UNORM;
+
+        case DXGI_FORMAT_BC3_UNORM_SRGB:
+            return DXGI_FORMAT_BC3_UNORM;
+
+        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+            return DXGI_FORMAT_B8G8R8A8_UNORM;
+
+        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+            return DXGI_FORMAT_B8G8R8X8_UNORM;
+
+        case DXGI_FORMAT_BC7_UNORM_SRGB:
+            return DXGI_FORMAT_BC7_UNORM;
 
         default:
             return format;
@@ -1170,7 +1249,7 @@ namespace
         size_t arraySize,
         DXGI_FORMAT format,
         D3D12_RESOURCE_FLAGS resFlags,
-        unsigned int loadFlags,
+        DDS_LOADER_FLAGS loadFlags,
         _Outptr_ ID3D12Resource** texture) noexcept
     {
         if (!d3dDevice)
@@ -1181,6 +1260,10 @@ namespace
         if (loadFlags & DDS_LOADER_FORCE_SRGB)
         {
             format = MakeSRGB(format);
+        }
+        else if (loadFlags & DDS_LOADER_IGNORE_SRGB)
+        {
+            format = MakeLinear(format);
         }
 
         D3D12_RESOURCE_DESC desc = {};
@@ -1194,13 +1277,13 @@ namespace
         desc.SampleDesc.Quality = 0;
         desc.Dimension = resDim;
 
-        CD3DX12_HEAP_PROPERTIES defaultHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
+        const CD3DX12_HEAP_PROPERTIES defaultHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
         hr = d3dDevice->CreateCommittedResource(
             &defaultHeapProperties,
             D3D12_HEAP_FLAG_NONE,
             &desc,
-            D3D12_RESOURCE_STATE_COPY_DEST,
+            D3D12_RESOURCE_STATE_COMMON,
             nullptr,
             IID_ID3D12Resource, reinterpret_cast<void**>(texture));
         if (SUCCEEDED(hr))
@@ -1221,14 +1304,14 @@ namespace
         size_t bitSize,
         size_t maxsize,
         D3D12_RESOURCE_FLAGS resFlags,
-        unsigned int loadFlags,
+        DDS_LOADER_FLAGS loadFlags,
         _Outptr_ ID3D12Resource** texture,
         std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
         _Out_opt_ bool* outIsCubeMap) noexcept(false)
     {
         HRESULT hr = S_OK;
 
-        UINT width = header->width;
+        const UINT width = header->width;
         UINT height = header->height;
         UINT depth = header->depth;
 
@@ -1256,11 +1339,47 @@ namespace
 
             switch (d3d10ext->dxgiFormat)
             {
+            case DXGI_FORMAT_NV12:
+            case DXGI_FORMAT_P010:
+            case DXGI_FORMAT_P016:
+            case DXGI_FORMAT_420_OPAQUE:
+                if ((d3d10ext->resourceDimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D)
+                    || (width % 2) != 0 || (height % 2) != 0)
+                {
+                    return HRESULT_E_NOT_SUPPORTED;
+                }
+                break;
+
+            case DXGI_FORMAT_YUY2:
+            case DXGI_FORMAT_Y210:
+            case DXGI_FORMAT_Y216:
+            case DXGI_FORMAT_P208:
+                if ((width % 2) != 0)
+                {
+                    return HRESULT_E_NOT_SUPPORTED;
+                }
+                break;
+
+            case DXGI_FORMAT_NV11:
+                if ((width % 4) != 0)
+                {
+                    return HRESULT_E_NOT_SUPPORTED;
+                }
+                break;
+
             case DXGI_FORMAT_AI44:
             case DXGI_FORMAT_IA44:
             case DXGI_FORMAT_P8:
             case DXGI_FORMAT_A8P8:
                 return HRESULT_E_NOT_SUPPORTED;
+
+            case DXGI_FORMAT_V208:
+                if ((d3d10ext->resourceDimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D)
+                    || (height % 2) != 0)
+                {
+                    return HRESULT_E_NOT_SUPPORTED;
+                }
+                break;
 
             default:
                 if (BitsPerPixel(d3d10ext->dxgiFormat) == 0)
@@ -1373,8 +1492,8 @@ namespace
                 }
             }
             else if ((arraySize > D3D12_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION) ||
-                     (width > D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION) ||
-                     (height > D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION))
+                (width > D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION) ||
+                (height > D3D12_REQ_TEXTURE2D_U_OR_V_DIMENSION))
             {
                 return HRESULT_E_NOT_SUPPORTED;
             }
@@ -1394,7 +1513,7 @@ namespace
             return HRESULT_E_NOT_SUPPORTED;
         }
 
-        UINT numberOfPlanes = D3D12GetFormatPlaneCount(d3dDevice, format);
+        const UINT numberOfPlanes = D3D12GetFormatPlaneCount(d3dDevice, format);
         if (!numberOfPlanes)
             return E_INVALIDARG;
 
@@ -1411,7 +1530,7 @@ namespace
 
         // Create the texture
         size_t numberOfResources = (resDim == D3D12_RESOURCE_DIMENSION_TEXTURE3D)
-                                   ? 1 : arraySize;
+            ? 1 : arraySize;
         numberOfResources *= mipCount;
         numberOfResources *= numberOfPlanes;
 
@@ -1471,15 +1590,15 @@ namespace
     }
 
     //--------------------------------------------------------------------------------------
-    DDS_ALPHA_MODE GetAlphaMode( _In_ const DDS_HEADER* header ) noexcept
+    DDS_ALPHA_MODE GetAlphaMode(_In_ const DDS_HEADER* header) noexcept
     {
-        if ( header->ddspf.flags & DDS_FOURCC )
+        if (header->ddspf.flags & DDS_FOURCC)
         {
-            if ( MAKEFOURCC( 'D', 'X', '1', '0' ) == header->ddspf.fourCC )
+            if (MAKEFOURCC('D', 'X', '1', '0') == header->ddspf.fourCC)
             {
                 auto d3d10ext = reinterpret_cast<const DDS_HEADER_DXT10*>(reinterpret_cast<const uint8_t*>(header) + sizeof(DDS_HEADER));
-                auto mode = static_cast<DDS_ALPHA_MODE>( d3d10ext->miscFlags2 & DDS_MISC_FLAGS2_ALPHA_MODE_MASK );
-                switch( mode )
+                auto const mode = static_cast<DDS_ALPHA_MODE>(d3d10ext->miscFlags2 & DDS_MISC_FLAGS2_ALPHA_MODE_MASK);
+                switch (mode)
                 {
                 case DDS_ALPHA_MODE_STRAIGHT:
                 case DDS_ALPHA_MODE_PREMULTIPLIED:
@@ -1492,8 +1611,8 @@ namespace
                     break;
                 }
             }
-            else if ( ( MAKEFOURCC( 'D', 'X', 'T', '2' ) == header->ddspf.fourCC )
-                      || ( MAKEFOURCC( 'D', 'X', 'T', '4' ) == header->ddspf.fourCC ) )
+            else if ((MAKEFOURCC('D', 'X', 'T', '2') == header->ddspf.fourCC)
+                || (MAKEFOURCC('D', 'X', 'T', '4') == header->ddspf.fourCC))
             {
                 return DDS_ALPHA_MODE_PREMULTIPLIED;
             }
@@ -1505,27 +1624,23 @@ namespace
     //--------------------------------------------------------------------------------------
     void SetDebugTextureInfo(
         _In_z_ const wchar_t* fileName,
-        _In_ ID3D12Resource** texture) noexcept
+        _In_ ID3D12Resource* texture) noexcept
     {
-#if !defined(NO_D3D12_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-        if (texture && *texture)
+    #if !defined(NO_D3D12_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
+        const wchar_t* pstrName = wcsrchr(fileName, '\\');
+        if (!pstrName)
         {
-            const wchar_t* pstrName = wcsrchr(fileName, '\\');
-            if (!pstrName)
-            {
-                pstrName = fileName;
-            }
-            else
-            {
-                pstrName++;
-            }
-
-            (*texture)->SetName(pstrName);
+            pstrName = fileName;
         }
-#else
+        else
+        {
+            pstrName++;
+        }
+        texture->SetName(pstrName);
+    #else
         UNREFERENCED_PARAMETER(fileName);
         UNREFERENCED_PARAMETER(texture);
-#endif
+    #endif
     }
 } // anonymous namespace
 
@@ -1563,7 +1678,7 @@ HRESULT DirectX::LoadDDSTextureFromMemoryEx(
     size_t ddsDataSize,
     size_t maxsize,
     D3D12_RESOURCE_FLAGS resFlags,
-    unsigned int loadFlags,
+    DDS_LOADER_FLAGS loadFlags,
     ID3D12Resource** texture,
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
     DDS_ALPHA_MODE* alphaMode,
@@ -1609,10 +1724,7 @@ HRESULT DirectX::LoadDDSTextureFromMemoryEx(
         texture, subresources, isCubeMap);
     if (SUCCEEDED(hr))
     {
-        if (texture && *texture)
-        {
-            SetDebugObjectName(*texture, L"DDSTextureLoader");
-        }
+        SetDebugObjectName(*texture, L"DDSTextureLoader");
 
         if (alphaMode)
             *alphaMode = GetAlphaMode(header);
@@ -1653,7 +1765,7 @@ HRESULT DirectX::LoadDDSTextureFromFileEx(
     const wchar_t* fileName,
     size_t maxsize,
     D3D12_RESOURCE_FLAGS resFlags,
-    unsigned int loadFlags,
+    DDS_LOADER_FLAGS loadFlags,
     ID3D12Resource** texture,
     std::unique_ptr<uint8_t[]>& ddsData,
     std::vector<D3D12_SUBRESOURCE_DATA>& subresources,
@@ -1700,7 +1812,7 @@ HRESULT DirectX::LoadDDSTextureFromFileEx(
 
     if (SUCCEEDED(hr))
     {
-        SetDebugTextureInfo(fileName, texture);
+        SetDebugTextureInfo(fileName, *texture);
 
         if (alphaMode)
             *alphaMode = GetAlphaMode(header);

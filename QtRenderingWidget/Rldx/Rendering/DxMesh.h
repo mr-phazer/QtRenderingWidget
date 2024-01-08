@@ -21,9 +21,10 @@ namespace Rldx {
 	public:
 		void Draw(ID3D11DeviceContext* poDC) override
 		{	
-			BindToDC(poDC);
+			// TODO: rmove?
+			//BindToDC(poDC);
 
-			poDC->DrawIndexed(m_meshData.indexCount, 0, 0);
+			poDC->DrawIndexed(m_poMesh.indexCount, 0, 0);
 		};
 		
 		ResourceTypeEnum GetType() const override;		
@@ -31,18 +32,18 @@ namespace Rldx {
 		
 		void SetMeshData(const DxCommonMeshData& meshData);				
 	
-	private:
+	
 		void BindToDC(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);
 			UINT offset = 0;
-			poDC->IASetVertexBuffers(0, 1, m_meshData.cpoVertexBuffer.GetAddressOf(), &stride, &offset);
-			poDC->IASetIndexBuffer(m_meshData.cpoIndexBuffer.Get(), m_meshData.indexFormat, 0);
-			poDC->IASetPrimitiveTopology(m_meshData.primitiveTopology);
+			poDC->IASetVertexBuffers(0, 1, m_poMesh.cpoVertexBuffer.GetAddressOf(), &stride, &offset);
+			poDC->IASetIndexBuffer(m_poMesh.cpoIndexBuffer.Get(), m_poMesh.indexFormat, 0);
+			poDC->IASetPrimitiveTopology(m_poMesh.primitiveTopology);
 		};
 
 	private:
-		DxCommonMeshData m_meshData;		
+		DxCommonMeshData m_poMesh;		
 	};
 
 }; // namespace Rldx

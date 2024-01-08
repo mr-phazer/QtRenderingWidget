@@ -4,17 +4,19 @@
 // Code for converting an animated GIF to a series of texture frames.
 //
 // References:
-//   https://code.msdn.microsoft.com/windowsapps/Windows-Imaging-Component-65abbc6a/
+//   https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/multimedia/wic/wicanimatedgif
 //   http://www.imagemagick.org/Usage/anim_basics/#dispose
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
 //--------------------------------------------------------------------------------------
 
+#ifdef  _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4005)
+#endif
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #define NODRAWTEXT
@@ -22,7 +24,9 @@
 #define NOMCX
 #define NOSERVICE
 #define NOHELP
+#ifdef  _MSC_VER
 #pragma warning(pop)
+#endif
 
 #include <cstddef>
 #include <iterator>
@@ -35,7 +39,9 @@
 
 #include <wincodec.h>
 
+#ifdef  _MSC_VER
 #pragma warning(disable : 4619 4616 26812)
+#endif
 
 #include "DirectXTex.h"
 
@@ -171,7 +177,7 @@ HRESULT LoadAnimatedGif(const wchar_t* szFile, std::vector<std::unique_ptr<Scrat
         hr = metareader->GetMetadataByName(L"/logscrdesc/GlobalColorTableFlag", &propValue);
         if (SUCCEEDED(hr))
         {
-            bool hasTable = (propValue.vt == VT_BOOL && propValue.boolVal);
+            const bool hasTable = (propValue.vt == VT_BOOL && propValue.boolVal);
             PropVariantClear(&propValue);
 
             if (hasTable)
@@ -181,7 +187,7 @@ HRESULT LoadAnimatedGif(const wchar_t* szFile, std::vector<std::unique_ptr<Scrat
                 {
                     if (propValue.vt == VT_UI1)
                     {
-                        uint8_t index = propValue.bVal;
+                        const uint8_t index = propValue.bVal;
 
                         if (index < actualColors)
                         {
@@ -387,7 +393,7 @@ HRESULT LoadAnimatedGif(const wchar_t* szFile, std::vector<std::unique_ptr<Scrat
 
         if (!iframe || transparentIndex == -1)
         {
-            Rect fullRect(0, 0, img->width, img->height);
+            const Rect fullRect(0, 0, img->width, img->height);
             hr = CopyRectangle(*img, fullRect, *composedImage, TEX_FILTER_DEFAULT, size_t(rct.left), size_t(rct.top));
             if (FAILED(hr))
                 return hr;

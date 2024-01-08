@@ -3,7 +3,7 @@
 //
 // DirectX Texture Library - DirectCompute-based texture compression
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
@@ -14,10 +14,11 @@
 #include "BCDirectCompute.h"
 
 using namespace DirectX;
+using namespace DirectX::Internal;
 
 namespace
 {
-    inline TEX_FILTER_FLAGS GetSRGBFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
+    constexpr TEX_FILTER_FLAGS GetSRGBFlags(_In_ TEX_COMPRESS_FLAGS compress) noexcept
     {
         static_assert(TEX_FILTER_SRGB_IN == 0x1000000, "TEX_FILTER_SRGB flag values don't match TEX_FILTER_SRGB_MASK");
         static_assert(static_cast<int>(TEX_COMPRESS_SRGB_IN) == static_cast<int>(TEX_FILTER_SRGB_IN), "TEX_COMPRESS_SRGB* should match TEX_FILTER_SRGB*");
@@ -39,7 +40,7 @@ namespace
         if (!srcImage.pixels)
             return E_POINTER;
 
-        DXGI_FORMAT format = srgb ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB : DXGI_FORMAT_R8G8B8A8_UNORM;
+        const DXGI_FORMAT format = srgb ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB : DXGI_FORMAT_R8G8B8A8_UNORM;
 
         HRESULT hr = image.Initialize2D(format, srcImage.width, srcImage.height, 1, 1);
         if (FAILED(hr))
@@ -69,15 +70,15 @@ namespace
         const uint8_t *pSrc = srcImage.pixels;
         for (size_t h = 0; h < srcImage.height; ++h)
         {
-            if (!_LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
+            if (!LoadScanline(scanline.get(), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
             {
                 image.Release();
                 return E_FAIL;
             }
 
-            _ConvertScanline(scanline.get(), srcImage.width, format, srcImage.format, filter);
+            ConvertScanline(scanline.get(), srcImage.width, format, srcImage.format, filter);
 
-            if (!_StoreScanline(pDest, img->rowPitch, format, scanline.get(), srcImage.width))
+            if (!StoreScanline(pDest, img->rowPitch, format, scanline.get(), srcImage.width))
             {
                 image.Release();
                 return E_FAIL;
@@ -123,13 +124,13 @@ namespace
         const uint8_t *pSrc = srcImage.pixels;
         for (size_t h = 0; h < srcImage.height; ++h)
         {
-            if (!_LoadScanline(reinterpret_cast<XMVECTOR*>(pDest), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
+            if (!LoadScanline(reinterpret_cast<XMVECTOR*>(pDest), srcImage.width, pSrc, srcImage.rowPitch, srcImage.format))
             {
                 image.Release();
                 return E_FAIL;
             }
 
-            _ConvertScanline(reinterpret_cast<XMVECTOR*>(pDest), srcImage.width, DXGI_FORMAT_R32G32B32A32_FLOAT, srcImage.format, filter);
+            ConvertScanline(reinterpret_cast<XMVECTOR*>(pDest), srcImage.width, DXGI_FORMAT_R32G32B32A32_FLOAT, srcImage.format, filter);
 
             pSrc += srcImage.rowPitch;
             pDest += img->rowPitch;
@@ -153,9 +154,14 @@ namespace
 
         assert(srcImage.pixels && destImage.pixels);
 
-        DXGI_FORMAT format = gpubc->GetSourceFormat();
+        DXGI_FORMAT tformat = gpubc->GetSourceFormat();
+        if (compress & TEX_COMPRESS_SRGB_OUT)
+        {
+            tformat = MakeSRGB(tformat);
+        }
+        const DXGI_FORMAT sformat = (compress & TEX_COMPRESS_SRGB_IN) ? MakeSRGB(srcImage.format) : srcImage.format;
 
-        if (srcImage.format == format)
+        if (sformat == tformat)
         {
             // Input is already in our required source format
             return gpubc->Compress(srcImage, destImage);
@@ -166,9 +172,9 @@ namespace
             ScratchImage image;
             HRESULT hr = E_UNEXPECTED;
 
-            auto srgb = GetSRGBFlags(compress);
+            auto const srgb = GetSRGBFlags(compress);
 
-            switch (format)
+            switch (tformat)
             {
             case DXGI_FORMAT_R8G8B8A8_UNORM:
                 hr = ConvertToRGBA32(srcImage, image, false, srgb);
@@ -214,6 +220,40 @@ HRESULT DirectX::Compress(
     float alphaWeight,
     ScratchImage& image) noexcept
 {
+    CompressOptions options = {};
+    options.flags = compress;
+    options.alphaWeight = alphaWeight;
+
+    return CompressEx(pDevice, srcImage, format, options, image, nullptr);
+}
+
+_Use_decl_annotations_
+HRESULT DirectX::Compress(
+    ID3D11Device* pDevice,
+    const Image* srcImages,
+    size_t nimages,
+    const TexMetadata& metadata,
+    DXGI_FORMAT format,
+    TEX_COMPRESS_FLAGS compress,
+    float alphaWeight,
+    ScratchImage& cImages) noexcept
+{
+    CompressOptions options = {};
+    options.flags = compress;
+    options.alphaWeight = alphaWeight;
+
+    return CompressEx(pDevice, srcImages, nimages, metadata, format, options, cImages);
+}
+
+_Use_decl_annotations_
+HRESULT DirectX::CompressEx(
+    ID3D11Device* pDevice,
+    const Image& srcImage,
+    DXGI_FORMAT format,
+    const CompressOptions& options,
+    ScratchImage& image,
+    std::function<bool __cdecl(size_t, size_t)> statusCallback)
+{
     if (!pDevice || IsCompressed(srcImage.format) || !IsCompressed(format))
         return E_INVALIDARG;
 
@@ -230,7 +270,7 @@ HRESULT DirectX::Compress(
     if (FAILED(hr))
         return hr;
 
-    hr = gpubc->Prepare(srcImage.width, srcImage.height, compress, format, alphaWeight);
+    hr = gpubc->Prepare(srcImage.width, srcImage.height, options.flags, format, options.alphaWeight);
     if (FAILED(hr))
         return hr;
 
@@ -246,23 +286,45 @@ HRESULT DirectX::Compress(
         return E_POINTER;
     }
 
-    hr = GPUCompress(gpubc.get(), srcImage, *img, compress);
-    if (FAILED(hr))
-        image.Release();
+    if (statusCallback)
+    {
+        if (!statusCallback(0, 100))
+        {
+            image.Release();
+            return E_ABORT;
+        }
+    }
 
-    return hr;
+    hr = GPUCompress(gpubc.get(), srcImage, *img, options.flags);
+
+    if (FAILED(hr))
+    {
+        image.Release();
+        return hr;
+    }
+
+    if (statusCallback)
+    {
+        if (!statusCallback(100, 100))
+        {
+            image.Release();
+            return E_ABORT;
+        }
+    }
+
+    return S_OK;
 }
 
 _Use_decl_annotations_
-HRESULT DirectX::Compress(
+HRESULT DirectX::CompressEx(
     ID3D11Device* pDevice,
     const Image* srcImages,
     size_t nimages,
     const TexMetadata& metadata,
     DXGI_FORMAT format,
-    TEX_COMPRESS_FLAGS compress,
-    float alphaWeight,
-    ScratchImage& cImages) noexcept
+    const CompressOptions& options,
+    ScratchImage& cImages,
+    std::function<bool __cdecl(size_t, size_t)> statusCallback)
 {
     if (!pDevice || !srcImages || !nimages)
         return E_INVALIDARG;
@@ -305,116 +367,154 @@ HRESULT DirectX::Compress(
         return E_POINTER;
     }
 
+    if (statusCallback)
+    {
+        if (!statusCallback(0, nimages))
+        {
+            cImages.Release();
+            return E_ABORT;
+        }
+    }
+
     // Process images (ordered by size)
     switch (metadata.dimension)
     {
     case TEX_DIMENSION_TEXTURE1D:
     case TEX_DIMENSION_TEXTURE2D:
-    {
-        size_t w = metadata.width;
-        size_t h = metadata.height;
-
-        for (size_t level = 0; level < metadata.mipLevels; ++level)
         {
-            hr = gpubc->Prepare(w, h, compress, format, alphaWeight);
-            if (FAILED(hr))
+            size_t w = metadata.width;
+            size_t h = metadata.height;
+            size_t progress = 0;
+
+            for (size_t level = 0; level < metadata.mipLevels; ++level)
             {
-                cImages.Release();
-                return hr;
-            }
-
-            for (size_t item = 0; item < metadata.arraySize; ++item)
-            {
-                size_t index = metadata.ComputeIndex(level, item, 0);
-                if (index >= nimages)
-                {
-                    cImages.Release();
-                    return E_FAIL;
-                }
-
-                assert(dest[index].format == format);
-
-                const Image& src = srcImages[index];
-
-                if (src.width != dest[index].width || src.height != dest[index].height)
-                {
-                    cImages.Release();
-                    return E_FAIL;
-                }
-
-                hr = GPUCompress(gpubc.get(), src, dest[index], compress);
+                hr = gpubc->Prepare(w, h, options.flags, format, options.alphaWeight);
                 if (FAILED(hr))
                 {
                     cImages.Release();
                     return hr;
                 }
+
+                for (size_t item = 0; item < metadata.arraySize; ++item)
+                {
+                    const size_t index = metadata.ComputeIndex(level, item, 0);
+                    if (index >= nimages)
+                    {
+                        cImages.Release();
+                        return E_FAIL;
+                    }
+
+                    assert(dest[index].format == format);
+
+                    const Image& src = srcImages[index];
+
+                    if (src.width != dest[index].width || src.height != dest[index].height)
+                    {
+                        cImages.Release();
+                        return E_FAIL;
+                    }
+
+                    hr = GPUCompress(gpubc.get(), src, dest[index], options.flags);
+                    if (FAILED(hr))
+                    {
+                        cImages.Release();
+                        return hr;
+                    }
+
+                    if (statusCallback)
+                    {
+                        if (!statusCallback(progress++, nimages))
+                        {
+                            cImages.Release();
+                            return E_ABORT;
+                        }
+                    }
+                }
+
+                if (h > 1)
+                    h >>= 1;
+
+                if (w > 1)
+                    w >>= 1;
             }
-
-            if (h > 1)
-                h >>= 1;
-
-            if (w > 1)
-                w >>= 1;
         }
-    }
-    break;
+        break;
 
     case TEX_DIMENSION_TEXTURE3D:
-    {
-        size_t w = metadata.width;
-        size_t h = metadata.height;
-        size_t d = metadata.depth;
-
-        for (size_t level = 0; level < metadata.mipLevels; ++level)
         {
-            hr = gpubc->Prepare(w, h, compress, format, alphaWeight);
-            if (FAILED(hr))
+            size_t w = metadata.width;
+            size_t h = metadata.height;
+            size_t d = metadata.depth;
+            size_t progress = 0;
+
+            for (size_t level = 0; level < metadata.mipLevels; ++level)
             {
-                cImages.Release();
-                return hr;
-            }
-
-            for (size_t slice = 0; slice < d; ++slice)
-            {
-                size_t index = metadata.ComputeIndex(level, 0, slice);
-                if (index >= nimages)
-                {
-                    cImages.Release();
-                    return E_FAIL;
-                }
-
-                assert(dest[index].format == format);
-
-                const Image& src = srcImages[index];
-
-                if (src.width != dest[index].width || src.height != dest[index].height)
-                {
-                    cImages.Release();
-                    return E_FAIL;
-                }
-
-                hr = GPUCompress(gpubc.get(), src, dest[index], compress);
+                hr = gpubc->Prepare(w, h, options.flags, format, options.alphaWeight);
                 if (FAILED(hr))
                 {
                     cImages.Release();
                     return hr;
                 }
+
+                for (size_t slice = 0; slice < d; ++slice)
+                {
+                    const size_t index = metadata.ComputeIndex(level, 0, slice);
+                    if (index >= nimages)
+                    {
+                        cImages.Release();
+                        return E_FAIL;
+                    }
+
+                    assert(dest[index].format == format);
+
+                    const Image& src = srcImages[index];
+
+                    if (src.width != dest[index].width || src.height != dest[index].height)
+                    {
+                        cImages.Release();
+                        return E_FAIL;
+                    }
+
+                    hr = GPUCompress(gpubc.get(), src, dest[index], options.flags);
+                    if (FAILED(hr))
+                    {
+                        cImages.Release();
+                        return hr;
+                    }
+
+                    if (statusCallback)
+                    {
+                        if (!statusCallback(progress++, nimages))
+                        {
+                            cImages.Release();
+                            return E_ABORT;
+                        }
+                    }
+                }
+
+                if (h > 1)
+                    h >>= 1;
+
+                if (w > 1)
+                    w >>= 1;
+
+                if (d > 1)
+                    d >>= 1;
             }
-
-            if (h > 1)
-                h >>= 1;
-
-            if (w > 1)
-                w >>= 1;
-
-            if (d > 1)
-                d >>= 1;
         }
-    }
-    break;
+        break;
 
     default:
         return HRESULT_E_NOT_SUPPORTED;
+    }
+
+    if (statusCallback)
+    {
+        if (!statusCallback(nimages, nimages))
+        {
+            cImages.Release();
+            return E_ABORT;
+        }
     }
 
     return S_OK;

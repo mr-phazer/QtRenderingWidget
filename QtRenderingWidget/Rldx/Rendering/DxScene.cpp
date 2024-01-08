@@ -1,4 +1,5 @@
 
+
 #include "DxScene.h"
 #include "..\Managers\DxDeviceManager.h"
 
@@ -6,26 +7,6 @@
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
 
 using namespace Rldx;
-
-// TODO: remove? All this happens in the SceneCreators
-//void Rldx::DxScene::Init(ID3D11Device* poDevice, HWND nativeWindowHandle)
-//{
-//	// TODO: make DxScene a base class, and only add stuf to "init" in the derived "DxScene"s?
-//	m_vertexShaderConstantBuffer.Create(poDevice);
-//
-//	// create swap chain
-//	auto meshNode = DxMeshNode::Create("MeshNode1");
-//
-//	auto testMeshCube = MakeTestCubeMesh(poDevice);
-//	meshNode->SetMeshData(testMeshCube);
-//
-//	m_spoRootNode->AddChild(meshNode);
-//
-//	// TODO: remove;
-//	auto debug_1 = 1;
-//}
-
-//std::string Rldx::DxScene::GetTypeString() const { return "DxScene"; }
 
 void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
@@ -39,7 +20,7 @@ void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
 
 	auto textWriter = DxDeviceManager::GetInstance().GetDebugTextWriter();
-	textWriter->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.");
+	textWriter->AddString(L"QtRenderingViewWidget for RPFM version 0.0.1a.");
 	textWriter->RenderText();
 
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthDefault(), 0);
@@ -82,24 +63,17 @@ void Rldx::DxScene::DeleteNode(DxBaseNode* node)
 static bool bCtrlDown = false;
 LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (uMsg == WM_KEYDOWN && wParam == 'A')
-	{
-		bCtrlDown = true;
-	}
-
-	if (uMsg == WM_KEYUP && wParam == 'A')
-	{
-		bCtrlDown = false;
-	}
+	if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP)
+	{ 
+		bCtrlDown = (uMsg == WM_KEYDOWN);
+	}	
 
 	if (bCtrlDown)
 	{
 		return m_globalDirectionalLight.HandleMessages(hWnd, uMsg, wParam, lParam);
 	}
-
-	auto ret = m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
-
-	return ret;
+	
+	return m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);	
 }
 
 void Rldx::DxScene::Update(float timeElapsed)
@@ -145,8 +119,8 @@ inline void Rldx::DxScene::UpdateAndBindVSConstBuffer()
 	auto poDeviceContext = DxDeviceManager::DeviceContext();
 
 	//m_sceneFrameVSConstBuffer.buffer.SetData(poDeviceContext, m_sceneFrameVSConstBuffer.data);
-	m_sceneFrameVSConstBuffer.CopyDataToGPU(poDeviceContext);
-	m_sceneFramePSConstBuffer.CopyDataToGPU(poDeviceContext);
+	m_sceneFrameVSConstBuffer.RefreshGPUData(poDeviceContext);
+	m_sceneFramePSConstBuffer.RefreshGPUData(poDeviceContext);
 	
 	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
 	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);

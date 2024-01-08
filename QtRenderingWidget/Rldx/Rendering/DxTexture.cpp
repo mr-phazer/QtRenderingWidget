@@ -1,7 +1,8 @@
 
-#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
+
 
 #include "d3d11.h"
+#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 
 // Author
 #include "DxTexture.h"

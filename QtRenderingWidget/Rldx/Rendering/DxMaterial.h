@@ -5,11 +5,12 @@
 
 #include "..\DirectXTK\Inc\CommonStates.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
+#include "..\Interfaces\IBindable.h"
 #include "DxTexture.h"
 
 namespace Rldx {
 
-	class DxMaterial : public IDxResource
+	class DxMaterial : public IDxResource, public IBindable
 	{
 		struct TextureAndSlot { UINT slot = 0;  DxTexture* pTexture = nullptr; } textureAndSlot;
 		std::vector<TextureAndSlot> m_textures;
@@ -27,7 +28,7 @@ namespace Rldx {
 			m_textures.push_back({ slot, ret.GetPtr()});*/
 		}
 
-		void Bind(ID3D11DeviceContext* poDC);		
+		void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		// Inherited via IDxResource
 		ResourceTypeEnum GetType() const override;	

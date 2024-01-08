@@ -6,21 +6,25 @@
 //
 // http://www.mwgfx.co.uk/programs/dxtbmp.htm
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248926
 //--------------------------------------------------------------------------------------
 
+#ifdef  _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4005)
+#endif
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #define NODRAWTEXT
 #define NOMCX
 #define NOSERVICE
 #define NOHELP
+#ifdef  _MSC_VER
 #pragma warning(pop)
+#endif
 
 #include <Windows.h>
 
@@ -45,12 +49,12 @@ namespace
     {
         blob.reset();
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
+    #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
         ScopedHandle hFile(safe_handle(CreateFile2(szFile, GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr)));
-#else
+    #else
         ScopedHandle hFile(safe_handle(CreateFileW(szFile, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING,
             FILE_FLAG_SEQUENTIAL_SCAN, nullptr)));
-#endif
+    #endif
         if (!hFile)
         {
             return HRESULT_FROM_WIN32(GetLastError());
@@ -151,7 +155,7 @@ namespace
         if (header->biSizeImage != image.GetPixelsSize())
             return E_UNEXPECTED;
 
-        size_t remaining = size - filehdr->bfOffBits;
+        const size_t remaining = size - filehdr->bfOffBits;
         if (!remaining)
             return E_FAIL;
 

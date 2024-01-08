@@ -184,5 +184,86 @@ namespace Rldx {
 
 	};	
 
+	// TODO: remove other one, if this is better, else remove this
+	//template <typename VS_CONST_BUFER, typename PS_CONST_BUFER>
+	//class TDxShaderProgram_NewTest : public IDxShaderProgram
+	//{
+	//	using Type = TDxShaderProgram<VS_CONST_BUFER, PS_CONST_BUFER>;
+	//	PixelShaderFile m_pixelShaderFile;
+	//	VertexShaderFile m_vertexShaderFile;
+
+	//	TDxVSConstBuffer<VS_CONST_BUFER> m_vertexShaderConstBuffer;
+	//	TDxPSConstBuffer<PS_CONST_BUFER> m_pixelShaderConstBuffer;		
+
+	//public:
+	//	template <typename SHADER_TYPE>
+	//	static  SHADER_TYPE* Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
+	//	{
+	//		auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+	//		//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
+	//		auto newInstance = result.GetPtr();
+
+	//		if (vertexShaderMem.first != nullptr && vertexShaderMem.second > 0)
+	//			newInstance->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromMemory(poDevice, vertexShaderMem.first, vertexShaderMem.second);
+
+	//		if (pixelShaderMem.first != nullptr && pixelShaderMem.second > 0)
+	//			newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromMemory(poDevice, pixelShaderMem.first, pixelShaderMem.second);
+
+	//		newInstance->m_pixelShaderConstBuffer.Create(poDevice);
+	//		newInstance->m_vertexShaderConstBuffer.Create(poDevice);
+
+	//		return newInstance;
+	//	};
+
+
+	//	template <typename SHADER_TYPE>
+	//	static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
+	//	{
+	//		auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+	//		//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
+	//		auto newInstance = result.GetPtr();
+
+	//		if (vertexShaderPath.empty() || pixelShaderPath.empty()) {
+	//			return nullptr;
+	//		}
+
+	//		if (!vertexShaderPath.empty())
+	//			newInstance->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, vertexShaderPath);
+
+	//		if (!pixelShaderPath.empty())
+	//			newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
+
+	//		newInstance->m_pixelShaderConstBuffer.Create(poDevice);
+	//		newInstance->m_vertexShaderConstBuffer.Create(poDevice);
+
+	//		// TODO: remove debugging  code
+	//		auto DEBUGGIN_retrievedId = Rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
+
+	//		return newInstance;
+	//	}
+
+	//	virtual ID3D11VertexShader* GetVertexShader()  override {
+	//		return m_vertexShaderFile.GetShader();
+	//	};
+	//	virtual ID3D11PixelShader* GetPixelShader()   override {
+	//		return m_pixelShaderFile.GetShader();
+	//	};
+	//	virtual ID3D11InputLayout* GetInputLayout()   override {
+	//		return m_vertexShaderFile.GetInputLayout();
+	//	};
+
+	//	ID3D11Buffer* GetPixelShaderConstBuffer() const { return m_pixelShaderConstBuffer.GetBuffer(); };
+	//	ID3D11Buffer* GetVertexShaderConstBuffer() const { return m_vertexShaderConstBuffer.GetBuffer(); };
+
+	//	VS_CONST_BUFER& GetCSEditableVS() { return vertexShaderConstBuffer; };
+	//	PS_CONST_BUFER& GetCSEditablePS() { return pixelShaderConstBuffer; };
+
+	//	virtual void BindToDC(ID3D11DeviceContext* dc) override {};
+
+	//	virtual ResourceTypeEnum GetType() const override { return ResourceTypeEnum::ShaderProgram; };
+
+	//};
+
+
 }; // namespace Rldx
 

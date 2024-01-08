@@ -12,13 +12,10 @@ namespace Rldx {
 
 	class DxMeshRenderBucket : public IRenderBucket
 	{
-		// TODO: maybe use pointers instance of instantiating objects  ?
-		// TODO: maybe copy DxMeshNode* into a vector of IDrawable*  ?
-		std::vector<DxRenderItemMesh> m_renderItems;
+		std::vector<IRenderQueueItem*> m_renderItems;
 
-	public:
-		// TODO: maybe use pointers instance of instantiating objects?
-		virtual void AddItem(const DxRenderItemMesh& renderItem) override { m_renderItems.push_back(renderItem); };
+	public:		
+		virtual void AddItem(IRenderQueueItem* renderItem) override { m_renderItems.push_back(renderItem); };
 		virtual void Clear() override { m_renderItems.clear(); };
 
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override
@@ -26,10 +23,10 @@ namespace Rldx {
 			for (auto& itItem : m_renderItems)
 			{
 				// ready shader program
-				itItem.BindToDC(poDeviceContext);
+				itItem->BindToDC(poDeviceContext);
 
 				// draw mesh
-				itItem.Draw(poDeviceContext);
+				itItem->Draw(poDeviceContext);
 			}
 
 			// -- clear queue after each full draw
@@ -39,7 +36,7 @@ namespace Rldx {
 
 	class DxSceneGraph
 	{
-		DxBaseNode::SharedPointerBase m_rootNode = DxBaseNode::Create("RootNode");
+		DxBaseNode::SharedPointer m_rootNode = DxBaseNode::Create("RootNode");
 
 	public:
 		DxBaseNode* GetRootNode()

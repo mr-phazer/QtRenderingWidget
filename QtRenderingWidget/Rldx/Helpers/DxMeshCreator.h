@@ -15,7 +15,7 @@ namespace Rldx {
 		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices);
 		bool FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices);
 	private:
-		TDxMeshData<VERTEX_TYPE, INDEX_TYPE> m_meshData;
+		TDxMeshData<VERTEX_TYPE, INDEX_TYPE> m_poMesh;
 
 	}; // class DxMeshCreator
 
@@ -26,17 +26,17 @@ namespace Rldx {
 		const std::vector<VERTEX_TYPE>& vertices,
 		const std::vector<INDEX_TYPE>& indices)
 	{
-		m_meshData.originalMeshData.vertices = vertices;
-		m_meshData.originalMeshData.indices = indices;
+		m_poMesh.originalMeshData.vertices = vertices;
+		m_poMesh.originalMeshData.indices = indices;
 
 		FillVertexBuffer(_poDevice, vertices.size(), vertices.data());
 		FillIndexBuffer(_poDevice, indices.size(), indices.data());
 
-		m_meshData.indexCount = static_cast<uint32_t>(indices.size());
-		m_meshData.indexFormat = DXGI_FORMAT_R32_UINT;
-		m_meshData.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		m_poMesh.indexCount = static_cast<uint32_t>(indices.size());
+		m_poMesh.indexFormat = DXGI_FORMAT_R32_UINT;
+		m_poMesh.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-		return m_meshData;
+		return m_poMesh;
 	}
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
@@ -61,7 +61,7 @@ namespace Rldx {
 		indexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_meshData.cpoIndexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_poMesh.cpoIndexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);
@@ -89,7 +89,7 @@ namespace Rldx {
 		vertexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_meshData.cpoVertexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_poMesh.cpoVertexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);

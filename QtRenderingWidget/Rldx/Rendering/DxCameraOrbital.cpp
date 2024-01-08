@@ -681,20 +681,32 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			!MOUSE_M_BUTTON_DOWN)
 		{
 			ReleaseCapture();
+			OnEnd();
 
 		}
 	}
 
-	//case WM_CAPTURECHANGED:
-	//case WM_KILLFOCUS:
+	case WM_CAPTURECHANGED:
+	case WM_KILLFOCUS:
 	case WM_MOUSELEAVE:
 	{
-		MOUSE_R_BUTTON_DOWN = false;
+	/*	MOUSE_R_BUTTON_DOWN = false;
 		MOUSE_L_BUTTON_DOWN = false;
 		MOUSE_M_BUTTON_DOWN = false;
 		SHIFT_BUTTON_DOWN = false;
 		m_bDrag = false;
-		auto DEBUG_1 = 1;
+		auto DEBUG_1 = 1;*/
+
+
+		// Release the capture if no mouse buttons down
+		if (!MOUSE_R_BUTTON_DOWN &&
+			!MOUSE_L_BUTTON_DOWN &&
+			!MOUSE_M_BUTTON_DOWN)
+		{
+			ReleaseCapture();
+			OnEnd();
+
+		}
 	}
 
 	break;
@@ -841,12 +853,9 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 	if (uMsg == WM_KILLFOCUS)
 	{
-		/*MOUSE_M_BUTTON_DOWN = false;
-		m_bDrag = false;*/
-
-		/*	ReleaseCapture();
-			OnEnd();
-		*/
+		MOUSE_M_BUTTON_DOWN = false;		
+		ReleaseCapture();
+		OnEnd();		
 
 		return TRUE;
 	}

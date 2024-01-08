@@ -1,50 +1,27 @@
 #pragma once
 
-#include "DxSceneNode.h"
-#include "..\..\Rendering\DxMesh.h"
-#include "..\..\..\Logging\Logging.h"
-#include "..\..\SceneGraph\BaseNode\DxBaseNode.h"
+#include "..\..\Rendering\DxMeshDrawable.h"
+#include "..\BaseNode\DxBaseNode.h"
+#include "K:\Coding\repos\QtRenderingWidget_RPFM\QtRenderingWidget\Rldx\DataTypes\DxMeshData.h"
 
-#include "..\..\Interfaces\IDrawable.h"
-#include "..\..\Interfaces\IBindable.h"
-#include "..\..\Interfaces\IUpdateable.h"
+namespace Rldx {		
 
-#include "..\..\Rendering\DxConstBuffer.h"
-#include "..\..\DataTypes\DerformerData.h"
+	// forward decl	
+	class DxMeshData;	
+	class DxMeshShaderProgram;	
 
-namespace Rldx {
-
-	typedef TDxVSConstBuffer<DxDeformerData> DxDeformerDataBuffer;
-		
 	class DxMeshNode : public DxBaseNode
 	{		
-		DxMesh* m_meshData = nullptr;
-		DxMaterial* m_material = nullptr;
-		DxMeshShaderProgram* m_shaderProgram = nullptr;
-		DxDeformerDataBuffer m_deformerDataBuffer;
-
-		// DxBoundingBox
-		// DxNodeCube
-
-		DxMeshNode* m_pDeformerNode = nullptr; // points to skeleton node, on rendering, get pointer to actual derformer 
-
+		DxMeshDrawable m_meshDrawable;
 
 	public:
-		using SharedPointerMesh = std::shared_ptr<DxMeshNode>;
+		using SharedPointer = std::shared_ptr<DxMeshNode>;
 	public:
-		static SharedPointerMesh Create(const std::string& name = "");
+		static SharedPointer Create(const std::string& name = "");
 		
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_shaderProgram = shaderProgram; };
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
 
-		void SetMeshData(const DxCommonMeshData& meshData)
-		{
-			auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-			m_meshData = newMeshHandle.GetPtr();
-			m_meshData->SetMeshData(meshData);
-
-			// TODO: REMOVE:
-			auto DEBUG_BREAK = 1;
-		};		
+		void SetMeshData(const Rldx::DxCommonMeshData& meshData);
 		
 		// implemation of type/string
 		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
