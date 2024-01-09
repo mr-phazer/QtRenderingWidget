@@ -20,25 +20,32 @@ QtRenderingViewWidget::QtRenderingViewWidget(QWidget* parent)
 
 bool QtRenderingViewWidget::Init(Rldx::DxDeviceManager* dxManager)
 {
+    
+
+    logging::LogAction("Start Init QRenderingWidget");
+
+    logging::LogAction("Make new Device Manager");
     m_poDxManager = dxManager;
     m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice());
 
+    logging::LogAction("Create New Scene");
     Rldx::NativeWindowSceneCreator sceneCreator(reinterpret_cast<HWND>(this->winId()));
     auto newScene = sceneCreator.Create(m_poDxManager->GetDevice(), "TestScene1");
 
-
+    logging::LogAction("Loading Shaders");
     auto newPbrShaderProgram =
         Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
             m_poDxManager->GetDevice(),
-            LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
-            LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_NoTextures.cso)"
+            tools::GetExePath() + LR"(VS_Simple.cso)",
+            tools::GetExePath() + LR"(PS_NoTextures.cso)"
         );
 
+    logging::LogAction("Loading Shaders");
     auto newSimpleShaderProgram =
         Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
             m_poDxManager->GetDevice(),
-            LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\VS_Simple.cso)",
-            LR"(K:\Coding\repos\QtRenderingWidget_RPFM\x64\Debug\PS_Simple.cso)"
+            tools::GetExePath() + LR"(VS_Simple.cso)",
+            tools::GetExePath() + LR"(PS_Simple.cso)"
         );
 
     auto meshNodeGrid = Rldx::DxMeshNode::Create("Grid");

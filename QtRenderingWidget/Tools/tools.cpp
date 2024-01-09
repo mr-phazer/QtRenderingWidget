@@ -129,6 +129,15 @@ std::string tools::convert_string(const std::wstring& wstr)
 	return converterX.to_bytes(wstr);
 }
 
+std::wstring tools::GetExePath()
+{
+	WCHAR path[MAX_PATH];
+	GetModuleFileNameW(NULL, path, MAX_PATH);
+	std::wstring exePath = tools::GetDirFromFullPath(path);
+
+	return exePath;
+}
+
 std::string tools::GetDirFromFullPath(const std::string& _str)
 {
 	string strTemp = _str;

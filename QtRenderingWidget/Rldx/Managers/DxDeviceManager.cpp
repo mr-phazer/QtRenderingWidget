@@ -13,14 +13,17 @@ std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
 DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
 {
+	logging::LogAction("Creating New Device Mangager");
 	auto poNewInstance = std::unique_ptr<DxDeviceManager>(new DxDeviceManager);
 
+	logging::LogAction("Calling InitDirectd3d11..");
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
 	if (!SUCCEEDED(hr))	{
 		throw DirectX::com_exception(hr);
 	}
 
+	logging::LogAction("Create State Object..");
 	// Create state objects.
 	poNewInstance->m_stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
 	poNewInstance->m_upoDebugTextWriter = DxDebugTextWriter::Create(poNewInstance->GetDevice(), poNewInstance->GetDeviceContext());

@@ -455,6 +455,9 @@ namespace tools
 	template <>
 	static bool compare(string _1, string _2);
 
+	std::wstring GetExePath();
+
+
 	std::string GetDirFromFullPath(const std::string& _str);
 
 	std::wstring GetDirFromFullPath(const std::wstring& _str);

@@ -11,7 +11,7 @@ QtTesterApp::QtTesterApp(QWidget *parent)
 
     auto renderWidget = CreateQRenderingWidget(this);
 
-    this->setCentralWidget(renderWidget);    
+    this->setCentralWidget(renderWidget);   
     
 }
 

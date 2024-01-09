@@ -62,10 +62,17 @@ void Rldx::DxScene::DeleteNode(DxBaseNode* node)
 
 static bool bCtrlDown = false;
 LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	if (uMsg == WM_KEYDOWN || uMsg == WM_KEYUP)
+{	
+	if (uMsg == WM_KEYDOWN)
 	{ 
-		bCtrlDown = (uMsg == WM_KEYDOWN);
+		bCtrlDown = (wParam == VK_CONTROL);
+		auto debug_1 = 1;
+	}	
+
+	if (uMsg == WM_KEYUP)
+	{ 
+		bCtrlDown = !(wParam == VK_CONTROL);
+		auto debug_1 = 1;
 	}	
 
 	if (bCtrlDown)
