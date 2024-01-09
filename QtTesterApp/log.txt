@@ -1,0 +1,91 @@
+
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: TIdentifiable: Line: 48: # 2: created.
+ACTION: TIdentifiable: Line: 48: # 3: created.
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: TIdentifiable: Line: 48: # 4: created.
+ACTION: TIdentifiable: Line: 48: # 5: created.
+ACTION: TIdentifiable: Line: 48: # 6: created.
+ACTION: TIdentifiable: Line: 48: # 7: created.
+ACTION: TIdentifiable: Line: 48: # 8: created.
+ACTION: TIdentifiable: Line: 48: # 9: created.
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: TIdentifiable: Line: 48: # 2: created.
+ACTION: TIdentifiable: Line: 48: # 3: created.
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: TIdentifiable: Line: 48: # 4: created.
+ACTION: TIdentifiable: Line: 48: # 5: created.
+ACTION: TIdentifiable: Line: 48: # 6: created.
+ACTION: TIdentifiable: Line: 48: # 7: created.
+ACTION: TIdentifiable: Line: 48: # 8: created.
+ACTION: TIdentifiable: Line: 48: # 9: created.
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: TIdentifiable: Line: 48: # 2: created.
+ACTION: TIdentifiable: Line: 48: # 3: created.
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: TIdentifiable: Line: 48: # 4: created.
+ACTION: TIdentifiable: Line: 48: # 5: created.
+ACTION: TIdentifiable: Line: 48: # 6: created.
+ACTION: TIdentifiable: Line: 48: # 7: created.
+ACTION: TIdentifiable: Line: 48: # 8: created.
+ACTION: TIdentifiable: Line: 48: # 9: created.
+ACTION: ~TIdentifiable: Line: 56: # 3: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 6: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 7: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 2: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 1: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 9: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 8: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 5: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 4: deallocated.
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: TIdentifiable: Line: 48: # 2: created.
+ACTION: TIdentifiable: Line: 48: # 3: created.
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: TIdentifiable: Line: 48: # 4: created.
+ACTION: TIdentifiable: Line: 48: # 5: created.
+ACTION: TIdentifiable: Line: 48: # 6: created.
+ACTION: TIdentifiable: Line: 48: # 7: created.
+ACTION: TIdentifiable: Line: 48: # 8: created.
+ACTION: TIdentifiable: Line: 48: # 9: created.
+ACTION: ~TIdentifiable: Line: 56: # 3: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 6: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 7: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 2: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 1: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 9: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 8: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 5: deallocated.
+ACTION: ~TIdentifiable: Line: 56: # 4: deallocated.
+ACTION: InitDirect3d11: Line: 41: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+ACTION: TIdentifiable: Line: 48: # 2: created.
+ACTION: TIdentifiable: Line: 48: # 3: created.
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+ACTION: TIdentifiable: Line: 48: # 4: created.
+ACTION: TIdentifiable: Line: 48: # 5: created.
+ACTION: TIdentifiable: Line: 48: # 6: created.
+ACTION: TIdentifiable: Line: 48: # 7: created.
+ACTION: TIdentifiable: Line: 48: # 8: created.
+ACTION: TIdentifiable: Line: 48: # 9: created.

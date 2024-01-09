@@ -26,8 +26,10 @@ public:
 		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
 	}
 		
-	virtual void ReadData(void* pDest, size_t bytesTo) = 0;
-	virtual void Read(void* pDest, size_t size, size_t startOffset = 0) = 0;
+	virtual void ReadStreamData(void* pDest, size_t bytesTo) = 0;
+	virtual void ReadStreatData(void* pDest, size_t size, size_t startOffset = 0) = 0;
+
+	virtual uint8_t& operator[](size_t index) = 0;
 
 protected:
 };
@@ -85,10 +87,22 @@ class DiskDataSource : public IDataSource
 /// <summary>
 /// Implementation of IByteStream that reads from memory
 /// </summary>
-class MemoryDataSource : public IByteStream
+class MemoryByteStream : public IByteStream
 {
-	virtual ByteVector ReadAllData()
+	ByteVector m_data;
+	size_t m_currentOffset = 0;
+
+public:
+	MemoryByteStream(const ByteVector& input)
+		: m_data(input)
 	{
-		return ByteVector();
-	}
+	};
+
+
+	// Inherited via IByteStream
+	void Read(void* pDest, size_t bytesToCopy) override;
+	void Read(void* pDest, size_t size, size_t startOffset) override;
+
+	uint8_t& operator[](size_t index) override;
+
 };

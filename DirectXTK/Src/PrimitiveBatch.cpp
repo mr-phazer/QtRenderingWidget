@@ -187,13 +187,13 @@ void PrimitiveBatchBase::Impl::Begin()
 #if defined(_XBOX_ONE) && defined(_TITLE)
     mDeviceContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
 #else
-    // BindToDC the index buffer.
+    // Bind the index buffer.
     if (mMaxIndices > 0)
     {
         mDeviceContext->IASetIndexBuffer(mIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
     }
 
-    // BindToDC the vertex buffer.
+    // Bind the vertex buffer.
     auto vertexBuffer = mVertexBuffer.Get();
     const UINT vertexStride = static_cast<UINT>(mVertexSize);
     constexpr UINT vertexOffset = 0;

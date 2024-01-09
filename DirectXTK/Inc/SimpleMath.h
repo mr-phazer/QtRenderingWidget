@@ -272,8 +272,6 @@ namespace DirectX
             void Normalize() noexcept;
             void Normalize(Vector3& result) const noexcept;
 
-
-
             void Clamp(const Vector3& vmin, const Vector3& vmax) noexcept;
             void Clamp(const Vector3& vmin, const Vector3& vmax, Vector3& result) const noexcept;
 
@@ -1001,8 +999,6 @@ namespace DirectX
 
 } // namespace DirectX
 
-namespace sm = DirectX::SimpleMath;
-
 //------------------------------------------------------------------------------
 // Support for SimpleMath and Standard C++ Library containers
 namespace std
@@ -1140,6 +1136,8 @@ namespace std
     };
 
 } // namespace std
+
+namespace sm = DirectX::SimpleMath;
 
 #ifdef __clang__
 #pragma clang diagnostic pop

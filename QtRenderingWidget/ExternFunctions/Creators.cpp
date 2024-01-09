@@ -10,7 +10,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent)
 	// -- create lots of render view, for demo
 	QtRenderingViewWidget* poNewRenderingWidget = new QtRenderingViewWidget(parent); // nullptr = no parent, free floating window	
 
-	poNewRenderingWidget->setWindowFlag(Qt::WindowType::Window);
+	poNewRenderingWidget->setWindowFlag(Qt::WindowType::Widget);
 	poNewRenderingWidget->setWindowTitle("QRenderingWidget (testing, with various stuff in layout, for testin.");
 	poNewRenderingWidget->show();
 
