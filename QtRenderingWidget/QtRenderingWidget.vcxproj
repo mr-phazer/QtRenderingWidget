@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Rendering\DxAmbientLight.cpp" />
     <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
+    <ClInclude Include="Rldx\Rendering\DxAmbientLight.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
     <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
     <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
@@ -201,7 +203,6 @@
     <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
     <ClInclude Include="Tools\COMerrors.h" />
-    <ClInclude Include="Tools\ModelImporter.h" />
     <ClInclude Include="Tools\tools.h" />
   </ItemGroup>
   <ItemGroup>

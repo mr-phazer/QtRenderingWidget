@@ -15,25 +15,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Interfaces\IReader.h">
+    <ClInclude Include="RigidModel\Creators\FileHeaderCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\RigidModel\IFileHeaderReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Helpers\Dictionary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\RigidModel\ILodHeaderReader.h">
+    <ClInclude Include="RigidModel\Creators\LodHeaderCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\ByteStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\RigidModel\LodHeaderReaderFactory.h">
+    <ClInclude Include="Helpers\FileHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helpers\FileHelpers.h">
+    <ClInclude Include="RigidModel\DataTypes\FileHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\LodHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\TFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\MeshHeader_V3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Readers\RigidModelReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,19 +50,19 @@
     <ClCompile Include="ImportExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interfaces\IReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Helpers\Dictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Helpers\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interfaces\RigidModel\LodHeaderReadFactory.cpp">
+    <ClCompile Include="Helpers\FileHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Helpers\FileHelpers.cpp">
+    <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

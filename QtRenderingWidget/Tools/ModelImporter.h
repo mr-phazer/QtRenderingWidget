@@ -11,8 +11,6 @@ enum Rmv2VersionEnum;
 class ILodHeaderReader
 {
 public:
-	using SharedPtr = std::shared_ptr<ILodHeaderReader>;
-public:
 	virtual LodHeaderCommon ReadLodHeader(void*) = 0;
 };
 

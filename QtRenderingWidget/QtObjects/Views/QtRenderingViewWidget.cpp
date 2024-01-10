@@ -19,20 +19,22 @@ QtRenderingViewWidget::QtRenderingViewWidget(QWidget* parent)
 }
 
 bool QtRenderingViewWidget::Init(Rldx::DxDeviceManager* dxManager)
-{
-    
+{    
+    // TODO: cleanup, there is no reason to store the manager.
+    m_poDxManager = dxManager;
 
     logging::LogAction("Start Init QRenderingWidget");
 
     logging::LogAction("Make new Device Manager");
-    m_poDxManager = dxManager;
+    
+    
     m_upoSceneManager = Rldx::DxSceneManager::Create(m_poDxManager->GetDevice());
 
     logging::LogAction("Create New Scene");
     Rldx::NativeWindowSceneCreator sceneCreator(reinterpret_cast<HWND>(this->winId()));
     auto newScene = sceneCreator.Create(m_poDxManager->GetDevice(), "TestScene1");
 
-    logging::LogAction("Loading Shaders");
+    /*logging::LogAction("Loading Shaders");
     auto newPbrShaderProgram =
         Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
             m_poDxManager->GetDevice(),
@@ -60,7 +62,7 @@ bool QtRenderingViewWidget::Init(Rldx::DxDeviceManager* dxManager)
     meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 
     newScene->GetRootNode()->AddChild(meshNodeGrid);
-    newScene->GetRootNode()->AddChild(meshNodeCube);
+    newScene->GetRootNode()->AddChild(meshNodeCube);*/
 
     m_upoSceneManager->SetScene(newScene);
 

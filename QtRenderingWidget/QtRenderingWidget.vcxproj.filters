@@ -118,6 +118,9 @@
     <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rldx\Rendering\DxAmbientLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Managers\DxDeviceManager.h">
@@ -207,9 +210,6 @@
     <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\ModelImporter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\Interfaces\IDrawable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -253,6 +253,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxAmbientLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

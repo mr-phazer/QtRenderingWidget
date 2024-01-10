@@ -1,13 +1,14 @@
 #include "Creators.h"
 
-#include "QtObjects\Views\QtRenderingViewWidget.h"
+#include <exception>
 
+#include "QtObjects\Views\QtRenderingViewWidget.h"
 
 QWidget* CreateQRenderingWidget(QWidget* parent)
 {
+	// make sure the Singleton DeviceManager is instantiated
 	auto& spManager = Rldx::DxDeviceManager::GetInstance();
 
-	// -- create lots of render view, for demo
 	QtRenderingViewWidget* poNewRenderingWidget = new QtRenderingViewWidget(parent); // nullptr = no parent, free floating window	
 
 	poNewRenderingWidget->setWindowFlag(Qt::WindowType::Widget);
@@ -18,4 +19,16 @@ QWidget* CreateQRenderingWidget(QWidget* parent)
 	poNewRenderingWidget->StartRendering(&spManager);
 
 	return poNewRenderingWidget;
+}
+
+void SetLogPath(const QString& path)
+{
+	// TODO: implement
+	//throw std::exception("The method or operation is not implemented.");
+}
+
+void SetAssetPath(const QString& path)
+{
+	// TODO: implement
+	//throw std::exception("The method or operation is not implemented.");
 }

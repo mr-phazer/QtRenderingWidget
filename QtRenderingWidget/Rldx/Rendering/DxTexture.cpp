@@ -26,34 +26,41 @@ inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const std::wstr
 	ID3D11Resource* poTextureResource = nullptr;
 	DirectX::CreateDDSTextureFromFile(poD3DDevice, fileName.c_str(), &poTextureResource, &m_cpoShaderResourceView);
 
-	// Assume that pResource is a valid pointer to an ID3D11Resource object.
-	
-	HRESULT hr = poTextureResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&m_cpoTexture);
+	// Assume that pResource is a valid pointer to an ID3D11Resource object.		
 
-	// TODO: check
-	if (SUCCEEDED(hr)) {
+	// Check dimension of texture resource
+	D3D11_RESOURCE_DIMENSION resourceType;
+	poTextureResource->GetType(&resourceType);
+		 
+	if (resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
+	{
+		HRESULT hrResult = poTextureResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&m_cpoTexture);
+		DirectX::ThrowIfFailed(hrResult);
 
-		auto DEBUG_1 = 1;
-		// pTexture2D now points to the ID3D11Texture2D interface of the resource.
+		return true;
 	}
-	else {
-		auto DEBUG_ERRROR = 1;
-		// Handle failure here.
+	else if (resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE3D)
+	{
+		HRESULT hrResult = poTextureResource->QueryInterface(__uuidof(ID3D11Texture3D), (void**)&m_cpoCubeMapTexture);
+		DirectX::ThrowIfFailed(hrResult);
+
+		return true;
 	}
 
-	// TODO: fix
-	//DxResourceManager::Instance()->GetTextures()->AddResource(this, objectName);
+	throw std::exception("Texture resource is not a 2D or 3D texture.");
+
+	return false;
 }
 
-inline bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName)
+bool Rldx::DxTexture::LoadFile(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName)
 {
 	// TODO: get to work, get texture data into "m_cpoTexture"
-	//DirectX::CreateDDSTextureFromMemory(poD3DDevice, pbinarFileData, dataSize, &m_cpoTexture, &m_cpoShaderResourceView);
+	//DirectX::CreateDDSTextureFromMemoryEx(poD3DDevice, pbinarFileData, dataSize, &m_cpoTexture, &m_cpoShaderResourceView);
 
 	return true;
 }
 
-inline bool Rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount, const std::string& objectName)
+bool Rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount, const std::string& objectName)
 {
 	HRESULT hr = S_OK;
 

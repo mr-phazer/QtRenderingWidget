@@ -3,14 +3,27 @@
 
 std::streamoff file_helpers::GetFileSize(const std::wstring& filePath)
 {
-    std::streampos begin, end;
-    std::ifstream myfile(filePath, std::ios::binary);
-    begin = myfile.tellg();
-    myfile.seekg(0, std::ios::end);
-    end = myfile.tellg();
-    auto fileSize = end - begin;
+    std::streampos beginPos, endPos;
+    std::ifstream binaryFile(filePath, std::ios::binary);
+    
+    beginPos = binaryFile.tellg();
+    binaryFile.seekg(0, std::ios::end);
+    endPos = binaryFile.tellg();
+    
+    auto fileSize = endPos - beginPos;
 
-    myfile.close();
+    binaryFile.close();
 
     return fileSize;
+}
+
+std::vector<uint8_t> file_helpers::ReadFileToVector(const std::wstring& filePath)
+{   
+    std::vector<uint8_t> destBuffer(GetFileSize(filePath));
+    
+    std::fstream binaryFile(filePath, std::ios::binary);
+    binaryFile.read((char*)destBuffer.data(), destBuffer.size());
+    binaryFile.close();
+
+    return destBuffer;
 }

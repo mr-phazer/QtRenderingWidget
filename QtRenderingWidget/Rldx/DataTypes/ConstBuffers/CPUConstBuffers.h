@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include <DirectXMath.h>
 #include <SimpleMath.h>
 
@@ -12,11 +13,24 @@ namespace Rldx {
 
 	using float4x4 = DirectX::XMFLOAT4X4;
 	using float3x3 = DirectX::XMFLOAT3X3;
+		
 
-	struct PS_LightData_ConstBuffer
+	struct PS_DirectionalLight_ConstBuffer
 	{
 		DirectX::XMFLOAT3 direction;
 		float radiance;		
+		DirectX::XMFLOAT4 color;
+	
+	}; // 32 bytes
+
+	struct PS_AmbientLight_ConstBuffer
+	{		
+		float radiance = 1.0;	
+		float roughness = 1.0;	
+		float speculatFactor = 1.0;	
+		float diffuseFactor = 1.0;	
+
+		DirectX::XMFLOAT4X4 roatation = sm::Matrix::Identity;
 		DirectX::XMFLOAT4 color;
 	
 	}; // 32 bytes
@@ -100,7 +114,7 @@ namespace Rldx {
 		DirectX::XMFLOAT4X4 view = sm::Matrix::Identity;
 		DirectX::XMFLOAT4X4 projection = sm::Matrix::Identity;
 
-		PS_LightData_ConstBuffer light[1];
+		PS_DirectionalLight_ConstBuffer light[1];
 	};
 
 }; // namespace Rldx 

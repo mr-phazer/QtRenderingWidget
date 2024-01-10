@@ -139,21 +139,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Helpers\Dictionary.h" />
     <ClInclude Include="Helpers\FileHelpers.h" />
-    <ClInclude Include="Interfaces\IReader.h" />
-    <ClInclude Include="Interfaces\RigidModel\IFileHeaderReader.h" />
-    <ClInclude Include="Interfaces\RigidModel\ILodHeaderReader.h" />
+    <ClInclude Include="Helpers\TFactory.h" />
+    <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h" />
+    <ClInclude Include="RigidModel\Readers\RigidModelReader.h" />
+    <ClInclude Include="RigidModel\DataTypes\FileHeader.h" />
+    <ClInclude Include="RigidModel\DataTypes\LodHeader.h" />
+    <ClInclude Include="RigidModel\Creators\FileHeaderCreators.h" />
+    <ClInclude Include="RigidModel\Creators\LodHeaderCreators.h" />
     <ClInclude Include="Helpers\ByteStream.h" />
-    <ClInclude Include="Interfaces\RigidModel\LodHeaderReaderFactory.h" />
+    <ClInclude Include="RigidModel\DataTypes\MeshHeader_V3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Helpers\Dictionary.cpp" />
     <ClCompile Include="Helpers\FileHelpers.cpp" />
     <ClCompile Include="ImportExport.cpp" />
-    <ClCompile Include="Interfaces\IReader.cpp" />
     <ClCompile Include="Helpers\ByteStream.cpp" />
-    <ClCompile Include="Interfaces\RigidModel\LodHeaderReadFactory.cpp" />
+    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
+    <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp" />
+    <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

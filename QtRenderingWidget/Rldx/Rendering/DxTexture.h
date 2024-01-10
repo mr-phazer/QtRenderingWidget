@@ -8,6 +8,7 @@
 
 #include "..\..\Rldx\Interfaces\IDrawable.h"
 #include "..\..\Rldx\Interfaces\IResizable.h"
+#include "..\..\Rldx\Interfaces\IBindable.h"
 
 #include <string>
 
@@ -18,7 +19,8 @@ namespace Rldx {
 
 	class IDxTexture
 	{
-		virtual ID3D11Texture2D* GetTexture() const = 0;
+		virtual ID3D11Texture2D* GetTexture2D() const = 0;
+		virtual ID3D11Texture3D* GetCubeMapTexture() const = 0;
 		virtual ID3D11RenderTargetView* GetRenderTargetView() const = 0;
 		virtual ID3D11ShaderResourceView* GetShaderResourceView() const = 0;
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() = 0;
@@ -26,7 +28,8 @@ namespace Rldx {
 		virtual ID3D11Texture2D** getGetAddressOfTexture() = 0;
 	};	
 
-	class DxTexture : public IResizable, public IDxResource
+	// TODO: make IBindable
+	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
 	{
 	public:		
 		ResourceTypeEnum GetType() const override;
@@ -43,7 +46,7 @@ namespace Rldx {
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ { return m_cpoRenderTargetView.GetAddressOf(); };
 		virtual ID3D11ShaderResourceView** GetAddressOfShaderResourceView()  /*override*/ { return m_cpoShaderResourceView.GetAddressOf(); };
 
-		virtual ID3D11Texture2D* GetTexture() const  /*override*/ { return m_cpoTexture.Get();};
+		virtual ID3D11Texture2D* GetTexture2D() const  /*override*/ { return m_cpoTexture.Get();};
 		virtual ID3D11Texture2D** GetGetAddressOfTexture() /*override*/ { return m_cpoTexture.GetAddressOf(); };
 				
 		virtual Microsoft::WRL::ComPtr<ID3D11RenderTargetView>& GetComPtrRenderTargetView()  /*override*/ {
@@ -67,21 +70,21 @@ namespace Rldx {
 			return m_cpoDepthStencilView.Get();
 		}
 
-		void BindAsRenderTargetView(ID3D11DeviceContext* deviceContext)
+		void BindAsRenderTargetView(ID3D11DeviceContext* deviceContext) const
 		{
 			auto pRTV = GetRenderTargetView();
 			ID3D11RenderTargetView* const ppRTV[] = { pRTV };
 			deviceContext->OMSetRenderTargets(1, ppRTV, NULL);
 		}
 
-		void BindAsRenderTargetViewWithDepthBuffer(ID3D11DeviceContext* deviceContext)
+		void BindAsRenderTargetViewWithDepthBuffer(ID3D11DeviceContext* deviceContext) const
 		{
 			auto pRTV = GetRenderTargetView();
 			ID3D11RenderTargetView* const ppRTV[] = { pRTV };
 			deviceContext->OMSetRenderTargets(1, ppRTV, m_cpoDepthStencilView.Get());
 		}
 
-		void BindAsShaderResourceView(ID3D11DeviceContext* deviceContext, UINT slot)
+		void BindAsShaderResourceView(ID3D11DeviceContext* deviceContext, UINT slot) const
 		{
 			auto pSRV = GetShaderResourceView();
 			deviceContext->PSSetShaderResources(slot, 1, &pSRV);
@@ -257,8 +260,9 @@ namespace Rldx {
 		D3D11_SHADER_RESOURCE_VIEW_DESC m_shaderResourceViewDesc = { DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM_SRGB, D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2D }; // For use in input in shader
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = { DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM_SRGB, D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2D }; // For use in input in shader; // Render Target
 
-		// Texture buffer
+		// 2d/3d Texture buffers
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>				m_cpoTexture;
+		Microsoft::WRL::ComPtr<ID3D11Texture3D>				m_cpoCubeMapTexture;
 
 		// Interfaces to use texture memory "render to/from"
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		m_cpoRenderTargetView;

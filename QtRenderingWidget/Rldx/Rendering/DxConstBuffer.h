@@ -35,7 +35,7 @@ namespace Rldx {
 	template<typename DATA_TYPE>
 	struct TDxVSConstBuffer : public TConstBuffer<DATA_TYPE>
 	{	
-		void BindToDC(ID3D11DeviceContext* poDeviceContext) override
+		void BindToDC(ID3D11DeviceContext* poDeviceContext)
 		{
 			RefreshGPUData(poDeviceContext);
 			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { buffer.GetBuffer() };
@@ -47,9 +47,9 @@ namespace Rldx {
 	/// Pixel shader constant buffer
 	/// </summary>
 	template<typename DATA_TYPE>
-	struct TXxPSConstBuffer : public TConstBuffer<DATA_TYPE>
+	struct TDxPSConstBuffer : public TConstBuffer<DATA_TYPE>
 	{	
-		void BindToDC(ID3D11DeviceContext* poDeviceContext) override
+		void BindToDC(ID3D11DeviceContext* poDeviceContext)
 		{
 			RefreshGPUData(poDeviceContext);
 			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { buffer.GetBuffer() };

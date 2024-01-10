@@ -42,13 +42,13 @@ DxSwapChain::UniquePtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, 
 	logging::LogActionSuccess("Created Swap Chain.");
 
 	// Get swap chain's back buffer, create its renderQuad target view and set that view as renderQuad target
-	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
+	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture2D()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
 	assert(SUCCEEDED(hr));
 
 	logging::LogActionSuccess("m_pSwapChain1->GetBuffer().");
 
 	//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
-	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
+	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture2D(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
 	assert(SUCCEEDED(hr));
 
 	// TODO: any way to this more cleverly?
@@ -140,7 +140,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 
 void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
 {
-	m_BackBufferTexture.GetTexture()->GetDesc(&m_textureDesc);
+	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
 	
 	memset(&m_viewPort, 0, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_textureDesc.Height;
