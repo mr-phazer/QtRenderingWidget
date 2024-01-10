@@ -14,9 +14,12 @@
 #include "Logging/Logging.h"
 #include "ExternFunctions\Creators.h"
 
+
+
 int main(int argc, char* argv[]) 
 {	
 	QApplication testApplication(argc, argv);	
+
 
 	/*auto poContainerWindow = new QFrame (nullptr);
 	poContainerWindow->setWindowFlag(Qt::WindowType::Window);

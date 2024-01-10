@@ -21,7 +21,9 @@ std::vector<uint8_t> file_helpers::ReadFileToVector(const std::wstring& filePath
 {   
     std::vector<uint8_t> destBuffer(GetFileSize(filePath));
     
-    std::fstream binaryFile(filePath, std::ios::binary);
+    std::ifstream binaryFile;
+    binaryFile.open(filePath, std::ios::binary);
+    bool DEBUG_FILE_OPEN = binaryFile.is_open();
     binaryFile.read((char*)destBuffer.data(), destBuffer.size());
     binaryFile.close();
 

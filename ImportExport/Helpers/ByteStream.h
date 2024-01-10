@@ -8,109 +8,107 @@
 
 using ByteVector = std::vector<uint8_t>;
 
-namespace file_helpers
+
+/// <summary>
+/// Used to read a string of bytes
+/// </summary>
+class IByteStream
 {
-
-	/// <summary>
-	/// Used to read a string of bytes
-	/// </summary>
-	class IByteStream
+public:
+	template<typename DERIVED_TYPE>
+	static std::unique_ptr<IByteStream> Create(const std::wstring& fileName)
 	{
-	public:
-		template<typename DERIVED_TYPE>
-		static std::unique_ptr<IByteStream> Create(const std::wstring& fileName)
-		{
-			return std::make_unique<DERIVED_TYPE>(fileName);
-		}
+		return std::make_unique<DERIVED_TYPE>(fileName);
+	}
 
-		template<typename DERIVED_TYPE>
-		static std::unique_ptr<IByteStream> Create(void* pMem, size_t sizeInBytes)
-		{
-			return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
-		}
-
-		virtual void Read(void* pDest, size_t bytesToCopy, long long offset = -1) = 0;
-
-		virtual void Read(void* pDest, size_t bytesToCopy) = 0;
-
-		template <typename T>
-		T GetElement()
-		{
-			T element;
-			Read(&element, sizeof(T));
-			return element;
-		}
-	};
-
-
-
-	/// <summary>
-	/// Implementation of IByteStream that reads from memory
-	/// </summary>
-	class ByteStream
+	template<typename DERIVED_TYPE>
+	static std::unique_ptr<IByteStream> Create(void* pMem, size_t sizeInBytes)
 	{
-		ByteVector m_data;
-		size_t m_currentOffset = 0;
+		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
+	}
 
-	public:
-		ByteStream(const ByteVector& input)
-			: m_data(input) {};
+	virtual void Read(void* pDest, size_t bytesToCopy, long long offset = -1) = 0;
 
-		ByteStream(void* pMem, size_t sizeInBytes)
-		{
-			m_data.resize(sizeInBytes);
-			memcpy(m_data.data(), pMem, sizeInBytes);
-		}
+	virtual void Read(void* pDest, size_t bytesToCopy) = 0;
 
-		ByteStream(const std::wstring& fileName)
-		{
-			m_data = file_helpers::ReadFileToVector(fileName);
-		};
-
-		ByteVector GetRawChunk(size_t bytes) const
-		{
-			if (m_currentOffset + bytes > m_data.size())
-				throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
-
-			return ByteVector(m_data.begin() + m_currentOffset, m_data.begin() + m_currentOffset + bytes);
-		}
-
-		ByteVector GetRawChunk(size_t bytes, long long offset)	const
-		{
-			if (offset + bytes >= m_data.size())
-				throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
-
-			return ByteVector(m_data.begin() + offset, m_data.begin() + offset + bytes);
-		}
-
-		/*const ByteStream& GetChunk(size_t bytes) const
-		{
-			return ByteStream(GetRawChunk(bytes));
-		}
-
-		const ByteStream& GetChunk(size_t bytes, long long offset)	const
-		{
-			return ByteStream(GetRawChunk(bytes, offset));
-		}*/
-
-		void Read(void* pDest, size_t bytesToCopy)
-		{
-			if (m_currentOffset + bytesToCopy >= m_data.size())
-				throw std::exception("MemoryByteStream::Read: out of bounds");
-
-			memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
-			m_currentOffset += bytesToCopy;
-		}
-
-		template <typename T>
-		T GetElement()
-		{
-			T element;
-			Read(&element, sizeof(T));
-			return element;
-		}
-	};
+	template <typename T>
+	T GetElement()
+	{
+		T element;
+		Read(&element, sizeof(T));
+		return element;
+	}
 };
+
+
+
+/// <summary>
+/// Implementation of IByteStream that reads from memory
+/// </summary>
+class ByteStream
+{
+	ByteVector m_data;
+	size_t m_currentOffset = 0;
+
+public:
+	ByteStream(const ByteVector& input)
+		: m_data(input) {};
+
+	ByteStream(void* pMem, size_t sizeInBytes)
+	{
+		m_data.resize(sizeInBytes);
+		memcpy(m_data.data(), pMem, sizeInBytes);
+	}
+
+	ByteStream(const std::wstring& fileName)
+	{
+		m_data = ReadFileToVector(fileName);
+	};
+
+	ByteVector GetRawChunk(size_t bytes) const
+	{
+		if (m_currentOffset + bytes > m_data.size())
+			throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
+
+		return ByteVector(m_data.begin() + m_currentOffset, m_data.begin() + m_currentOffset + bytes);
+	}
+
+	ByteVector GetRawChunk(size_t bytes, long long offset)	const
+	{
+		if (offset + bytes >= m_data.size())
+			throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
+
+		return ByteVector(m_data.begin() + offset, m_data.begin() + offset + bytes);
+	}
+
+	/*const ByteStream& GetChunk(size_t bytes) const
+	{
+		return ByteStream(GetRawChunk(bytes));
+	}
+
+	const ByteStream& GetChunk(size_t bytes, long long offset)	const
+	{
+		return ByteStream(GetRawChunk(bytes, offset));
+	}*/
+
+	void Read(void* pDest, size_t bytesToCopy)
+	{
+		if (m_currentOffset + bytesToCopy >= m_data.size())
+			throw std::exception("MemoryByteStream::Read: out of bounds");
+
+		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
+		m_currentOffset += bytesToCopy;
+	}
+
+	template <typename T>
+	T GetElement()
+	{
+		T element;
+		Read(&element, sizeof(T));
+		return element;
+	}
+};
+
 // TODO: remove? Use?
 // TODO: REMOVE?
 //class CibstByteVector
@@ -164,7 +162,7 @@ namespace file_helpers
 //	{
 //		auto newInstance = std::make_unique<DiskDataSource>();
 //		newInstance->m_filePath = filePath;
-//		newInstance->m_fileLength = file_helpers::GetFileSize(filePath);
+//		newInstance->m_fileLength = GetFileSize(filePath);
 //
 //		return newInstance;
 //	}

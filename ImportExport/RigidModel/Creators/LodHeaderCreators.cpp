@@ -30,3 +30,10 @@ LODHeaderCommon LodHeader_V7_V8_Creator::Create(ByteStream& bytes)
 
 	return lodHeader;
 }
+
+LODHeaderCreatorFactory::LODHeaderCreatorFactory()
+{
+	Register(file_header::Rmv2VersionEnum::RMV2_V6, new LodHeader_V6_Creator);
+	Register(file_header::Rmv2VersionEnum::RMV2_V7, new LodHeader_V7_V8_Creator);
+	Register(file_header::Rmv2VersionEnum::RMV2_V8, new LodHeader_V7_V8_Creator);
+}

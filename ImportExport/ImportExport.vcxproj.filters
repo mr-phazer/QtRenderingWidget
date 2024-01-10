@@ -45,6 +45,15 @@
     <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\MeshHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\TextureElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Creators\MesnHeader_V3_Creator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImportExport.cpp">
@@ -65,5 +74,13 @@
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RigidModel\Creators\MesnHeader_V3_Creator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RigidModel\DataTypes\MeshEnums.h">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

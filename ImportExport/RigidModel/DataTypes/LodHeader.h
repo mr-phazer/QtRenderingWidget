@@ -4,7 +4,7 @@
 #include "..\..\Helpers\TFactory.h"
 #include "FileHeader.h"
 
-using ByteStream = file_helpers::ByteStream;
+using ByteStream = ByteStream;
 
 namespace rmv2 {
 	namespace lod_header {

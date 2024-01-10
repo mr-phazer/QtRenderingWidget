@@ -2,7 +2,7 @@
 
 #include "..\..\Helpers\ByteStream.h"
 
-using ByteStream = file_helpers::ByteStream;
+using ByteStream = ByteStream;
 
 namespace rmv2 {
 	namespace file_header {
@@ -25,7 +25,7 @@ namespace rmv2 {
 				uint32_t dwSignature = 0;			// the 32 bit numberical eqauivalent for "RVM2" = 0x32564D52
 				Rmv2VersionEnum modelVersion = UNDEFINED;		// 6 for Rome2/Atilla/Thrones, 7 for WH/WH2, 8 for 3K
 			} 
-			versionFileHeader;
+			fileVersionHeader;
 
 
 			// count is split up into two 16 biLPARAM lParams and the lower 16 bit is used,
