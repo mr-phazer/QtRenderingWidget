@@ -1,6 +1,6 @@
 #pragma once
 
-enum  RigidMaterialEnum : uint16_t
+enum class RigidMaterialEnum : uint16_t
 {
 	bow_wave = 22,
 	non_renderable = 26,
@@ -54,4 +54,15 @@ enum  RigidMaterialEnum : uint16_t
 	alpha_blend = 100,
 
 	NOT_SET = 0xFFFF
+};
+
+enum class VertexFormatEnum : uint16_t
+{
+	DefaultVertexFormat = 0,
+	CollisionVertexFormat = 1,
+	WeightedVertexFormat = 3,
+	CinematicVertexFormat = 4,
+	GrassVertexFormat = 5,
+	ClothSimVertexFormat = 25,
+	eERROR_NOT_SET = 0xFFFF
 };

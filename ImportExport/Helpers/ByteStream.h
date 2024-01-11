@@ -8,40 +8,6 @@
 
 using ByteVector = std::vector<uint8_t>;
 
-
-/// <summary>
-/// Used to read a string of bytes
-/// </summary>
-class IByteStream
-{
-public:
-	template<typename DERIVED_TYPE>
-	static std::unique_ptr<IByteStream> Create(const std::wstring& fileName)
-	{
-		return std::make_unique<DERIVED_TYPE>(fileName);
-	}
-
-	template<typename DERIVED_TYPE>
-	static std::unique_ptr<IByteStream> Create(void* pMem, size_t sizeInBytes)
-	{
-		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
-	}
-
-	virtual void Read(void* pDest, size_t bytesToCopy, long long offset = -1) = 0;
-
-	virtual void Read(void* pDest, size_t bytesToCopy) = 0;
-
-	template <typename T>
-	T GetElement()
-	{
-		T element;
-		Read(&element, sizeof(T));
-		return element;
-	}
-};
-
-
-
 /// <summary>
 /// Implementation of IByteStream that reads from memory
 /// </summary>
@@ -62,7 +28,7 @@ public:
 
 	ByteStream(const std::wstring& fileName)
 	{
-		m_data = ReadFileToVector(fileName);
+		m_data = file_helpers::ReadFileToVector(fileName);
 	};
 
 	ByteVector GetRawChunk(size_t bytes) const
@@ -108,6 +74,43 @@ public:
 		return element;
 	}
 };
+
+
+// TODO: remove?
+/// <summary>
+/// Used to read a string of bytes
+/// </summary>
+//class IByteStream
+//{
+//public:
+//	template<typename DERIVED_TYPE>
+//	static std::unique_ptr<IByteStream> Create(const std::wstring& fileName)
+//	{
+//		return std::make_unique<DERIVED_TYPE>(fileName);
+//	}
+//
+//	template<typename DERIVED_TYPE>
+//	static std::unique_ptr<IByteStream> Create(void* pMem, size_t sizeInBytes)
+//	{
+//		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
+//	}
+//
+//	virtual void Read(void* pDest, size_t bytesToCopy, long long offset = -1) = 0;
+//
+//	virtual void Read(void* pDest, size_t bytesToCopy) = 0;
+//
+//	template <typename T>
+//	T GetElement()
+//	{
+//		T element;
+//		Read(&element, sizeof(T));
+//		return element;
+//	}
+//};
+
+
+
+
 
 // TODO: remove? Use?
 // TODO: REMOVE?

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\Helpers\ByteStream.h"
-#include "..\..\Helpers\TFactory.h"
+#include "..\..\Helpers\Templates.h"
 #include "FileHeader.h"
 
 using ByteStream = ByteStream;
@@ -61,6 +61,7 @@ namespace rmv2 {
 		{
 		public:
 			virtual LODHeaderCommon Create(ByteStream& bytes) = 0;
+			virtual size_t GetHeaderSize() = 0;
 		};		
 
 	}; // namespace lod_header

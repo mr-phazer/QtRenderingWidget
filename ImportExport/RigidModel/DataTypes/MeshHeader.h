@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 
 
-#include "MeshHeader.inl"
+#include "MeshEnums.h"
 
 
 

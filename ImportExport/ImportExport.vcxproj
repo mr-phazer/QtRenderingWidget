@@ -140,11 +140,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Helpers\FileHelpers.h" />
-    <ClInclude Include="Helpers\TFactory.h" />
+    <ClInclude Include="Helpers\Templates.h" />
     <ClInclude Include="RigidModel\Creators\MesnHeader_V3_Creator.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeader.h" />
     <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h" />
     <ClInclude Include="RigidModel\DataTypes\TextureElement.h" />
+    <ClInclude Include="RigidModel\RawStructs\RawLodHeaders.h" />
+    <ClInclude Include="RigidModel\RawStructs\RawMeshHeaders.h" />
     <ClInclude Include="RigidModel\Readers\RigidModelReader.h" />
     <ClInclude Include="RigidModel\DataTypes\FileHeader.h" />
     <ClInclude Include="RigidModel\DataTypes\LodHeader.h" />

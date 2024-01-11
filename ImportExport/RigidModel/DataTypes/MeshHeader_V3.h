@@ -9,12 +9,11 @@ namespace rmv2
 {
 	namespace mesh_header
 	{
-		struct MeshHeader_V3_Common
+		struct MeshHeader_Type3_Common
 		{
-			static constexpr size_t GetSize()
-			{
-				return 80;
-				//return sizeof(MeshHeaderV3Common);
+			static constexpr size_t GetHeaderSize()
+			{				
+				return sizeof(MeshHeader_Type3_Common);
 			};
 
 			RigidMaterialEnum RigidMaterialId = RigidMaterialEnum::NOT_SET;		// Indicates the material of the group, some material make the group chunk larger, which merits further discovery
@@ -31,13 +30,13 @@ namespace rmv2
 			DirectX::XMFLOAT3 vMinBB;
 			DirectX::XMFLOAT3 vMaxBB;
 
-			char  szLightingConstants[32] = "default_dry";
+			char  szLightingConstants[32] = ""; // almost always = "default_dry";
 		};
 
-		class IMeshHeader_V3_Creator
+		class IMeshHeader_Type3_Creator
 		{
 		public:
-			virtual MeshHeader_V3_Common Create(ByteStream& bytes) = 0;
+			virtual MeshHeader_Type3_Common Create(ByteStream& bytes) = 0;
 		};
 	}
 

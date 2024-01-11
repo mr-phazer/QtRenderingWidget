@@ -1,10 +1,23 @@
 #include "LodHeaderCreators.h"
 #include "..\..\Helpers\ByteStream.h"
 
+#include "..\RawStructs\RawLodHeaders.h"
+
 using namespace rmv2::lod_header;
 
 LODHeaderCommon LodHeader_V6_Creator::Create(ByteStream& bytes)
-{
+{			
+	// TODO: pick which one to use, if any??
+	 
+	// raw_structs::LodHeaderElement_V5_V6 lodHeaderRaw;	
+	// bytes.Read(&lodHeaderRaw, sizeof(raw_structs::LodHeaderElement_V5_V6));
+	//LODHeaderCommon lodHeader;
+	//lodHeader.m_dwMeshCount = lodHeaderRaw.dwMeshCount;
+	//lodHeader.m_dwVerticesDataLength = lodHeaderRaw.dwVerticesDataLength;
+	//lodHeader.m_dwIndicesDataLength = lodHeaderRaw.dwIndicesDataLength;
+	//lodHeader.m_dwStartOffset = lodHeaderRaw.dwStartOffset;
+	//lodHeader.m_fVisibilityDistance = lodHeaderRaw.fVisibilityDistance;	
+	
 	LODHeaderCommon lodHeader;
 
 	lodHeader.m_dwMeshCount = bytes.GetElement<uint32_t>();
@@ -14,6 +27,11 @@ LODHeaderCommon LodHeader_V6_Creator::Create(ByteStream& bytes)
 	lodHeader.m_fVisibilityDistance = bytes.GetElement<float>();
 
 	return lodHeader;
+}
+
+size_t rmv2::lod_header::LodHeader_V6_Creator::GetHeaderSize()
+{
+	return 20U;
 }
 
 LODHeaderCommon LodHeader_V7_V8_Creator::Create(ByteStream& bytes)
@@ -29,6 +47,11 @@ LODHeaderCommon LodHeader_V7_V8_Creator::Create(ByteStream& bytes)
 	lodHeader.m_dwQualityLevel = bytes.GetElement<uint32_t>();
 
 	return lodHeader;
+}
+
+size_t rmv2::lod_header::LodHeader_V7_V8_Creator::GetHeaderSize()
+{
+	return 28U;
 }
 
 LODHeaderCreatorFactory::LODHeaderCreatorFactory()
