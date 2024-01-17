@@ -12,12 +12,12 @@
 
 #include "ui_QtRenderingViewWidget.h"
 
-#include "..\..\Rldx\Managers\DxDeviceManager.h"
-#include "..\..\Rldx\Managers\DxSceneManager.h"
-#include "..\..\Rldx\SceneGraph\SceneNodes\DxMeshNode.h"
+#include "..\..\rldx\Managers\DxDeviceManager.h"
+#include "..\..\rldx\Managers\DxSceneManager.h"
+#include "..\..\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
 
-#include "..\..\Rldx\Rendering\DxShaderProgram.h"
-#include "..\..\Rldx\DataTypes\DxMeshData.h"
+#include "..\..\rldx\Rendering\DxShaderProgram.h"
+#include "..\..\rldx\DataTypes\DxMeshData.h"
 
 class QtRenderingViewWidget : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
@@ -119,13 +119,13 @@ public:
 	}
 
 
-	//void setSwapChain(Rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)
+	//void setSwapChain(rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)
 	//{
 	//	spSwapChain = std::move(_pSwapChain); // move the ownership of the swap chain ptr
 	//};
 	
 
-	bool Init(Rldx::DxDeviceManager* dxManager);
+	bool Init(rldx::DxDeviceManager* dxManager);
 
 	void TimerHandler()
 	{
@@ -139,7 +139,7 @@ public:
 	}
 	
 
-	void StartRendering(const Rldx::DxDeviceManager* dxManager, int _FPS = 100)
+	void StartRendering(const rldx::DxDeviceManager* dxManager, int _FPS = 100)
 	{
 		m_timer = new QTimer(this);
 
@@ -164,8 +164,8 @@ signals:
 	void detachedWindowClose();
 
 private:
-	Rldx::DxSceneManager::UniquePtr m_upoSceneManager;
-	Rldx::DxDeviceManager* m_poDxManager = nullptr;
+	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
+	rldx::DxDeviceManager* m_poDxManager = nullptr;
 	bool m_bRenderingRunning = true;	
 	QTimer* m_timer;
 	float m_frameTime = 0;
@@ -173,7 +173,7 @@ private:
 };
 
 
-//	void renderText(const Rldx::DXD3DManager::spDXD3DManger& _dxManager)
+//	void renderText(const rldx::DXD3DManager::spDXD3DManger& _dxManager)
 //	{
 //
 //		spSwapCha:in->getBackBuffer().clearPixels(_dxManager->deviceContext(), spSwapChain->Color);

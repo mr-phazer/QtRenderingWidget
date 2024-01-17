@@ -170,7 +170,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromVBO(
     mesh->meshParts.emplace_back(part);
 
     auto model = std::make_unique<Model>();
-    model->meshes.emplace_back(mesh);
+    model->meshBlocks.emplace_back(mesh);
 
     return model;
 }

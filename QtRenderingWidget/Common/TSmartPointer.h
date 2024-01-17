@@ -1,7 +1,7 @@
 #pragma
 #include <memory>
 
-namespace Rldx {
+namespace rldx {
 	template <typename CLASSNAME>
 	struct TSmartPointerAll
 	{

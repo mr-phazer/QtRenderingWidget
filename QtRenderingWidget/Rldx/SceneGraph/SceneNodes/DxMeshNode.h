@@ -4,7 +4,7 @@
 #include "..\BaseNode\DxBaseNode.h"
 #include "..\..\DataTypes\DxMeshData.h"
 
-namespace Rldx {		
+namespace rldx {		
 
 	// forward decl	
 	class DxMeshData;	
@@ -21,7 +21,7 @@ namespace Rldx {
 		
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
 
-		void SetMeshData(const Rldx::DxCommonMeshData& meshData);
+		void SetMeshData(const rldx::DxCommonMeshData& meshData);
 		
 		// implemation of type/string
 		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }

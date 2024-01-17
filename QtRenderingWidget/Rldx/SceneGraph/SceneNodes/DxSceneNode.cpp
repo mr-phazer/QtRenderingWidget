@@ -2,7 +2,7 @@
 //#include <d3d11.h>
 //
 //
-//using namespace Rldx;
+//using namespace rldx;
 //
 //
 //
@@ -13,13 +13,13 @@
 ////	};	
 ////}
 //
-//void Rldx::DxSceneNode::SetName(const std::string& name)
+//void rldx::DxSceneNode::SetName(const std::string& name)
 //{
 //	m_name = this->GetTypeString() + " # " + name + " # " + std::to_string(GetId());
 //}
 //
 //
-//Rldx::DxSceneNode::Tre Rldx::DxSceneNode::Create(std::string name)
+//rldx::DxSceneNode::Tre rldx::DxSceneNode::Create(std::string name)
 //{
 //	auto newNode = std::make_shared<DxSceneNode>();
 //	newNode->SetName(name);
@@ -27,16 +27,16 @@
 //	return newNode;
 //}
 //
-//void Rldx::DxSceneNode::Update(float timeElapsed)
+//void rldx::DxSceneNode::Update(float timeElapsed)
 //{
 //}
 //
-//void Rldx::DxSceneNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+//void rldx::DxSceneNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
 //{
 //}
 //
 //
-////std::string Rldx::IDxSceneNode::GetTypeString() const
+////std::string rldx::IDxSceneNode::GetTypeString() const
 ////{
 ////	return "DxScene";
 ////}
@@ -117,13 +117,13 @@
 ////	return m_children[index].get();
 ////}
 ////
-////size_t Rldx::IDxSceneNode::GetChildCount() const
+////size_t rldx::IDxSceneNode::GetChildCount() const
 ////{
 ////	return m_children.size();
 ////}
 ////
 ////// TODO: test this
-////IDxSceneNode* Rldx::IDxSceneNode::FindChild(IDxSceneNode* nodeToFind, IDxSceneNode* currentNode)
+////IDxSceneNode* rldx::IDxSceneNode::FindChild(IDxSceneNode* nodeToFind, IDxSceneNode* currentNode)
 ////{
 ////	// to break out of recursion
 ////	if (currentNode == nodeToFind) {

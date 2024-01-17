@@ -1,7 +1,6 @@
 #pragma once
-#pragma once
 
-namespace Rldx {
+namespace rldx {
 
 	class IRenderBucket;	
 	/// <summary>

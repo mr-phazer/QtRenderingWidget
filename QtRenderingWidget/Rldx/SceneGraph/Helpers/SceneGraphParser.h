@@ -1,10 +1,10 @@
 #pragma once
 
 #include "..\SceneNodes\DxMeshNode.h"
-#include "..\Rldx\Interfaces\IRenderBucket.h"
+#include "..\rldx\Interfaces\IRenderBucket.h"
 #include <vector>
 
-//namespace Rldx {
+//namespace rldx {
 
 	/*class SceneGraphParser
 	{

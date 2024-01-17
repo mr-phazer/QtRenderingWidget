@@ -1,31 +1,31 @@
 #pragma once
 
+
+
 #include "FileHeader.h"
 #include "LodHeader.h"
-#include "MeshHeader_V3.h"
+#include "MeshHeaderType3.h"
+#include "MeshHeaderType5.h"
+#include "MaterialBlockCommon.h"
+#include "..\..\QtRenderingWidget\Rldx\DataTypes\CommonVertex.h"
 
 namespace rmv2 {
-	
-	
 
-	// TODO: remove these!!!
-	namespace mesh_header {
-		class MeshHeader_v5_Common {};
-	}	
-
-	class AttachTable {};
-	class MaterialBlock {};
+	struct MeshData16
+	{
+		std::vector<rldx::CommonVertex> vertices;
+		std::vector<uint16_t> indices;
+	};
 
 	/// <summary>
 	/// Contains 1 mesh with 1 material
 	/// </summary>
-	 
 	struct MeshBlockCommon
 	{
-		mesh_header::MeshHeader_Type3_Common meshHeaderV3;
-		mesh_header::MeshHeader_v5_Common meshHeaderV5;
-		AttachTable attachTable;
-		MaterialBlock material;
+		MeshHeaderType3 meshHeaderType3;
+		MeshHeaderType5 meshHeaderType5;
+		MaterialBlockCommon materialBlock;		
+		MeshData16 meshData;
 	};
 
 	/// <summary>
@@ -33,14 +33,13 @@ namespace rmv2 {
 	/// </summary>
 	struct ModelBlockCommon
 	{
-		std::vector<MeshBlockCommon> meshes;
+		std::vector<MeshBlockCommon> meshBlocks;
 	};
-
 
 	struct RigidModelFileCommon
 	{
-		file_header::FileHeaderCommon fileHeader;
-		std::vector<lod_header::LODHeaderCommon> lodHeaders;		
+		FileHeaderCommon fileHeader;
+		std::vector<LODHeaderCommon> lodHeaders;
 		std::vector<ModelBlockCommon> lods;
 	};
 

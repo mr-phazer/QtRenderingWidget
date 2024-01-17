@@ -1,11 +1,10 @@
 #pragma once
 
 #include "..\..\Helpers\ByteStream.h"
+#include "..\Constants\Rmv2Constants.h"
 
-using ByteStream = ByteStream;
 
-namespace rmv2 {
-	namespace file_header {
+namespace rmv2 {	
 
 		enum Rmv2VersionEnum : uint32_t
 		{
@@ -16,10 +15,8 @@ namespace rmv2 {
 		};
 
 		// TODO: better than 'uint32_t RMV2_SIGNATURE = 0x32564D52' ?
-		enum Rmv2FileSignatureEnum : uint32_t {	RMV2_ValidFile = 0x32564D52	};
-
-		static constexpr size_t RMV2_SKELETON_STRING_LENGTH = 128;
-
+		enum Rmv2FileSignatureEnum : uint32_t { RMV2_ValidFile = RMV2_SIGNATURE };
+			
 		struct FileHeaderCommon
 		{					
 			Rmv2FileSignatureEnum signature = Rmv2FileSignatureEnum(0);			// the 32 bit numberical eqauivalent for "RVM2" = 0x32564D52
@@ -30,9 +27,9 @@ namespace rmv2 {
 			uint16_t wLodCount = 0;
 			uint16_t unknown1 = 0;
 
-			char szSkeletonId[RMV2_SKELETON_STRING_LENGTH] = { 0 };
+			char szSkeletonId[RMV2_SKELETON_LENGTH] = { 0 };
 		};
 
 
-	}; // namespace file_header
+	
 }; // namespace rmv2

@@ -38,7 +38,7 @@ using Microsoft::WRL::ComPtr;
 namespace
 {
     //-------------------------------------------------------------------------------------
-    // WIC Pixel Format Translation Data
+    // WIC Pixel Format Translation data
     //-------------------------------------------------------------------------------------
     struct WICTranslate
     {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\RlDx\Interfaces\TIdentifiable.h"
+#include "..\rldx\Interfaces\TIdentifiable.h"
 
-namespace Rldx {
+namespace rldx {
 
 	enum class ResourceTypeEnum
 	{
@@ -17,4 +17,4 @@ namespace Rldx {
 		
 	
 	};
-}; // namespce Rldx
+}; // namespce rldx

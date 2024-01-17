@@ -7,7 +7,7 @@
 QWidget* CreateQRenderingWidget(QWidget* parent)
 {
 	// make sure the Singleton DeviceManager is instantiated
-	auto& spManager = Rldx::DxDeviceManager::GetInstance();
+	auto& spManager = rldx::DxDeviceManager::GetInstance();
 
 	QtRenderingViewWidget* poNewRenderingWidget = new QtRenderingViewWidget(parent); // nullptr = no parent, free floating window	
 

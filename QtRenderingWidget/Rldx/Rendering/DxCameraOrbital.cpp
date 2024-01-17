@@ -10,7 +10,7 @@
 //
 
 
-using namespace Rldx;
+using namespace rldx;
 
 
 void DxCameraOrbital::SetFieldOfView(float value)
@@ -137,7 +137,7 @@ sm::Vector3 DxCameraOrbital::GetEyePt() const
 	return m_geometryData.v3EyePosition;
 }
 
-sm::Vector3 Rldx::DxCameraOrbital::GetLookAt() const
+sm::Vector3 rldx::DxCameraOrbital::GetLookAt() const
 {
 	return m_geometryData.v3LookAt;
 }
@@ -184,10 +184,10 @@ void DxCameraOrbital::OnMove(int x, int y)
 		//	"Mouse Pose: ( " + std::to_string(x) + ", " + std::to_string(y) + " )\n\r"
 		//	"sm::Vector: ( " + std::to_string(v2CurrentPoint.x) + ", " + std::to_string(v2CurrentPoint.y) + " )\n\r"
 		//	"Delta ( " + std::to_string(m_vMouseDelta.x) + ", " + std::to_string(m_vMouseDelta.y) + " )\n\r"
-		//	"Yaw/Pitch( " + std::to_string(Data.m_yaw) + ", " + std::to_string(Data.m_pitch) + " )\n\r"
-		//	"Cam Pos: " + std::to_string(Data.m_v3EyePosition) +
+		//	"Yaw/Pitch( " + std::to_string(data.m_yaw) + ", " + std::to_string(data.m_pitch) + " )\n\r"
+		//	"Cam Pos: " + std::to_string(data.m_v3EyePosition) +
 		//	//"Cam Pos: ( " + std::to_string(m_v3EyePosition.x) + ", " + std::to_string(m_v3EyePosition.x) + " )\n\r"
-		//	"Cam LookAt: ( " + std::to_string(Data.m_v3LookAt.x) + ", " + std::to_string(Data.m_v3LookAt.y) + " )\n\r"
+		//	"Cam LookAt: ( " + std::to_string(data.m_v3LookAt.x) + ", " + std::to_string(data.m_v3LookAt.y) + " )\n\r"
 
 		//);
 #endif // DEBUG													   
@@ -212,7 +212,7 @@ void DxCameraOrbital::OnEnd()
 	//m_v3EyePosition = v3NewPosition;
 }
 
-void Rldx::DxCameraOrbital::RotateCamera()
+void rldx::DxCameraOrbital::RotateCamera()
 {
 	rotateCamera_Yaw(m_vRotVelocity.x);
 	rotateCamera_Pitch(m_vRotVelocity.y);
@@ -275,14 +275,14 @@ void DxCameraOrbital::rotateCamera_Pitch(float angle)
 		m_geometryData.fPitch = -(DirectX::XM_PIDIV2 - 0.01);
 	}
 
-	//if (Data.m_world_pitch > DirectX::XM_PIDIV2 - 0.01)
+	//if (data.m_world_pitch > DirectX::XM_PIDIV2 - 0.01)
 		//{
-		//	Data.m_world_pitch = DirectX::XM_PIDIV2 - 0.01;
+		//	data.m_world_pitch = DirectX::XM_PIDIV2 - 0.01;
 		//}
 
-		//if (Data.m_world_pitch < -(DirectX::XM_PIDIV2 - 0.01))
+		//if (data.m_world_pitch < -(DirectX::XM_PIDIV2 - 0.01))
 		//{
-		//	Data.m_world_pitch = -(DirectX::XM_PIDIV2 - 0.01);
+		//	data.m_world_pitch = -(DirectX::XM_PIDIV2 - 0.01);
 		//}
 
 }
@@ -291,11 +291,11 @@ void DxCameraOrbital::rotateCamera_Pitch(float angle)
 //{
 //	if (SHIFT_BUTTON_DOWN)
 //	{
-//		Data.m_world_yaw -= angle;
+//		data.m_world_yaw -= angle;
 //	}
 //	else
 //	{
-//		Data.m_yaw -= angle;
+//		data.m_yaw -= angle;
 //	}
 //}
 
@@ -426,7 +426,7 @@ void DxCameraOrbital::UpdateVelocity(_In_ float fElapsedTime)
 #endif
 }
 
-void Rldx::DxCameraOrbital::MoveFrame(float fElapsedTime)
+void rldx::DxCameraOrbital::MoveFrame(float fElapsedTime)
 {
 	if (IsMouseMButtonDown())
 	{
@@ -448,7 +448,7 @@ void Rldx::DxCameraOrbital::MoveFrame(float fElapsedTime)
 }
 
 
-void Rldx::DxCameraOrbital::MoveLookAt()
+void rldx::DxCameraOrbital::MoveLookAt()
 {
 	MoveCameraRight(static_cast<float>(m_vMouseDelta.x) * 0.01f);// *0.1f * m_zoom * 1.0f);
 	MoveCameraUp(static_cast<float>(m_vMouseDelta.y) * 0.01f);// *0.1f * m_zoom * 1.0f);		
@@ -456,7 +456,7 @@ void Rldx::DxCameraOrbital::MoveLookAt()
 	//TextOutDebug::AddFadingString("Look-At: (" + std::to_string(m_geometryData.v3LookAt.x) + ", " + std::to_string(m_geometryData.v3LookAt.x) + " )");
 }
 
-void Rldx::DxCameraOrbital::Zoom()
+void rldx::DxCameraOrbital::Zoom()
 {
 	//m_geometryData.m_zoom += -(static_cast<float>(m_nMouseWheelDelta) * 0.005f) * 0.1 * m_geometryData.m_zoom;
 
@@ -570,7 +570,7 @@ void DxCameraOrbital::save_to_disk(const std::wstring& _path)
 }
 
 
-void Rldx::DxCameraOrbital::MoveCameraRight(float amount)
+void rldx::DxCameraOrbital::MoveCameraRight(float amount)
 {
 	sm::Vector3 right = (m_geometryData.v3LookAt - m_geometryData.v3EyePosition); //calculate forward
 	right.Normalize();
@@ -582,7 +582,7 @@ void Rldx::DxCameraOrbital::MoveCameraRight(float amount)
 
 }
 
-void Rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor, const DirectX::SimpleMath::Vector2& screenDims,
+void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor, const DirectX::SimpleMath::Vector2& screenDims,
 	DirectX::SimpleMath::Vector3& _ray,
 	DirectX::SimpleMath::Vector3& _origin
 )

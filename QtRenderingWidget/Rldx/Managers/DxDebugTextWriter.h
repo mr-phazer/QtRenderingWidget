@@ -2,7 +2,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <exception>
 
 #include <D3d11.h>
 

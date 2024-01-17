@@ -9,8 +9,7 @@
 
 #define ABSTRACT = 0
 
-namespace rmv2 {
-	namespace file_header {		
+namespace rmv2 {	
 
 		class IFileHeaderCreator : public helpers::TByteCreator<FileHeaderCommon> { };
 
@@ -19,9 +18,4 @@ namespace rmv2 {
 		public:
 			FileHeaderCommon Create(ByteStream&);
 		};
-
-
-
-	}; // namespace file_header
-
 }; // namespace rmv2

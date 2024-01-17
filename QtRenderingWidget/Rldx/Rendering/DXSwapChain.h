@@ -29,10 +29,10 @@
 //#include "DxTextureView.h"
 #include "DxTexture.h"
 
-#include "..\..\Rldx\Interfaces\IDrawable.h"
+#include "..\..\rldx\Interfaces\IDrawable.h"
 
 
-namespace Rldx
+namespace rldx
 {
 	class DxSwapChain
 	{

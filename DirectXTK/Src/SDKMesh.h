@@ -117,7 +117,7 @@ namespace DXUT
     {
         uint16_t Stream;     // Stream index
         uint16_t Offset;     // Offset in the stream in bytes
-        uint8_t  Type;       // Data type
+        uint8_t  Type;       // data type
         uint8_t  Method;     // Processing method
         uint8_t  Usage;      // Semantics
         uint8_t  UsageIndex; // Semantic index
@@ -197,7 +197,7 @@ namespace DXUT
         uint32_t NumFrames;
         uint32_t NumMaterials;
 
-        //Offsets to Data
+        //Offsets to data
         uint64_t VertexStreamHeadersOffset;
         uint64_t IndexStreamHeadersOffset;
         uint64_t MeshDataOffset;

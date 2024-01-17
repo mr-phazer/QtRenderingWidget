@@ -2,9 +2,9 @@
 #include <d3d11.h>
 
 
-using namespace Rldx;
+using namespace rldx;
 
-DxSwapChain::UniquePtr Rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width, UINT height)
+DxSwapChain::UniquePtr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width, UINT height)
 {
 	auto poNew = std::make_unique<DxSwapChain>();
 

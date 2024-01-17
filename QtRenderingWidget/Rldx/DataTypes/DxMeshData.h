@@ -3,11 +3,10 @@
 #include <vector>
 #include <d3d11.h>
 #include <wrl\client.h>
+#include "..\DataTypes\CommonVertex.h"
 
-namespace Rldx {
-
-	struct CommonVertex;
-
+namespace rldx 
+{
 	template <typename VERTEX_TYPE, typename INDEX_TYPE>
 	struct TRawMeshData
 	{
@@ -20,7 +19,7 @@ namespace Rldx {
 	struct TDxMeshData
 	{
 		~TDxMeshData() = default;
-
+ 
 		uint32_t                                                indexCount = 0;
 		uint32_t                                                startIndex = 0;
 		int32_t                                                 vertexOffset = 0;

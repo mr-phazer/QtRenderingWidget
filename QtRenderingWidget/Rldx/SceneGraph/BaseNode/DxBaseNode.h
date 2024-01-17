@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "..\Rldx\Interfaces\TIdentifiable.h"
-#include "..\Rldx\Interfaces\IUpdateable.h"
-#include "..\Rldx\Interfaces\IFlushable.h"
+#include "..\rldx\Interfaces\TIdentifiable.h"
+#include "..\rldx\Interfaces\IUpdateable.h"
+#include "..\rldx\Interfaces\IFlushable.h"
 
 #include "..\..\SceneGraph\NodeTransform\NodeTransform.h"
 
-namespace Rldx {
+namespace rldx {
 
 	enum class SceneNodeTypeEnum : uint32_t
 	{
@@ -17,8 +17,10 @@ namespace Rldx {
 		BaseNode,
 		MeshNode,
 	};
+	
+	class IRenderBucket;
 
-	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable, public IFlushable
+	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
 	public:
 		using SharedPointer = std::shared_ptr<DxBaseNode>;
@@ -186,7 +188,7 @@ namespace Rldx {
 		}
 				
 		void Update(float timeElapsed) override;		
-		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;
+		virtual void FlushToRenderQueue(IRenderBucket* pRenderQueue)/* override*/;
 
 	private:
 		void SetParent(DxBaseNode* poParent)
@@ -212,7 +214,7 @@ namespace Rldx {
 	
 
 	};
-}; // namespace Rldx
+}; // namespace rldx
 
 /// <summary>
 /// Work can do stuff, as add to queue, update stuff, and other thing (member params set in constrcutor)

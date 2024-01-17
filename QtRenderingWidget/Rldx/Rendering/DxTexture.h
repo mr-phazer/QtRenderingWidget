@@ -6,16 +6,16 @@
 #include "..\..\..\..\DirectXTK\Inc\DDSTextureLoader.h"
 #include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
 
-#include "..\..\Rldx\Interfaces\IDrawable.h"
-#include "..\..\Rldx\Interfaces\IResizable.h"
-#include "..\..\Rldx\Interfaces\IBindable.h"
+#include "..\..\rldx\Interfaces\IDrawable.h"
+#include "..\..\rldx\Interfaces\IResizable.h"
+#include "..\..\rldx\Interfaces\IBindable.h"
 
 #include <string>
 
 #include "..\Managers\ResourceManager\IDxResouce.h"
 
 
-namespace Rldx {
+namespace rldx {
 
 	class IDxTexture
 	{

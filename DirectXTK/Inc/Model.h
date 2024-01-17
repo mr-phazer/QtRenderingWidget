@@ -217,7 +217,7 @@ namespace DirectX
 
 
         //------------------------------------------------------------------------------
-        // A model consists of one or more meshes
+        // A model consists of one or more meshBlocks
         class Model
         {
         public:
@@ -231,13 +231,13 @@ namespace DirectX
 
             virtual ~Model();
 
-            ModelMesh::Collection       meshes;
+            ModelMesh::Collection       meshBlocks;
             ModelBone::Collection       bones;
             ModelBone::TransformArray   boneMatrices;
             ModelBone::TransformArray   invBindPoseMatrices;
             std::wstring                name;
 
-            // Draw all the meshes in the model
+            // Draw all the meshBlocks in the model
             void XM_CALLCONV Draw(
                 _In_ ID3D11DeviceContext* deviceContext,
                 const CommonStates& states,
@@ -245,7 +245,7 @@ namespace DirectX
                 bool wireframe = false,
                 _In_ std::function<void __cdecl()> setCustomState = nullptr) const;
 
-            // Draw all the meshes using model bones
+            // Draw all the meshBlocks using model bones
             void XM_CALLCONV Draw(
                 _In_ ID3D11DeviceContext* deviceContext,
                 const CommonStates& states,
@@ -254,7 +254,7 @@ namespace DirectX
                 bool wireframe = false,
                 _In_ std::function<void __cdecl()> setCustomState = nullptr) const;
 
-            // Draw all the meshes using skinning
+            // Draw all the meshBlocks using skinning
             void XM_CALLCONV DrawSkinned(
                 _In_ ID3D11DeviceContext* deviceContext,
                 const CommonStates& states,

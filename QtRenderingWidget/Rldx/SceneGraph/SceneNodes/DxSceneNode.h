@@ -10,10 +10,10 @@
 //#include "..\Interfaces\IIdentifiable.h"
 //#include "..\Interfaces\IUpdateable.h"
 //#include "..\Interfaces\IFlushAble.h"
-//#include "..\Rldx\Managers\ResourceManager\IDxResouce.h"
+//#include "..\rldx\Managers\ResourceManager\IDxResouce.h"
 //#include "..\..\SceneGraph\BaseNode\DxBaseNode.h"
 //
-//namespace Rldx {
+//namespace rldx {
 //		
 //	class DxSceneNode : public DxBaseNode
 //	{	
@@ -31,7 +31,7 @@
 //
 //	
 //
-//}; // namespace Rldx
+//}; // namespace rldx
 //
 //
 //

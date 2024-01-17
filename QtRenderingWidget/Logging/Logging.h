@@ -15,7 +15,7 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
-#include "..\..\..\Tools\tools.h"
+#include "..\Tools\tools.h"
 
 namespace logging
 {

@@ -323,8 +323,8 @@ namespace
 
     struct ENTRYCOMPACT
     {
-        uint32_t       dwOffset : 21;       // Data offset, in multiplies of the bank alignment
-        uint32_t       dwLengthDeviation : 11;       // Data length deviation, in bytes
+        uint32_t       dwOffset : 21;       // data offset, in multiplies of the bank alignment
+        uint32_t       dwLengthDeviation : 11;       // data length deviation, in bytes
 
         void BigEndian() noexcept
         {
@@ -648,7 +648,7 @@ HRESULT WaveBankReader::Impl::Open(const wchar_t* szFileName) noexcept(false)
 
         if (m_header.Segments[HEADER::SEGIDX_ENTRYWAVEDATA].dwLength > (MAX_COMPACT_DATA_SEGMENT_SIZE * m_data.dwAlignment))
         {
-            // Data segment is too large to be valid compact wavebank
+            // data segment is too large to be valid compact wavebank
             return E_FAIL;
         }
     }

@@ -1,18 +1,18 @@
 #include "DxMesh.h"
 
-using namespace Rldx;
+using namespace rldx;
 
-ResourceTypeEnum Rldx::DxMesh::GetType() const
+ResourceTypeEnum rldx::DxMesh::GetType() const
 {
 	return ResourceTypeEnum::MeshData;
 }
 
-std::string Rldx::DxMesh::GetTypeString() const
+std::string rldx::DxMesh::GetTypeString() const
 {
 	return "DxMesh";
 }
 
-void Rldx::DxMesh::SetMeshData(const DxCommonMeshData& meshData)
+void rldx::DxMesh::SetMeshData(const DxCommonMeshData& meshData)
 {
 	m_poMesh = meshData;
 }

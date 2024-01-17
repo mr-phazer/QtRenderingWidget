@@ -3,18 +3,18 @@
 
 
 #include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
-#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
+#include "..\DataTypes\CommonVertex.h"
 
 
 
 // TODO: remove once tested
-Rldx::DxCommonMeshData Rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevice)
+rldx::DxCommonMeshData rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevice)
 {
 	DirectX::DX11::GeometricPrimitive::VertexCollection vertices;
 	DirectX::DX11::GeometricPrimitive::IndexCollection indices;
 	DirectX::DX11::GeometricPrimitive::CreateTeapot(vertices, indices, 0.1);
 
-	TRawMeshData<Rldx::CommonVertex, uint32_t> rawMeshData;
+	TRawMeshData<rldx::CommonVertex, uint32_t> rawMeshData;
 
 	for (size_t iVertex = 0; iVertex < vertices.size(); iVertex++)
 	{
@@ -33,13 +33,14 @@ Rldx::DxCommonMeshData Rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevi
 	for (size_t iIndex = 0; iIndex < indices.size(); iIndex++) {
 		rawMeshData.indices.push_back(indices[iIndex]);
 	}
+	
 	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
 	auto result = meshCreator.CreateDxMeshData(poDevice, rawMeshData.vertices, rawMeshData.indices);
 
 	return result;
 }
 
-Rldx::DxCommonMeshData Rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int linesPerAxis, float spacing)
+rldx::DxCommonMeshData rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int linesPerAxis, float spacing)
 {
 	std::vector<CommonVertex> vecVertex;
 	std::vector<uint32_t> vecIndex;
@@ -101,6 +102,21 @@ Rldx::DxCommonMeshData Rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int 
 	auto result = meshCreator.CreateDxMeshData(poDevice, vecVertex, vecIndex);
 
 	result.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+
+	return result;
+}
+
+rldx::DxCommonMeshData rldx::ModelCreator::MakeMeshFromRMV2(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh)
+{
+	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
+	
+	std::vector<uint32_t> vecIndices32;
+	for (auto index : rmv2Mesh.meshData.indices)
+	{
+		vecIndices32.push_back(index);
+	}
+	
+	auto result = meshCreator.CreateDxMeshData(poDevice, rmv2Mesh.meshData.vertices, vecIndices32);
 
 	return result;
 }

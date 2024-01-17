@@ -1,19 +1,19 @@
 #include "DxBaseNode.h"
 
-std::string Rldx::DxBaseNode::GetTypeString() const
+std::string rldx::DxBaseNode::GetTypeString() const
 {
     return std::string();
 }
 
-Rldx::SceneNodeTypeEnum Rldx::DxBaseNode::GetType() const
+rldx::SceneNodeTypeEnum rldx::DxBaseNode::GetType() const
 {
-    return Rldx::SceneNodeTypeEnum::EmptyNode;
+    return rldx::SceneNodeTypeEnum::EmptyNode;
 }
 
-void Rldx::DxBaseNode::Update(float timeElapsed)
+void rldx::DxBaseNode::Update(float timeElapsed)
 {
 }
 
-void Rldx::DxBaseNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+void rldx::DxBaseNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
 {
 }

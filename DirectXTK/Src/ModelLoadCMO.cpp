@@ -937,7 +937,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
             mesh->meshParts.emplace_back(part);
         }
 
-        model->meshes.emplace_back(mesh);
+        model->meshBlocks.emplace_back(mesh);
     }
 
     return model;

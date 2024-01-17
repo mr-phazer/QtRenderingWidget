@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include <SimpleMath.h>
 
-namespace Rldx {
+namespace rldx {
 
 	using float2 = DirectX::XMFLOAT2;
 	using float3 = DirectX::XMFLOAT3;
@@ -13,43 +13,57 @@ namespace Rldx {
 
 	using float4x4 = DirectX::XMFLOAT4X4;
 	using float3x3 = DirectX::XMFLOAT3X3;
-		
+
+
+	enum lightType : uint
+	{
+		DirectionalLight = 0,
+		PointLight = 1,
+		SpotLight = 2,
+	};
+
+	enum LightStateEnum : uint
+	{
+		Enabled = 1,
+		Disabled = 0,
+	};
+
+	struct PS_Light_ConstBuffer
+	{
+		float4      position;
+		float4      direction;
+		float4      color;
+
+		float       SpotAngle;
+		float       ConstantAttenuation;
+		float       LinearAttenuation;
+		float       QuadraticAttenuation;
+
+		lightType  lightType;
+		LightStateEnum lighState;
+		float		radiance;
+		uint		reserved1;
+	};
 
 	struct PS_DirectionalLight_ConstBuffer
 	{
 		DirectX::XMFLOAT3 direction;
-		float radiance;		
+		float radiance;
 		DirectX::XMFLOAT4 color;
-	
+
 	}; // 32 bytes
 
 	struct PS_AmbientLight_ConstBuffer
-	{		
-		float radiance = 1.0;	
-		float roughness = 1.0;	
-		float speculatFactor = 1.0;	
-		float diffuseFactor = 1.0;	
+	{
+		float radiance = 1.0;
+		float roughness = 1.0;
+		float speculatFactor = 1.0;
+		float diffuseFactor = 1.0;
 
 		DirectX::XMFLOAT4X4 roatation = sm::Matrix::Identity;
 		DirectX::XMFLOAT4 color;
-	
+
 	}; // 32 bytes
-
-	struct CommonVertex
-	{
-		DirectX::XMFLOAT4 position = { 0,0,0,0 };
-		DirectX::XMFLOAT2 textureCoordinate = { 0,0 };;
-		DirectX::XMFLOAT2 textureCoordinate2 = { 0,0 };;
-		DirectX::XMFLOAT3 normal = { 0,0,0 };
-		DirectX::XMFLOAT3 tangent = { 0,0,0 };
-		DirectX::XMFLOAT3 bitangent = { 0,0,0 };
-
-		DirectX::XMFLOAT4 color = { 1,0,0,1 };
-
-		// bone indices
-		DirectX::XMUINT4 boneIndices;
-		DirectX::XMFLOAT4 weights;
-	};
 
 	struct VS_MeshConstantBuffer
 	{
@@ -62,7 +76,7 @@ namespace Rldx {
 		float reserved211;
 		float reserved222;
 		float reserved232;
-				
+
 		DirectX::XMFLOAT4X4 tranforms[256] = {  }; // TODO: maybe only fill the skeletons that are to be used
 		DirectX::XMFLOAT4X4 inverse[256] = {  };
 	};
@@ -117,4 +131,4 @@ namespace Rldx {
 		PS_DirectionalLight_ConstBuffer light[1];
 	};
 
-}; // namespace Rldx 
+}; // namespace rldx 

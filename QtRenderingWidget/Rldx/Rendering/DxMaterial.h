@@ -9,7 +9,7 @@
 #include "..\Interfaces\IBindable.h"
 #include "DxTexture.h"
 
-namespace Rldx {
+namespace rldx {
 
 	class DxMaterial : public IDxResource, public IBindable
 	{

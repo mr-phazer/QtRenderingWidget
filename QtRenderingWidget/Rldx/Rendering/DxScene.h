@@ -5,17 +5,18 @@
 
 #include <CommonStates.h>
 
-#include "..\..\Rldx\Interfaces\IDrawable.h"
-#include "..\..\Rldx\Rendering\DxShaderProgram.h"
+#include "..\..\rldx\Interfaces\IDrawable.h"
+#include "..\..\rldx\Rendering\DxShaderProgram.h"
 #include "..\Helpers\DxMeshCreator.h"
 #include "..\SceneGraph\BaseNode\DxBaseNode.h"
 #include "..\SceneGraph\SceneGraph.h"
-#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "DxCameraOrbital.h"
 #include "DXSwapChain.h"
 #include "DxConstBuffer.h"
 
-namespace Rldx {
+#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
+
+namespace rldx {
 
 	enum class DxSceneTypeEnum
 	{
@@ -25,6 +26,7 @@ namespace Rldx {
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable
 	{
 	public:
+		
 		using UniquePtr = std::unique_ptr<DxScene>;
 
 	public:
@@ -117,7 +119,7 @@ namespace Rldx {
 			///////////////////////////////////////////////////////			
 			logging::LogAction("Loading Shaders");
 			auto newPbrShaderProgram =
-				Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
+				rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 					poDevice,
 					tools::GetExePath() + LR"(VS_Simple.cso)",
 					tools::GetExePath() + LR"(PS_NoTextures.cso)"
@@ -125,20 +127,28 @@ namespace Rldx {
 
 			logging::LogAction("Loading Shaders");
 			auto newSimpleShaderProgram =
-				Rldx::DxMeshShaderProgram::Create<Rldx::DxMeshShaderProgram>(
+				rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 					poDevice,
 					tools::GetExePath() + LR"(VS_Simple.cso)",
 					tools::GetExePath() + LR"(PS_Simple.cso)"
 				);
 
-			auto meshNodeGrid = Rldx::DxMeshNode::Create("Grid");
-			auto meshNodeCube = Rldx::DxMeshNode::Create("Cube");
+			auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
+			auto meshNodeCube = rldx::DxMeshNode::Create("Cube");
 
-			auto testMeshCube = Rldx::ModelCreator::MakeTestCubeMesh(poDevice);
+
+			ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
+			rmv2::RigidModelReader reader;
+			auto rmv2File = reader.Read(bytes);
+
+			//auto testMeshCube = rldx::ModelCreator::MakeTestCubeMesh(poDevice);
+			auto testMeshCube = 
+				rldx::ModelCreator::MakeMeshFromRMV2(poDevice, rmv2File.lods[0].meshBlocks[0]);
+
 			meshNodeCube->SetMeshData(testMeshCube);
 			meshNodeCube->SetShaderProgram(newPbrShaderProgram);
 
-			auto testMeshGrid = Rldx::ModelCreator::MakeGrid(poDevice, 20);
+			auto testMeshGrid = rldx::ModelCreator::MakeGrid(poDevice, 20, 0.1);
 			meshNodeGrid->SetMeshData(testMeshGrid);
 			meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 

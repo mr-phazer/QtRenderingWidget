@@ -1,6 +1,6 @@
 #include "NodeTransform.h"
 
-using namespace Rldx;
+using namespace rldx;
 using namespace DirectX;
 
 sm::Matrix NodeTransform::GetLocalTransform() const

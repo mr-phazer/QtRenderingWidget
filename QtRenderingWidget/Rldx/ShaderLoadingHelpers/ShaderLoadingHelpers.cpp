@@ -5,7 +5,7 @@
 #pragma comment(lib, "D3DCompiler.lib")
 #pragma comment(lib, "dxguid.lib")
 
-std::vector<uint8_t> Rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
+std::vector<uint8_t> rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
 {
 	if (!tools::DoesFileExist(shaderPath))	{
 		throw std::runtime_error("Shader file: '" + tools::wstring_to_string(shaderPath) + "' not found");
@@ -21,7 +21,7 @@ std::vector<uint8_t> Rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wst
 	return shaderCodeRaw;
 }
 
-ID3D11InputLayout* Rldx::VertexShaderLoader::CreateInputLayoutDescFromVertexShaderSignature(ID3D11Device* pD3DDevice, void* pMem, size_t buffer_size)
+ID3D11InputLayout* rldx::VertexShaderLoader::CreateInputLayoutDescFromVertexShaderSignature(ID3D11Device* pD3DDevice, void* pMem, size_t buffer_size)
 
 {
 	// Reflect shader info

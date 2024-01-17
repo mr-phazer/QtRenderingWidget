@@ -12,7 +12,7 @@
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "DxDebugTextWriter.h"
 
-namespace Rldx
+namespace rldx
 {
 	/// <summary>
 	/// singleton only 1 device per .exe

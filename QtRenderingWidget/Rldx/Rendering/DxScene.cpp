@@ -6,9 +6,9 @@
 #include "..\Helpers\DxMeshCreator.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
 
-using namespace Rldx;
+using namespace rldx;
 
-void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
+void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
 	
 	// -- set target, and clear pixels and depth buffer
@@ -41,13 +41,13 @@ void Rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 }
 
 
-DxBaseNode* Rldx::DxScene::GetRootNode()
+DxBaseNode* rldx::DxScene::GetRootNode()
 {
 	return m_sceneGraph.GetRootNode();
 }
 
 // TODO: test this
-void Rldx::DxScene::DeleteNode(DxBaseNode* node)
+void rldx::DxScene::DeleteNode(DxBaseNode* node)
 {
 	auto nodeResult = DxBaseNode::FindChild(node, GetRootNode());
 
@@ -61,7 +61,7 @@ void Rldx::DxScene::DeleteNode(DxBaseNode* node)
 }
 
 static bool bCtrlDown = false;
-LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {	
 	if (uMsg == WM_KEYDOWN)
 	{ 
@@ -83,7 +83,7 @@ LRESULT __stdcall Rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPA
 	return m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);	
 }
 
-void Rldx::DxScene::Update(float timeElapsed)
+void rldx::DxScene::Update(float timeElapsed)
 {	
 	UpdateViewAndPerspective();
 	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
@@ -92,7 +92,7 @@ void Rldx::DxScene::Update(float timeElapsed)
 	m_globalDirectionalLight.MoveFrame(timeElapsed);
 }
 
-void Rldx::DxScene::Init(ID3D11Device* poDevice)
+void rldx::DxScene::Init(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 
@@ -102,13 +102,13 @@ void Rldx::DxScene::Init(ID3D11Device* poDevice)
 	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 }
 
-void Rldx::DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
+void rldx::DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {
 	m_spoSwapChain->Resize(poDevice, poDeviceContext, width, height);
 	m_globalCamera.SetWindow(width, height);
 }
 
-void Rldx::DxScene::UpdateViewAndPerspective()
+void rldx::DxScene::UpdateViewAndPerspective()
 {
 	m_sceneFrameVSConstBuffer.data.view = m_globalCamera.GetViewMatrix().Transpose();
 	m_sceneFrameVSConstBuffer.data.projection = m_globalCamera.GetProjMatrix().Transpose();
@@ -121,7 +121,7 @@ void Rldx::DxScene::UpdateViewAndPerspective()
 	// _DEBUGGING_SetViewAndPerspective();
 }
 
-inline void Rldx::DxScene::UpdateAndBindVSConstBuffer()
+inline void rldx::DxScene::UpdateAndBindVSConstBuffer()
 {
 	auto poDeviceContext = DxDeviceManager::DeviceContext();
 
@@ -136,7 +136,7 @@ inline void Rldx::DxScene::UpdateAndBindVSConstBuffer()
 	poDeviceContext->PSSetConstantBuffers(0, 1, pixelShaderSceneConstBuffers);
 }
 
-inline void Rldx::DxScene::DEBUGGING_SetViewAndPerspective()
+inline void rldx::DxScene::DEBUGGING_SetViewAndPerspective()
 {
 	// Use DirectXMath to create view and perspective matrices.
 

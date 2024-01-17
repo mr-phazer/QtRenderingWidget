@@ -8,7 +8,7 @@
 //#include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\BaseNode\DxBaseNode.h"
 
-namespace Rldx {
+namespace rldx {
 
 	class DxMeshRenderBucket : public IRenderBucket
 	{
@@ -69,4 +69,4 @@ namespace Rldx {
 		}
 	};
 
-} // namespace Rldx
+} // namespace rldx

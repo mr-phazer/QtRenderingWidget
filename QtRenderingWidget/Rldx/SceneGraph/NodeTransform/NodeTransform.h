@@ -2,7 +2,7 @@
 
 #include "..\..\..\..\DirectXTK\Inc\SimpleMath.h"
 
-namespace Rldx {
+namespace rldx {
 
 	struct TransformState
 	{

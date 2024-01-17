@@ -3,7 +3,11 @@
 #include "..\DataTypes\RigidModelFile.h"
 #include "..\Creators\FileHeaderCreators.h"
 #include "..\Creators\LodHeaderCreators.h"
-#include "..\Creators\MesnHeader_V3_Creator.h"
+#include "..\Creators\VertexCreators\VertexCreators.h"
+#include "..\Creators\MeshHeaderType3Creator.h"
+#include "..\Creators\MeshHeaderType5Creator.h"
+#include "..\Creators\Material\MaterialBlockCommonCreators.h"
+
 
 namespace rmv2
 {
@@ -14,65 +18,104 @@ namespace rmv2
 		{
 			RigidModelFileCommon rmv2File;
 
-			ReadFileHeader(bytes, rmv2File);
-			rmv2File.lodHeaders = ReadLodHeaders(bytes, rmv2File.fileHeader.modelVersionId, rmv2File.fileHeader.wLodCount);
+			ReadHeaders(bytes, rmv2File);
 
-			rmv2File.lods.resize(1);
-			rmv2File.lods[0].meshes.resize(1);
-
-			// ReadLods(bytes, rmv2File);
-			ReadMeshBlock(bytes, rmv2File.fileHeader.modelVersionId, rmv2File.lods[0].meshes[0]);
-			
-			
-			
-
-			// TODO: IMPLEMENT REST
+			rmv2File.lods.resize(rmv2File.fileHeader.wLodCount);
+			for (size_t lodIndex = 0; lodIndex < rmv2File.fileHeader.wLodCount; lodIndex++)
+			{			
+				rmv2File.lods[lodIndex] =
+					ReadModelBlock(bytes, rmv2File.fileHeader.modelVersionId, rmv2File.lodHeaders[lodIndex].dwMeshCount, lodIndex);
+			}
 
 			return rmv2File;
 		}
-		
 
-		void ReadFileHeader(ByteStream& bytes, RigidModelFileCommon& rmv2File)
+		void ReadHeaders(ByteStream& bytes, rmv2::RigidModelFileCommon& rmv2File)
 		{
-			file_header::FileHeaderCreatorDefault headerCreator;
-			rmv2File.fileHeader = headerCreator.Create(bytes);
+			rmv2File.fileHeader = FileHeaderCreatorDefault().Create(bytes);
+			rmv2File.lodHeaders = ReadLodHeaders(bytes, rmv2File.fileHeader.modelVersionId, rmv2File.fileHeader.wLodCount);
 		}
+			
 
-		std::vector<lod_header::LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, file_header::Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount)
+	private:
+		std::vector<LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount)
 		{
-			lod_header::LODHeaderCreatorFactory lodHeaderfactory;
-			auto lodHeaderCreator = lodHeaderfactory.Get(rmv2VersionId);
+			auto lodHeaderCreator = LODHeaderCreatorFactory().Get(rmv2VersionId);
 
-			std::vector<lod_header::LODHeaderCommon> lodHeaders(wLODCount);
+			std::vector<LODHeaderCommon> lodHeaders(wLODCount);
 
-			for (size_t lodHeaderIndex = 0; lodHeaderIndex < wLODCount; lodHeaderIndex++) {
-				lodHeaders[lodHeaderIndex] = lodHeaderCreator->Create(bytes);
-			}
+			for (auto& lodHeaderElement : lodHeaders)
+			{
+				lodHeaderElement = lodHeaderCreator->Create(bytes);
+			}			
 
 			return lodHeaders;
 		}
-				
-		void ReadMeshBlock(ByteStream& bytes, file_header::Rmv2VersionEnum, MeshBlockCommon& meshblock)
+
+		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex)
 		{
-			mesh_header::MeshHeader_Type3_Creator_V6_V7_V8 meshHeaderType3Creator;
-			meshblock.meshHeaderV3 = meshHeaderType3Creator.Create(bytes);
+			ModelBlockCommon modelBlock;
 
-			/*
-			 - read mesh header type 5
-			 
-			 - read attach table
+			modelBlock.meshBlocks.resize(meshCount);
 
-			 - read material block  (Interface: IMaterialBlockReader/Creator)
-			     read texture elementes
-				 read extra material params
-			 
-			 - read mesh data
-			   - read vertex data  (Interface: IVertexCreator)
-			   - read index data
-			 */
+			for (size_t iMesh = 0; iMesh < meshCount; iMesh++)
+			{ 
+				modelBlock.meshBlocks[iMesh] = ReadMeshBlock(bytes);				
+			}
 
-			// TODO: REMOVE
-			auto DEBUG_1 = 1;
+			return modelBlock;
+		}
+
+		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes)
+		{
+			MeshBlockCommon meshBlock;
+
+			meshBlock.meshHeaderType3 = MeshHeaderType3Creator().Create(bytes);
+			meshBlock.meshHeaderType5 = MeshHeaderType5Creator().Create(bytes);
+			meshBlock.materialBlock = MaterialBlockCommonCreator().Create(bytes, meshBlock.meshHeaderType5);
+
+			meshBlock.meshData = ReadMeshData(bytes, meshBlock.meshHeaderType3, meshBlock.meshHeaderType5);
+
+			return meshBlock;
+		}
+
+		// TODO: REMOVE
+		void ReadMeshData_OLD(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock)
+		{
+			auto vertexCreator = VertexCreatorProvider().Get(meshblock.meshHeaderType5.VertexFormatId);
+
+			meshblock.meshData.vertices.resize(meshblock.meshHeaderType3.dwVertexCount);
+			for (auto& vertex : meshblock.meshData.vertices)
+			{
+				vertex = vertexCreator->Create(bytes);
+			}
+
+			meshblock.meshData.indices.resize(meshblock.meshHeaderType3.dwIndexCount);
+			for (auto& index : meshblock.meshData.indices)
+			{
+				index = bytes.GetElement<uint16_t>();
+			}
+		}
+
+		MeshData16 ReadMeshData(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeaderType5& meshHeader5)
+		{			
+			auto vertexCreator = VertexCreatorProvider().Get(meshHeader5.VertexFormatId);
+			
+			MeshData16 mesh;
+			mesh.vertices.resize(meshHeader3.dwVertexCount);
+
+			for (size_t iVertex = 0; iVertex < meshHeader3.dwVertexCount; iVertex++)
+			{			
+				mesh.vertices[iVertex] = vertexCreator->Create(bytes);
+			}
+
+			mesh.indices.resize(meshHeader3.dwIndexCount);
+			for (size_t iIndex = 0; iIndex < meshHeader3.dwIndexCount; iIndex++)
+			{
+				mesh.indices[iIndex] = bytes.GetElement<uint16_t>();
+			}
+			
+			return mesh;
 		}
 	};
 }

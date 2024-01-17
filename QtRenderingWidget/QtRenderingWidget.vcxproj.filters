@@ -118,7 +118,10 @@
     <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Rendering\DxAmbientLight.cpp">
+    <ClCompile Include="Rldx\Rendering\DxAmbientLightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Rendering\DxLightSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -255,7 +258,19 @@
     <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxAmbientLight.h">
+    <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\COMerrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxLightSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -290,5 +305,9 @@
     <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl" />
     <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl" />
     <FxCompile Include="Rldx\Shaders\VS_Default.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\qRME\QtRME_GUI\SPECULAR_IBL_TEX.dds" />
+    <Image Include="..\..\qRME\QtRME_GUI\DIFFUSE_IBL_TEX.dds" />
   </ItemGroup>
 </Project>

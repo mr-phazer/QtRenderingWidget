@@ -4,22 +4,7 @@
 #include "..\..\Helpers\Templates.h"
 #include "FileHeader.h"
 
-using ByteStream = ByteStream;
-
 namespace rmv2 {
-	namespace lod_header {
-
-		struct LODHeaderData
-		{
-			uint32_t m_dwMeshCount = 0;
-			uint32_t m_dwVerticesDataLength = 0;
-			uint32_t m_dwIndicesDataLength = 0;
-			uint32_t m_dwStartOffset = 0;
-			float m_fVisibilityDistance = 100.0f;
-			uint32_t m_dwAuthoredLodNumber = 0;
-			uint32_t m_dwQualityLevel = 0;
-		};
-
 		// make all variable into virtual methods retuning references, dont use  "" prefix
 
 		struct ILODHeader
@@ -33,37 +18,44 @@ namespace rmv2 {
 			virtual uint32_t& QualityLevel() = 0;
 		};
 
-		struct LODHeader : public ILODHeader
+		struct LodHeaderData_V6
 		{
-			uint32_t& MeshCount() override { return Data.m_dwMeshCount; };
-			uint32_t& VerticesDataLength() override { return Data.m_dwVerticesDataLength; };
-			uint32_t& IndicesDataLength() override { return Data.m_dwIndicesDataLength; };
-			uint32_t& StartOffset() override { return Data.m_dwAuthoredLodNumber; };
-			float& VisibilityDistance() override { return Data.m_fVisibilityDistance; };
-			uint32_t& AuthoredLodNumber() override { return Data.m_dwAuthoredLodNumber; };
-			uint32_t& QualityLevel() override { return Data.m_dwQualityLevel; };
-
-			LODHeaderData Data;
+			uint32_t dwMeshCount = 0;
+			uint32_t dwVerticesDataLength = 0;
+			uint32_t dwIndicesDataLength = 0;
+			uint32_t dwStartOffset = 0;
+			float fVisibilityDistance = 100.0f;
+			uint32_t dwAuthoredLodNumber = 0;
+			uint32_t dwQualityLevel = 0;
 		};
+		
+		struct LODHeaderV6 : public ILODHeader
+		{
+			uint32_t& MeshCount() override { return data.dwMeshCount; };
+			uint32_t& VerticesDataLength() override { return data.dwVerticesDataLength; };
+			uint32_t& IndicesDataLength() override { return data.dwIndicesDataLength; };
+			uint32_t& StartOffset() override { return data.dwAuthoredLodNumber; };
+			float& VisibilityDistance() override { return data.fVisibilityDistance; };
+			uint32_t& AuthoredLodNumber() override { return data.dwAuthoredLodNumber; };
+			uint32_t& QualityLevel() override { return data.dwQualityLevel; };			
+
+			LodHeaderData_V6 data;		
+		};
+
 
 		struct LODHeaderCommon
 		{
-			uint32_t m_dwMeshCount = 0;
-			uint32_t m_dwVerticesDataLength = 0;
-			uint32_t m_dwIndicesDataLength = 0;
-			uint32_t m_dwStartOffset = 0;
-			float m_fVisibilityDistance = 100.0f;
-			uint32_t m_dwAuthoredLodNumber = 0;
-			uint32_t m_dwQualityLevel = 0;
+			uint32_t dwMeshCount = 0;
+			uint32_t dwVerticesDataLength = 0;
+			uint32_t dwIndicesDataLength = 0;
+			uint32_t dwStartOffset = 0;
+			float fVisibilityDistance = 100.0f;
+			uint32_t dwAuthoredLodNumber = 0;
+			uint32_t dwQualityLevel = 0;
 		};
 
-		class ILODHeaderCreator
-		{
-		public:
-			virtual LODHeaderCommon Create(ByteStream& bytes) = 0;
-			virtual size_t GetHeaderSize() = 0;
-		};		
 
-	}; // namespace lod_header
+
+
 
 }; // namespace rmv2

@@ -413,7 +413,7 @@ Model::~Model()
 }
 
 Model::Model(Model const& other) :
-    meshes(other.meshes),
+    meshBlocks(other.meshBlocks),
     bones(other.bones),
     name(other.name),
     mEffectCache(other.mEffectCache)
@@ -439,7 +439,7 @@ Model& Model::operator= (Model const& rhs)
     if (this != &rhs)
     {
         Model tmp(rhs);
-        std::swap(meshes, tmp.meshes);
+        std::swap(meshBlocks, tmp.meshBlocks);
         std::swap(bones, tmp.bones);
         std::swap(boneMatrices, tmp.boneMatrices);
         std::swap(invBindPoseMatrices, tmp.invBindPoseMatrices);
@@ -450,7 +450,7 @@ Model& Model::operator= (Model const& rhs)
 }
 
 
-// Draw all meshes in model given worldViewProjection matrices.
+// Draw all meshBlocks in model given worldViewProjection matrices.
 _Use_decl_annotations_
 void XM_CALLCONV Model::Draw(
     ID3D11DeviceContext* deviceContext,
@@ -464,7 +464,7 @@ void XM_CALLCONV Model::Draw(
     assert(deviceContext != nullptr);
 
     // Draw opaque parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -475,7 +475,7 @@ void XM_CALLCONV Model::Draw(
     }
 
     // Draw alpha parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -487,7 +487,7 @@ void XM_CALLCONV Model::Draw(
 }
 
 
-// Draw all meshes in model using rigid-body animation given bone transform array.
+// Draw all meshBlocks in model using rigid-body animation given bone transform array.
 _Use_decl_annotations_
 void XM_CALLCONV Model::Draw(
     ID3D11DeviceContext* deviceContext,
@@ -503,7 +503,7 @@ void XM_CALLCONV Model::Draw(
     assert(deviceContext != nullptr);
 
     // Draw opaque parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -514,7 +514,7 @@ void XM_CALLCONV Model::Draw(
     }
 
     // Draw alpha parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -526,7 +526,7 @@ void XM_CALLCONV Model::Draw(
 }
 
 
-// Draw all meshes in model using skinning given bone transform array.
+// Draw all meshBlocks in model using skinning given bone transform array.
 _Use_decl_annotations_
 void XM_CALLCONV Model::DrawSkinned(
     ID3D11DeviceContext* deviceContext,
@@ -542,7 +542,7 @@ void XM_CALLCONV Model::DrawSkinned(
     assert(deviceContext != nullptr);
 
     // Draw opaque parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -553,7 +553,7 @@ void XM_CALLCONV Model::DrawSkinned(
     }
 
     // Draw alpha parts
-    for (const auto& it : meshes)
+    for (const auto& it : meshBlocks)
     {
         const auto *mesh = it.get();
         assert(mesh != nullptr);
@@ -721,7 +721,7 @@ void Model::UpdateEffects(_In_ std::function<void(IEffect*)> setEffect)
     if (mEffectCache.empty())
     {
         // This cache ensures we only set each effect once (could be shared)
-        for (const auto& mit : meshes)
+        for (const auto& mit : meshBlocks)
         {
             auto mesh = mit.get();
             assert(mesh != nullptr);

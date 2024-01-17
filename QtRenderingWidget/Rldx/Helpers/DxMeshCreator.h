@@ -2,8 +2,9 @@
 
 #include <assert.h>
 #include "..\DataTypes\DxMeshData.h"
+#include "..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
 
-namespace Rldx {
+namespace rldx {
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
 	class DxMeshDataCreator
@@ -33,7 +34,7 @@ namespace Rldx {
 		FillIndexBuffer(_poDevice, indices.size(), indices.data());
 
 		m_poMesh.indexCount = static_cast<uint32_t>(indices.size());
-		m_poMesh.indexFormat = DXGI_FORMAT_R32_UINT;
+		m_poMesh.indexFormat = sizeof(INDEX_TYPE) == 4 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
 		m_poMesh.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
 		return m_poMesh;
@@ -101,5 +102,6 @@ namespace Rldx {
 	public:
 		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
 		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
+		static DxCommonMeshData MakeMeshFromRMV2(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh);
 	};
 };

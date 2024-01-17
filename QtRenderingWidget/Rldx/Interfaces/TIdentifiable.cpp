@@ -1,3 +1,3 @@
 #include "TIdentifiable.h"
 
-Rldx::IntId Rldx::IdentifiableBase::sm_nextId = 1;
+rldx::IntId rldx::IdentifiableBase::sm_nextId = 1;

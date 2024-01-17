@@ -8,16 +8,16 @@
 
 
 
-using namespace Rldx;
+using namespace rldx;
 
-Rldx::DxMeshNode::SharedPointer Rldx::DxMeshNode::Create(const std::string& name)
+rldx::DxMeshNode::SharedPointer rldx::DxMeshNode::Create(const std::string& name)
 {
 	auto newMeshNode = std::shared_ptr<DxMeshNode>(new DxMeshNode);
 	newMeshNode->SetName(name);
 	return newMeshNode;
 }
 
-void Rldx::DxMeshNode::SetMeshData(const Rldx::DxCommonMeshData& meshData)
+void rldx::DxMeshNode::SetMeshData(const rldx::DxCommonMeshData& meshData)
 {
 	auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
 	m_meshDrawable.m_poMesh = newMeshHandle.GetPtr();
@@ -28,7 +28,7 @@ void Rldx::DxMeshNode::SetMeshData(const Rldx::DxCommonMeshData& meshData)
 
 }
 
-//void Rldx::DxMeshNode::Draw(ID3D11DeviceContext* poDC)
+//void rldx::DxMeshNode::Draw(ID3D11DeviceContext* poDC)
 //{
 //	// ready shader program
 //	m_poShaderProgram->GetReady(poDC);
@@ -37,7 +37,7 @@ void Rldx::DxMeshNode::SetMeshData(const Rldx::DxCommonMeshData& meshData)
 //	m_poMesh->Draw(poDC);
 //}
 
-void Rldx::DxMeshNode::Update(float timeElapsed)
+void rldx::DxMeshNode::Update(float timeElapsed)
 {
 	UppdateGlobalTransform(timeElapsed);
 }

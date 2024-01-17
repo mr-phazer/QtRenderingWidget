@@ -4,7 +4,10 @@
 #include <vector>
 #include <map>
 
+#include <Windows.h>
+
 #include "FileHelpers.h"
+
 
 using ByteVector = std::vector<uint8_t>;
 
@@ -58,9 +61,27 @@ public:
 	}*/
 
 	void Read(void* pDest, size_t bytesToCopy)
-	{
-		if (m_currentOffset + bytesToCopy >= m_data.size())
+	{		
+		if (m_currentOffset + bytesToCopy > m_data.size())
+		{			
 			throw std::exception("MemoryByteStream::Read: out of bounds");
+		}
+
+		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
+		m_currentOffset += bytesToCopy;
+	}
+
+	/// <summary>
+	/// A template version of Read that will automatically determine the size of the type
+	/// ...maybe
+	/// </summary>	
+	template <typename T>
+	void TAutoRead(T* pDest)
+	{
+		auto bytesToCopy = sizeof(T);
+
+		if (m_currentOffset + bytesToCopy > m_data.size())
+			throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
 
 		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
 		m_currentOffset += bytesToCopy;
@@ -72,7 +93,7 @@ public:
 		T element;
 		Read(&element, sizeof(T));
 		return element;
-	}
+	}	
 };
 
 

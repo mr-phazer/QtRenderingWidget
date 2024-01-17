@@ -29,7 +29,7 @@ enum class Key : uint32_t
 
 // associate input key code with action key
 //std::map<WPARAM, Key> mapKeyMap;
-namespace Rldx
+namespace rldx
 {
 	class DxCameraOrbital
 	{

@@ -11,7 +11,7 @@
 // Author
 #include "..\DataTypes\ShaderFiles.h"
 
-namespace Rldx {
+namespace rldx {
 
 	class ShaderLoaderHelper
 	{
@@ -85,4 +85,4 @@ namespace Rldx {
 		);
 
 	}; // class VertexShaderLoader
-}; // namespace Rldx
+}; // namespace rldx

@@ -8,7 +8,7 @@
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 
 
-namespace Rldx {	
+namespace rldx {	
 
 	class DxSceneManager : public IResizable
 	{	
@@ -66,4 +66,4 @@ namespace Rldx {
 
 
 
-}; // namespace Rldx
+}; // namespace rldx

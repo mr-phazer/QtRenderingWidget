@@ -17,7 +17,7 @@ namespace helpers
 	template <typename BASE, typename ENUM>
 	class TFactory
 	{
-		std::map<ENUM, std::unique_ptr<BASE>> m_map;
+		std::map<ENUM, std::shared_ptr<BASE>> m_map;
 
 	public:
 		template<typename DERIVED>
@@ -26,15 +26,16 @@ namespace helpers
 			m_map[Type] = std::unique_ptr<DERIVED>(poRawPtr);
 		}
 
-		BASE* Get(ENUM Type)
+		std::shared_ptr<BASE> Get(ENUM Type)
 		{
 			auto it = m_map.find(Type);
 			if (it == m_map.end())
 				throw std::exception("TFactory::Create: Type not found");
 
-			return it->second.get();
+			return it->second;
 		}
 	};
+	
 } // namespace helpers
 
 //////////////////////////////////////////////////////////////////////////

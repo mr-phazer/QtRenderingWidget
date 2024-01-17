@@ -2,7 +2,7 @@
 #include <string>
 #include "..\Logging\Logging.h"
 
-namespace Rldx {
+namespace rldx {
 
 	using IntId = uint32_t;
 	static const IntId INVALID_ID = ~0;

@@ -581,12 +581,12 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH(
         SetDebugObjectName(ibs[j].Get(), "ModelSDKMESH");
     }
 
-    // Create meshes
+    // Create meshBlocks
     std::vector<MaterialRecordSDKMESH> materials;
     materials.resize(header->NumMaterials);
 
     auto model = std::make_unique<Model>();
-    model->meshes.reserve(header->NumMeshes);
+    model->meshBlocks.reserve(header->NumMeshes);
 
     for (size_t meshIndex = 0; meshIndex < header->NumMeshes; ++meshIndex)
     {
@@ -722,7 +722,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH(
             mesh->meshParts.emplace_back(part);
         }
 
-        model->meshes.emplace_back(mesh);
+        model->meshBlocks.emplace_back(mesh);
     }
 
     // Load model bones (if present and requested)
@@ -751,15 +751,15 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH(
             const uint32_t index = frameArray[j].Mesh;
             if (index != DXUT::INVALID_MESH)
             {
-                if (index >= model->meshes.size())
+                if (index >= model->meshBlocks.size())
                 {
                     throw std::out_of_range("Invalid mesh index found in frame data");
                 }
 
-                if (model->meshes[index]->boneIndex == ModelBone::c_Invalid)
+                if (model->meshBlocks[index]->boneIndex == ModelBone::c_Invalid)
                 {
                     // Bind the first bone that links to a given mesh
-                    model->meshes[index]->boneIndex = j;
+                    model->meshBlocks[index]->boneIndex = j;
                 }
             }
         }

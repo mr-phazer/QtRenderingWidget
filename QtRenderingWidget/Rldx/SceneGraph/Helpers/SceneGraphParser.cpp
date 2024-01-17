@@ -2,20 +2,20 @@
 //
 //#include "..\..\Managers\DxDeviceManager.h"
 //
-//using namespace Rldx;
+//using namespace rldx;
 //
-//bool Rldx::SceneGraphParser::FindMeshNodes(IDxSceneNode* pRootNode)
+//bool rldx::SceneGraphParser::FindMeshNodes(IDxSceneNode* pRootNode)
 //{
 //	m_meshNodes.clear();
 //	return FindMeshNodesRecursive(pRootNode);
 //}
 //
-//std::vector<Rldx::DxMeshNode*> Rldx::SceneGraphParser::GetResult()
+//std::vector<rldx::DxMeshNode*> rldx::SceneGraphParser::GetResult()
 //{
 //	return m_meshNodes;
 //}
 //
-//bool Rldx::SceneGraphParser::FindMeshNodesRecursive(IDxSceneNode* pRootNode)
+//bool rldx::SceneGraphParser::FindMeshNodesRecursive(IDxSceneNode* pRootNode)
 //{
 //	bool bError = false;
 //

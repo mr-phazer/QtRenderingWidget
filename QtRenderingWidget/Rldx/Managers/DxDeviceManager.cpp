@@ -7,11 +7,11 @@
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 
 
-using namespace Rldx;
+using namespace rldx;
 
 std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
-DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
+DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 {
 	logging::LogAction("Creating New Device Mangager");
 	auto poNewInstance = std::unique_ptr<DxDeviceManager>(new DxDeviceManager);
@@ -31,7 +31,7 @@ DxDeviceManager::PUnique Rldx::DxDeviceManager::Create()
 	return poNewInstance;
 }
 
-DxDeviceManager& Rldx::DxDeviceManager::GetInstance()
+DxDeviceManager& rldx::DxDeviceManager::GetInstance()
 {
 	if (!sm_spoInstance) {
 		sm_spoInstance = Create();
@@ -39,7 +39,7 @@ DxDeviceManager& Rldx::DxDeviceManager::GetInstance()
 	return *sm_spoInstance.get();
 }
 
-HRESULT Rldx::DxDeviceManager::InitDirect3d11()
+HRESULT rldx::DxDeviceManager::InitDirect3d11()
 {
 	logging::LogAction("Attempting to create Direct3d 11 Device...");	
 	
@@ -109,7 +109,7 @@ HRESULT Rldx::DxDeviceManager::InitDirect3d11()
 	return hr;
 }
 
-bool Rldx::DxDeviceManager::InitFont()
+bool rldx::DxDeviceManager::InitFont()
 {
 	// TODO: exception?
 	/*fontEngine.m_upoFont = std::make_unique<DirectX::SpriteFont>(GetDevice(), L"myfile.spritefont");
@@ -123,7 +123,7 @@ bool Rldx::DxDeviceManager::InitFont()
 	return true;
 }
 
-void Rldx::DxDeviceManager::RenderText()
+void rldx::DxDeviceManager::RenderText()
 {
 
 	//spSwapChain->getBackBuffer().clearPixels(_dxManager->deviceContext(), spSwapChain->Color);

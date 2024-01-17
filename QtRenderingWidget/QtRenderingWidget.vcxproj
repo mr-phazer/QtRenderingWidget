@@ -57,10 +57,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);$(SolutionDir)DirectXTK\Inc</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);$(SolutionDir)DirectXTK\Inc</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
@@ -73,7 +73,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -88,9 +89,10 @@
     <ClCompile />
     <ClCompile />
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -124,12 +126,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Rldx\Rendering\DxAmbientLight.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxAmbientLightSource.cpp" />
     <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
     <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxLightSource.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp" />
     <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
@@ -139,7 +142,11 @@
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
-    <ClInclude Include="Rldx\Rendering\DxAmbientLight.h" />
+    <ClInclude Include="..\Tools\COMerrors.h" />
+    <ClInclude Include="..\Tools\tools.h" />
+    <ClInclude Include="Rldx\DataTypes\CommonVertex.h" />
+    <ClInclude Include="Rldx\Rendering\DxLightSource.h" />
+    <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
     <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
     <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
@@ -255,6 +262,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\qRME\QtRME_GUI\DIFFUSE_IBL_TEX.dds" />
+    <Image Include="..\..\qRME\QtRME_GUI\SPECULAR_IBL_TEX.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

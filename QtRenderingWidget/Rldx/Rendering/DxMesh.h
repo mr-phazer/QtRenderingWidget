@@ -14,7 +14,7 @@
 #include "DxMaterial.h"
 #include "..\DataTypes\DxMeshData.h"
 
-namespace Rldx {
+namespace rldx {
 
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
@@ -46,4 +46,4 @@ namespace Rldx {
 		DxCommonMeshData m_poMesh;		
 	};
 
-}; // namespace Rldx
+}; // namespace rldx

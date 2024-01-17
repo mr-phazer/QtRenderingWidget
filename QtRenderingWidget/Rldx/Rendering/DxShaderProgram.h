@@ -18,7 +18,7 @@
 
 #include "..\Interfaces\IBindable.h"
 
-namespace Rldx {
+namespace rldx {
 
 	// TODO: remove
 	//enum class ShaderTypeEnum
@@ -89,7 +89,7 @@ namespace Rldx {
 		template <typename SHADER_TYPE>
 		static  SHADER_TYPE* Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
 		{
-			auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+			auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 			//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
 			auto newInstance = result.GetPtr();
 
@@ -109,7 +109,7 @@ namespace Rldx {
 		template <typename SHADER_TYPE>
 		static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{		
-			auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+			auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 			//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
 			auto newInstance = result.GetPtr();
 
@@ -134,7 +134,7 @@ namespace Rldx {
 			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 
 			// TODO: remove debugging  code
-			auto DEBUGGIN_retrievedId = Rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
+			auto DEBUGGIN_retrievedId = rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
 
 			return newInstance;
 		}
@@ -168,9 +168,9 @@ namespace Rldx {
 		{
 			auto newInstance = TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>::Create(poDevice, vertexShaderPath, pixelShaderPath);
 
-			auto result = Rldx::DxResourceManager::GetInstance()->GetShaderManager()->AddResource(newInstance, "shader01");
+			auto result = rldx::DxResourceManager::GetInstance()->GetShaderManager()->AddResource(newInstance, "shader01");
 
-			auto resource = Rldx::DxResourceManager::GetInstance()->GetShaderManager()->GetResourceById(0);
+			auto resource = rldx::DxResourceManager::GetInstance()->GetShaderManager()->GetResourceById(0);
 
 			auto DEBUG_BREAK_POINT = 1;
 		}*/
@@ -206,7 +206,7 @@ namespace Rldx {
 	//	template <typename SHADER_TYPE>
 	//	static  SHADER_TYPE* Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
 	//	{
-	//		auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+	//		auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 	//		//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
 	//		auto newInstance = result.GetPtr();
 
@@ -226,7 +226,7 @@ namespace Rldx {
 	//	template <typename SHADER_TYPE>
 	//	static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 	//	{
-	//		auto result = Rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+	//		auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 	//		//auto newInstance = static_cast<TDxShaderProgram*>(result.GetPtr());
 	//		auto newInstance = result.GetPtr();
 
@@ -244,7 +244,7 @@ namespace Rldx {
 	//		newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 
 	//		// TODO: remove debugging  code
-	//		auto DEBUGGIN_retrievedId = Rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
+	//		auto DEBUGGIN_retrievedId = rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>("shader01");
 
 	//		return newInstance;
 	//	}
@@ -272,5 +272,5 @@ namespace Rldx {
 	//};
 
 
-}; // namespace Rldx
+}; // namespace rldx
 

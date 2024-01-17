@@ -2,6 +2,6 @@
 #include "IDrawable.h"
 #include "IBindable.h"
 
-namespace Rldx {
+namespace rldx {
 	class IRenderQueueItem : public IDrawable, public IBindable {};
 }

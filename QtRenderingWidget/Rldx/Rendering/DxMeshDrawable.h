@@ -4,7 +4,7 @@
 #include "..\DataTypes\DerformerData.h"
 #include "..\Interfaces\IRenderQueueItem.h"
 
-namespace Rldx {
+namespace rldx {
 
 	class DxMeshNode;
 	class DxMesh;	

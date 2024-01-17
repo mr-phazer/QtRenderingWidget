@@ -33,7 +33,7 @@
     <ClInclude Include="RigidModel\DataTypes\LodHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\MeshHeader_V3.h">
+    <ClInclude Include="RigidModel\DataTypes\MeshHeaderType3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidModel\Readers\RigidModelReader.h">
@@ -42,13 +42,10 @@
     <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\MeshHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RigidModel\DataTypes\TextureElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\MesnHeader_V3_Creator.h">
+    <ClInclude Include="RigidModel\Creators\MeshHeaderType3Creator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\Templates.h">
@@ -60,9 +57,45 @@
     <ClInclude Include="RigidModel\RawStructs\RawMeshHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RigidModel\Creators\MeshHeaderType5Creator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\MeshHeaderType5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Creators\VertexCreators\WeightedVertexCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Interfaces\ILODHeaderCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Creators\VertexCreators\VertexCreators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\DataConversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\RawStructs\VerticesRaw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\AttachElement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\MaterialBlockCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Constants\Rmv2Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidModel\Interfaces\IMeshHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ImportExport.cpp">
+    <ClCompile Include="Helpers\ImportExport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Helpers\ByteStream.cpp">
@@ -80,12 +113,24 @@
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\MesnHeader_V3_Creator.cpp">
+    <ClCompile Include="RigidModel\Creators\MeshHeaderType3Creator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Creators\MeshHeaderType5Creator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Creators\VertexCreators\VertexCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RigidModel\DataTypes\MeshEnums.h">
+    <None Include="RigidModel\DataTypes\MeshEnumsConstants.h">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="RigidModel\Creators\VertexCreators\VertexCAHelpers.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

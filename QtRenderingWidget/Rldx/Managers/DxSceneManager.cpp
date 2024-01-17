@@ -2,4 +2,4 @@
 #include "DxSceneManager.h"
 
 
-using namespace Rldx;
+using namespace rldx;

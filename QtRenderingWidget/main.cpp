@@ -7,9 +7,9 @@
 #include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qlineedit.h>
 
-#include "Rldx/Managers/DxDeviceManager.h"
-#include "Rldx/Rendering/DxShaderProgram.h"
-#include "Rldx/Helpers/DxMeshCreator.h"
+#include "rldx/Managers/DxDeviceManager.h"
+#include "rldx/Rendering/DxShaderProgram.h"
+#include "rldx/Helpers/DxMeshCreator.h"
 
 #include "Logging/Logging.h"
 #include "ExternFunctions\Creators.h"
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 	poContainerWindow->setLayout(new QVBoxLayout(poContainerWindow));
 	*/
 	// -- create the D3D 11 manager, 		
-	auto& spManager = Rldx::DxDeviceManager::GetInstance();	
+	auto& spManager = rldx::DxDeviceManager::GetInstance();	
 	
 	auto windows = CreateQRenderingWidget(nullptr);
 

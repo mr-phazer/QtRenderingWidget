@@ -1,10 +1,10 @@
 #pragma once
 #include "IDrawable.h"
 #include "IBindable.h"
-#include "Rldx\Rendering\DxConstBuffer.h"
+#include "rldx\Rendering\DxConstBuffer.h"
 #include "..\SceneGraph\SceneNodes\DxMeshNode.h"
 
-namespace Rldx {
+namespace rldx {
 
 	// -- forward declarations
 	class DxMesh;

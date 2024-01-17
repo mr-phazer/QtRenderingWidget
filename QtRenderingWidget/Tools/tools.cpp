@@ -1,6 +1,6 @@
 #include "tools.h"
 #include <string>
-//#include "..\Logging\Logging.h"
+
 
 int tools::fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset)
 {

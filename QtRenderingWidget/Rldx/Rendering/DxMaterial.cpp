@@ -4,7 +4,7 @@
 #include "..\Managers\DxDeviceManager.h"
 
 // TODO: which implementation to keep?
-//inline void Rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDc)
+//inline void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDc)
 //{
 //
 //	for (auto& tex : m_textures)
@@ -15,9 +15,9 @@
 //
 //}
 
-void Rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDC)
+void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDC)
 {
-	auto samplerLinearWrap = Rldx::DxDeviceManager::GetInstance().GetDxStates().LinearWrap();
+	auto samplerLinearWrap = rldx::DxDeviceManager::GetInstance().GetDxStates().LinearWrap();
 	poDC->PSSetSamplers(0, 1, &samplerLinearWrap);
 
 	for (auto& tex : m_textures)
@@ -26,12 +26,12 @@ void Rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDC)
 	}
 }
 
-Rldx::ResourceTypeEnum Rldx::DxMaterial::GetType() const
+rldx::ResourceTypeEnum rldx::DxMaterial::GetType() const
 {
 	return ResourceTypeEnum::Material;
 }
 
-std::string Rldx::DxMaterial::GetTypeString() const
+std::string rldx::DxMaterial::GetTypeString() const
 {
 	return "DxMaterial";
 }

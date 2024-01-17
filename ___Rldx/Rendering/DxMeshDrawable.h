@@ -1,0 +1,42 @@
+#pragma once
+
+#include "DxConstBuffer.h"
+#include "..\DataTypes\DerformerData.h"
+#include "..\Interfaces\IRenderQueueItem.h"
+
+namespace Rldx {
+
+	class DxMeshNode;
+	class DxMesh;	
+	class DxMaterial;
+	class DxMeshShaderProgram;
+
+	typedef TDxVSConstBuffer<DxDeformerData> DxDeformerDataConstBuffer;
+
+	class DxMeshDrawable : public IRenderQueueItem
+	{
+		// TODO: use friend or interface methods
+		friend class DxMeshNode;
+
+		DxMesh* m_poMesh = nullptr;
+		DxMaterial* m_poMaterial = nullptr;
+		DxMeshShaderProgram* m_poShaderProgram = nullptr;
+		DxDeformerData m_deformerDataBuffer; // only used if node is a a skeleton/defomer node
+		DxMeshNode* m_pDeformerNode = nullptr; // points to deformer/skeleton node, that will deform this mesh
+		sm::Matrix m_mWorldMatrix;
+		sm::Vector3 m_pivotPoint;
+
+		// TODO: add DxBoundingBox
+		// TODO: DxNodeCube 
+				
+		void SetMeshData(DxMesh* meshData) { m_poMesh = meshData; };
+		void SetMaterial(DxMaterial* material) { m_poMaterial = material; };
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_poShaderProgram = shaderProgram; };
+		void SetDeformerNode(DxMeshNode* pDeformerNode) { m_pDeformerNode = pDeformerNode; };
+
+		virtual void Draw(ID3D11DeviceContext* pDeviceContext) override;
+		virtual void BindToDC(ID3D11DeviceContext* pDeviceContext) override;
+	};
+
+};
+

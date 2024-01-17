@@ -7,13 +7,13 @@
 
 #include "..\..\DirectXTK\Inc\BufferHelpers.h"
 
-namespace Rldx {
+namespace rldx {
 
 	template<typename DATA_TYPE>
 	struct TConstBuffer
 	{
 		/// <summary>
-		/// Data, typically a struct, to be copied to the GPU
+		/// data, typically a struct, to be copied to the GPU
 		/// Stored on and editable from the CPU
 		/// </summary>
 		DATA_TYPE data;

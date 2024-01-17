@@ -1,0 +1,21 @@
+#pragma once
+
+#include "..\SceneNodes\DxMeshNode.h"
+#include "..\Rldx\Interfaces\IRenderBucket.h"
+#include <vector>
+
+//namespace Rldx {
+
+	/*class SceneGraphParser
+	{
+	public:
+		bool FindMeshNodes(IDxSceneNode* pRootNode);
+		std::vector<DxMeshNode*> GetResult();
+
+	private:
+		bool FindMeshNodesRecursive(IDxSceneNode* pNode);
+
+	private:
+		std::vector<DxMeshNode*> m_meshNodes;
+	};
+};*/

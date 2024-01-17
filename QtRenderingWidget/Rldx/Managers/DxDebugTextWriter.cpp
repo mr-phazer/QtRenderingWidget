@@ -1,7 +1,7 @@
 #include <string>
 
 #include "DxDebugTextWriter.h"
-#include "Tools\tools.h"
+#include "..\Tools\tools.h"
 
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
 {

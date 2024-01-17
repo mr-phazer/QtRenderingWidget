@@ -10,7 +10,7 @@
 
 #include "IDxResouce.h"
 
-namespace Rldx {
+namespace rldx {
 
 	// forward declarations
 	class DxMesh;
@@ -167,7 +167,7 @@ namespace Rldx {
 		return nullptr;
 	}
 
-}; // namespace Rldx
+}; // namespace rldx
 
 // TODO: remove once all usuable code is moved to DxResourceManager
 //template <typename RESOURCE_TYPE>

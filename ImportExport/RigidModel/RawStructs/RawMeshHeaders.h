@@ -2,8 +2,7 @@
 
 #include <DirectXMath.h>
 
-
-struct MeshHeaderFIVE_V6_V7_V8
+struct MeshHeaderType5
 {
 	static constexpr size_t size = 860;
 	RigidModelV2::VertexFormatInfo::EVertexFormat VertexFormatId = RigidModelV2::VertexFormatInfo::EVertexFormat::eERROR_NOT_SET;
@@ -51,20 +50,20 @@ struct MeshHeaderFIVE_V6_V7_V8
 		};;
 	} oTransformation;
 
-	int32_t matrix_index = -1;
-	int32_t parent_matrix_index = -1;
+	int32_t iMatrixIndex = -1;
+	int32_t iParentMatrixIndex = -1;
 
 	//I scale the whole model so it's probably not a single block!
 	uint32_t dwAttachmentPointCount = 0;	// Count of weapon attachment points blocks
 	uint32_t dwTextureCount = 0;			// Count of texture info blocks in group
 
 	struct _values {
-		uint32_t num_string_params = 0;
-		uint32_t num_float_params = 0;
-		uint32_t num_int_params = 0;
-		uint32_t num_vec4_params = 0;
+		uint32_t stringParamCount = 0;
+		uint32_t floatParamCount = 0;
+		uint32_t intParamCount = 0;
+		uint32_t float4ParamCount = 0;
 	} oMaterialValues;
 
-	uint8_t chPadding[124] = { 0 };
+	uint8_t szPadding[124] = { 0 };
 }
 
