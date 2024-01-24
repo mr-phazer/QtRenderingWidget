@@ -16,6 +16,8 @@
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\ResourceManager\IDxResouce.h"
 
+#include "..\Logging\Logging.h"
+
 #include "..\Interfaces\IBindable.h"
 
 namespace rldx {
@@ -109,6 +111,8 @@ namespace rldx {
 		template <typename SHADER_TYPE>
 		static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{		
+			logging::LogAction("Creating Shaders...");
+
 			auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>(L"shader01");
 			SHADER_TYPE* newInstance = static_cast<SHADER_TYPE*>(result.GetPtr());
 
@@ -128,7 +132,7 @@ namespace rldx {
 				newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
 			}
 
-			logging::LogAction("Creating Shaders: ");
+			logging::LogAction("D3D Call: Create Shader(s): ");
 			newInstance->m_pixelShaderConstBuffer.Create(poDevice);
 			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 

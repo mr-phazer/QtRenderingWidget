@@ -1,10 +1,10 @@
-#include "QtRenderingViewWidget.h"
+#include "QtRenderView.h"
 
 //#include "..\RenderLib\Direct3d11Device.h"
 
 using namespace rldx;
 
-QtRenderingViewWidget::QtRenderingViewWidget(QWidget* parent)
+QtRenderView::QtRenderView(QWidget* parent)
 	: QWidget(parent)
 {
 	setupUi(this);
@@ -18,7 +18,7 @@ QtRenderingViewWidget::QtRenderingViewWidget(QWidget* parent)
 	auto debug_1 = 1;
 }
 
-bool QtRenderingViewWidget::Init(/*rldx::DxDeviceManager* dxManager*/)
+bool QtRenderView::Init(/*rldx::DxDeviceManager* dxManager*/)
 {
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 

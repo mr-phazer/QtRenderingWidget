@@ -10,7 +10,7 @@
 
 #include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 
-#include "ui_QtRenderingViewWidget.h"
+#include "ui_QtRenderView.h"
 
 #include "..\..\rldx\Managers\DxDeviceManager.h"
 #include "..\..\rldx\Managers\DxSceneManager.h"
@@ -19,12 +19,12 @@
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
 #include "..\..\rldx\DataTypes\DxMeshData.h"
 
-class QtRenderingViewWidget : public QWidget, public Ui::QtRenderingViewWidgetClass
+class QtRenderView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
 
 public:
-	QtRenderingViewWidget(QWidget* parent = Q_NULLPTR);
+	QtRenderView(QWidget* parent = Q_NULLPTR);
 
 	void resizeEvent(QResizeEvent* event) override
 	{

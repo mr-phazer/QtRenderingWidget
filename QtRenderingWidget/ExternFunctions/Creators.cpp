@@ -2,16 +2,16 @@
 
 #include <exception>
 
-#include "QtObjects\Views\QtRenderingViewWidget.h"
+#include "QtObjects\Views\QtRenderView.h"
 
 QWidget* CreateQRenderingWidget(QWidget* parent)
 {
 	// make sure the Singleton DeviceManager is instantiated
 	//auto& spManager = rldx::DxDeviceManager::GetInstance();
-	QtRenderingViewWidget* poNewRenderingWidget = nullptr;
+	QtRenderView* poNewRenderingWidget = nullptr;
 
 	try {
-		poNewRenderingWidget = new QtRenderingViewWidget(parent); // nullptr = no parent, free floating window	
+		poNewRenderingWidget = new QtRenderView(parent); // nullptr = no parent, free floating window	
 		poNewRenderingWidget->hide();
 		poNewRenderingWidget->Init();
 		

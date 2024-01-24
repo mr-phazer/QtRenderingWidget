@@ -1,7 +1,7 @@
 
 #include <string>
 
-#include "QtObjects/Views/QtRenderingViewWidget.h"
+#include "QtObjects/Views/QtRenderView.h"
 #include <QtWidgets/QApplication>
 #include <QWindow>
 #include <QtWidgets/qboxlayout.h>

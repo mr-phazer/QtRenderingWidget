@@ -492,7 +492,7 @@ float gamma_accurate_component(in const float linear_val)
     {
         const float a = 0.055f;
 
-        return ((1.0f + a) * pow(linear_val, 1.0f / 2.4f)) - a;
+        return ((1.0f + a) * pow(abs(linear_val), 1.0f / 2.4f)) - a;
     }
 }
 

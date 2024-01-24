@@ -17,9 +17,9 @@ namespace rldx {
 	/// </summary>	
 	class DxAmbientLightSource : public IBindable
 	{
-		DxTexture* m_poDiffuseMap;
-		DxTexture* m_poSpecularMap;
-		DxTexture* m_poLUT;
+		DxTexture* m_poDiffuseMap = nullptr;
+		DxTexture* m_poSpecularMap = nullptr;
+		DxTexture* m_poLUT = nullptr;
 
 		UINT m_textureStartSlot = 0;
 

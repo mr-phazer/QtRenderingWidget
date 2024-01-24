@@ -143,17 +143,14 @@ namespace rldx {
 				///////////////////////////////////////////////////////
 				//  START: Make Scene:
 				///////////////////////////////////////////////////////			
-
-
-				logging::LogAction("Loading Shaders");
+						
 				auto newPbrShaderProgram =
 					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 						poDevice,
 						tools::GetExePath() + LR"(VS_Simple.cso)",
 						tools::GetExePath() + LR"(PS_Troy.cso)"
 					);
-
-				logging::LogAction("Loading Shaders");
+		
 				auto newSimpleShaderProgram =
 					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 						poDevice,
@@ -164,7 +161,8 @@ namespace rldx {
 				auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
 				auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("Model");
 
-				ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
+				//ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
+				ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)");
 				rmv2::RigidModelReader rm2Reader;
 				auto rmv2File = rm2Reader.Read(bytes);
 

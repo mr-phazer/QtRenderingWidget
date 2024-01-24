@@ -23,10 +23,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="QtObjects\Views\QtRenderingViewWidget.qrc">
+    <QtRcc Include="QtObjects\Views\QtRenderView.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="QtObjects\Views\QtRenderingViewWidget.ui">
+    <QtUic Include="QtObjects\Views\QtRenderView.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -70,13 +70,10 @@
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtObjects\Views\QtRenderingViewWidget.cpp">
+    <ClCompile Include="QtObjects\Views\QtRenderView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
@@ -130,6 +127,9 @@
     <ClCompile Include="Rldx\Rendering\DxTextureSamplers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtObjects\Controllers\QtRenderController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Managers\DxDeviceManager.h">
@@ -145,9 +145,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="asdsass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxScene.h">
@@ -178,9 +175,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxMaterial.h">
@@ -267,9 +261,6 @@
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxLightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -300,7 +291,6 @@
     <None Include="Logging\Inl\ConsoleColors.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
     <None Include="packages.config" />
     <None Include="NOT.editorconfig" />
     <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
@@ -313,9 +303,13 @@
     <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtObjects\Views\QtRenderingViewWidget.h">
+    <QtMoc Include="QtObjects\Views\QtRenderView.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtObjects\Controllers\QtRenderController.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -327,8 +321,6 @@
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\qRME\QtRME_GUI\SPECULAR_IBL_TEX.dds" />
-    <Image Include="..\..\qRME\QtRME_GUI\DIFFUSE_IBL_TEX.dds" />
     <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLDiffuse.dds" />
     <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLSpecular.dds" />
   </ItemGroup>
