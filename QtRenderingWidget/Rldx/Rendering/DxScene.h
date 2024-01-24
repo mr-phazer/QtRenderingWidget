@@ -8,30 +8,40 @@
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
 #include "..\Helpers\DxMeshCreator.h"
-#include "..\SceneGraph\BaseNode\DxBaseNode.h"
+#include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\SceneGraph.h"
+#include "..\SceneGraph\SceneNodes\DxBaseNode.h"
+#include "..\SceneGraph\SceneNodes\DxModelNode.h"
+#include "DxAmbientLightSource.h"
 #include "DxCameraOrbital.h"
-#include "DXSwapChain.h"
 #include "DxConstBuffer.h"
+#include "DXSwapChain.h"
+#include "DxTextureSamplers.h"
 
 #include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
 
 namespace rldx {
+
+	enum PS_ConstBufferSlots : UINT
+	{
+		AmbientLight = 0,
+		Lights = 1
+	};
 
 	enum class DxSceneTypeEnum
 	{
 		Normal
 	};
 
-	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable
+	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable, IBindable
 	{
 	public:
-		
-		using UniquePtr = std::unique_ptr<DxScene>;
+		friend class IDxSceneCreator;
+
+		using UniquePtr = std::shared_ptr<DxScene>;
 
 	public:
 		DxScene(const std::string& name = "") : TIdentifiable(name) {};
-
 		virtual void Init(ID3D11Device* poDevice);
 
 		std::string GetTypeString() const override { return "DxScene"; }
@@ -43,24 +53,32 @@ namespace rldx {
 		DxBaseNode* GetRootNode();
 		void DeleteNode(DxBaseNode* node);
 
-		DxSwapChain* GetSwapChain() const
-		{
-			return m_spoSwapChain.get();
-		}
+		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }
+		DxSwapChain::UniquePtr& GetRefSwapChain() { return m_spoSwapChain; }
 
-		DxSwapChain::UniquePtr& GetRefSwapChain()
-		{
-			return m_spoSwapChain;
-		}
+		void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
+		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
 		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
+		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 
 	private:
 		void UpdateViewAndPerspective();
-		void UpdateAndBindVSConstBuffer();
+
+
+		//void UpdateAmbientLight();
+
+
 		void DEBUGGING_SetViewAndPerspective();
+
+		void BindAllBindable(ID3D11DeviceContext* poDeviceContext)
+		{
+			for (auto& bindable : m_bindableObjects)
+			{
+				bindable->BindToDC(poDeviceContext);
+			}
+		}
 
 	private:
 		DxSceneGraph m_sceneGraph;
@@ -71,14 +89,23 @@ namespace rldx {
 
 		// TODO: iterate over these, call IResizable::Resize(width, height)
 		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized
-
-		// TODO: should this be 2 member? think about integrated solution
-		TConstBuffer<VS_PerScene_ConstantBuffer> m_sceneFrameVSConstBuffer;
-		TConstBuffer<PS_DirectionalLight_ConstBuffer> m_sceneFramePSConstBuffer;
+		std::vector<IBindable*> m_bindableObjects; // buffers/etc, that need to be resized when the window is resized
 
 		DxCameraOrbital m_globalCamera;
 		DxCameraOrbital m_globalDirectionalLight;
+
+		// -- Bindable objects
+		// TODO: should this be 2 member? think about integrated solution
+		TDxVSShaderConstBuffer<VS_PerScene_ConstantBuffer> m_sceneFrameVSConstBuffer;
+		TDxPSShaderConstBuffer<PS_Light_ConstBuffer> m_sceneFramePSConstBuffer;
+				
+		DxAmbientLightSource m_ambientLightSource;
+		DxTextureSamplers m_textureSamplers;
+
+	private:
+		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);
 	};
+
 
 	class IDxSceneCreator
 	{
@@ -112,53 +139,59 @@ namespace rldx {
 		NativeWindowSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};
 
 		DxScene::UniquePtr Create(ID3D11Device* poDevice, const std::string& name = "") override
-		{	
-			auto newScene = MakeNewScene(poDevice, name);
-			///////////////////////////////////////////////////////
-			//  START: Make Scene:
-			///////////////////////////////////////////////////////			
-			logging::LogAction("Loading Shaders");
-			auto newPbrShaderProgram =
-				rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-					poDevice,
-					tools::GetExePath() + LR"(VS_Simple.cso)",
-					tools::GetExePath() + LR"(PS_NoTextures.cso)"
-				);
-
-			logging::LogAction("Loading Shaders");
-			auto newSimpleShaderProgram =
-				rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-					poDevice,
-					tools::GetExePath() + LR"(VS_Simple.cso)",
-					tools::GetExePath() + LR"(PS_Simple.cso)"
-				);
-
-			auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
-			auto meshNodeCube = rldx::DxMeshNode::Create("Cube");
+		{		auto newScene = MakeNewScene(poDevice, name);
+				///////////////////////////////////////////////////////
+				//  START: Make Scene:
+				///////////////////////////////////////////////////////			
 
 
-			ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
-			rmv2::RigidModelReader reader;
-			auto rmv2File = reader.Read(bytes);
+				logging::LogAction("Loading Shaders");
+				auto newPbrShaderProgram =
+					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
+						poDevice,
+						tools::GetExePath() + LR"(VS_Simple.cso)",
+						tools::GetExePath() + LR"(PS_Troy.cso)"
+					);
 
-			//auto testMeshCube = rldx::ModelCreator::MakeTestCubeMesh(poDevice);
-			auto testMeshCube = 
-				rldx::ModelCreator::MakeMeshFromRMV2(poDevice, rmv2File.lods[0].meshBlocks[0]);
+				logging::LogAction("Loading Shaders");
+				auto newSimpleShaderProgram =
+					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
+						poDevice,
+						tools::GetExePath() + LR"(VS_Simple.cso)",
+						tools::GetExePath() + LR"(PS_Simple.cso)"
+					);
 
-			meshNodeCube->SetMeshData(testMeshCube);
-			meshNodeCube->SetShaderProgram(newPbrShaderProgram);
+				auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
+				auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("Model");
 
-			auto testMeshGrid = rldx::ModelCreator::MakeGrid(poDevice, 20, 0.1);
-			meshNodeGrid->SetMeshData(testMeshGrid);
-			meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
+				ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
+				rmv2::RigidModelReader rm2Reader;
+				auto rmv2File = rm2Reader.Read(bytes);
 
-			newScene->GetRootNode()->AddChild(meshNodeGrid);
-			newScene->GetRootNode()->AddChild(meshNodeCube);
-			///////////////////////////////////////////////////////
-			//  END: Make Scene:
-			///////////////////////////////////////////////////////			
+				//auto cubMeshData = rldx::DxMeshCreatorHelper::MakeTestCubeMesh(poDevice);			
+				//auto rm2MeshData = rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmv2File.lods[0].meshBlocks[0]);
+
+				modelNodeRmv2->SetMeshData(poDevice, rmv2File);
+				modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+				modelNodeRmv2->SetMaterialData(poDevice, rmv2File);
+				
+
+				auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 20, 0.1);
+				meshNodeGrid->SetMeshData(gridMeshData);
+				meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
+
+				newScene->GetRootNode()->AddChild(meshNodeGrid);
+				newScene->GetRootNode()->AddChild(modelNodeRmv2);
+
+
+				///////////////////////////////////////////////////////
+				//  END: Make Scene:
+				///////////////////////////////////////////////////////			
+
+				return newScene;
+
 			
-			return newScene;
+
 		};
 
 	private:

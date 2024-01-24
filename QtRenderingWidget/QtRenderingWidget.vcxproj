@@ -75,6 +75,7 @@
       <LanguageStandard>Default</LanguageStandard>
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -93,6 +94,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Rendering\DxTextureSamplers.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
     <ClCompile Include="Rldx\Rendering\DxAmbientLightSource.cpp" />
     <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
@@ -134,7 +138,7 @@
     <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\Rendering\DxLightSource.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderingViewWidget.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp" />
@@ -142,8 +146,12 @@
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
-    <ClInclude Include="..\Tools\COMerrors.h" />
     <ClInclude Include="..\Tools\tools.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h" />
+    <ClInclude Include="Rldx\Rendering\DxTextureSamplers.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
     <ClInclude Include="Rldx\DataTypes\CommonVertex.h" />
     <ClInclude Include="Rldx\Rendering\DxLightSource.h" />
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h" />
@@ -186,7 +194,7 @@
     <ClInclude Include="Rldx\Helpers\MathHelper.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h" />
-    <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
     <QtMoc Include="QtObjects\Views\QtRenderingViewWidget.h" />
@@ -219,18 +227,19 @@
     <None Include="myfile.spritefont" />
     <None Include="NOT.editorconfig" />
     <None Include="packages.config" />
-    <None Include="Rldx\Shaders\include\Attila_Lib.hlsli" />
-    <None Include="Rldx\Shaders\include\layout.hlsli" />
-    <None Include="Rldx\Shaders\include\math_constants.hlsli" />
-    <None Include="Rldx\Shaders\include\pbr_lib.hlsli" />
-    <None Include="Rldx\Shaders\include\PS_ConstBuffers.hlsli" />
-    <None Include="Rldx\Shaders\include\textures.hlsli" />
-    <None Include="Rldx\Shaders\include\tone_mapping.hlsli" />
-    <None Include="Rldx\Shaders\include\util.hlsli" />
-    <None Include="Rldx\Shaders\include\VS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl">
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
@@ -238,7 +247,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl">
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
@@ -246,7 +255,11 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl">
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Default.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
@@ -254,7 +267,7 @@
       <DisableOptimizations Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableOptimizations>
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
     </FxCompile>
-    <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl">
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</EnableDebuggingInformation>
@@ -266,6 +279,8 @@
   <ItemGroup>
     <Image Include="..\..\qRME\QtRME_GUI\DIFFUSE_IBL_TEX.dds" />
     <Image Include="..\..\qRME\QtRME_GUI\SPECULAR_IBL_TEX.dds" />
+    <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLDiffuse.dds" />
+    <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLSpecular.dds" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

@@ -31,7 +31,7 @@ public:
 		if (m_upoSceneManager)
 		{
 			m_timer->stop();
-			m_upoSceneManager->Resize(m_poDxManager->GetDevice(), m_poDxManager->GetDeviceContext(), width(), height());
+			m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), width(), height());
 			m_timer->start();
 		}	
 	}
@@ -125,7 +125,7 @@ public:
 	//};
 	
 
-	bool Init(rldx::DxDeviceManager* dxManager);
+	bool Init(/*rldx::DxDeviceManager* dxManager*/);
 
 	void TimerHandler()
 	{
@@ -134,12 +134,12 @@ public:
 
 //		renderText(_dxManager);		
 
-		m_upoSceneManager->GetCurrentScene()->Draw(m_poDxManager->GetDeviceContext());	
+		m_upoSceneManager->GetCurrentScene()->Draw(rldx::DxDeviceManager::GetInstance().GetDeviceContext());
 		m_upoSceneManager->MoveFrame();
 	}
 	
 
-	void StartRendering(const rldx::DxDeviceManager* dxManager, int _FPS = 100)
+	void StartRendering(/*const rldx::DxDeviceManager* dxManager, */int _FPS = 100)
 	{
 		m_timer = new QTimer(this);
 
@@ -165,7 +165,7 @@ signals:
 
 private:
 	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
-	rldx::DxDeviceManager* m_poDxManager = nullptr;
+	//rldx::DxDeviceManager* m_poDxManager = nullptr;
 	bool m_bRenderingRunning = true;	
 	QTimer* m_timer;
 	float m_frameTime = 0;

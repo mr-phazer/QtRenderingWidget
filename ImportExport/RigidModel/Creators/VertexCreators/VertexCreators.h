@@ -5,6 +5,7 @@
 #include "..\..\DataTypes\MeshEnumsConstants.h"
 #include "..\..\QtRenderingWidget\Rldx\DataTypes\CommonVertex.h"
 
+
 namespace rmv2 {
 
 	/// <summary>

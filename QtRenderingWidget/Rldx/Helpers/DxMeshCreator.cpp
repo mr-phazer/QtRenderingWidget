@@ -8,7 +8,7 @@
 
 
 // TODO: remove once tested
-rldx::DxCommonMeshData rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevice)
+rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::MakeTestCubeMesh(ID3D11Device* poDevice)
 {
 	DirectX::DX11::GeometricPrimitive::VertexCollection vertices;
 	DirectX::DX11::GeometricPrimitive::IndexCollection indices;
@@ -40,7 +40,7 @@ rldx::DxCommonMeshData rldx::ModelCreator::MakeTestCubeMesh(ID3D11Device* poDevi
 	return result;
 }
 
-rldx::DxCommonMeshData rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int linesPerAxis, float spacing)
+rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::MakeGrid(ID3D11Device* poDevice, int linesPerAxis, float spacing)
 {
 	std::vector<CommonVertex> vecVertex;
 	std::vector<uint32_t> vecIndex;
@@ -106,7 +106,7 @@ rldx::DxCommonMeshData rldx::ModelCreator::MakeGrid(ID3D11Device* poDevice, int 
 	return result;
 }
 
-rldx::DxCommonMeshData rldx::ModelCreator::MakeMeshFromRMV2(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh)
+rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh)
 {
 	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
 	

@@ -449,6 +449,8 @@ namespace tools
 	extern std::wstring convert_string(const std::string& str);
 	extern std::string convert_string(const std::wstring& wstr);
 
+	
+
 	template <class T>
 	static bool compare(T _1, T _2);
 
@@ -647,8 +649,8 @@ const auto NarrowStr = tools::wstring_to_string;
 const auto widen = tools::string_to_wstring;
 const auto narrow = tools::wstring_to_string;
 
-const auto wtos = tools::string_to_wstring;
-const auto stow = tools::wstring_to_string;
+const auto wtos = tools::wstring_to_string;
+const auto stow = tools::string_to_wstring;
 
 #define VERBOSE __FUNCTION__ ": " __FILE__ "(" + std::to_string(__LINE__) + ")"
 

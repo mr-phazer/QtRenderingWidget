@@ -100,7 +100,7 @@
     <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\SceneGraph\BaseNode\DxBaseNode.cpp">
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp">
@@ -122,6 +122,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxLightSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Rendering\DxTextureSamplers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,7 +237,7 @@
     <ClInclude Include="Rldx\Interfaces\IRenderBucket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\BaseNode\DxBaseNode.h">
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxConstBuffer.h">
@@ -261,9 +267,6 @@
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\COMerrors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -271,6 +274,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxTextureSamplers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -285,15 +303,16 @@
     <None Include="..\..\qRME\RenderLib\Attila_Lib.hlsli" />
     <None Include="packages.config" />
     <None Include="NOT.editorconfig" />
-    <None Include="Rldx\Shaders\include\Attila_Lib.hlsli" />
-    <None Include="Rldx\Shaders\include\layout.hlsli" />
-    <None Include="Rldx\Shaders\include\math_constants.hlsli" />
-    <None Include="Rldx\Shaders\include\pbr_lib.hlsli" />
-    <None Include="Rldx\Shaders\include\PS_ConstBuffers.hlsli" />
-    <None Include="Rldx\Shaders\include\textures.hlsli" />
-    <None Include="Rldx\Shaders\include\tone_mapping.hlsli" />
-    <None Include="Rldx\Shaders\include\util.hlsli" />
-    <None Include="Rldx\Shaders\include\VS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="QtObjects\Views\QtRenderingViewWidget.h">
@@ -301,13 +320,16 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Rldx\Shaders\PS_Simple.hlsl" />
-    <FxCompile Include="Rldx\Shaders\VS_Simple.hlsl" />
-    <FxCompile Include="Rldx\Shaders\PS_NoTextures.hlsl" />
-    <FxCompile Include="Rldx\Shaders\VS_Default.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Default.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\qRME\QtRME_GUI\SPECULAR_IBL_TEX.dds" />
     <Image Include="..\..\qRME\QtRME_GUI\DIFFUSE_IBL_TEX.dds" />
+    <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLDiffuse.dds" />
+    <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLSpecular.dds" />
   </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@ using ByteVector = std::vector<uint8_t>;
 /// </summary>
 class ByteStream
 {
+
 	ByteVector m_data;
 	size_t m_currentOffset = 0;
 
@@ -48,17 +49,7 @@ public:
 			throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
 
 		return ByteVector(m_data.begin() + offset, m_data.begin() + offset + bytes);
-	}
-
-	/*const ByteStream& GetChunk(size_t bytes) const
-	{
-		return ByteStream(GetRawChunk(bytes));
-	}
-
-	const ByteStream& GetChunk(size_t bytes, long long offset)	const
-	{
-		return ByteStream(GetRawChunk(bytes, offset));
-	}*/
+	}	
 
 	void Read(void* pDest, size_t bytesToCopy)
 	{		
@@ -94,6 +85,17 @@ public:
 		Read(&element, sizeof(T));
 		return element;
 	}	
+
+	const uint8_t* GetBufferPtr() const { return m_data.data(); }	
+	uint8_t* GetBufferPtr() { return m_data.data(); }
+	
+	size_t GetBufferSize() { return m_data.size(); }
+
+
+	bool IsValid() const
+	{
+		return m_data.size() > 0;
+	};
 };
 
 

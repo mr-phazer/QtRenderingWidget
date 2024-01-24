@@ -29,6 +29,10 @@ namespace logging
     //#define LogActionWarning(message) false ;
     //#define LogActionSuccess(message) ;
 
+
+
+#define LogException(what) ImplLog::LogException( FULL_FUNC_INFO(what) );
+
 #define LogActionError(msg) ImplLog::LogActionErrorFalse( FULL_FUNC_INFO(msg) );
 
 #define LogInfo(msg) ImplLog::LogActionInfo( FULL_FUNC_INFO(msg) );
@@ -60,21 +64,26 @@ namespace logging
     public:
         static std::wstring prefix;
 
-        static void LogActionInfo(const std::string& _strMsg);
-        static void LogSimpleWithColor(const std::string& _strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
-        static void LogAction_success(const std::string& _strMsg);
+        static void Log_Exception(const std::string& strMsg);
+        static void LogActionInfo(const std::string& strMsg);
+        static void DoLog(const std::string& strMsg,
+            const std::string& strTag = "ACTION: ",
+            WORD color = FG_WHITE | BG_BLACK,
+            WORD tagColor = FG_WHITE | BG_BLACK);
+        static void LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
+        static void LogAction_success(const std::string& strMsg);
         
         
-        static bool LogActionErrorFalse(const std::string& _strMsg);
-        //static bool LogActionErrorFalse(const std::string& _strMsg);
+        static bool LogActionErrorFalse(const std::string& strMsg);
+        //static bool LogActionErrorFalse(const std::string& strMsg);
 
 
-        static bool LogAction_warning(const std::string& _strMsg);
-        static void LogWrite(const std::string& _strMsg);
+        static bool LogAction_warning(const std::string& strMsg);
+        static void LogWrite(const std::string& strMsg);
         static void WriteToLogFile(const std::string& logString);
 
-        static void LogActionTimedBegin(const std::string& _strMsg);
-        static void LogActionTimedEnd(const std::string& _strMsg);
+        static void LogActionTimedBegin(const std::string& strMsg);
+        static void LogActionTimedEnd(const std::string& strMsg);
 
 
         static ImplLog& GetInstance() {

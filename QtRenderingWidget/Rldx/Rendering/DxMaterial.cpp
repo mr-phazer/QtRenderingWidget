@@ -15,14 +15,37 @@
 //
 //}
 
-void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDC)
+bool rldx::DxMaterial::operator==(const DxMaterial& other) const
 {
-	auto samplerLinearWrap = rldx::DxDeviceManager::GetInstance().GetDxStates().LinearWrap();
-	poDC->PSSetSamplers(0, 1, &samplerLinearWrap);
+	return m_pathHash == other.m_pathHash;
+}
 
+rldx::DxMaterial* rldx::DxMaterial::Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures)
+{
+	auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();
+
+	for (auto& tex : textures)
+	{
+		newMaterial->AddTexture(poDevice, tex.type, tex.path);
+	};
+
+	return new DxMaterial();
+}
+
+void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path)
+{
+	auto textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
+
+	textPtr->LoadFile(poDevice, path);
+
+	m_textures.push_back({ slot, textPtr });
+}
+
+void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
+{
 	for (auto& tex : m_textures)
 	{
-		tex.pTexture->BindAsShaderResourceView(poDC, tex.slot);
+		poDeviceContext->PSSetShaderResources(tex.slot+47, 1, tex.pTexture->GetAddressOfShaderResourceView());
 	}
 }
 

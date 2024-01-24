@@ -13,10 +13,16 @@ namespace rldx {
 		IdentifiableBase() : m_id(GetNextId()) {}
 		virtual ~IdentifiableBase() {};
 
-		IntId GetId() const { return m_id; }		
+		IntId GetId() const { return m_id; }
+
+		/// <summary>
+		/// Manually set id. Only use if you know what you are doing.
+		/// </summary>
+		void SetId(IntId id) { m_id = id; };
 
 	private: // in C++ is convention so seperate method from variable with and access modifier
 		static IntId GetNextId() { return sm_nextId++; }
+
 
 	private:
 		IntId m_id = INVALID_ID;
@@ -34,6 +40,7 @@ namespace rldx {
 
 		virtual std::string GetTypeString() const = 0;
 		virtual ENUM_TYPE GetType() const = 0;
+
 
 	protected:
 		std::string m_name = "Unnamed_Object";
@@ -55,5 +62,5 @@ namespace rldx {
 #if _DEBUG
 		logging::LogAction(/*GetTypeString()*/ +"# " + std::to_string(GetId()) + ": deallocated.");
 #endif
-	};	
+	};
 };

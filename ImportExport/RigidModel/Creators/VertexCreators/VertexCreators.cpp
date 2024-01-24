@@ -7,8 +7,8 @@
 
 rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes)
 {	
-	vertices_raw::VertexWeighted2 rawVertex;
-	bytes.Read(&rawVertex, vertices_raw::VertexWeighted2::GetSize());
+	vertices_raw_packed::VertexWeighted2 rawVertex;
+	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted2::GetSize());
 
 	rldx::CommonVertex outVertex;
 
@@ -57,8 +57,8 @@ rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes)
 
 rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes)
 {
-	vertices_raw::VertexWeighted4 rawVertex;
-	bytes.Read(&rawVertex, vertices_raw::VertexWeighted4::GetSize());
+	vertices_raw_packed::VertexWeighted4 rawVertex;
+	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted4::GetSize());
 
 	rldx::CommonVertex outVertex;
 

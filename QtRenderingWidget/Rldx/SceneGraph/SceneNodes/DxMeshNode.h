@@ -1,7 +1,8 @@
 #pragma once
 
 #include "..\..\Rendering\DxMeshDrawable.h"
-#include "..\BaseNode\DxBaseNode.h"
+#include "..\..\Rendering\DxMaterial.h"
+#include "DxBaseNode.h"
 #include "..\..\DataTypes\DxMeshData.h"
 
 namespace rldx {		
@@ -19,16 +20,20 @@ namespace rldx {
 	public:
 		static SharedPointer Create(const std::string& name = "");
 		
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
 
 		void SetMeshData(const rldx::DxCommonMeshData& meshData);
-		
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
+		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshDrawable.m_poMaterial = pDxMaterial; };
+
+
+
+		//void SetMeshData(const std::vector<);
+				
 		// implemation of type/string
 		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
 		std::string GetTypeString() const override { return "DxMeshNode"; };
 				
-		// udpate/flush impl
-		void Update(float timeElapsed) override;
+		// udpate/flush impl		
 		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;		
 	};
 };

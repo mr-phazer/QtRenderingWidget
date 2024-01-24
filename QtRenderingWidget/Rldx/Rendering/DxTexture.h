@@ -32,6 +32,8 @@ namespace rldx {
 	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
 	{
 	public:		
+		virtual ~DxTexture() = default;
+
 		ResourceTypeEnum GetType() const override;
 		std::string GetTypeString() const override;
 
@@ -40,7 +42,13 @@ namespace rldx {
 		UINT GetWidth();
 		UINT GetSampleCount();		
 		float GetAspectRatio();
+		
+		bool IsLoaded() const
+		{
+			return (bool)m_cpoShaderResourceView;
+		}
 
+		
 		virtual ID3D11RenderTargetView* GetRenderTargetView() const /*override*/ { return m_cpoRenderTargetView.Get();};
 		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  /*override*/ { return m_cpoShaderResourceView.Get();};
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ { return m_cpoRenderTargetView.GetAddressOf(); };
@@ -57,7 +65,11 @@ namespace rldx {
 			return m_cpoShaderResourceView;
 		};
 
-		virtual Microsoft::WRL::ComPtr<ID3D11DepthStencilView>& GetComPtrDepthStencil() /*override*/{
+		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrDepthStencil() /*override*/{
+			return m_cpoDepthStencilTexture;
+		};		
+		
+		virtual Microsoft::WRL::ComPtr<ID3D11DepthStencilView>& GetComPtrDepthStencilView() /*override*/{
 			return m_cpoDepthStencilView;
 		};
 
@@ -106,8 +118,11 @@ namespace rldx {
 				0);
 		}
 
-		bool LoadFile(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
+		bool LoadFile(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");		
 		bool LoadFile(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName = "");
+
+		bool LoadCubeMap(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
+		bool LoadCubeMap(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName = "");
 
 		bool CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount, const std::string& objectName = "");
 
@@ -252,8 +267,10 @@ namespace rldx {
 		//HRESULT Create3dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, UINT depth, DXGI_FORMAT format, UINT sampleCount);
 		HRESULT CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice);
 		HRESULT CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice);
+		
+		bool PlaceResourceBuffer(ID3D11Resource* poTextureResource);
 
-
+		D3D11_TEXTURE2D_DESC& GetTextureDescRef() { return m_textureDesc; }
 
 	private:
 		D3D11_TEXTURE2D_DESC m_textureDesc = {0};  // Texture data descrtion 

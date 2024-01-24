@@ -11,8 +11,11 @@ QtTesterApp::QtTesterApp(QWidget *parent)
 
     auto renderWidget = CreateQRenderingWidget(this);
 
+    if (!renderWidget)
+        return;
+
     this->setCentralWidget(renderWidget);   
-    
+    setWindowTitle("QRenderingWidget pluging for RPFM - Tester App");
 }
 
 QtTesterApp::~QtTesterApp()
