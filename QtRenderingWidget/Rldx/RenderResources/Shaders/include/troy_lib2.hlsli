@@ -1645,10 +1645,7 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
 
     alpha_test(diffuse_colour.a);
 
-    eye_vector = -normalize(input.eyePos - input.Wpos.xyz);
-    //eye_vector = -normalize(input.viewDirection);
-
-    //light_vector = normalize(light_position0.xyz - input.Wpos);
+    eye_vector = -normalize(input.eyePos - input.Wpos.xyz);    
     light_vector = -normalize(lightData[0].lightDirection);
 
     specular_colour = shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy);
