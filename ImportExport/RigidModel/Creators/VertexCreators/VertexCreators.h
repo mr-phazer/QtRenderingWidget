@@ -3,7 +3,7 @@
 #include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 #include "..\..\DataTypes\MeshEnumsConstants.h"
-#include "..\..\QtRenderingWidget\Rldx\DataTypes\CommonVertex.h"
+#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
 
 
 namespace rmv2 {

@@ -123,7 +123,7 @@ namespace DirectX
             Q = 0x51,
             R = 0x52,
             S = 0x53,
-            T = 0x54,
+            CONST_BUF_DATA_TYPE = 0x54,
             U = 0x55,
             V = 0x56,
             W = 0x57,
@@ -306,7 +306,7 @@ namespace DirectX
             bool Q : 1;                 // 0x51
             bool R : 1;                 // 0x52
             bool S : 1;                 // 0x53
-            bool T : 1;                 // 0x54
+            bool CONST_BUF_DATA_TYPE : 1;                 // 0x54
             bool U : 1;                 // 0x55
             bool V : 1;                 // 0x56
             bool W : 1;                 // 0x57

@@ -19,8 +19,8 @@ namespace Bezier
 {
     // Performs a cubic bezier interpolation between four control points,
     // returning the value at the specified time (t ranges 0 to 1).
-    template<typename T>
-    inline T CubicInterpolate(T const& p1, T const& p2, T const& p3, T const& p4, float t) noexcept
+    template<typename CONST_BUF_DATA_TYPE>
+    inline CONST_BUF_DATA_TYPE CubicInterpolate(CONST_BUF_DATA_TYPE const& p1, CONST_BUF_DATA_TYPE const& p2, CONST_BUF_DATA_TYPE const& p3, CONST_BUF_DATA_TYPE const& p4, float t) noexcept
     {
         return p1 * (1 - t) * (1 - t) * (1 - t) +
             p2 * 3 * t * (1 - t) * (1 - t) +
@@ -48,8 +48,8 @@ namespace Bezier
 
 
     // Computes the tangent of a cubic bezier curve at the specified time.
-    template<typename T>
-    inline T CubicTangent(T const& p1, T const& p2, T const& p3, T const& p4, float t) noexcept
+    template<typename CONST_BUF_DATA_TYPE>
+    inline CONST_BUF_DATA_TYPE CubicTangent(CONST_BUF_DATA_TYPE const& p1, CONST_BUF_DATA_TYPE const& p2, CONST_BUF_DATA_TYPE const& p3, CONST_BUF_DATA_TYPE const& p4, float t) noexcept
     {
         return p1 * (-1 + 2 * t - t * t) +
             p2 * (1 - 4 * t + 3 * t * t) +

@@ -30,10 +30,10 @@ bool QtRenderView::Init(/*rldx::DxDeviceManager* dxManager*/)
 	logging::LogAction("Create New Scene");
 	
 	auto newScene =
-		rldx::NativeWindowSceneCreator((HWND)winId()).Create(DxDeviceManager::GetInstance().GetDevice(), "TestScene1");
+		rldx::NativeWindowSceneCreator((HWND)winId()).Create(DxDeviceManager::GetInstance().GetDevice(), DxDeviceManager::GetInstance().GetDeviceContext(),	"TestScene1");
 
 	m_upoSceneManager->SetScene(newScene);
-	m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), width(), height());
+	m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 1024, 1024);
 
 	return true;
 }

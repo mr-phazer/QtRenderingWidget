@@ -66,10 +66,10 @@ public:
 	/// A template version of Read that will automatically determine the size of the type
 	/// ...maybe
 	/// </summary>	
-	template <typename T>
-	void TAutoRead(T* pDest)
+	template <typename CONST_BUF_DATA_TYPE>
+	void TAutoRead(CONST_BUF_DATA_TYPE* pDest)
 	{
-		auto bytesToCopy = sizeof(T);
+		auto bytesToCopy = sizeof(CONST_BUF_DATA_TYPE);
 
 		if (m_currentOffset + bytesToCopy > m_data.size())
 			throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
@@ -78,11 +78,11 @@ public:
 		m_currentOffset += bytesToCopy;
 	}
 
-	template <typename T>
-	T GetElement()
+	template <typename CONST_BUF_DATA_TYPE>
+	CONST_BUF_DATA_TYPE GetElement()
 	{
-		T element;
-		Read(&element, sizeof(T));
+		CONST_BUF_DATA_TYPE element;
+		Read(&element, sizeof(CONST_BUF_DATA_TYPE));
 		return element;
 	}	
 
@@ -122,11 +122,11 @@ public:
 //
 //	virtual void Read(void* pDest, size_t bytesToCopy) = 0;
 //
-//	template <typename T>
-//	T GetElement()
+//	template <typename CONST_BUF_DATA_TYPE>
+//	CONST_BUF_DATA_TYPE GetElement()
 //	{
-//		T element;
-//		Read(&element, sizeof(T));
+//		CONST_BUF_DATA_TYPE element;
+//		Read(&element, sizeof(CONST_BUF_DATA_TYPE));
 //		return element;
 //	}
 //};

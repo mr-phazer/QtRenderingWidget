@@ -6,10 +6,10 @@
 namespace helpers
 {
 
-	template <typename T>
+	template <typename CONST_BUF_DATA_TYPE>
 	class TByteCreator
 	{
-		virtual T Create(ByteStream& stream) = 0;
+		virtual CONST_BUF_DATA_TYPE Create(ByteStream& stream) = 0;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

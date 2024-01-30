@@ -31,18 +31,18 @@ namespace DirectX
         BinaryReader& operator= (BinaryReader const&) = delete;
 
         // Reads a single value.
-        template<typename T> T const& Read()
+        template<typename CONST_BUF_DATA_TYPE> CONST_BUF_DATA_TYPE const& Read()
         {
-            return *ReadArray<T>(1);
+            return *ReadArray<CONST_BUF_DATA_TYPE>(1);
         }
 
 
         // Reads an array of values.
-        template<typename T> T const* ReadArray(size_t elementCount)
+        template<typename CONST_BUF_DATA_TYPE> CONST_BUF_DATA_TYPE const* ReadArray(size_t elementCount)
         {
-            static_assert(std::is_standard_layout<T>::value, "Can only read plain-old-data types");
+            static_assert(std::is_standard_layout<CONST_BUF_DATA_TYPE>::value, "Can only read plain-old-data types");
 
-            uint8_t const* newPos = mPos + sizeof(T) * elementCount;
+            uint8_t const* newPos = mPos + sizeof(CONST_BUF_DATA_TYPE) * elementCount;
 
             if (newPos < mPos)
                 throw std::overflow_error("ReadArray");
@@ -50,7 +50,7 @@ namespace DirectX
             if (newPos > mEnd)
                 throw std::runtime_error("End of file");
 
-            auto result = reinterpret_cast<T const*>(mPos);
+            auto result = reinterpret_cast<CONST_BUF_DATA_TYPE const*>(mPos);
 
             mPos = newPos;
 

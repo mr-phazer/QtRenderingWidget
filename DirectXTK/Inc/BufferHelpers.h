@@ -32,23 +32,23 @@ namespace DirectX
         unsigned int bindFlags,
         _COM_Outptr_ ID3D11Buffer** pBuffer) noexcept;
 
-    template<typename T>
+    template<typename CONST_BUF_DATA_TYPE>
     HRESULT CreateStaticBuffer(_In_ ID3D11Device* device,
-        _In_reads_(count) T const* data,
+        _In_reads_(count) CONST_BUF_DATA_TYPE const* data,
         size_t count,
         unsigned int bindFlags,
         _COM_Outptr_ ID3D11Buffer** pBuffer) noexcept
     {
-        return CreateStaticBuffer(device, data, count, sizeof(T), bindFlags, pBuffer);
+        return CreateStaticBuffer(device, data, count, sizeof(CONST_BUF_DATA_TYPE), bindFlags, pBuffer);
     }
 
-    template<typename T>
+    template<typename CONST_BUF_DATA_TYPE>
     HRESULT CreateStaticBuffer(_In_ ID3D11Device* device,
-        T const& data,
+        CONST_BUF_DATA_TYPE const& data,
         unsigned int bindFlags,
         _COM_Outptr_ ID3D11Buffer** pBuffer) noexcept
     {
-        return CreateStaticBuffer(device, data.data(), data.size(), sizeof(typename T::value_type), bindFlags, pBuffer);
+        return CreateStaticBuffer(device, data.data(), data.size(), sizeof(typename CONST_BUF_DATA_TYPE::value_type), bindFlags, pBuffer);
     }
 
     // Helpers for creating texture from memory arrays.
@@ -95,7 +95,7 @@ namespace DirectX
     {
         namespace Private
         {
-            // Base class, not to be used directly: clients should access this via the derived PrimitiveBatch<T>.
+            // Base class, not to be used directly: clients should access this via the derived PrimitiveBatch<CONST_BUF_DATA_TYPE>.
             class ConstantBufferBase
             {
             protected:
@@ -104,7 +104,7 @@ namespace DirectX
         }
     }
 
-    template<typename T>
+    template<typename CONST_BUF_DATA_TYPE>
     class ConstantBuffer : public DX11::Private::ConstantBufferBase
     {
     public:
@@ -112,7 +112,7 @@ namespace DirectX
         ConstantBuffer() = default;
         explicit ConstantBuffer(_In_ ID3D11Device* device) noexcept(false)
         {
-            CreateBuffer(device, sizeof(T), mConstantBuffer.GetAddressOf());
+            CreateBuffer(device, sizeof(CONST_BUF_DATA_TYPE), mConstantBuffer.GetAddressOf());
         }
 
         ConstantBuffer(ConstantBuffer&&) = default;
@@ -123,7 +123,7 @@ namespace DirectX
 
         void Create(_In_ ID3D11Device* device)
         {
-            CreateBuffer(device, sizeof(T), mConstantBuffer.ReleaseAndGetAddressOf());
+            CreateBuffer(device, sizeof(CONST_BUF_DATA_TYPE), mConstantBuffer.ReleaseAndGetAddressOf());
         }
 
         // Writes new data into the constant buffer.
@@ -141,14 +141,14 @@ namespace DirectX
         }
     #else
 
-        void __cdecl SetData(_In_ ID3D11DeviceContext* deviceContext, T const& value) noexcept
+        void __cdecl SetData(_In_ ID3D11DeviceContext* deviceContext, CONST_BUF_DATA_TYPE const& value) noexcept
         {
             assert(mConstantBuffer);
 
             D3D11_MAPPED_SUBRESOURCE mappedResource;
             if (SUCCEEDED(deviceContext->Map(mConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
             {
-                *static_cast<T*>(mappedResource.pData) = value;
+                *static_cast<CONST_BUF_DATA_TYPE*>(mappedResource.pData) = value;
 
                 deviceContext->Unmap(mConstantBuffer.Get(), 0);
             }

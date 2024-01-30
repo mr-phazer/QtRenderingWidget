@@ -150,6 +150,12 @@
     <ClInclude Include="ShaderLoadingHelpers\ShaderLoadingHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tools\COMerrors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataTypes\ShaderFiles.cpp">
@@ -228,6 +234,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\tools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

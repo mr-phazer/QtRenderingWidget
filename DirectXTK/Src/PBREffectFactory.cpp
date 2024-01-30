@@ -20,9 +20,9 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    template<typename T>
+    template<typename CONST_BUF_DATA_TYPE>
     void SetPBRProperties(
-        _In_ T* effect,
+        _In_ CONST_BUF_DATA_TYPE* effect,
         const EffectFactory::EffectInfo& info,
         _In_ IEffectFactory* factory,
         _In_opt_ ID3D11DeviceContext* deviceContext)

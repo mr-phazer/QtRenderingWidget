@@ -16,10 +16,10 @@
 namespace DirectX
 {
     // Helper for lazily creating a D3D resource.
-    template<typename T, typename TCreateFunc>
-    inline T* DemandCreate(Microsoft::WRL::ComPtr<T>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
+    template<typename CONST_BUF_DATA_TYPE, typename TCreateFunc>
+    inline CONST_BUF_DATA_TYPE* DemandCreate(Microsoft::WRL::ComPtr<CONST_BUF_DATA_TYPE>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
     {
-        T* result = comPtr.Get();
+        CONST_BUF_DATA_TYPE* result = comPtr.Get();
 
         // Double-checked lock pattern.
     #ifdef _MSC_VER

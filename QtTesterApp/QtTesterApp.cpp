@@ -9,7 +9,9 @@ QtTesterApp::QtTesterApp(QWidget *parent)
 {
     setupUi(this);
 
-    auto renderWidget = CreateQRenderingWidget(this);
+    // TODO: clean up, maybe but some of this in controller
+    QString gameIdString = "wh2";
+    auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
 
     if (!renderWidget)
         return;

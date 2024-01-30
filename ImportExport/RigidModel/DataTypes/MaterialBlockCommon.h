@@ -9,11 +9,11 @@
 
 namespace rmv2 
 {
-	template <typename T>
+	template <typename CONST_BUF_DATA_TYPE>
 	struct ExtraMaterialElement
 	{
 		int32_t id;
-		T value;
+		CONST_BUF_DATA_TYPE value;
 	};
 
 	struct ExtraMaterialParams

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Rldx\DataTypes\CommonVertex.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPUConstBuffers.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h" />
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h" />
+    <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
+    <ClInclude Include="Rldx\DataTypes\DxMeshData.h" />
+    <ClInclude Include="Rldx\DataTypes\ShaderFiles.h" />
+    <ClInclude Include="Rldx\Helpers\DxMeshCreator.h" />
+    <ClInclude Include="Rldx\Helpers\MathHelper.h" />
+    <ClInclude Include="Rldx\Helpers\StringKeyMap.h" />
+    <ClInclude Include="Rldx\Interfaces\IBindable.h" />
+    <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
+    <ClInclude Include="Rldx\Interfaces\IFlushable.h" />
+    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h" />
+    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h" />
+    <ClInclude Include="Rldx\Interfaces\IResizable.h" />
+    <ClInclude Include="Rldx\Interfaces\IUpdateable.h" />
+    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h" />
+    <ClInclude Include="Rldx\Logging\Logging.h" />
+    <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h" />
+    <ClInclude Include="Rldx\Managers\DxDeviceManager.h" />
+    <ClInclude Include="Rldx\Managers\DxSceneManager.h" />
+    <ClInclude Include="Rldx\Managers\DxTypes.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
+    <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h" />
+    <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h" />
+    <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h" />
+    <ClInclude Include="Rldx\Rendering\DxConstBuffer.h" />
+    <ClInclude Include="Rldx\Rendering\DxLightSource.h" />
+    <ClInclude Include="Rldx\Rendering\DxMaterial.h" />
+    <ClInclude Include="Rldx\Rendering\DxMesh.h" />
+    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h" />
+    <ClInclude Include="Rldx\Rendering\DxScene.h" />
+    <ClInclude Include="Rldx\Rendering\DxShaderProgram.h" />
+    <ClInclude Include="Rldx\Rendering\DXSwapChain.h" />
+    <ClInclude Include="Rldx\Rendering\DxTexture.h" />
+    <ClInclude Include="Rldx\Rendering\DxTextureSamplers.h" />
+    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h" />
+    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneGraph.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
+    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
+    <ClInclude Include="Rldx\Tools\COMerrors.h" />
+    <ClInclude Include="Rldx\Tools\ModelImporter.h" />
+    <ClInclude Include="Rldx\Tools\tools.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
+    <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp" />
+    <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
+    <ClCompile Include="Rldx\Logging\Logging.cpp" />
+    <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
+    <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp" />
+    <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
+    <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxAmbientLightSource.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxLightSource.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMaterial.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMesh.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
+    <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxTexture.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxTextureSamplers.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
+    <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
+    <ClCompile Include="Rldx\Tools\tools.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Rldx\Logging\Inl\ConsoleColors.inl" />
+    <None Include="Rldx\Logging\Inl\WinConsoleColors.inl" />
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{81f17f00-4039-48d3-afbf-6168ffb0a9fb}</ProjectGuid>
+    <RootNamespace>Rldx</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(QtInclude);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(QtInclude);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

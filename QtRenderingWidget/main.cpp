@@ -7,11 +7,11 @@
 #include <QtWidgets/qboxlayout.h>
 #include <QtWidgets/qlineedit.h>
 
-#include "rldx/Managers/DxDeviceManager.h"
-#include "rldx/Rendering/DxShaderProgram.h"
-#include "rldx/Helpers/DxMeshCreator.h"
+#include "..\rldx/rldx/Managers/DxDeviceManager.h"
+#include "..\rldx/rldx/Rendering/DxShaderProgram.h"
+#include "..\rldx/rldx/Helpers/DxMeshCreator.h"
 
-#include "Logging/Logging.h"
+#include "..\rldx/rldx/Logging/Logging.h"
 #include "ExternFunctions\Creators.h"
 
 
@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
 
 	
 	///auto& spManager = rldx::DxDeviceManager::GetInstance();	
-	
-	auto windows = CreateQRenderingWidget(nullptr);
+	QString gameId = "wh";
+	auto window = CreateQRenderingWidget(nullptr, &gameId, nullptr);
 
 
 

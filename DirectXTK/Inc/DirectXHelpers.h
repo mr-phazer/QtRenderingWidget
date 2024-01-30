@@ -117,16 +117,16 @@ namespace DirectX
 #pragma clang diagnostic pop
 #endif
 
-        template<typename T>
-        void copy(_In_reads_(count) T const* data, size_t count) noexcept
+        template<typename CONST_BUF_DATA_TYPE>
+        void copy(_In_reads_(count) CONST_BUF_DATA_TYPE const* data, size_t count) noexcept
         {
-            memcpy(pData, data, count * sizeof(T));
+            memcpy(pData, data, count * sizeof(CONST_BUF_DATA_TYPE));
         }
 
-        template<typename T>
-        void copy(T const& data) noexcept
+        template<typename CONST_BUF_DATA_TYPE>
+        void copy(CONST_BUF_DATA_TYPE const& data) noexcept
         {
-            memcpy(pData, data.data(), data.size() * sizeof(typename T::value_type));
+            memcpy(pData, data.data(), data.size() * sizeof(typename CONST_BUF_DATA_TYPE::value_type));
         }
 
     private:
@@ -184,29 +184,29 @@ namespace DirectX
     inline namespace DX11
     {
         // Helper to check for power-of-2
-        template<typename T>
-        constexpr bool IsPowerOf2(T x) noexcept { return ((x != 0) && !(x & (x - 1))); }
+        template<typename CONST_BUF_DATA_TYPE>
+        constexpr bool IsPowerOf2(CONST_BUF_DATA_TYPE x) noexcept { return ((x != 0) && !(x & (x - 1))); }
 
         // Helpers for aligning values by a power of 2
-        template<typename T>
-        inline T AlignDown(T size, size_t alignment) noexcept
+        template<typename CONST_BUF_DATA_TYPE>
+        inline CONST_BUF_DATA_TYPE AlignDown(CONST_BUF_DATA_TYPE size, size_t alignment) noexcept
         {
             if (alignment > 0)
             {
                 assert(((alignment - 1) & alignment) == 0);
-                auto mask = static_cast<T>(alignment - 1);
+                auto mask = static_cast<CONST_BUF_DATA_TYPE>(alignment - 1);
                 return size & ~mask;
             }
             return size;
         }
 
-        template<typename T>
-        inline T AlignUp(T size, size_t alignment) noexcept
+        template<typename CONST_BUF_DATA_TYPE>
+        inline CONST_BUF_DATA_TYPE AlignUp(CONST_BUF_DATA_TYPE size, size_t alignment) noexcept
         {
             if (alignment > 0)
             {
                 assert(((alignment - 1) & alignment) == 0);
-                auto mask = static_cast<T>(alignment - 1);
+                auto mask = static_cast<CONST_BUF_DATA_TYPE>(alignment - 1);
                 return (size + mask) & ~mask;
             }
             return size;
@@ -220,11 +220,11 @@ namespace DirectX
         size_t count,
         _COM_Outptr_ ID3D11InputLayout** pInputLayout) noexcept;
 
-    template<typename T>
+    template<typename CONST_BUF_DATA_TYPE>
     HRESULT CreateInputLayoutFromEffect(_In_ ID3D11Device* device,
         _In_ IEffect* effect,
         _COM_Outptr_ ID3D11InputLayout** pInputLayout) noexcept
     {
-        return CreateInputLayoutFromEffect(device, effect, T::InputElements, T::InputElementCount, pInputLayout);
+        return CreateInputLayoutFromEffect(device, effect, CONST_BUF_DATA_TYPE::InputElements, CONST_BUF_DATA_TYPE::InputElementCount, pInputLayout);
     }
 }

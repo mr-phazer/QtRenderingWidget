@@ -28,7 +28,7 @@ namespace DirectX
     {
         namespace Private
         {
-        // Base class, not to be used directly: clients should access this via the derived PrimitiveBatch<T>.
+        // Base class, not to be used directly: clients should access this via the derived PrimitiveBatch<CONST_BUF_DATA_TYPE>.
             class PrimitiveBatchBase
             {
             protected:

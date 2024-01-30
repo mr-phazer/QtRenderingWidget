@@ -7,7 +7,7 @@
 #include "MeshHeaderType3.h"
 #include "MeshHeaderType5.h"
 #include "MaterialBlockCommon.h"
-#include "..\..\QtRenderingWidget\Rldx\DataTypes\CommonVertex.h"
+#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
 
 namespace rmv2 {
 

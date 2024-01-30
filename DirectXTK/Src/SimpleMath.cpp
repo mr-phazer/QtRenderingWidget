@@ -65,10 +65,10 @@ using namespace DirectX::SimpleMath;
 
 void Quaternion::RotateTowards(const Quaternion& target, float maxAngle, Quaternion& result) const noexcept
 {
-    const XMVECTOR T = XMLoadFloat4(this);
+    const XMVECTOR CONST_BUF_DATA_TYPE = XMLoadFloat4(this);
 
     // We can use the conjugate here instead of inverse assuming q1 & q2 are normalized.
-    const XMVECTOR R = XMQuaternionMultiply(XMQuaternionConjugate(T), target);
+    const XMVECTOR R = XMQuaternionMultiply(XMQuaternionConjugate(CONST_BUF_DATA_TYPE), target);
 
     const float rs = XMVectorGetW(R);
     const XMVECTOR L = XMVector3Length(R);
@@ -76,7 +76,7 @@ void Quaternion::RotateTowards(const Quaternion& target, float maxAngle, Quatern
     if (angle > maxAngle)
     {
         const XMVECTOR delta = XMQuaternionRotationAxis(R, maxAngle);
-        const XMVECTOR Q = XMQuaternionMultiply(delta, T);
+        const XMVECTOR Q = XMQuaternionMultiply(delta, CONST_BUF_DATA_TYPE);
         XMStoreFloat4(&result, Q);
     }
     else
@@ -91,9 +91,9 @@ void Quaternion::FromToRotation(const Vector3& fromDir, const Vector3& toDir, Qu
     // Melax, "The Shortest Arc Quaternion", Game Programming Gems, Charles River Media (2000).
 
     const XMVECTOR F = XMVector3Normalize(fromDir);
-    const XMVECTOR T = XMVector3Normalize(toDir);
+    const XMVECTOR CONST_BUF_DATA_TYPE = XMVector3Normalize(toDir);
 
-    const float dot = XMVectorGetX(XMVector3Dot(F, T));
+    const float dot = XMVectorGetX(XMVector3Dot(F, CONST_BUF_DATA_TYPE));
     if (dot >= 1.f)
     {
         result = Identity;
@@ -111,7 +111,7 @@ void Quaternion::FromToRotation(const Vector3& fromDir, const Vector3& toDir, Qu
     }
     else
     {
-        const XMVECTOR C = XMVector3Cross(F, T);
+        const XMVECTOR C = XMVector3Cross(F, CONST_BUF_DATA_TYPE);
         XMStoreFloat4(&result, C);
 
         const float s = sqrtf((1.f + dot) * 2.f);

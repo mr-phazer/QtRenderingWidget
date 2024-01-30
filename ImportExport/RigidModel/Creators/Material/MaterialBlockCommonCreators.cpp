@@ -14,8 +14,8 @@ MaterialBlockCommon MaterialBlockCommonCreator::Create(ByteStream& bytes, const 
 	return matBlock;
 }
 
-template <typename T>
-static void ReadParams(ByteStream& bytes, std::vector<ExtraMaterialElement<T>>& params, size_t size)
+template <typename CONST_BUF_DATA_TYPE>
+static void ReadParams(ByteStream& bytes, std::vector<ExtraMaterialElement<CONST_BUF_DATA_TYPE>>& params, size_t size)
 {
 	params.resize(size);
 	for (auto& param : params)

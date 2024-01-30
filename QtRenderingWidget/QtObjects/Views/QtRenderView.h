@@ -12,12 +12,12 @@
 
 #include "ui_QtRenderView.h"
 
-#include "..\..\rldx\Managers\DxDeviceManager.h"
-#include "..\..\rldx\Managers\DxSceneManager.h"
-#include "..\..\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
+#include "..\rldx\rldx\Managers\DxDeviceManager.h"
+#include "..\rldx\rldx\Managers\DxSceneManager.h"
+#include "..\rldx\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
 
-#include "..\..\rldx\Rendering\DxShaderProgram.h"
-#include "..\..\rldx\DataTypes\DxMeshData.h"
+#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
+#include "..\rldx\rldx\DataTypes\DxMeshData.h"
 
 class QtRenderView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {

@@ -20,8 +20,8 @@ using Microsoft::WRL::ComPtr;
 
 namespace
 {
-    template<typename T>
-    void SetMaterialProperties(_In_ T* effect, const EffectFactory::EffectInfo& info)
+    template<typename CONST_BUF_DATA_TYPE>
+    void SetMaterialProperties(_In_ CONST_BUF_DATA_TYPE* effect, const EffectFactory::EffectInfo& info)
     {
         effect->EnableDefaultLighting();
 

@@ -32,20 +32,22 @@
 //using ubyte4 = uint8_t[4];
 //using ubyte2 = uint8_t[2];
 
-using ushort4 = DirectX::PackedVector::XMUSHORT4;
-using ushort2 = DirectX::PackedVector::XMUSHORT2;
-using ubyte4 = DirectX::PackedVector::XMUBYTE4;
-using ubyte2 = DirectX::PackedVector::XMUBYTE2;
+
 
 namespace vertices_raw_packed
 {
+	using ushort4 = DirectX::PackedVector::XMUSHORT4;
+	using ushort2 = DirectX::PackedVector::XMUSHORT2;
+	using ubyte4 = DirectX::PackedVector::XMUBYTE4;
+	using ubyte2 = DirectX::PackedVector::XMUBYTE2;
+
 	struct VertexWeighted2
 	{
 		static constexpr size_t GetSize() { return 28U; }
 
 		ushort4 position;
 
-		ubyte2 boneIndices; 
+		ubyte2 boneIndices;
 		ubyte2 boneWeights;
 
 		ubyte4 normal;
@@ -82,8 +84,8 @@ namespace vertices_raw_packed
 		ushort2 uv; // 20
 
 		ubyte4 tangent;
-		ubyte4 bitangent;		
+		ubyte4 bitangent;
 	};
-}
+};
 
 //#pragma pack(pop)   /* restore original alignment from stack */

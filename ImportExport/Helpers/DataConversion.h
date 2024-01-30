@@ -6,8 +6,8 @@
 
 struct FloatConverter
 {
-	template <typename T>
-	inline static constexpr DirectX::XMFLOAT3 GetSNORMFloat3(const T& vIn)
+	template <typename CONST_BUF_DATA_TYPE>
+	inline static constexpr DirectX::XMFLOAT3 GetSNORMFloat3(const CONST_BUF_DATA_TYPE& vIn)
 	{
 		return
 		{
@@ -28,8 +28,8 @@ struct FloatConverter
 		};
 	};
 
-	template <typename T>
-	inline static DirectX::XMFLOAT4 GetFloat4FromHalf4(const T& in)
+	template <typename CONST_BUF_DATA_TYPE>
+	inline static DirectX::XMFLOAT4 GetFloat4FromHalf4(const CONST_BUF_DATA_TYPE& in)
 	{
 		return {
 			DirectX::PackedVector::XMConvertHalfToFloat(in.x),
@@ -40,8 +40,8 @@ struct FloatConverter
 	}
 
 	
-	template <typename T>
-	inline static DirectX::XMFLOAT2 GetFloat2FromHalf2(const T& in)
+	template <typename CONST_BUF_DATA_TYPE>
+	inline static DirectX::XMFLOAT2 GetFloat2FromHalf2(const CONST_BUF_DATA_TYPE& in)
 	{
 		return {
 			DirectX::PackedVector::XMConvertHalfToFloat(in.x),
@@ -90,16 +90,16 @@ struct FloatConverter
 ////
 ////
 ////
-////	template <typename T>
-////	static T sign(T value)
+////	template <typename CONST_BUF_DATA_TYPE>
+////	static CONST_BUF_DATA_TYPE sign(CONST_BUF_DATA_TYPE value)
 ////	{
 ////		return abs(value) / value;
 ////	}
 ////
-////	template <typename T>
-////	static inline constexpr T clamp(const T& _value, T min, T max)
+////	template <typename CONST_BUF_DATA_TYPE>
+////	static inline constexpr CONST_BUF_DATA_TYPE clamp(const CONST_BUF_DATA_TYPE& _value, CONST_BUF_DATA_TYPE min, CONST_BUF_DATA_TYPE max)
 ////	{
-////		return std::max<T>(std::min<T>(_value, max), min);
+////		return std::max<CONST_BUF_DATA_TYPE>(std::min<CONST_BUF_DATA_TYPE>(_value, max), min);
 ////	}
 ////
 ////
@@ -337,8 +337,8 @@ struct FloatConverter
 ////		return (static_cast<float>(b) / 127.0f) - 1.f;
 ////	}
 ////
-////	template <typename T, int DIV = (sizeof(T) / 2) - 1>
-////	static constexpr float TEST_uint_to_snorm_float(T b)
+////	template <typename CONST_BUF_DATA_TYPE, int DIV = (sizeof(CONST_BUF_DATA_TYPE) / 2) - 1>
+////	static constexpr float TEST_uint_to_snorm_float(CONST_BUF_DATA_TYPE b)
 ////	{		
 ////		auto value = (static_cast<float>(b) / static_cast<float>(DIV)) - 1.f;
 ////		return value;
