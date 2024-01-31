@@ -28,6 +28,7 @@
     <ClInclude Include="Rldx\DataTypes\DxMeshData.h" />
     <ClInclude Include="Rldx\DataTypes\ShaderFiles.h" />
     <ClInclude Include="Rldx\Helpers\DxMeshCreator.h" />
+    <ClInclude Include="Rldx\Helpers\DxSceneCreator.h" />
     <ClInclude Include="Rldx\Helpers\MathHelper.h" />
     <ClInclude Include="Rldx\Helpers\StringKeyMap.h" />
     <ClInclude Include="Rldx\Interfaces\IBindable.h" />
@@ -54,6 +55,7 @@
     <ClInclude Include="Rldx\Rendering\DxMesh.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h" />
     <ClInclude Include="Rldx\Rendering\DxScene.h" />
+    <ClCompile Include="Rldx\Helpers\DxSceneCreator.cpp" />
     <ClInclude Include="Rldx\Rendering\DxShaderProgram.h" />
     <ClInclude Include="Rldx\Rendering\DXSwapChain.h" />
     <ClInclude Include="Rldx\Rendering\DxTexture.h" />

@@ -3,13 +3,13 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_QtTesterApp.h"
 
-class QtTesterApp : public QMainWindow, public Ui::QtTesterAppClass
+class QtTesterAppWindow : public QMainWindow, public Ui::QtTesterAppClass
 {
     Q_OBJECT
 
 public:
-    QtTesterApp(QWidget *parent = nullptr);
-    ~QtTesterApp();
+    QtTesterAppWindow(QWidget *parent = nullptr);
+    ~QtTesterAppWindow();
 
 private:
      

@@ -21,138 +21,44 @@
 
 class QtRenderView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
+
+	// overriden methods
+	void resizeEvent(QResizeEvent* event) override;
+	QPaintEngine* paintEngine() const override;
+	bool event(QEvent* event) override;
+	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
+
+	LRESULT WINAPI NativeWindowProcedure(MSG* pMsg);
+
+
 	Q_OBJECT
 
 public:
 	QtRenderView(QWidget* parent = Q_NULLPTR);
 
-	void resizeEvent(QResizeEvent* event) override
-	{
-		if (m_upoSceneManager)
-		{
-			m_timer->stop();
-			m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), width(), height());
-			m_timer->start();
-		}	
-	}
-
-	bool event(QEvent* event)
-	{
-
-		switch (event->type())
-		{
-			// Workaround for https://bugreports.qt.io/browse/QTBUG-42183 to get key strokes.
-			// To make sure that we always have focus on the widget when we enter the rect area.
-
-		case QEvent::Leave:
-		{
-			::ReleaseCapture();
-		}
-		break;
-		case QEvent::MouseButtonPress:
-			emit mouseClicked((QMouseEvent*)event);
-
-		case QEvent::FocusIn:
-		case QEvent::FocusAboutToChange:
-			if (::GetFocus() != reinterpret_cast<HWND>(this->winId()))
-			{
-				QWidget* nativeParent = this;
-				while (true)
-				{
-					if (nativeParent->isWindow()) break;
-
-					QWidget* parent = nativeParent->nativeParentWidget();
-					if (!parent) break;
-
-					nativeParent = parent;
-				}
-
-				if (nativeParent && nativeParent != this &&
-					::GetFocus() == reinterpret_cast<HWND>(nativeParent->winId()))
-					::SetFocus(reinterpret_cast<HWND>(this->winId()));
-			}
-			break;
-		case QEvent::KeyPress:
-			emit keyPressed((QKeyEvent*)event);
-			break;
-		case QEvent::MouseMove:
-			emit mouseMoved((QMouseEvent*)event);
-			break;
-			/*case QEvent::MouseButtonPress:
-				emit mouseClicked((QMouseEvent*)event);
-				break;*/
-		case QEvent::MouseButtonRelease:
-			emit mouseReleased((QMouseEvent*)event);
-			break;
-		}
-
-		return QWidget::event(event);
-	}
-
-
-
-	//#if QT_VERSION >= 0x050000
-	bool nativeEvent(const QByteArray& eventType,
-		void* message,
-		long* result)
-	{
-		Q_UNUSED(eventType);
-		Q_UNUSED(result);
-		
-		if (m_upoSceneManager)
-		{
-			MSG* pMsg = reinterpret_cast<MSG*>(message);
-			nativeWindowProcedure(pMsg);
-
-			
-		
-		}
-
-		return false;
-
-		//return QWidget::nativeEvent(eventType, message, result);
-	}
-
-	LRESULT WINAPI nativeWindowProcedure(MSG* pMsg)
-	{	
-		return m_upoSceneManager->NativeWindowProcedure(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);	
-	}
-
-
-	//void setSwapChain(rldx::DXSwapChain::sptrDXSwapChain _pSwapChain)
-	//{
-	//	spSwapChain = std::move(_pSwapChain); // move the ownership of the swap chain ptr
-	//};
 	
 
 	bool Init(/*rldx::DxDeviceManager* dxManager*/);
 
-	void TimerHandler()
+	void FrameTimeOutHandler();
+	void StartRendering(float _FPS = 60.0f)
 	{
-		if (!m_bRenderingRunning)
-			return;
-
-//		renderText(_dxManager);		
-
-		m_upoSceneManager->GetCurrentScene()->Draw(rldx::DxDeviceManager::GetInstance().GetDeviceContext());
-		m_upoSceneManager->MoveFrame();
-	}
-	
-
-	void StartRendering(/*const rldx::DxDeviceManager* dxManager, */int _FPS = 100)
-	{
+		m_upoSceneManager->SetRenderRunningState(true);
+		
+		// TODO: move this to scene manager?
 		m_timer = new QTimer(this);
 
 		connect(m_timer, &QTimer::timeout, [&]()
 				{
-					TimerHandler();
+					FrameTimeOutHandler();
 				}
 		);
 
 		m_frameTime = 1000.0f / _FPS;
-
-		m_timer->start(1000 / _FPS);		
+		m_timer->start(m_frameTime);
 	}
+
+	rldx::DxSceneManager& GetSceneManager() { return *m_upoSceneManager; }
 
 signals:
 	void keyPressed(QKeyEvent*);
@@ -160,13 +66,12 @@ signals:
 	void mouseClicked(QMouseEvent*);
 	void mouseReleased(QMouseEvent*);
 	void doubleclicked();
-
 	void detachedWindowClose();
 
 private:
 	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
 	//rldx::DxDeviceManager* m_poDxManager = nullptr;
-	bool m_bRenderingRunning = true;	
+	
 	QTimer* m_timer;
 	float m_frameTime = 0;
 

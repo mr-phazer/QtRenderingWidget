@@ -57,6 +57,8 @@ namespace rldx {
 		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
+		int GetTextureStartSlot();
+
 		ResourceTypeEnum GetType() const override;
 		std::string GetTypeString() const override;
 	};

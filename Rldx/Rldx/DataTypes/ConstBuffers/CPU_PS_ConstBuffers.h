@@ -75,10 +75,10 @@ namespace rldx
 
 	struct PS_AmbientLight_Data_ConstBuffer
 	{
-		float radiance = 1.0;
-		float roughness = 1.0;
-		float speculatFactor = 1.0;
-		float diffuseFactor = 1.0;
+		float radiance = 1.0f;
+		float roughness = 1.0f;
+		float speculatFactor = 1.0f;
+		float diffuseFactor = 1.0f;
 
 		DirectX::XMFLOAT4X4 roatation = sm::Matrix::Identity;
 		DirectX::XMFLOAT4 color = { 1,1,1,1 };

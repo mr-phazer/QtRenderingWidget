@@ -99,6 +99,9 @@
     <ClCompile Include="Rldx\Tools\tools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rldx\Helpers\DxSceneCreator.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
@@ -249,6 +252,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Tools\tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Helpers\DxSceneCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

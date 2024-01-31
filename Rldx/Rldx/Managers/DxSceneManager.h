@@ -28,7 +28,7 @@ namespace rldx {
 
 		void MoveFrame()
 		{
-			if (m_spoCurrentScene)
+			if (m_spoCurrentScene && IsRenderRunning())
 			{
 				m_spoCurrentScene->Update(m_systemClock.GetLocalTime());
 			}
@@ -44,7 +44,7 @@ namespace rldx {
 		
 		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
 		{		
-			if (m_spoCurrentScene != nullptr)
+			if (m_spoCurrentScene)
 			{
 				return m_spoCurrentScene->NativeWindowProcedure(hWnd, uMsg, wParam, lParam);
 			}
@@ -58,10 +58,13 @@ namespace rldx {
 			return m_spoCurrentScene.get();
 		}
 
+		bool IsRenderRunning() const { return m_bRenderingRunning; }
+		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
 
 	private:
 		DxScene::UniquePtr m_spoCurrentScene = nullptr;		
 		tools::SystemClock m_systemClock;
+		bool m_bRenderingRunning = false;
 	};
 
 

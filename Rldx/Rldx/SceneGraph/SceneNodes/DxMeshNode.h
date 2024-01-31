@@ -18,23 +18,17 @@ namespace rldx {
 	public:
 		using SharedPointer = std::shared_ptr<DxMeshNode>;
 	public:
-		static SharedPointer Create(const std::string& name = "");
-		
+		static SharedPointer Create(const std::string& name = "");		
 
 		void SetMeshData(const rldx::DxCommonMeshData& meshData);
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
 		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshDrawable.m_poMaterial = pDxMaterial; };
+		
+		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;
 
-
-
-		//void SetMeshData(const std::vector<);
-				
-		// implemation of type/string
 		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
-		std::string GetTypeString() const override { return "DxMeshNode"; };
-				
-		// udpate/flush impl		
-		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;		
+		std::string GetTypeString() const override { return "DxMeshNode"; };	
+		
 	};
 };
 

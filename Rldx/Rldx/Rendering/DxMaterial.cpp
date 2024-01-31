@@ -7,9 +7,9 @@
 //inline void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDc)
 //{
 //
-//	for (auto& tex : m_textures)
+//	for (auto& itTextureInfo : m_textures)
 //	{		
-//		poDc->PSSetShaderResources(tex.slot, 1, tex.pTexture->GetAddressOfShaderResourceView());
+//		poDc->PSSetShaderResources(itTextureInfo.slot, 1, itTextureInfo.pTexture->GetAddressOfShaderResourceView());
 //	}
 //
 //
@@ -57,17 +57,17 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 		// -- allocate empty texture resource
 		textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
 
-		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACL: " + tools::wstring_to_string(path));
+		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + tools::wstring_to_string(path));
 		// TODO: TEST CODE BEING
-		QVector<QString> files = { { QString::fromStdWString(path) } };
-		QVector<QByteArray> binaries;
+		QList<QString> files = { { QString::fromStdWString(path) } };
+		QList<QByteArray> binaries;
 		DxResourceManager::CallAssetFetchCallBack(files, binaries);
 		// TODO: TEST CODE END;
 
 		if (binaries.size() && IsDDSTextureFile(binaries[0].data()) )
 		{
 
-			logging::LogActionSuccess("Loaded From CALLBACK");
+			logging::LogActionSuccess("Loaded From CALLBACK: " + tools::wstring_to_string(path));
 
 		
 
@@ -81,10 +81,19 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 
 void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
 {
-	for (auto& tex : m_textures)
+	for (auto& itTextureInfo : m_textures)
 	{
-		poDeviceContext->PSSetShaderResources(tex.slot+47, 1, tex.pTexture->GetAddressOfShaderResourceView());
+		poDeviceContext->PSSetShaderResources(
+			GetTextureStartSlot() + itTextureInfo.slot, 
+			1, 
+			itTextureInfo.pTexture->GetAddressOfShaderResourceView()
+		);
 	}
+}
+
+int rldx::DxMaterial::GetTextureStartSlot()
+{
+	return 47;
 }
 
 rldx::ResourceTypeEnum rldx::DxMaterial::GetType() const

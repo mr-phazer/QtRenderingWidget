@@ -72,17 +72,17 @@ void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindow
 }
 
 LRESULT __stdcall rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{	
+{		
 	if (uMsg == WM_KEYDOWN)
 	{ 
-		bCtrlDown = (wParam == VK_CONTROL);
-		auto debug_1 = 1;
+		if (wParam == VK_CONTROL)
+			bCtrlDown = true;		
 	}	
 
 	if (uMsg == WM_KEYUP)
 	{ 
-		bCtrlDown = !(wParam == VK_CONTROL);
-		auto debug_1 = 1;
+		if (wParam == VK_CONTROL)
+			bCtrlDown = false;		
 	}	
 
 	if (bCtrlDown)
@@ -111,7 +111,7 @@ void rldx::DxScene::Init(ID3D11Device* poDevice)
 	m_sceneFrameVSConstBuffer.buffer.Create(poDevice);
 	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 	
-	auto cubeMapFolder = std::wstring(DxResourceManager::GetAssetFolder()) + LR"(\Textures\CubeMaps\)";
+	auto cubeMapFolder = std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
 
 	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
 	ByteStream iblSPecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");
@@ -143,6 +143,7 @@ void rldx::DxScene::UpdateViewAndPerspective()
 
 	m_globalDirectionalLight.GetViewMatrix();
 	m_sceneFramePSConstBuffer.data.lightData[0].direction = m_globalDirectionalLight.GetEyePt();
+	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();
 
 	m_ambientLightSource.m_oPSConstBuffer.data.radiance = 3.0f;
 	// TODO: DEBUG: "Sub in MS Demo "rendering framework" projectiong and view matrix, and see which one is wrong"
@@ -160,18 +161,25 @@ void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 
 	m_ambientLightSource.m_oPSConstBuffer.RefreshGPUData(poDeviceContext);
 	m_ambientLightSource.m_oPSConstBuffer.SetStartSlot(0);
+	m_ambientLightSource.BindToDC(poDeviceContext);
+
 	// vertex
 	//  shader buffer
 	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
 	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
 	
 	// pixel shader buffer
-	ID3D11Buffer* pixelShaderSceneConstBuffers[] = 
+	ID3D11Buffer* pixelShaderSceneConstBuffers0[] = 
 	{ 
-		m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 
-		m_sceneFramePSConstBuffer.buffer.GetBuffer() 
+		m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 		
 	};
-	poDeviceContext->PSSetConstantBuffers(0, 2, pixelShaderSceneConstBuffers);
+	poDeviceContext->PSSetConstantBuffers(1, 0, pixelShaderSceneConstBuffers0);
+	
+	ID3D11Buffer* pixelShaderSceneConstBuffers1[] = 
+	{ 
+		m_sceneFramePSConstBuffer.buffer.GetBuffer(),
+	};
+	poDeviceContext->PSSetConstantBuffers(1, 1, pixelShaderSceneConstBuffers1);
 		
 
 	m_textureSamplers.BindToDC(poDeviceContext);
@@ -213,3 +221,4 @@ inline void rldx::DxScene::DEBUGGING_SetViewAndPerspective()
 		)
 	);
 }
+

@@ -30,8 +30,7 @@ namespace rldx
 
 	public:
 		static DxDeviceManager& GetInstance();		
-		//static void Destroy();				
-
+		
 		static ID3D11DeviceContext* DeviceContext() {
 			return GetInstance().GetDeviceContext();
 		}

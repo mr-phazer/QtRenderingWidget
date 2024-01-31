@@ -23,8 +23,8 @@ int main(int argc, char* argv[])
 
 	
 	///auto& spManager = rldx::DxDeviceManager::GetInstance();	
-	QString gameId = "wh";
-	auto window = CreateQRenderingWidget(nullptr, &gameId, nullptr);
+	//QString gameId = "wh";
+	//auto window = CreateQRenderingWidget(nullptr, &gameId, nullptr);
 
 
 

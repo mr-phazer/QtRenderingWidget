@@ -624,18 +624,20 @@ float get_scurve_y_pos(const float x_coord);
 
 float3 get_environment_colour(in float3 direction, in float lod)
 {
-    return (
-    tex_cube_specular.SampleLevel(s_anisotropic, ( /*texcoordEnvSwizzle*/(direction)), lod).rgb
-    *
-     env_color.rgb * env_radiance
-     );
+    return
+    tex_cube_specular.SampleLevel(
+    s_anisotropic,
+    ( /*texcoordEnvSwizzle*/(direction)),
+    lod).rgb * env_color.rgb * env_radiance;
 }
 
 //	Ambient diffuse
 float3 cube_ambient(in float3 N)
 {
-    return (tex_cube_diffuse.Sample(s_anisotropic, /*texcoordEnvSwizzle*/(N)).rgb
- * env_color.rgb * env_radiance);
+    return
+    tex_cube_diffuse.Sample(
+    s_anisotropic,
+    /*texcoordEnvSwizzle*/(N)).rgb * env_color.rgb * env_radiance;
 }
 
 // Diffuse
@@ -1339,8 +1341,9 @@ float3 get_reflectivity_env_light_material(in float3 light_vec, in float3 normal
 
 float adjust_linear_smoothness(in const float linear_smoothness)
 {
-	//	return get_cubic_spline_adjusted_value(linear_smoothness, curve_y1_ctrl_pnt_env_smoothness, curve_y2_ctrl_pnt_env_smoothness, curve_y3_ctrl_pnt_env_smoothness);
+	//return get_cubic_spline_adjusted_value(linear_smoothness, curve_y1_ctrl_pnt_env_smoothness, curve_y2_ctrl_pnt_env_smoothness, curve_y3_ctrl_pnt_env_smoothness);
     return linear_smoothness * linear_smoothness;
+    //PHAZER//return _gamma(smoothness_curve);
 }
 
 float get_cube_env_scale_factor()
@@ -1351,11 +1354,11 @@ float get_cube_env_scale_factor()
 float3 sample_environment_specular(in float roughness_in, in float3 reflected_view_vec)
 {
 #if 1
-    const float env_lod_pow = 1.8f;
+    const float env_lod_pow = 1.2;  //1.8f;
     const float env_map_lod_smoothness = adjust_linear_smoothness(1 - roughness_in);
     const float roughness = 1.0f - pow(env_map_lod_smoothness, env_lod_pow);
 
-    float texture_num_lods = 10.0f;
+    float texture_num_lods = 6.0f;
     float env_map_lod = roughness * (texture_num_lods - 1);
     float3 environment_colour = get_environment_colour(reflected_view_vec, env_map_lod);
 #else
@@ -1653,9 +1656,8 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
     specular_colour.rgb = _linear(specular_colour.rgb);
 
 	//	This value should be in gamma space...
-    smoothness = (shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).a);
-    smoothness = smoothness*0.5;
-    //smoothness = 0;
+    smoothness = (shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).r);
+    smoothness = (smoothness); // added by PHAZER, as smooth is so high that specular highlight are so small they are almost invisible   
     //_gamma(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).a);
 
 	//	Apply faction colours...

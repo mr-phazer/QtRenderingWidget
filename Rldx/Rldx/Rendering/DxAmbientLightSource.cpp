@@ -84,12 +84,18 @@ void rldx::DxAmbientLightSource::BindToDC(ID3D11DeviceContext* poDC)
 	m_oPSConstBuffer.BindToDC(poDC);
 
 	// TODO: test/finish this
-	ID3D11ShaderResourceView* ppShaderResourceViews[2] = {
-		m_poDiffuseMap->GetShaderResourceView(),
+	ID3D11ShaderResourceView* ppShaderResourceViews0[] = {
+		m_poDiffuseMap->GetShaderResourceView(),	
+		//m_poLUT->GetShaderResourceView(),
+	};
+
+	ID3D11ShaderResourceView* ppShaderResourceViews1[] = {
+	
 		m_poSpecularMap->GetShaderResourceView(),
 		//m_poLUT->GetShaderResourceView(),
 	};
 
-	poDC->PSSetShaderResources(0, 2, ppShaderResourceViews);
+	poDC->PSSetShaderResources(0, 1, ppShaderResourceViews0);
+	poDC->PSSetShaderResources(1, 1, ppShaderResourceViews1);
 };
 

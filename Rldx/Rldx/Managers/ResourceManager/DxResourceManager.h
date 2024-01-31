@@ -75,9 +75,12 @@ namespace rldx {
 	public:
 		static void SetAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
 		static std::wstring GetAssetFolder() { return Instance()->m_rooPathAssetPath; }
+		static std::wstring GetDefaultAssetFolder() {
+			return tools::GetExePath();
+		}
 
 		static void SetcAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
-		static void CallAssetFetchCallBack(QVector<QString>& qstrMissingFiles, QVector<QByteArray>& destBinaries) { Instance()->GetResourceFromCallBack(qstrMissingFiles, destBinaries); }
+		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourceFromCallBack(qstrMissingFiles, destBinaries); }
 
 		void AddMissingFile(const std::wstring& file) { m_qstrMissingFiles.push_back(QString::fromStdWString(file)); }
 
@@ -147,14 +150,14 @@ namespace rldx {
 
 
 	private:
-		void GetResourceFromCallBack(QVector<QString> & qstrMissingFiles, QVector<QByteArray>& destBinaries)
+		void GetResourceFromCallBack(QList<QString> & qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
 				throw exception("No asset callback function set");
 			}						
 
 
-			m_assetCallBack(nullptr, &qstrMissingFiles, &destBinaries);
+			m_assetCallBack(&qstrMissingFiles, &destBinaries);
 
 			// TODO: REMOVE when done
 			auto DEBUg_1 = 1;
@@ -183,7 +186,7 @@ namespace rldx {
 
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;
 		std::wstring m_rooPathAssetPath = LR"(c:/temp/)";
-		std::function<bool(void*, QVector<QString>*, QVector<QByteArray>*)> m_assetCallBack;
+		std::function<void(QList<QString>*, QList<QByteArray>*)> m_assetCallBack;
 
 		QVector<QString> m_qstrMissingFiles;
 	};
@@ -205,6 +208,7 @@ namespace rldx {
 		const wchar_t* pszStringKey = nullptr;
 		if (!stringId.empty()) {
 			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, pDerived));
+						
 			pszStringKey = it.first->first.data();
 		}
 

@@ -21,9 +21,6 @@ namespace rldx {
 	public:
 		void Draw(ID3D11DeviceContext* poDC) override
 		{	
-			// TODO: rmove?
-			//BindToDC(poDC);
-
 			poDC->DrawIndexed(m_poMesh.indexCount, 0, 0);
 		};
 		

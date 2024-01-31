@@ -40,7 +40,7 @@ struct Light_Data
 /*------------------------------------------------------
  HLSL PIXEL SHADER constant buffers
 ------------------------------------------------------*/	
-const static uint AMBIENT_LIGHt = 0;
+//const static uint AMBIENT_LIGHt = 0;
 
 cbuffer PS_AmbientLight_ConstBuffer : register(b0)
 {
@@ -52,7 +52,7 @@ cbuffer PS_AmbientLight_ConstBuffer : register(b0)
     float4 env_color;
 };                     
 
-cbuffer PS_LightBuffer_ConstBuffer : register(b1)
+cbuffer PS_AmbientLight_Data_ConstBuffer : register(b1)
 {
     Light_Data lightData[10]; 
     

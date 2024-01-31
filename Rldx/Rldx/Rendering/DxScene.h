@@ -25,8 +25,8 @@
 namespace rldx {
 
 	enum PS_ConstBufferSlots : UINT
-	{
-		AmbientLight = 0,
+	{		
+		sTIFF= 0,
 		Lights = 1
 	};
 
@@ -109,100 +109,4 @@ namespace rldx {
 	};
 
 
-	class IDxSceneCreator
-	{
-	public:
-		virtual DxScene::UniquePtr Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "") = 0;
-		
-	};
-
-	class NativeWindowSceneCreator : IDxSceneCreator
-	{
-
-		NativeWindowSceneCreator() {};
-		// TODO: rename 
-		DxScene::UniquePtr MakeNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "")
-		{
-
-			auto newScene = std::make_unique<DxScene>(name);
-
-			SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
-			RECT windowRect;
-			GetWindowRect(m_nativeWindowHandle, &windowRect);
-
-			UINT width = windowRect.right - windowRect.left;
-			UINT height = windowRect.bottom - windowRect.top;
-
-			// create swap chain
-			newScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, width, height);
-			newScene->Init(poDevice);
-
-			//newScene->Resize(poDevice, poDeviceContext, 2000, 1024);
-
-			return newScene;
-		};
-
-	public:
-		NativeWindowSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {};
-
-		DxScene::UniquePtr Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "") override
-		{		auto newScene = MakeNewScene(poDevice, poDeviceContext, name);
-				///////////////////////////////////////////////////////
-				//  START: Make Scene:
-				///////////////////////////////////////////////////////			
-						
-				auto newPbrShaderProgram =
-					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-						poDevice,
-						tools::GetExePath() + LR"(VS_Simple.cso)",
-						tools::GetExePath() + LR"(PS_Troy.cso)"
-					);
-		
-				auto newSimpleShaderProgram =
-					rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-						poDevice,
-						tools::GetExePath() + LR"(VS_Simple.cso)",
-						tools::GetExePath() + LR"(PS_Simple.cso)"
-					);
-
-				auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
-				auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("Model");
-
-				//ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
-				ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)");
-				rmv2::RigidModelReader rm2Reader;
-				auto rmv2File = rm2Reader.Read(bytes);
-
-				//auto cubMeshData = rldx::DxMeshCreatorHelper::MakeTestCubeMesh(poDevice);			
-				//auto rm2MeshData = rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmv2File.lods[0].meshBlocks[0]);
-
-				modelNodeRmv2->SetMeshData(poDevice, rmv2File);
-				modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
-				
-				// TODO: debuggin, remove deouble mataterial assignment
-				modelNodeRmv2->SetMaterialData(poDevice, rmv2File);
-				modelNodeRmv2->SetMaterialData(poDevice, rmv2File);
-				
-
-				auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 20, 0.1f);
-				meshNodeGrid->SetMeshData(gridMeshData);
-				meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
-
-				newScene->GetRootNode()->AddChild(meshNodeGrid);
-				newScene->GetRootNode()->AddChild(modelNodeRmv2);
-
-
-				///////////////////////////////////////////////////////
-				//  END: Make Scene:
-				///////////////////////////////////////////////////////			
-
-				return newScene;
-
-			
-
-		};
-
-	private:
-		HWND m_nativeWindowHandle = static_cast<HWND>(0);
-	};
 };

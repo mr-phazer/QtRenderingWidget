@@ -12,5 +12,7 @@
 /// <param name="missingFile"></param>
 /// <param name="suppliedFiles"></param>
 /// <returns>Number of files found and loade, 0 = error/Maybe negative values for error code</returns>
-typedef int (*AssetFetchCallBack) (void* thisPtr, QVector<QString>* missingFile, QVector<QByteArray>* suppliedFiles);
+//typedef int (*AssetFetchCallBack) (void* thisPtr, QVector<QString>* missingFile, QVector<QByteArray>* suppliedFiles);
+
+typedef void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
 

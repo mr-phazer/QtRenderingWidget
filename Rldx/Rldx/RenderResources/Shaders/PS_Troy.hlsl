@@ -1,7 +1,6 @@
 //#include "..\troy_lib.hlsli"
 #include "include\troy_lib2.hlsli"
 
-
 ///float4 ps30_main(in PixelInputType input) : COLOR
 
 float3 doFakeSSR(in float3 env_specular, in float3 specular_color, in float smoothness);
@@ -31,8 +30,8 @@ float4 main(in PixelInputType input) : SV_TARGET
     // TODO: REMOEV DEBUGGIN code
     //return float4(shaderTextures[t_Mask].Sample(SamplerLinear, input.tex1.xy).rgb, 1);
 
-    if (!PisTextureSRGB[t_Diffuse])
-        diffuse_colour.rgb = _gamma(diffuse_colour.rgb);
+    //if (!PisTextureSRGB[t_Diffuse])
+    //    diffuse_colour.rgb = _gamma(diffuse_colour.rgb);
 
 	//moving to allow blending
     float3 pixel_normal = getPixelNormal(input);
@@ -87,11 +86,12 @@ float4 main(in PixelInputType input) : SV_TARGET
     );
 
 	//  Tone-map the pixel...
-    //float3 ldr_linear_col = (saturate(Uncharted2ToneMapping(0.3 * exposure * hdr_linear_col)));
+    //float3 ldr_linear_col = (saturate(Uncharted2ToneMapping(1.3  * hdr_linear_col)));
     //float3 ldr_linear_col = saturate(tone_map_linear_hdr_pixel_value(hdr_linear_col));
 //----------------------------------------------------------
 
 	//  Return gamma corrected value...
+    //return float4( /*_gamma*/(ldr_linear_col), 1.0f);
     return float4( /*_gamma*/(hdr_linear_col), 1.0f);
 }
 

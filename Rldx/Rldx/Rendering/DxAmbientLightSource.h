@@ -31,7 +31,6 @@ namespace rldx {
 		/// <param name="poDC"></param>
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
-
 		static DxAmbientLightSource Create(
 			ID3D11Device* poDevice,
 			const std::wstring& pathDiffuseMap,

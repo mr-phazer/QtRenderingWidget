@@ -16,9 +16,10 @@ using ByteVector = std::vector<uint8_t>;
 /// </summary>
 class ByteStream
 {
-
 	ByteVector m_data;
 	size_t m_currentOffset = 0;
+
+	std::wstring m_currentFilePath = L"";
 
 public:
 	ByteStream(const ByteVector& input)
@@ -32,6 +33,7 @@ public:
 
 	ByteStream(const std::wstring& fileName)
 	{
+		m_currentFilePath = fileName;
 		m_data = file_helpers::ReadFileToVector(fileName);
 	};
 
@@ -91,6 +93,7 @@ public:
 	
 	size_t GetBufferSize() { return m_data.size(); }
 
+	std::wstring GetPath() const { return m_currentFilePath; }
 
 	bool IsValid() const
 	{

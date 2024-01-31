@@ -18,7 +18,7 @@ Zavie
 */
 
 //static const float gamma = 2.2;
-static const float gamma = 1;
+ static const float gamma = 1;
 
 float3 getBaseColor(int i)
 {

@@ -3,6 +3,8 @@
 #include <exception>
 
 #include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
+#include "..\..\Rldx\Rldx\Helpers\DxSceneCreator.h"
+
 #include "QtObjects\Views\QtRenderView.h"
 
 #include "..\rldx\rldx\Logging\Logging.h"
@@ -19,34 +21,35 @@ void SetAssetPath(const QString& path)
 	//throw std::exception("The method or operation is not implemented.");
 }
 
-static int FileGetter(void* thisPtr, QVector<QString>* missingFiles, QVector<QByteArray>* outBinaries)
-{
-	int filesFound = 0;
-	outBinaries->clear();
-	outBinaries->resize(missingFiles->size());
+/// <summary>
+/// Demostration/test of using callback to set resources
+/// </summary>
+static void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
+{	
+	outBinFiles->clear();	
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
 
 		auto fileName = (*missingFiles)[iAsset].toStdWString();
 		ByteStream newStream(fileName);
+		
+		// force lise to be same size, maybe redundant
+		*outBinFiles = QList<QByteArray>::fromVector(QVector<QByteArray>(missingFiles->size()));
 
 		if (!newStream.IsValid())
 		{
-			(*outBinaries)[iAsset].clear();
+			(*outBinFiles)[iAsset] = QByteArray();
 			continue;
 		}
 		
 		// -- resize dest, buffer, and read whole file into it
-		(*outBinaries)[iAsset].resize(newStream.GetBufferSize());		
-		newStream.Read((*outBinaries)[iAsset].data(), (*outBinaries)[iAsset].size());
-		filesFound++;
+		(*outBinFiles)[iAsset].resize(newStream.GetBufferSize());
+		newStream.Read((*outBinFiles)[iAsset].data(), (*outBinFiles)[iAsset].size());		
 	}
-
-	return filesFound;
 }
 
-
-QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, AssetFetchCallBack pAssetCallBackFunc)
+//QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, AssetFetchCallBack pAssetCallBackFunc)
+QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
 {
 
 	rldx::DxResourceManager::SetcAssetFetchCallback(&FileGetter);
@@ -76,4 +79,14 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, AssetFet
 
 	return poNewRenderingWidget;
 
+}
+
+void AddNewPimaryAsset(QWidget* pQRenderWidget, QString* assetPath, QByteArray* assetData)
+{
+	auto renderWidget = static_cast<QtRenderView*>(pQRenderWidget);
+
+	auto currentScene = renderWidget->GetSceneManager().GetCurrentScene();
+
+	ByteStream fileDataStream(assetData->data(), assetData->size());
+	rldx::DxNativeWindowSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream);
 }

@@ -31,37 +31,7 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Logging\Logging.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\Managers\ResourceManager\NoCaseUMapCompare.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QtObjects\Views\QtRenderView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExternFunctions\Creators.cpp">
@@ -72,82 +42,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Logging\Logging.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DXSwapChain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Common\TSmartPointer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPUConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ShaderFiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\MathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DxObjects\MyOrbitalCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IResizable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IDrawable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IUpdateable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IFlushable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IBindable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\DerformerData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExternFunctions\Creators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ExternFunctions\Callbacks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants\GameIdKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,10 +68,10 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtObjects\Views\QtRenderView.h">
+    <QtMoc Include="QtObjects\Controllers\QtRenderController.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QtObjects\Controllers\QtRenderController.h">
+    <QtMoc Include="QtObjects\Views\QtRenderView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

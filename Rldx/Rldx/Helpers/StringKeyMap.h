@@ -14,7 +14,7 @@
 /// <typeparam name="VALUE"></typeparam>
 template <typename VALUE>
 using StringkeyMap
-= typename std::unordered_map<
+=  std::unordered_map<
 	std::wstring,
     VALUE,
 	CaseInsensitiveUnorderedMapComparer::Hash,
@@ -26,7 +26,7 @@ using StringkeyMap
 /// </summary>
 /// <typeparam name="VALUE"></typeparam>
 template <typename VALUE>
-using WStringkeyMap = typename std::unordered_map<
+using WStringkeyMap = std::unordered_map<
 	std::wstring,
     VALUE,
 	CaseInsensitiveUnorderedMapComparer::Hash,
