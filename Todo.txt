@@ -1,0 +1,1 @@
+- Make sure all paths sent/read from the resource_callback use "/"   

@@ -39,8 +39,8 @@ rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneBuilder::Create(ID3D11Device* 
 	auto newSimpleShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			tools::GetExePath() + LR"(VS_Simple.cso)",
-			tools::GetExePath() + LR"(PS_Simple.cso)"
+			libtools::GetExePath() + LR"(VS_Simple.cso)",
+			libtools::GetExePath() + LR"(PS_Simple.cso)"
 		);
 
 	auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
@@ -70,8 +70,8 @@ void rldx::DxNativeWindowSceneBuilder::AddModel(ID3D11Device* poDevice, DxScene*
 	auto newPbrShaderProgram =
 	rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 		poDevice,
-		tools::GetExePath() + LR"(VS_Simple.cso)",
-		tools::GetExePath() + LR"(PS_Troy.cso)"
+		libtools::GetExePath() + LR"(VS_Simple.cso)",
+		libtools::GetExePath() + LR"(PS_Troy.cso)"
 	);
 
 	modelNodeRmv2->SetMeshData(poDevice, rmv2File);

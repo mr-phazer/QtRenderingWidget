@@ -105,12 +105,12 @@ struct FloatConverter
 };
 //
 ////
-////#include "..\..\QtRenderingWidget\Tools\tools.h"
+////#include "..\..\QtRenderingWidget\Tools\libtools.h"
 ////
 ////
 ////struct FloatConverter
 ////{
-////	static tools::SystemClock g_oClock;
+////	static libtools::SystemClock g_oClock;
 ////
 ////	static float randFloatUNORM(size_t resolution = 1000000)
 ////	{

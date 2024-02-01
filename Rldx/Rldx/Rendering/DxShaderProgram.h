@@ -122,13 +122,13 @@ namespace rldx {
 
 			if (!vertexShaderPath.empty())
 			{
-				logging::LogAction(std::string("Loading vertex shader: ") + tools::wstring_to_string(vertexShaderPath));
+				logging::LogAction(std::string("Loading vertex shader: ") + libtools::wstring_to_string(vertexShaderPath));
 				newInstance->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, vertexShaderPath);				
 			}
 
 			if (!pixelShaderPath.empty())
 			{
-				logging::LogAction("Loading pixel shader: " + tools::wstring_to_string(vertexShaderPath));
+				logging::LogAction("Loading pixel shader: " + libtools::wstring_to_string(vertexShaderPath));
 				newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
 			}
 

@@ -57,7 +57,7 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 		// -- allocate empty texture resource
 		textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
 
-		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + tools::wstring_to_string(path));
+		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
 		// TODO: TEST CODE BEING
 		QList<QString> files = { { QString::fromStdWString(path) } };
 		QList<QByteArray> binaries;
@@ -67,7 +67,7 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 		if (binaries.size() && IsDDSTextureFile(binaries[0].data()) )
 		{
 
-			logging::LogActionSuccess("Loaded From CALLBACK: " + tools::wstring_to_string(path));
+			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
 
 		
 

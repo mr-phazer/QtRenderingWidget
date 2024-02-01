@@ -7,11 +7,11 @@
 
 std::vector<uint8_t> rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
 {
-	if (!tools::DoesFileExist(shaderPath))	{
-		throw std::runtime_error("Shader file: '" + tools::wstring_to_string(shaderPath) + "' not found");
+	if (!libtools::DoesFileExist(shaderPath))	{
+		throw std::runtime_error("Shader file: '" + libtools::wstring_to_string(shaderPath) + "' not found");
 	}
 
-	size_t shaderCodeSize = tools::GetFileSize(shaderPath);
+	size_t shaderCodeSize = libtools::GetFileSize(shaderPath);
 	std::vector<uint8_t> shaderCodeRaw(shaderCodeSize);
 
 	std::ifstream inputFile(shaderPath, std::ios::binary);

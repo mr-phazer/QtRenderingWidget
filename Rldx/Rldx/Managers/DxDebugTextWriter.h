@@ -17,7 +17,7 @@ namespace rldx {
 	{
 		std::wstring m_string = L"";
 		sm::Color m_color = { 1,1,1,1 };
-		tools::SystemClock m_clock;
+		libtools::SystemClock m_clock;
 		float m_clock_timeOut = 0;
 		float m_ratioOfTimeOut = 0;
 

@@ -97,7 +97,7 @@ namespace logging
             }
         };
 
-        static tools::SystemClock m_globalClock;
+        static libtools::SystemClock m_globalClock;
 
     private:
         static std::unique_ptr<ImplLog> m_poInstance;
@@ -136,11 +136,11 @@ namespace logging
             ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);
         };
 
-        tools::SystemClock& GetClock() { return m_clock; };
+        libtools::SystemClock& GetClock() { return m_clock; };
         double GetLocalTime() { return m_clock.GetLocalTime(); };
 
     private:
-        tools::SystemClock m_clock;
+        libtools::SystemClock m_clock;
         std::string m_message = "";
     };
 

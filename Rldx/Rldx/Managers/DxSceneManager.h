@@ -63,7 +63,7 @@ namespace rldx {
 
 	private:
 		DxScene::UniquePtr m_spoCurrentScene = nullptr;		
-		tools::SystemClock m_systemClock;
+		libtools::SystemClock m_systemClock;
 		bool m_bRenderingRunning = false;
 	};
 

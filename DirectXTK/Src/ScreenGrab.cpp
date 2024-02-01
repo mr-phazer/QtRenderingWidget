@@ -218,7 +218,7 @@ HRESULT DirectX::SaveDDSTextureToFile(
     header->mipMapCount = 1;
     header->caps = DDS_SURFACE_FLAGS_TEXTURE;
 
-    // Try to use a legacy .DDS pixel format for better tools support, otherwise fallback to 'DX10' header extension
+    // Try to use a legacy .DDS pixel format for better libtools support, otherwise fallback to 'DX10' header extension
     DDS_HEADER_DXT10* extHeader = nullptr;
     switch (desc.Format)
     {

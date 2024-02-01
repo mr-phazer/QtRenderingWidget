@@ -76,7 +76,7 @@ namespace rldx {
 		static void SetAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
 		static std::wstring GetAssetFolder() { return Instance()->m_rooPathAssetPath; }
 		static std::wstring GetDefaultAssetFolder() {
-			return tools::GetExePath();
+			return libtools::GetExePath();
 		}
 
 		static void SetcAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }

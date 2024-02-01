@@ -27,7 +27,7 @@ void logging::ImplLog::DoLog(
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << tools::wstring_to_string(prefix) + "ERROR: " << strMsg;
+	logString << std::endl << libtools::wstring_to_string(prefix) + "ERROR: " << strMsg;
 	WriteToLogFile(logString.str());
 	
 }
@@ -53,7 +53,7 @@ void ImplLog::LogAction_success(const std::string& strMsg)
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << tools::wstring_to_string(prefix) << strMsg << ". Success.";
+	logString << std::endl << libtools::wstring_to_string(prefix) << strMsg << ". Success.";
 	
 	WriteToLogFile(logString.str());	
 }
@@ -81,7 +81,7 @@ bool ImplLog::LogAction_warning(const std::string& strMsg)
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << tools::wstring_to_string(prefix) + "WARNING:: " << strMsg;
+	logString << std::endl << libtools::wstring_to_string(prefix) + "WARNING:: " << strMsg;
 
 	 WriteToLogFile(logString.str());
 
@@ -137,4 +137,4 @@ void WinConsole::PrintLn(const std::wstring& str, WORD color)
     Print(str + L"\n", color);
 }
 
-tools::SystemClock ImplLog::m_globalClock;
+libtools::SystemClock ImplLog::m_globalClock;

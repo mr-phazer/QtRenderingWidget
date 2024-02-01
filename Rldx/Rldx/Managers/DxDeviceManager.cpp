@@ -86,11 +86,11 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 		&m_cpoDeviceContext);	
 #endif
 	}
-	catch (tools::COMException& comException)
+	catch (libtools::COMException& comException)
 	{
 		_com_error err(comException);
 		LPCTSTR errMsg = err.ErrorMessage();
-		string strErrorMessage = tools::wstring_to_string(errMsg);
+		string strErrorMessage = libtools::wstring_to_string(errMsg);
 		logging::LogActionError("Direct3d 11 Device failed! HRESULT code: " + to_string(hr) + ": " + strErrorMessage);
 		
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
@@ -100,7 +100,7 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 	{
 		_com_error err(hr);
 		LPCTSTR errMsg = err.ErrorMessage();
-		string strErrorMessage = tools::wstring_to_string(errMsg);
+		string strErrorMessage = libtools::wstring_to_string(errMsg);
 		logging::LogActionError("Direct3d 11 Device failed! HRESULT code: " + to_string(hr) + ": " + strErrorMessage);
 
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);

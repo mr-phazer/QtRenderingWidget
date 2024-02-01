@@ -91,7 +91,7 @@ namespace rldx {
 			string hash = "";
 			for (auto& tex : m_data->materialBlock.textureElements)
 			{
-				auto diskPath = defaultTexturePath + tools::string_to_wstring(tex.szTexturePath);
+				auto diskPath = defaultTexturePath + libtools::string_to_wstring(tex.szTexturePath);
 				newMaterial->AddTexture(poDevice, tex.dwTextureType, diskPath);
 				newMaterial->GetPathHashRef() += std::string(tex.szTexturePath);
 			};

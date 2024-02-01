@@ -2,7 +2,7 @@
 #include <string>
 
 
-int tools::fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset)
+int libtools::fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset)
 {
 	ifstream in(_strFile, ios::binary);
 	if (!in.is_open())
@@ -24,7 +24,7 @@ int tools::fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset)
 	return line_number;
 }
 
-int tools::fileOffsetToLineNumberMem(const char* _pBuffer, size_t _size, size_t _file_offset)
+int libtools::fileOffsetToLineNumberMem(const char* _pBuffer, size_t _size, size_t _file_offset)
 {
 	/*ifstream in(_strFile, ios::binary);
 	if (!in.is_open())
@@ -48,7 +48,7 @@ int tools::fileOffsetToLineNumberMem(const char* _pBuffer, size_t _size, size_t 
 	return line_number;
 }
 
-bool tools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
+bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 {
 	bool bResult = SUCCEEDED(hr);
 
@@ -91,13 +91,13 @@ bool tools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 	return true;
 }
 
-bool tools::DoesFileExist(const std::wstring& name)
+bool libtools::DoesFileExist(const std::wstring& name)
 {
 	struct _stat buffer {};
 	return (_wstat(name.c_str(), &buffer) == 0);
 };
 
-std::wstring tools::string_to_wstring(const std::string& str)
+std::wstring libtools::string_to_wstring(const std::string& str)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -105,7 +105,7 @@ std::wstring tools::string_to_wstring(const std::string& str)
 	return converterX.from_bytes(str);
 }
 
-std::string tools::wstring_to_string(const std::wstring& wstr)
+std::string libtools::wstring_to_string(const std::wstring& wstr)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -113,7 +113,7 @@ std::string tools::wstring_to_string(const std::wstring& wstr)
 	return converterX.to_bytes(wstr);
 }
 
-std::wstring tools::convert_string(const std::string& str)
+std::wstring libtools::convert_string(const std::string& str)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -121,7 +121,7 @@ std::wstring tools::convert_string(const std::string& str)
 	return converterX.from_bytes(str);
 }
 
-std::string tools::convert_string(const std::wstring& wstr)
+std::string libtools::convert_string(const std::wstring& wstr)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -129,16 +129,16 @@ std::string tools::convert_string(const std::wstring& wstr)
 	return converterX.to_bytes(wstr);
 }
 
-std::wstring tools::GetExePath()
+std::wstring libtools::GetExePath()
 {
 	WCHAR path[MAX_PATH];
 	GetModuleFileNameW(NULL, path, MAX_PATH);
-	std::wstring exePath = tools::GetDirFromFullPath(path);
+	std::wstring exePath = libtools::GetDirFromFullPath(path);
 
 	return exePath;
 }
 
-std::string tools::GetDirFromFullPath(const std::string& _str)
+std::string libtools::GetDirFromFullPath(const std::string& _str)
 {
 	string strTemp = _str;
 
@@ -165,7 +165,7 @@ std::string tools::GetDirFromFullPath(const std::string& _str)
 	return strTemp;
 }
 
-std::wstring tools::GetDirFromFullPath(const std::wstring& _str)
+std::wstring libtools::GetDirFromFullPath(const std::wstring& _str)
 {
 	wstring strTemp = _str;
 
@@ -192,7 +192,7 @@ std::wstring tools::GetDirFromFullPath(const std::wstring& _str)
 	return strTemp;
 }
 
-std::string tools::GetExtensionFromFullPath(const std::string& _str)
+std::string libtools::GetExtensionFromFullPath(const std::string& _str)
 {
 	if (_str == "")
 		return "";
@@ -217,7 +217,7 @@ std::string tools::GetExtensionFromFullPath(const std::string& _str)
 	return strTemp;
 }
 
-std::wstring tools::GetExtensionFromFullPath(const std::wstring& _str)
+std::wstring libtools::GetExtensionFromFullPath(const std::wstring& _str)
 {
 	if (_str == L"")
 		return L"";
@@ -242,7 +242,7 @@ std::wstring tools::GetExtensionFromFullPath(const std::wstring& _str)
 	return strTemp;
 }
 
-std::wstring tools::RemoveExtension(const std::wstring& _str)
+std::wstring libtools::RemoveExtension(const std::wstring& _str)
 {
 	if (_str == L"")
 		return L"";
@@ -267,7 +267,7 @@ std::wstring tools::RemoveExtension(const std::wstring& _str)
 	return strTemp;
 }
 
-std::string tools::RemoveExtension(const std::string& _str)
+std::string libtools::RemoveExtension(const std::string& _str)
 {
 	if (_str == "")
 		return "";
@@ -292,7 +292,7 @@ std::string tools::RemoveExtension(const std::string& _str)
 	return strTemp;
 }
 
-std::string tools::GetFileFromFullPath(const std::string& _strInput)
+std::string libtools::GetFileFromFullPath(const std::string& _strInput)
 {
 	if (_strInput.empty())
 		return "";
@@ -322,7 +322,7 @@ std::string tools::GetFileFromFullPath(const std::string& _strInput)
 	return &_csz[index + 1];
 }
 
-std::wstring tools::GetFileFromFullPath(const std::wstring& _strInput)
+std::wstring libtools::GetFileFromFullPath(const std::wstring& _strInput)
 {
 	if (_strInput.empty())
 		return L"";
@@ -346,7 +346,7 @@ std::wstring tools::GetFileFromFullPath(const std::wstring& _strInput)
 	return &_csz[index + 1];
 }
 
-string tools::lower(const std::string& _strInput)
+string libtools::lower(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
@@ -355,7 +355,7 @@ string tools::lower(const std::string& _strInput)
 	return strOut;
 }
 
-string tools::upper(const std::string& _strInput)
+string libtools::upper(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
@@ -364,7 +364,7 @@ string tools::upper(const std::string& _strInput)
 	return strOut;
 }
 
-wstring tools::lower(const std::wstring& _strInput)
+wstring libtools::lower(const std::wstring& _strInput)
 {
 	std::wstring strOut;
 	strOut.resize(_strInput.size(), L' ');
@@ -377,7 +377,7 @@ wstring tools::lower(const std::wstring& _strInput)
 	return strOut;
 }
 
-string tools::getLowerAndBackSlash(const std::string& _strInput)
+string libtools::getLowerAndBackSlash(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
@@ -393,7 +393,7 @@ string tools::getLowerAndBackSlash(const std::string& _strInput)
 	return strOut;
 }
 
-size_t tools::getFileSize(const std::string& strFileName)
+size_t libtools::getFileSize(const std::string& strFileName)
 {
 	struct _stat stat_buf {};
 	int rc = _stat(strFileName.c_str(), &stat_buf);
@@ -440,14 +440,14 @@ size_t tools::getFileSize(const std::string& strFileName)
 }
 
 
-size_t tools::GetFileSize(const std::wstring& strFileName)
+size_t libtools::GetFileSize(const std::wstring& strFileName)
 {
 	struct _stat stat_buf {};
 	int rc = _wstat(strFileName.c_str(), &stat_buf);
 	return rc == 0 ? stat_buf.st_size : 0;
 }
 
-inline const char* tools::COMException::what() const
+inline const char* libtools::COMException::what() const
 {
 	const size_t fixedStringLength = 128;
 

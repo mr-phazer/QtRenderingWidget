@@ -8,7 +8,7 @@ using namespace rldx;
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
 {
 	auto newInstance = std::make_unique<DxDebugTextWriter>();
-	const auto fontPath = tools::GetExePath() + std::wstring(L"myfile.spritefont");
+	const auto fontPath = libtools::GetExePath() + std::wstring(L"myfile.spritefont");
 
 	// TODO: handle exception where?		
 	if (!(newInstance->m_upoFont = std::make_unique<DirectX::SpriteFont>(poDevice, fontPath.c_str())))

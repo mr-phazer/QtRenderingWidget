@@ -154,27 +154,27 @@ private:
 };
 
 #define COM_COND_THROW(HR) \
-if (!SUCCEEDED(HR)) throw tools::COMException(HR); \
+if (!SUCCEEDED(HR)) throw libtools::COMException(HR); \
 
-const auto _ws = tools::wstring_to_string;
-const auto _sw = tools::string_to_wstring;
+const auto _ws = libtools::wstring_to_string;
+const auto _sw = libtools::string_to_wstring;
 
 #define LOADING_FILE(path) (std::string("Loading: ") + std::string(path))
 
-#define COM_ASSERT_BOX(HR, op) tools::comAssert_Box(HR, __FUNCTION__, op)
+#define COM_ASSERT_BOX(HR, op) libtools::comAssert_Box(HR, __FUNCTION__, op)
 
-#define COM_ASSERT(HR) tools::comAssert_LogOnly(HR, __FUNCTION__)//\
+#define COM_ASSERT(HR) libtools::comAssert_LogOnly(HR, __FUNCTION__)//\
 //assert(SUCCEEDED(HR));\
 
-#define COM_ASSERT_OP(HR, op) tools::comAssert_LogOnly(HR, __FUNCTION__, op)
+#define COM_ASSERT_OP(HR, op) libtools::comAssert_LogOnly(HR, __FUNCTION__, op)
 //\
 // assert(SUCCEEDED(HR));\
 
 #define ComMessageBox(hr, _title, _op) \
-		auto message = wstring(tools::string_to_wstring(__FUNCTION__) + L"\r\n") \
+		auto message = wstring(libtools::string_to_wstring(__FUNCTION__) + L"\r\n") \
 	+ wstring(L"Failed: " + wstring(_op) + _wstrPath + L"\r\n") \
 		+ wstring(L"HRESULT: ") + std::to_wstring(hr) + L"\r\n" \
-		+ wstring(L"String: ") + tools::getComError(hr) + L"\r\n"; \
+		+ wstring(L"String: ") + libtools::getComError(hr) + L"\r\n"; \
 	MessageBox(NULL, message.c_str(), _title, MB_OK | MB_ICONERROR);\
 
 
