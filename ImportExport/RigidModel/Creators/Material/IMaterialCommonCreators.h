@@ -8,7 +8,7 @@
 #include "..\..\DataTypes\MeshHeaderType5.h"
 #include "..\..\Creators\MeshHeaderType3Creator.h"
 #include "..\..\Creators\MeshMaterialCreators.h"
-#include "K:\Coding\repos\QtRenderingWidget_RPFM\ImportExport\RigidModel\DataTypes\MeshEnumsConstants.h"
+#include "..\..\DataTypes\MeshEnumsConstants.h"
 
 namespace rmv2 {
 
