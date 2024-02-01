@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -145,12 +145,12 @@
   <ItemGroup>
     <ClInclude Include="Helpers\DataConversion.h" />
     <ClInclude Include="RigidModel\Constants\Rmv2Constants.h" />
-    <ClInclude Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.h" />
+    <ClInclude Include="RigidModel\Creators\Material\IMaterialCommonCreators.h" />
     <ClInclude Include="Helpers\FileHelpers.h" />
     <ClInclude Include="Helpers\Templates.h" />
-    <ClInclude Include="RigidModel\Creators\MeshHeaderType5Creator.h" />
+    <ClInclude Include="RigidModel\Creators\MeshMaterialCreators.h" />
     <ClInclude Include="RigidModel\Creators\MeshHeaderType3Creator.h" />
-    <ClInclude Include="RigidModel\Creators\VertexCreators\VertexCreators.h" />
+    <ClInclude Include="RigidModel\Creators\Vertices\VertexCreators.h" />
     <ClInclude Include="RigidModel\DataTypes\AttachElement.h" />
     <ClInclude Include="RigidModel\DataTypes\MaterialBlockCommon.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType5.h" />
@@ -168,22 +168,22 @@
     <ClInclude Include="RigidModel\Creators\LodHeaderCreators.h" />
     <ClInclude Include="Helpers\ByteStream.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType3.h" />
-    <ClInclude Include="RigidModel\Creators\VertexCreators\WeightedVertexCreator.h" />
+    <ClInclude Include="RigidModel\Creators\Vertices\WeightedVertexCreator.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.cpp" />
+    <ClCompile Include="RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
     <ClCompile Include="Helpers\FileHelpers.cpp" />
     <ClCompile Include="Helpers\ImportExport.cpp" />
     <ClCompile Include="Helpers\ByteStream.cpp" />
-    <ClCompile Include="RigidModel\Creators\MeshHeaderType5Creator.cpp" />
+    <ClCompile Include="RigidModel\Creators\MeshMaterialCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\MeshHeaderType3Creator.cpp" />
-    <ClCompile Include="RigidModel\Creators\VertexCreators\VertexCreators.cpp" />
-    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
+    <ClCompile Include="RigidModel\Creators\Vertices\VertexCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp" />
+    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RigidModel\Creators\VertexCreators\VertexCAHelpers.inl" />
+    <None Include="RigidModel\Helpers\VertexCAHelpers.inl" />
     <None Include="RigidModel\DataTypes\MeshEnumsConstants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

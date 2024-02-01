@@ -57,19 +57,19 @@
     <ClInclude Include="RigidModel\RawStructs\RawMeshHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\MeshHeaderType5Creator.h">
+    <ClInclude Include="RigidModel\Creators\MeshMaterialCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\VertexCreators\WeightedVertexCreator.h">
+    <ClInclude Include="RigidModel\Creators\Vertices\WeightedVertexCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidModel\Interfaces\ILODHeaderCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\VertexCreators\VertexCreators.h">
+    <ClInclude Include="RigidModel\Creators\Vertices\VertexCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\DataConversion.h">
@@ -84,7 +84,7 @@
     <ClInclude Include="RigidModel\DataTypes\MaterialBlockCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.h">
+    <ClInclude Include="RigidModel\Creators\Material\IMaterialCommonCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidModel\Constants\Rmv2Constants.h">
@@ -110,19 +110,19 @@
     <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RigidModel\Creators\MeshHeaderType3Creator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\MeshHeaderType5Creator.cpp">
+    <ClCompile Include="RigidModel\Creators\MeshMaterialCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\Material\MaterialBlockCommonCreators.cpp">
+    <ClCompile Include="RigidModel\Creators\Material\IMaterialCommonCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\VertexCreators\VertexCreators.cpp">
+    <ClCompile Include="RigidModel\Creators\Vertices\VertexCreators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -130,7 +130,7 @@
     <None Include="RigidModel\DataTypes\MeshEnumsConstants.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="RigidModel\Creators\VertexCreators\VertexCAHelpers.inl">
+    <None Include="RigidModel\Helpers\VertexCAHelpers.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

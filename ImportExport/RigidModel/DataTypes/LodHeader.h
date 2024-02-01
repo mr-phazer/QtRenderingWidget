@@ -1,8 +1,6 @@
 #pragma once
 
-#include "..\..\Helpers\ByteStream.h"
-#include "..\..\Helpers\Templates.h"
-#include "FileHeader.h"
+#include <cstdint>
 
 namespace rmv2 {
 		// make all variable into virtual methods retuning references, dont use  "" prefix
@@ -42,7 +40,6 @@ namespace rmv2 {
 			LodHeaderData_V6 data;		
 		};
 
-
 		struct LODHeaderCommon
 		{
 			uint32_t dwMeshCount = 0;
@@ -51,11 +48,15 @@ namespace rmv2 {
 			uint32_t dwStartOffset = 0;
 			float fVisibilityDistance = 100.0f;
 			uint32_t dwAuthoredLodNumber = 0;
-			uint32_t dwQualityLevel = 0;
+			
+			struct QualityLevel
+			{
+				std::uint8_t byte0;
+				std::uint8_t byte1;
+				std::uint8_t byte2;
+				std::uint8_t byte3;
+			}
+			qualityLevel;
 		};
-
-
-
-
 
 }; // namespace rmv2

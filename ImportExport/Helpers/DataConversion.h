@@ -17,7 +17,7 @@ struct FloatConverter
 		};
 	};
 
-	inline static DirectX::XMFLOAT4 GetSNORMFloat4(DirectX::PackedVector::XMUBYTE4 vIn)
+	inline static DirectX::XMFLOAT4 GetSNORMFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
 	{
 		return
 		{
@@ -25,6 +25,49 @@ struct FloatConverter
 			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
 			(static_cast<float>(vIn.z) / 127.0f) - 1.f,
 			(static_cast<float>(vIn.w) / 127.0f) - 1.f
+		};
+	};
+
+	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
+	{
+		return
+		{
+			(static_cast<float>(vIn.x) / 127.0f) - 1.f,
+			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
+			(static_cast<float>(vIn.z) / 127.0f) - 1.f			
+		};
+	};
+
+	inline static DirectX::XMFLOAT4 GetSNORMFloat4FromByte4(DirectX::PackedVector::XMBYTE4 vIn)
+	{
+		return
+		{
+			(static_cast<float>(vIn.x) / 127.0f) - 1.f,
+			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
+			(static_cast<float>(vIn.z) / 127.0f) - 1.f,
+			(static_cast<float>(vIn.w) / 127.0f) - 1.f
+		};
+	};
+
+	inline static DirectX::XMFLOAT4 GetUNORMFloat4FromByte4(DirectX::PackedVector::XMBYTE4 vIn)
+	{
+		return
+		{
+			static_cast<float>(vIn.x) / 255.0f,
+			static_cast<float>(vIn.y) / 255.0f,
+			static_cast<float>(vIn.z) / 255.0f,
+			static_cast<float>(vIn.w) / 255.0f
+		};
+	};
+
+	inline static DirectX::XMFLOAT4 GetUNORMFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
+	{
+		return
+		{
+			static_cast<float>(vIn.x) / 255.0f,
+			static_cast<float>(vIn.y) / 255.0f,
+			static_cast<float>(vIn.z) / 255.0f,
+			static_cast<float>(vIn.w) / 255.0f
 		};
 	};
 

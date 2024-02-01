@@ -28,6 +28,7 @@ namespace rmv2 {
 			uint16_t unknown1 = 0;
 
 			char szSkeletonId[RMV2_SKELETON_LENGTH] = { 0 };
+		
 		};
 
 

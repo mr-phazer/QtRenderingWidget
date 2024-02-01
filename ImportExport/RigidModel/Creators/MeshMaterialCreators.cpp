@@ -1,11 +1,11 @@
-#include "MeshHeaderType5Creator.h"
+#include "MeshMaterialCreators.h"
 
 #include "..\Constants\Rmv2Constants.h"
 using namespace rmv2;
 
-MeshHeaderType5 MeshHeaderType5Creator::Create(ByteStream& bytes)
+MeshHeader5Common MaterielHeaderType5Creator::Create(ByteStream& bytes)
 {
-    MeshHeaderType5 meshHeader5;
+    MeshHeader5Common meshHeader5;
 
 	bytes.Read(&meshHeader5.VertexFormatId, sizeof(meshHeader5.VertexFormatId));		
 	
@@ -30,3 +30,4 @@ MeshHeaderType5 MeshHeaderType5Creator::Create(ByteStream& bytes)
 
 	return meshHeader5;
 }
+

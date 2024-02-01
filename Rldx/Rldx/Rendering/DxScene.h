@@ -38,12 +38,16 @@ namespace rldx {
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable, IBindable
 	{
 	public:
-		friend class IDxSceneCreator;
+		friend class IDxSceneBuilder;
 
 		using UniquePtr = std::shared_ptr<DxScene>;
 
 	public:
-		DxScene(const std::string& name = "") : TIdentifiable(name) {};
+		DxScene(const std::string& name = "") : TIdentifiable(name) 
+		{
+			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingViewWidget for RPFM version 0.0.1a.");
+		};
+
 		virtual void Init(ID3D11Device* poDevice);
 
 		std::string GetTypeString() const override { return "DxScene"; }

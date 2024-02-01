@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <vector>
 
 #include "FileHeader.h"
 #include "LodHeader.h"
@@ -22,9 +22,11 @@ namespace rmv2 {
 	/// </summary>
 	struct MeshBlockCommon
 	{
-		MeshHeaderType3 meshHeaderType3;
-		MeshHeaderType5 meshHeaderType5;
-		MaterialBlockCommon materialBlock;		
+		// TODO: remmove?
+		//MeshHeaderType3 meshHeaderType3;
+		//MeshHeader5Common meshHeaderType5;
+		MeshHeaderType3 meshHeader;
+		MaterialCommon materialBlock;
 		MeshData16 meshData;
 	};
 
@@ -40,7 +42,8 @@ namespace rmv2 {
 	{
 		FileHeaderCommon fileHeader;
 		std::vector<LODHeaderCommon> lodHeaders;
-		std::vector<ModelBlockCommon> lods;
+		std::vector<ModelBlockCommon> lods;		
 	};
+
 
 } // namespace rmv2

@@ -4,22 +4,21 @@
 
 namespace rldx {
 
-	class IDxSceneCreator
+	class IDxSceneBuilder
 	{
 	public:
 		virtual DxScene::UniquePtr Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "") = 0;
 
 	};
 
-	class DxNativeWindowSceneCreator : IDxSceneCreator
+	class DxNativeWindowSceneBuilder : IDxSceneBuilder
 	{
 
-		DxNativeWindowSceneCreator();
-		// TODO: rename 
-		DxScene::UniquePtr MakeNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "");;
+		DxScene::UniquePtr InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "");;
+		DxNativeWindowSceneBuilder();// TODO: rename 		
 
 	public:
-		DxNativeWindowSceneCreator(HWND nativeWindowHandle);;
+		DxNativeWindowSceneBuilder(HWND nativeWindowHandle);;
 
 		DxScene::UniquePtr Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name = "") override;
 		static void AddModel(ID3D11Device* poDevice, DxScene* scene, ByteStream& data);

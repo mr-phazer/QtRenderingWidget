@@ -181,7 +181,7 @@ namespace tools
 		///  Get "local" time, 
 		/// </summary>
 		/// <returns>"state time" - "now" </returns>
-		double GetLocalTime()
+		double GetLocalTime() const
 		{
 			auto timeElapsed = std::chrono::high_resolution_clock::now();
 

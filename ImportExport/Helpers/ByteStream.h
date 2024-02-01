@@ -81,7 +81,7 @@ public:
 	}
 
 	template <typename CONST_BUF_DATA_TYPE>
-	CONST_BUF_DATA_TYPE GetElement()
+	CONST_BUF_DATA_TYPE GetElement(std::size_t elementCount = 1)
 	{
 		CONST_BUF_DATA_TYPE element;
 		Read(&element, sizeof(CONST_BUF_DATA_TYPE));

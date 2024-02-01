@@ -34,7 +34,6 @@ namespace rmv2 {
 	{
 	public:
 		rldx::CommonVertex Create(ByteStream& bytes) override;
-
 	};
 
 	/// <summary>
@@ -46,15 +45,14 @@ namespace rmv2 {
 		rldx::CommonVertex Create(ByteStream& bytes) override;
 	};
 
-
 	class VertexCreatorProvider : public helpers::TFactory<IVertexCreator, VertexFormatEnum>
 	{
 	public:
 		VertexCreatorProvider()
 		{
-			Register(VertexFormatEnum::DefaultVertexFormat, new DefaultCommonVertexCreator());
-			Register(VertexFormatEnum::WeightedVertexFormat, new Weighted2CommonVertexCreator());
-			Register(VertexFormatEnum::CinematicVertexFormat, new Weighted4CommonVertexCreator());
+			Register<VertexFormatEnum::DefaultVertexFormat, DefaultCommonVertexCreator>();
+			Register<VertexFormatEnum::WeightedVertexFormat, Weighted2CommonVertexCreator>();
+			Register<VertexFormatEnum::CinematicVertexFormat, Weighted4CommonVertexCreator>();
 		}
 	};
 };

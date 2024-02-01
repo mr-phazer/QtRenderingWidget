@@ -8,7 +8,8 @@
 
 namespace rmv2
 {
-	struct MeshHeaderType5
+	// TODO this is a not a bit for bit data struct it is a COMMON...
+	struct MeshHeader5Common
 	{
 		static constexpr size_t size = 860;
 		VertexFormatEnum VertexFormatId = VertexFormatEnum(0);

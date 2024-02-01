@@ -2,11 +2,11 @@
 
 using namespace rldx;
 
-rldx::DxNativeWindowSceneCreator::DxNativeWindowSceneCreator() {}
+rldx::DxNativeWindowSceneBuilder::DxNativeWindowSceneBuilder() {}
 
 // TODO: rename 
 
-rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneCreator::MakeNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name)
+rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneBuilder::InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name)
 {
 	 m_newScene = std::make_unique<DxScene>(name);
 
@@ -26,11 +26,11 @@ rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneCreator::MakeNewScene(ID3D11De
 	return m_newScene;
 }
 
-rldx::DxNativeWindowSceneCreator::DxNativeWindowSceneCreator(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {}
+rldx::DxNativeWindowSceneBuilder::DxNativeWindowSceneBuilder(HWND nativeWindowHandle) : m_nativeWindowHandle(nativeWindowHandle) {}
 
-rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneCreator::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name)
+rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneBuilder::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& name)
 {
-	 m_newScene = MakeNewScene(poDevice, poDeviceContext, name);
+	 m_newScene = InitNewScene(poDevice, poDeviceContext, name);
 	///////////////////////////////////////////////////////
 	//  START: Make Scene:
 	///////////////////////////////////////////////////////			
@@ -58,12 +58,10 @@ rldx::DxScene::UniquePtr rldx::DxNativeWindowSceneCreator::Create(ID3D11Device* 
 	return m_newScene;
 }
 
-void rldx::DxNativeWindowSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData)
-{
-	//ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
-	//ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)");
-	rmv2::RigidModelReader rm2Reader;
-	auto rmv2File = rm2Reader.Read(fileData);
+void rldx::DxNativeWindowSceneBuilder::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData)
+{	
+	rmv2::RigidModelReader rigidModelFileReader;
+	auto rmv2File = rigidModelFileReader.Read(fileData);
 	
 	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("Model");
 	//auto cubMeshData = rldx::DxMeshCreatorHelper::MakeTestCubeMesh(poDevice);			

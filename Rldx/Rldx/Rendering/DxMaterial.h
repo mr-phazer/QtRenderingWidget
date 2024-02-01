@@ -12,7 +12,14 @@
 #include "..\Interfaces\IBindable.h"
 #include "DxTexture.h"
 
+// TODO: should this conditional be left in
+
+// use a disk source when debugging, when in plugin mode, it's using the callback to get files
+#ifdef _DEBUG
 static std::wstring defaultTexturePath = LR"(K:/Modding/WH2/)";
+#elif
+static std::wstring defaultTexturePath = L"";
+#endif
 
 namespace rldx {
 	// for texture loading, maybe not needed
@@ -79,10 +86,7 @@ namespace rldx {
 
 		DxMaterial* Create(ID3D11Device* poDevice) override
 		{
-
 			auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();
-
-
 
 			string hash = "";
 			for (auto& tex : m_data->materialBlock.textureElements)

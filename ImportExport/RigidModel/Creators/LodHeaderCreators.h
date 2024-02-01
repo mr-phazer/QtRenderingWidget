@@ -1,6 +1,9 @@
 #pragma once
 
 #include "..\DataTypes\LodHeader.h"
+#include "..\DataTypes\FileHeader.h"
+#include "..\..\Helpers\ByteStream.h"
+#include "..\..\Helpers\Templates.h"
 
 namespace rmv2 {
 
@@ -29,6 +32,11 @@ namespace rmv2 {
 	{
 	public:
 		LODHeaderCreatorFactory();
+
+		void HandleKeyFound(Rmv2VersionEnum keyValue) override
+		{
+			throw std::exception("Unsuported RigidModelV2 version (Action: Reading LOD headers.");
+		}
 	};
 
 }; // namespace rmv2

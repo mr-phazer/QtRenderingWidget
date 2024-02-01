@@ -16,7 +16,7 @@ namespace rmv2
 
 
 		MeshHeaderType3 meshHeader3;
-		MeshHeaderType5 meshHeader5;
+		MeshHeader5Common meshHeader5;
 
 	};
 }

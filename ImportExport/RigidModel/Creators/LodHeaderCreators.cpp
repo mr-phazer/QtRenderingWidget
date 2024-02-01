@@ -44,7 +44,7 @@ LODHeaderCommon LodHeader_V7_V8_Creator::Create(ByteStream& bytes)
 	lodHeader.dwStartOffset = bytes.GetElement<uint32_t>();
 	lodHeader.fVisibilityDistance = bytes.GetElement<float>();
 	lodHeader.dwAuthoredLodNumber = bytes.GetElement<uint32_t>();
-	lodHeader.dwQualityLevel = bytes.GetElement<uint32_t>();
+	lodHeader.qualityLevel = bytes.GetElement<LODHeaderCommon::QualityLevel>();
 
 	return lodHeader;
 }
@@ -56,7 +56,7 @@ size_t rmv2::LodHeader_V7_V8_Creator::GetHeaderSize()
 
 LODHeaderCreatorFactory::LODHeaderCreatorFactory()
 {
-	Register(Rmv2VersionEnum::RMV2_V6, new LodHeader_V6_Creator);
-	Register(Rmv2VersionEnum::RMV2_V7, new LodHeader_V7_V8_Creator);
-	Register(Rmv2VersionEnum::RMV2_V8, new LodHeader_V7_V8_Creator);
+	Register<Rmv2VersionEnum::RMV2_V6, LodHeader_V6_Creator>();
+	Register<Rmv2VersionEnum::RMV2_V7, LodHeader_V7_V8_Creator>();
+	Register<Rmv2VersionEnum::RMV2_V8, LodHeader_V7_V8_Creator>();
 }

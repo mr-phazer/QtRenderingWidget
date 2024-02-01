@@ -11,6 +11,5 @@ public:
     QtTesterAppWindow(QWidget *parent = nullptr);
     ~QtTesterAppWindow();
 
-private:
-     
+    void Init();         
 };

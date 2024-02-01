@@ -6,6 +6,7 @@
 
 #include "TextureElement.h"
 #include "AttachElement.h"
+#include "MeshHeaderType5.h"
 
 namespace rmv2 
 {
@@ -24,8 +25,9 @@ namespace rmv2
 		std::vector<ExtraMaterialElement<DirectX::XMFLOAT4>> float4Parmas;
 	};
 
-	struct MaterialBlockCommon
-	{
+	struct MaterialCommon
+	{		
+		MeshHeader5Common materialHeader;
 		std::vector<AttachmentPointTableEntry_V6_V7_V8> attachElements;
 		std::vector<TextureElement> textureElements;
 		ExtraMaterialParams extraMaterialParams;

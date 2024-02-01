@@ -29,7 +29,7 @@ namespace rldx {
 		static IntId sm_nextId;
 	};
 
-	template  <typename ENUM_TYPE>
+	template  <typename KEY_TYPE>
 	class TIdentifiable : public IdentifiableBase
 
 	{
@@ -39,15 +39,15 @@ namespace rldx {
 		virtual ~TIdentifiable();
 
 		virtual std::string GetTypeString() const = 0;
-		virtual ENUM_TYPE GetType() const = 0;
+		virtual KEY_TYPE GetType() const = 0;
 
 
 	protected:
 		std::string m_name = "Unnamed_Object";
 	};
 
-	template<typename ENUM_TYPE>
-	inline TIdentifiable<ENUM_TYPE>::TIdentifiable()
+	template<typename KEY_TYPE>
+	inline TIdentifiable<KEY_TYPE>::TIdentifiable()
 		: IdentifiableBase()
 	{
 		// TODO: remove after debugging
@@ -56,8 +56,8 @@ namespace rldx {
 #endif
 	}
 
-	template<typename ENUM_TYPE>
-	inline TIdentifiable<ENUM_TYPE>::~TIdentifiable()
+	template<typename KEY_TYPE>
+	inline TIdentifiable<KEY_TYPE>::~TIdentifiable()
 	{
 #if _DEBUG
 		logging::LogAction(/*GetTypeString()*/ +"# " + std::to_string(GetId()) + ": deallocated.");

@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 
-struct MeshHeaderType5
+struct MeshHeader5Common
 {
 	static constexpr size_t size = 860;
 	RigidModelV2::VertexFormatInfo::EVertexFormat VertexFormatId = RigidModelV2::VertexFormatInfo::EVertexFormat::eERROR_NOT_SET;

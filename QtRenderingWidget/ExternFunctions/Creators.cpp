@@ -29,11 +29,10 @@ static void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFi
 	outBinFiles->clear();	
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
-
 		auto fileName = (*missingFiles)[iAsset].toStdWString();
 		ByteStream newStream(fileName);
 		
-		// force lise to be same size, maybe redundant
+		// force list to be same size, maybe redundant
 		*outBinFiles = QList<QByteArray>::fromVector(QVector<QByteArray>(missingFiles->size()));
 
 		if (!newStream.IsValid())
@@ -48,13 +47,14 @@ static void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFi
 	}
 }
 
-//QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, AssetFetchCallBack pAssetCallBackFunc)
 QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
 {
-
+#ifdef _DEBUG
 	rldx::DxResourceManager::SetcAssetFetchCallback(&FileGetter);
-	// make sure the Singleton DeviceManager is instantiated
-	//auto& spManager = rldx::DxDeviceManager::GetInstance();
+#else
+	rldx::DxResourceManager::SetcAssetFetchCallback(AssetFetchCallBack);
+#endif	
+	
 	QtRenderView* poNewRenderingWidget = nullptr;
 
 	try {
@@ -78,7 +78,6 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	poNewRenderingWidget->StartRendering(/*&spManager*/);
 
 	return poNewRenderingWidget;
-
 }
 
 void AddNewPimaryAsset(QWidget* pQRenderWidget, QString* assetPath, QByteArray* assetData)
@@ -88,5 +87,5 @@ void AddNewPimaryAsset(QWidget* pQRenderWidget, QString* assetPath, QByteArray* 
 	auto currentScene = renderWidget->GetSceneManager().GetCurrentScene();
 
 	ByteStream fileDataStream(assetData->data(), assetData->size());
-	rldx::DxNativeWindowSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream);
+	rldx::DxNativeWindowSceneBuilder::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream);
 }

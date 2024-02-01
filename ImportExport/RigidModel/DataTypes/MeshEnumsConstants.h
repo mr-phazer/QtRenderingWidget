@@ -7,7 +7,7 @@ constexpr DirectX::XMFLOAT3X4 CAIdentityMatrix3x4 =
 	0, 0, 1, 0
 };
 
-enum class RigidMaterialEnum : uint16_t
+enum RigidMaterialEnum : uint16_t
 {
 	bow_wave = 22,
 	non_renderable = 26,

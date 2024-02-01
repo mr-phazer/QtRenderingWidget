@@ -69,6 +69,8 @@ namespace vertices_raw_packed
 		ubyte4 normal;   // 4
 		ubyte4 bitangent; // 4
 		ubyte4 tangent; //4
+
+		ubyte4 color; // 4
 	};
 
 	struct VertexWeighted4

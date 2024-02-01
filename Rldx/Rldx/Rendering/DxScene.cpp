@@ -17,8 +17,9 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
 
+	
 	auto textWriter = DxDeviceManager::GetInstance().GetDebugTextWriter();
-	textWriter->AddString(L"QtRenderingViewWidget for RPFM version 0.0.1a.");
+	
 	textWriter->RenderText();
 
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthDefault(), 0);

@@ -1,15 +1,16 @@
-#include "MaterialBlockCommonCreators.h"
-#include "..\..\DataTypes\MaterialBlockCommon.h"
-
+#include "IMaterialCommonCreators.h"
 
 using namespace rmv2;
 
-MaterialBlockCommon MaterialBlockCommonCreator::Create(ByteStream& bytes, const MeshHeaderType5& header5)
+MaterialCommon DefaultMaterialCreator::Create(ByteStream& bytes)
 {
-	MaterialBlockCommon matBlock;
-	ReadAttachPointTable(bytes, matBlock, header5);
-	ReadTextures(bytes, matBlock, header5);
-	ReadExtraMaterialParams(bytes, matBlock, header5);
+ 	MaterialCommon matBlock;
+	
+	matBlock.materialHeader = MaterielHeaderType5Creator().Create(bytes);
+
+	ReadAttachPointTable(bytes, matBlock, matBlock.materialHeader);
+	ReadTextures(bytes, matBlock, matBlock.materialHeader);
+	ReadExtraMaterialParams(bytes, matBlock, matBlock.materialHeader);
 
 	return matBlock;
 }
@@ -25,8 +26,7 @@ static void ReadParams(ByteStream& bytes, std::vector<ExtraMaterialElement<CONST
 	}
 };
 
-
-void rmv2::MaterialBlockCommonCreator::ReadExtraMaterialParams(ByteStream& bytes, rmv2::MaterialBlockCommon& matBlock, const rmv2::MeshHeaderType5& header5)
+void rmv2::DefaultMaterialCreator::ReadExtraMaterialParams(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header5)
 {
 	ReadParams(bytes, matBlock.extraMaterialParams.stringParams, header5.materialParams.stringParamCount);
 	ReadParams(bytes, matBlock.extraMaterialParams.floatParams, header5.materialParams.floatParamCount);
@@ -34,7 +34,7 @@ void rmv2::MaterialBlockCommonCreator::ReadExtraMaterialParams(ByteStream& bytes
 	ReadParams(bytes, matBlock.extraMaterialParams.float4Parmas, header5.materialParams.float4ParamCount);
 }
 
-void rmv2::MaterialBlockCommonCreator::ReadTextures(ByteStream& bytes, rmv2::MaterialBlockCommon& matBlock, const rmv2::MeshHeaderType5& header)
+void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header)
 {
 	matBlock.textureElements.resize(header.dwTextureCount);
 	for (auto& textureElement : matBlock.textureElements)
@@ -43,7 +43,7 @@ void rmv2::MaterialBlockCommonCreator::ReadTextures(ByteStream& bytes, rmv2::Mat
 	}
 }
 
-void rmv2::MaterialBlockCommonCreator::ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialBlockCommon& matBlock, const rmv2::MeshHeaderType5& header)
+void rmv2::DefaultMaterialCreator::ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header)
 {
 	matBlock.attachElements.resize(header.dwAttachmentPointCount);
 	for (auto& attachElement : matBlock.attachElements)
@@ -51,3 +51,4 @@ void rmv2::MaterialBlockCommonCreator::ReadAttachPointTable(ByteStream& bytes, r
 		bytes.Read(&attachElement, sizeof(attachElement));
 	}
 }
+
