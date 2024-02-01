@@ -17,7 +17,7 @@
 // use a disk source when debugging, when in plugin mode, it's using the callback to get files
 #ifdef _DEBUG
 static std::wstring defaultTexturePath = LR"(K:/Modding/WH2/)";
-#elif
+#else
 static std::wstring defaultTexturePath = L"";
 #endif
 
