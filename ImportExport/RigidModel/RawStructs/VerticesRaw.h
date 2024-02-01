@@ -1,38 +1,5 @@
 #pragma once
-
 #include <DirectXPackedVector.h>
-
-
-//#pragma pack(push)  /* push current alignment to stack */
-//#pragma pack(1)     /* set alignment to 1 byte boundary */
-
-
-//struct ushort4
-//{
-//	uint16_t x, y, z, w;
-//};
-//
-//struct ushort2
-//{
-//	uint16_t x, y;
-//};
-//
-//struct ubyte4
-//{
-//	uint8_t x, y, z, w;
-//};
-//
-//struct ubyte2
-//{
-//	uint8_t x, y;
-//};
-
-//using ushort4 = uint8_t[8];
-//using ushort2 = uint8_t[4];
-//using ubyte4 = uint8_t[4];
-//using ubyte2 = uint8_t[2];
-
-
 
 namespace vertices_raw_packed
 {
@@ -89,5 +56,3 @@ namespace vertices_raw_packed
 		ubyte4 bitangent;
 	};
 };
-
-//#pragma pack(pop)   /* restore original alignment from stack */
