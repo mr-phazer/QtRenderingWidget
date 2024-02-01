@@ -41,7 +41,7 @@ void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::Materia
 	{
 		bytes.Read(&textureElement, sizeof(textureElement));
 	}
-,}
+}
 
 void rmv2::DefaultMaterialCreator::ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header)
 {
