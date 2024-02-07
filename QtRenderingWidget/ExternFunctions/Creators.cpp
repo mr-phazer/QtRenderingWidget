@@ -26,7 +26,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 #ifdef _DEBUG
 	rldx::DxResourceManager::SetAssetFetchCallback(&FileGetter);
 #else
-	rldx::DxResourceManager::SetcAssetFetchCallback(AssetFetchCallBack);
+	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
 #endif	
 	
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
