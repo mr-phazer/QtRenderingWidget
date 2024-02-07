@@ -45,16 +45,9 @@ void QtMainWindowView::InitRenderView()
     SetAssetFolder(&qAssetPath);
    
     if (!renderWidget)
-        return;
-
-    //ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_props\emp_karl_franz_hammer_2h_01.rigid_model_v2)");
-    //ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_karl_franz\emp_karl_franz.rigid_model_v2)");
-    //ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)");
-    //ByteStream bytes(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\hu1\emp\emp_props\emp_free_company_sword_1h_01.rigid_model_v2)");
-     
-    // - Rome 2 test models 
+        return;    
+    
     ByteStream bytes(ptestData->filePath);
-
     QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
     QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 

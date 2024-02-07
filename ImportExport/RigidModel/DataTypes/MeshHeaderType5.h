@@ -9,9 +9,14 @@
 namespace rmv2
 {
 	// TODO this is a not a bit for bit data struct it is a COMMON...
-	struct MeshHeader5Common
+	struct MaterialHeaderType5
 	{
-		bool IsContentValid();
+		// TODO: implement
+		bool IsContentValid()
+		{
+		//	TODO: "implement!!!"
+		}
+
 		static constexpr size_t GetSsize = 860;
 
 		VertexFormatEnum VertexFormatId = VertexFormatEnum(0);

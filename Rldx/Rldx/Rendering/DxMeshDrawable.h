@@ -27,7 +27,10 @@ namespace rldx {
 		// TODO: use this to move attached meshes (weapons/shields in VMDs)
 		sm::Matrix m_mWorldMatrix;
 		sm::Vector3 m_pivotPoint;
-		uint32_t boneIndex = 0; // TODO: is this needed
+		uint32_t boneIndex = 0; // TODO: is this needed?
+
+		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
+		DirectX::BoundingBox m_BB = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 
 		// TODO: add DxBoundingBox		
 				

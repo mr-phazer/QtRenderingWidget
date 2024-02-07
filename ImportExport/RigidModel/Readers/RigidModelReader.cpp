@@ -100,7 +100,7 @@ void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockComm
 
 // TODO: why do the vectors<vertex> etc not "exist" in debugger?
 
-//MeshData16 rmv2::RigidModelReader::ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5)
+//MeshData16 rmv2::RigidModelReader::ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MaterialHeaderType5& meshHeader5)
 //{
 //	auto vertexCreator = VertexCreatorFactory().Get(meshHeader5.VertexFormatId);
 //

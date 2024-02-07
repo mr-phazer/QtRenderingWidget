@@ -20,7 +20,10 @@ namespace rmv2
 		//virtual DirectX::XMFLOAT3& MaxBB() = 0;
 		//virtual char* LightingConstants() = 0;
 		
-		bool IsContentValid();
+		bool IsContentValid()
+		{
+		// TOD:	"implement"
+		}
 
 		static constexpr size_t GetHeaderSize()
 		{

@@ -9,13 +9,13 @@ namespace rmv2 {
 	class IMeshMaterialCreator
 	{
 	public:
-		virtual MeshHeader5Common Create(ByteStream& bytes) = 0;
+		virtual MaterialHeaderType5 Create(ByteStream& bytes) = 0;
 	};
 
 	class MaterielHeaderType5Creator : public IMeshMaterialCreator
 	{
 	public:
-		MeshHeader5Common Create(ByteStream& bytes) override;
+		MaterialHeaderType5 Create(ByteStream& bytes) override;
 	};
 
 	

@@ -56,7 +56,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
-	meshNodeGrid->SetMeshData(gridMeshData);
+	meshNodeGrid->SetNewModel(gridMeshData);
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
 	
@@ -68,10 +68,12 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 {	
 	// TODO: REMOVE
 	// BEGIN: DEBUGGIN CODE
+#if 0
 	ByteStream wsModelBinaryData(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\sn2\def\def_medusa\def_medusa_body_01.wsmodel)");
 	rmv2::WsModelReader wsModelReader = rmv2::WsModelReader::Create(wsModelBinaryData);
 	auto wsModelData = wsModelReader.Read();
 	// END: DEBUGGIN CODE
+#endif
 
 	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("ModelNode RMV2");		
 
@@ -89,7 +91,7 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 
 	rmv2::RigidModelReader rigidModelFileReader;
 	auto rmv2File = rigidModelFileReader.Read(fileData);
-	modelNodeRmv2->SetMeshData(poDevice, rmv2File);
+	modelNodeRmv2->SetNewModel(poDevice, rmv2File);
 	modelNodeRmv2->LoadMaterialData(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 

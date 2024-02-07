@@ -62,6 +62,11 @@ namespace rldx {
 			};
 		}
 
+		static void SumBoundBoxes()
+		{
+			DirectX::BoundingBox testerBB;
+		}
+
 		void FetchNodes(DxBaseNode* pRootNode, IRenderBucket* pRenderQueue)
 		{
 			pRootNode->FlushToRenderQueue(pRenderQueue);

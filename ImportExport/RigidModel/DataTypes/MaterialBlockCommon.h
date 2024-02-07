@@ -27,7 +27,7 @@ namespace rmv2
 
 	struct MaterialCommon
 	{	
-		MeshHeader5Common materialHeader;
+		MaterialHeaderType5 materialHeader;
 		std::vector<AttachmentPointTableEntry_V6_V7_V8> attachElements;
 		std::vector<TextureElement> textureElements;
 		ExtraMaterialParams extraMaterialParams;

@@ -26,7 +26,7 @@ static void ReadParams(ByteStream& bytes, std::vector<ExtraMaterialElement<CONST
 	}
 };
 
-void rmv2::DefaultMaterialCreator::ReadExtraMaterialParams(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header5)
+void rmv2::DefaultMaterialCreator::ReadExtraMaterialParams(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header5)
 {
 	ReadParams(bytes, matBlock.extraMaterialParams.stringParams, header5.materialParams.stringParamCount);
 	ReadParams(bytes, matBlock.extraMaterialParams.floatParams, header5.materialParams.floatParamCount);
@@ -34,7 +34,7 @@ void rmv2::DefaultMaterialCreator::ReadExtraMaterialParams(ByteStream& bytes, rm
 	ReadParams(bytes, matBlock.extraMaterialParams.float4Parmas, header5.materialParams.float4ParamCount);
 }
 
-void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header)
+void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header)
 {
 	matBlock.textureElements.resize(header.dwTextureCount);
 	for (auto& textureElement : matBlock.textureElements)
@@ -43,11 +43,13 @@ void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::Materia
 
 		textureElement.texturePath.resize(TextureElement::GetPathLength());
 		bytes.Read((void*)textureElement.texturePath.data(), TextureElement::GetPathLength());
-		textureElement.texturePath.shrink_to_fit();
+		
+		// Get rid of trailing /0 from the null-padded string
+		textureElement.texturePath = textureElement.texturePath.c_str();
 	}
 }
 
-void rmv2::DefaultMaterialCreator::ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MeshHeader5Common& header)
+void rmv2::DefaultMaterialCreator::ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header)
 {
 	matBlock.attachElements.resize(header.dwAttachmentPointCount);
 	for (auto& attachElement : matBlock.attachElements)

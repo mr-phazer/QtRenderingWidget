@@ -24,7 +24,7 @@ namespace rmv2 {
 	{
 		// TODO: remmove?
 		//MeshHeaderType3 meshHeaderType3;
-		//MeshHeader5Common meshHeaderType5;
+		//MaterialHeaderType5 meshHeaderType5;
 		MeshHeaderType3 meshHeader;
 		MaterialCommon materialBlock;
 		MeshData16 meshData;

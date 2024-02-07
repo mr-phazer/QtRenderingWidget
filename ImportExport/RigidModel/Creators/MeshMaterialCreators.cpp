@@ -3,9 +3,9 @@
 #include "..\Constants\Rmv2Constants.h"
 using namespace rmv2;
 
-MeshHeader5Common MaterielHeaderType5Creator::Create(ByteStream& bytes)
+MaterialHeaderType5 MaterielHeaderType5Creator::Create(ByteStream& bytes)
 {
-    MeshHeader5Common meshHeader5;
+    MaterialHeaderType5 meshHeader5;
 
 	bytes.Read(&meshHeader5.VertexFormatId, sizeof(meshHeader5.VertexFormatId));		
 	

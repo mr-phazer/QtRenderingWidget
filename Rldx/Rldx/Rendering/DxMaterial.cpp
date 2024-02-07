@@ -37,35 +37,26 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 	{
 		// TODO: REMOVE and clean up block
 		auto DEBUG_1 = 1;
-		
 	}
 	else
-	{	
-
-		// -- allocate empty texture resource
+	{
 		textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
 
 		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
-		// TODO: TEST CODE BEING
-		//QList<QString> files = { { QString::fromStdWString(path) } };
-		//QList<QByteArray> binaries;
-		//DxResourceManager::CallAssetFetchCallBack(files, binaries);
-		// TODO: TEST CODE END;
 
-		//if (binaries.size() && IsDDSTextureFile(binaries[0].data()) )
-		{
+		auto bytes = DxResourceManager::GetCallBackFile(path);
 
+		if (!bytes.IsValid()) {
+			logging::LogActionError("Loading From CALLBACK failed, missing or empty file" + libtools::wstring_to_string(path));
+		}
+		else {
 			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
-			//textPtr->LoadFileFromMemory(poDevice, (uint8_t*)binaries[0].constData(), binaries[0].size());
+		}
 
-			auto bytes = DxResourceManager::GetCallBackFile(path);
+		textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
+	}
 
-			textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
-		}		
-
-		m_textures.push_back({ slot, textPtr });
-	}	
-
+	m_textures.push_back({ slot, textPtr });
 }
 
 void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
@@ -73,8 +64,8 @@ void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	for (auto& itTextureInfo : m_textures)
 	{
 		poDeviceContext->PSSetShaderResources(
-			GetTextureStartSlot() + itTextureInfo.slot, 
-			1, 
+			GetTextureStartSlot() + itTextureInfo.slot,
+			1,
 			itTextureInfo.pTexture->GetAddressOfShaderResourceView()
 		);
 	}

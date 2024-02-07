@@ -19,7 +19,7 @@ rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::string& name)
 	return newMeshNode;
 }
 
-void rldx::DxMeshNode::SetMeshData(const rldx::DxCommonMeshData& meshData)
+void rldx::DxMeshNode::SetNewModel(const rldx::DxCommonMeshData& meshData)
 {
 	auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
 	m_meshDrawable.m_poMesh = newMeshHandle.GetPtr();
@@ -28,6 +28,14 @@ void rldx::DxMeshNode::SetMeshData(const rldx::DxCommonMeshData& meshData)
 	// TODO: REMOVE:
 	auto DEBUG_BREAK = 1;
 
+}
+
+void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint)
+{
+	DirectX::XMVECTOR xmMin = DirectX::XMLoadFloat3(&minPoint);
+	DirectX::XMVECTOR xmMax = DirectX::XMLoadFloat3(&maxPoint);
+
+	DirectX::BoundingBox::CreateFromPoints(m_meshDrawable.m_BB, xmMin, xmMax);	
 }
 
 //void rldx::DxMeshNode::Draw(ID3D11DeviceContext* poDC)

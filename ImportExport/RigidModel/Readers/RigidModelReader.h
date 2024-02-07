@@ -32,7 +32,7 @@ namespace rmv2
 		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 		
 		// TODO: why do the vectors<vertex> etc not "exist" in debugger?
-		//MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5);
+		//MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MaterialHeaderType5& meshHeader5);
 
 		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
 		
