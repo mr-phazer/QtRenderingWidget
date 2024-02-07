@@ -1501,8 +1501,7 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
     
     // Baked Ambient Occlusion in "ALPHA"
     occlusion = shaderTextures[t_MaterialMap].Sample(s_anisotropic, input.tex1.xy).w;
-
-
+                                                                                            
     // TODO: REMOVE DEBUGGING CODE
     //roughness = 1 - (1 - roughness) * (1 - roughness);
 
