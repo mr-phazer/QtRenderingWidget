@@ -7,6 +7,7 @@
 #include <Windows.h>
 
 #include "FileHelpers.h"
+#include "..\..\Rldx\Rldx\Tools\tools.h"
 
 
 using ByteVector = std::vector<uint8_t>;
@@ -22,17 +23,32 @@ class ByteStream
 	std::wstring m_currentFilePath = L"";
 
 public:
+	ByteStream()
+	{
+		m_data.clear();
+	}
+
 	ByteStream(const ByteVector& input)
 		: m_data(input) {};
 
-	ByteStream(void* pMem, size_t sizeInBytes)
+	ByteStream(void* pMem, size_t sizeInBytes, const std::wstring fileName = L"")
 	{
 		m_data.resize(sizeInBytes);
 		memcpy(m_data.data(), pMem, sizeInBytes);
+		m_currentFilePath = fileName;
 	}
 
-	ByteStream(const std::wstring& fileName)
-	{
+	ByteStream(const std::wstring& fileName, bool doThrow = true)
+	{		
+		if (!file_helpers::DoesFileExist(fileName))
+		{
+			if (doThrow)
+				throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) +"', file does not exist.").c_str());
+			else
+				m_data.clear(); 
+			return;
+		}
+
 		m_currentFilePath = fileName;
 		m_data = file_helpers::ReadFileToVector(fileName);
 	};

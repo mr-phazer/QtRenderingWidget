@@ -15,7 +15,7 @@
 template <typename VALUE>
 using StringkeyMap
 =  std::unordered_map<
-	std::wstring,
+	std::string,
     VALUE,
 	CaseInsensitiveUnorderedMapComparer::Hash,
 	CaseInsensitiveUnorderedMapComparer::Compare>;
@@ -29,8 +29,8 @@ template <typename VALUE>
 using WStringkeyMap = std::unordered_map<
 	std::wstring,
     VALUE,
-	CaseInsensitiveUnorderedMapComparer::Hash,
-	CaseInsensitiveUnorderedMapComparer::Compare>;
+	WCaseInsensitiveUnorderedMapComparer::Hash,
+	WCaseInsensitiveUnorderedMapComparer::Compare>;
 
 
 

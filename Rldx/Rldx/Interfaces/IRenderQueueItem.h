@@ -3,5 +3,8 @@
 #include "IBindable.h"
 
 namespace rldx {
-	class IRenderQueueItem : public IDrawable, public IBindable {};
+	class IRenderQueueItem : public IDrawable, public IBindable 
+	{
+	
+	};
 }

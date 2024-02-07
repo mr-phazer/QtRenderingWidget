@@ -41,7 +41,10 @@ namespace rmv2
 {
 	struct TextureElement
 	{
-		TextureTypeEnum dwTextureType = TextureTypeEnum(0);
-		char szTexturePath[RMV2_MAX_PATH] = "";
+		static size_t GetPathLength() { return RMV2_MAX_PATH; };
+
+		TextureTypeEnum textureType = TextureTypeEnum(0);
+		string texturePath = "";
+		
 	};
 }

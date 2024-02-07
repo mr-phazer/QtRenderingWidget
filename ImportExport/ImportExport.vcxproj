@@ -108,7 +108,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);PUGIXML_WCHAR_MODE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -127,7 +127,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);PUGIXML_WCHAR_MODE</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -144,7 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Helpers\DataConversion.h" />
+    <ClInclude Include="Libs\PugiXML\pugiconfig.hpp" />
+    <ClInclude Include="Libs\PugiXML\pugixml.hpp" />
     <ClInclude Include="RigidModel\Constants\Rmv2Constants.h" />
+    <ClInclude Include="RigidModel\Creators\GameShaders\GameShaderCreators.h" />
     <ClInclude Include="RigidModel\Creators\Material\IMaterialCommonCreators.h" />
     <ClInclude Include="Helpers\FileHelpers.h" />
     <ClInclude Include="Helpers\Templates.h" />
@@ -169,8 +172,12 @@
     <ClInclude Include="Helpers\ByteStream.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType3.h" />
     <ClInclude Include="RigidModel\Creators\Vertices\WeightedVertexCreator.h" />
+    <ClInclude Include="WsModel\DataTypes\XMLMaterialData.h" />
+    <ClInclude Include="WsModel\Reader\WsModelReader.h" />
+    <ClInclude Include="WsModel\DataTypes\WsModelData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
     <ClCompile Include="Helpers\FileHelpers.cpp" />
     <ClCompile Include="Helpers\ImportExport.cpp" />
@@ -181,6 +188,7 @@
     <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
+    <ClCompile Include="WsModel\Reader\WsModelReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RigidModel\Helpers\VertexCAHelpers.inl" />

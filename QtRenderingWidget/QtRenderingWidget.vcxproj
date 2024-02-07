@@ -35,12 +35,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtInstall>5.15.2_64</QtInstall>
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
-    <QtInstall>5.15.2_64</QtInstall>
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -128,11 +128,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="QtObjects\Controllers\QtRenderController.cpp" />
     <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderView.cpp" />
     <ClInclude Include="Constants\GameIdKeys.h" />
-    <QtMoc Include="QtObjects\Controllers\QtRenderController.h" />
     <ClInclude Include="ExternFunctions\Callbacks.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
     <QtRcc Include="QtObjects\Views\QtRenderView.qrc" />

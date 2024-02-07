@@ -39,7 +39,11 @@ void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::Materia
 	matBlock.textureElements.resize(header.dwTextureCount);
 	for (auto& textureElement : matBlock.textureElements)
 	{
-		bytes.Read(&textureElement, sizeof(textureElement));
+		bytes.Read(&textureElement.textureType, 4);		
+
+		textureElement.texturePath.resize(TextureElement::GetPathLength());
+		bytes.Read((void*)textureElement.texturePath.data(), TextureElement::GetPathLength());
+		textureElement.texturePath.shrink_to_fit();
 	}
 }
 

@@ -12,7 +12,7 @@
 
 using namespace rldx;
 
-rldx::DxMeshNode::SharedPointer rldx::DxMeshNode::Create(const std::string& name)
+rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::string& name)
 {
 	auto newMeshNode = std::shared_ptr<DxMeshNode>(new DxMeshNode);
 	newMeshNode->SetName(name);

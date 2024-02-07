@@ -1,1 +1,23 @@
 - Make sure all paths sent/read from the resource_callback use "/"   
+
+- Make the NVVM-like pattern work neatly, as neatly as is possible
+  QtRenderView -> QtRenderWidgetView
+  +               QtRenderWidgetModelView
+  +   _maybe_     QtRenderWidgetModel
+  (all inside a QWidget Derived object)
+  Code:
+     class QRenderWidgetView : public QWidget, public MVVMStorage
+     
+     or similar, to make it less ugly
+
+- Error Handling
+  * Add exception handling for extensing throws 
+  * add more throws for
+       Header(s).IsContentValid()
+
+- Make sure all supported RMV2s actually work
+  * If not, add needed implementations
+
+- Add Rome2/Attila/Tob shading (1 shader)
+- Add WH3/3K shading (1 shader)
+

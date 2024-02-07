@@ -4,7 +4,6 @@ class QWidget;
 class QString;
 class Vector;
 
-
 #include "Callbacks.h"
 
 /// <summary>
@@ -19,21 +18,29 @@ extern "C" QWidget * CreateQRenderingWidget(
 	QString* gameIdString, 
 	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles));
 
+// TODO: remove?
+//extern "C" QWidget * CreateQRenderingWidget(
+//	QWidget * parent, 
+//	uint32_t gameId, 
+//	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles));
+
+
+
 /// <summary>
 /// Add an RMV2, WSMODEL or VMD (model) to scene
 /// TODO: WIP
 /// </summary>
 /// <param name="pQRendeeWiget">Thee rendering widget pointer</param>
-/// <param name="assetPath">internal/externala path</param>
+/// <param name="assetFolder">internal/externala path</param>
 /// <param name="assetData">raw binary data of asset</param>
-extern "C" void AddNewPimaryAsset(QWidget * pQRenderWiget, QString * assetPath, QByteArray* assetData);
+extern "C" void AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData);
 
 /// <summary>
 /// Path where shaders, cubemaps, and defalt material(textues) are stored
 /// </summary>
 /// <param name="parent"></param>
 /// <param name="path"></param>
-//extern "C" void SetAssetPath(QWidget * pQRendeeWiget, const QString& path);
+extern "C" void SetAssetFolder(QString* folder);
 
 /// <summary>
 /// Path where shaders, cubemaps, and defalt material(textues) are stored

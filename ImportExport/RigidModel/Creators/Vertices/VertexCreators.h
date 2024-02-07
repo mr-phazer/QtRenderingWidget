@@ -4,6 +4,7 @@
 #include "..\..\..\Helpers\Templates.h"
 #include "..\..\DataTypes\MeshEnumsConstants.h"
 #include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
+#include "..\..\Constants\Rmv2Constants.h"
 
 
 namespace rmv2 {
@@ -14,7 +15,7 @@ namespace rmv2 {
 	class IVertexCreator
 	{
 	public:
-		virtual rldx::CommonVertex Create(ByteStream& bytes) = 0;
+		virtual rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) = 0;
 	};
 
 	/// <summary>
@@ -24,7 +25,7 @@ namespace rmv2 {
 	class DefaultCommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes) override;
+		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
 	/// <summary>
@@ -33,7 +34,7 @@ namespace rmv2 {
 	class Weighted2CommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes) override;
+		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
 	/// <summary>
@@ -42,13 +43,13 @@ namespace rmv2 {
 	class Weighted4CommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes) override;
+		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
-	class VertexCreatorProvider : public helpers::TFactory<IVertexCreator, VertexFormatEnum>
+	class VertexCreatorFactory : public helpers::TFactory<IVertexCreator, VertexFormatEnum>
 	{
 	public:
-		VertexCreatorProvider()
+		VertexCreatorFactory()
 		{
 			Register<VertexFormatEnum::DefaultVertexFormat, DefaultCommonVertexCreator>();
 			Register<VertexFormatEnum::WeightedVertexFormat, Weighted2CommonVertexCreator>();

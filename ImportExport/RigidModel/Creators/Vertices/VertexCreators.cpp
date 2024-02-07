@@ -5,10 +5,10 @@
 
 #include "..\..\Helpers\VertexCAHelpers.inl"
 
-rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes)
+rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version)
 {	
 	vertices_raw_packed::VertexWeighted2 rawVertex;
-	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted2::GetSize());
+	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted2::GetSize(rmv2Version));
 
 	rldx::CommonVertex outVertex;
 
@@ -38,7 +38,7 @@ rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes)
 	return outVertex;
 }
 
-rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes)
+rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version)
 {	
 	rldx::CommonVertex commonVertex;
 		
@@ -61,10 +61,10 @@ rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes)
 	return commonVertex;
 }
 
-rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes)
+rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version)
 {
 	vertices_raw_packed::VertexWeighted4 rawVertex;
-	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted4::GetSize());
+	bytes.Read(&rawVertex, vertices_raw_packed::VertexWeighted4::GetSize(rmv2Version));
 
 	rldx::CommonVertex outVertex;
 
@@ -89,6 +89,8 @@ rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes)
 	outVertex.weights.y = FloatConverter::GetUNORMFloatFromByte(rawVertex.boneWeights.y);
 	outVertex.weights.z = FloatConverter::GetUNORMFloatFromByte(rawVertex.boneWeights.z);
 	outVertex.weights.w = 1.0f - (outVertex.weights.x + outVertex.weights.y + outVertex.weights.z); // quick-dirty normalization
+
+	
 
 	return outVertex;
 }

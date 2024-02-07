@@ -2,17 +2,10 @@
 
 #include "..\..\Helpers\ByteStream.h"
 #include "..\Constants\Rmv2Constants.h"
+#include "..\DataTypes\MeshEnumsConstants.h"
 
 
 namespace rmv2 {	
-
-		enum Rmv2VersionEnum : uint32_t
-		{
-			RMV2_V5 = 5,
-			RMV2_V6 = 6,
-			RMV2_V7 = 7,
-			RMV2_V8 = 8,			
-		};
 
 		// TODO: better than 'uint32_t RMV2_SIGNATURE = 0x32564D52' ?
 		enum Rmv2FileSignatureEnum : uint32_t { RMV2_ValidFile = RMV2_SIGNATURE };

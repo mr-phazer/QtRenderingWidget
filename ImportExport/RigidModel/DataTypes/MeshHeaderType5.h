@@ -11,7 +11,9 @@ namespace rmv2
 	// TODO this is a not a bit for bit data struct it is a COMMON...
 	struct MeshHeader5Common
 	{
-		static constexpr size_t size = 860;
+		bool IsContentValid();
+		static constexpr size_t GetSsize = 860;
+
 		VertexFormatEnum VertexFormatId = VertexFormatEnum(0);
 
 		char szMeshName[32] = "NOT_SET_MESH_NAME";

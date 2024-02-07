@@ -149,7 +149,7 @@ namespace
         3,  // ACES Filmic
 
         // Gamam22 EOTF
-        4,  // SRGB
+        4,  // SRGB_Mode
         5,  // Saturate_SRGB
         6,  // Reinhard_SRGB
         7,  // ACES Filmic

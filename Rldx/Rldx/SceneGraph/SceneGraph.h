@@ -1,6 +1,6 @@
 #pragma once
 //#include "..\Rendering\DxMesh.h"
-//#include "..\Rendering\DxShaderProgram.h"
+#include "..\Rendering\DxShaderProgram.h"
 //#include "..\Interfaces\IDrawable.h"
 //#include "..\Interfaces\IFlushable.h"
 #include "..\Interfaces\IRenderBucket.h"
@@ -13,30 +13,35 @@ namespace rldx {
 	class DxMeshRenderBucket : public IRenderBucket
 	{
 		std::vector<IRenderQueueItem*> m_renderItems;
+		
 
 	public:		
 		virtual void AddItem(IRenderQueueItem* renderItem) override { m_renderItems.push_back(renderItem); };
-		virtual void Clear() override { m_renderItems.clear(); };
-
-		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override
+		virtual void ClearItems() override { m_renderItems.clear(); };
+		
+		void Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram = nullptr)
 		{
 			for (auto& itItem : m_renderItems)
-			{
+			{				
 				// ready shader program
-				itItem->BindToDC(poDeviceContext);
+				itItem->BindToDC(poDC);
+
+				// TODO: re-enable!! 
+				//if(defaultShaderProgram) // use supplied shader
+				//	defaultShaderProgram->BindToDC(poDC);
 
 				// draw mesh
-				itItem->Draw(poDeviceContext);
+				itItem->Draw(poDC);
 			};
 
 			// -- clear queue after each full draw
-			Clear();
+			ClearItems();
 		}
 	};
 
 	class DxSceneGraph
 	{
-		DxBaseNode::SharedPointer m_rootNode = DxBaseNode::Create("RootNode");
+		DxBaseNode::SharedPtr m_rootNode = DxBaseNode::Create("RootNode");
 
 	public:
 		DxBaseNode* GetRootNode()
@@ -47,8 +52,7 @@ namespace rldx {
 		void UpdateNodes(DxBaseNode* pRootNode, float timeElapsed)
 		{
 			pRootNode->Update(timeElapsed);
-
-			// TODO: REMOVE: debugging code
+						// TODO: REMOVE: debugging code
 			pRootNode->SetName("Node Updated!!");
 			// END: REMOVE: debugging code
 

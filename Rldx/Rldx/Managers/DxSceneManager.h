@@ -21,9 +21,9 @@ namespace rldx {
 			return std::move(newSceneManager);
 		}
 
-		void SetScene(DxScene::UniquePtr& scene)
+		void SetScene(DxScene::Uptr& newScene)
 		{
-			m_spoCurrentScene = std::move(scene);			
+			m_spoCurrentScene = std::move(newScene);
 		}		
 
 		void MoveFrame()
@@ -62,7 +62,7 @@ namespace rldx {
 		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
 
 	private:
-		DxScene::UniquePtr m_spoCurrentScene = nullptr;		
+		DxScene::Uptr m_spoCurrentScene = nullptr;		
 		libtools::SystemClock m_systemClock;
 		bool m_bRenderingRunning = false;
 	};

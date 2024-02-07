@@ -64,7 +64,7 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 	DirectX::ThrowIfFailed(hr);
 }
 
-DxSwapChain::UniquePtr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, UINT width, UINT height)
+DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, bool useSRGB, UINT width, UINT height)
 {
 	auto poNew = std::make_unique<DxSwapChain>();
 
@@ -85,14 +85,14 @@ DxSwapChain::UniquePtr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, 
 	poNew->m_SwapChainDescription = DXGI_SWAP_CHAIN_DESC1{};
 	poNew->m_SwapChainDescription.Width = width;
 	poNew->m_SwapChainDescription.Height = height;
-	poNew->m_SwapChainDescription.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	poNew->m_SwapChainDescription.Format = (useSRGB) ? DXGI_FORMAT_R8G8B8A8_UNORM_SRGB : DXGI_FORMAT_R8G8B8A8_UNORM;
 	poNew->m_SwapChainDescription.Stereo = FALSE;
 	poNew->m_SwapChainDescription.SampleDesc.Quality = 0;
 	poNew->m_SwapChainDescription.SampleDesc.Count = 1;
 	poNew->m_SwapChainDescription.BufferUsage = DXGI_USAGE_BACK_BUFFER | DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	poNew->m_SwapChainDescription.BufferCount = 3;
 	poNew->m_SwapChainDescription.Scaling = DXGI_SCALING::DXGI_SCALING_STRETCH;
-	poNew->m_SwapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	poNew->m_SwapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_SEQUENTIAL;
 	poNew->m_SwapChainDescription.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
 	poNew->m_SwapChainDescription.Flags = 0;
 

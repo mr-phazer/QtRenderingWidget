@@ -23,16 +23,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="QtTesterApp.qrc">
+    <QtRcc Include="QtMainWindowView.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="QtTesterApp.ui">
+    <QtUic Include="QtMainWindowView.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="QtTesterApp.h">
+    <QtMoc Include="QtMainWindowView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="QtTesterApp.cpp">
+    <ClCompile Include="QtMainWindowView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

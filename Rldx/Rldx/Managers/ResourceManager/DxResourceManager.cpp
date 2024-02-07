@@ -30,6 +30,11 @@ TResourceHandle<DxTexture> rldx::DxResourceManager::MakeCubemapResource(ID3D11De
 	return resourceHandle;
 }
 
+void rldx::DxResourceManager::SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram)
+{
+	m_defaultShaderProgram = newShaderProgram;
+}
+
 DxResourceManager* rldx::DxResourceManager::Instance()
 {
 	if (!sm_spoInstance) {

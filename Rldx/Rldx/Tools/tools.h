@@ -471,8 +471,8 @@ namespace libtools
 	std::wstring GetDirFromFullPath(const std::wstring& _str);
 	std::wstring GetDirFromFullPath(const std::wstring& _str);
 
-	std::string GetExtensionFromFullPath(const std::string& _str);
-	std::wstring GetExtensionFromFullPath(const std::wstring& _str);
+	std::string GetFileExtension(const std::string& _str);
+	std::wstring GetFileExtension(const std::wstring& _str);
 
 	std::wstring RemoveExtension(const std::wstring& _str);
 	std::string RemoveExtension(const std::string& _str);

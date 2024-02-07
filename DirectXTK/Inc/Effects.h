@@ -793,9 +793,9 @@ namespace DirectX
             enum Mode
             {
                 Mode_Default = 0,   // Hemispherical ambient lighting
-                Mode_Normals,       // RGB normals
-                Mode_Tangents,      // RGB tangents
-                Mode_BiTangents,    // RGB bi-tangents
+                Mode_Normals,       // RGB_Mode normals
+                Mode_Tangents,      // RGB_Mode tangents
+                Mode_BiTangents,    // RGB_Mode bi-tangents
             };
 
             explicit DebugEffect(_In_ ID3D11Device* device);

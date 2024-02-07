@@ -37,9 +37,6 @@
     <ClCompile Include="ExternFunctions\Creators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QtObjects\Controllers\QtRenderController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\TSmartPointer.h">
@@ -68,9 +65,6 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtObjects\Controllers\QtRenderController.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="QtObjects\Views\QtRenderView.h">
       <Filter>Header Files</Filter>
     </QtMoc>

@@ -51,11 +51,11 @@ namespace rldx {
 	//	}
 	//};
 
-	class IRenderBucket : public IDrawable
+	class IRenderBucket
 	{
 	public:
 		virtual void AddItem(IRenderQueueItem* item) = 0;
-		virtual void Clear() = 0;
+		virtual void ClearItems() = 0;
 	};
 
 	// TODO: remove old version?
@@ -63,6 +63,6 @@ namespace rldx {
 	//{
 	//public:
 	//	virtual void AddItem(const DxRenderItemMesh& item) = 0;
-	//	virtual void Clear() = 0;
+	//	virtual void ClearItems() = 0;
 	//};
 }

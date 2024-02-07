@@ -2,6 +2,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include <vector>
 #include <d3d11.h>
@@ -20,6 +21,7 @@ namespace rldx {
 	class DxTexture;
 	class DxMaterial;
 	class IDxShaderProgram;
+	class DxMeshShaderProgram;
 
 	class ResourceHandle
 	{
@@ -74,21 +76,41 @@ namespace rldx {
 	{
 	public:
 		static void SetAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
+		
 		static std::wstring GetAssetFolder() { return Instance()->m_rooPathAssetPath; }
-		static std::wstring GetDefaultAssetFolder() {
-			return libtools::GetExePath();
+		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
+
+		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
+		
+		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
+		static ByteStream GetCallBackFile(const std::wstring& fileName) 
+		{ 
+			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
+			QList<QByteArray> destBinaries;
+
+			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); 
+		
+			if (destBinaries.size() != 1)
+			{
+				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+			}
+
+			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
 		}
 
-		static void SetcAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
-		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourceFromCallBack(qstrMissingFiles, destBinaries); }
-
+		// TODO: is this serving any purpose?
 		void AddMissingFile(const std::wstring& file) { m_qstrMissingFiles.push_back(QString::fromStdWString(file)); }
 
 		// TODO: make work?
 		TResourceHandle<DxTexture> MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file);
 
+		
+
+		void SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram);
+
 		~DxResourceManager()
 		{
+			// TODO: REMOVE
 			auto DEBUG_1 = 1;
 		}
 
@@ -124,7 +146,6 @@ namespace rldx {
 		};
 
 		TResourceHandle<DxTexture> AllocTexture(const std::wstring& strId = L"");
-
 		TResourceHandle<DxMaterial> AllocMaterial(const std::wstring& strId = L"");;
 		TResourceHandle<DxMesh> AllocMesh(const std::wstring& strId = L"");
 
@@ -134,39 +155,22 @@ namespace rldx {
 		TResourceHandle<DxTexture> GetTexture(const std::wstring& strId = L"");
 
 
-
-
-
-		/*TResourceHandle<IDxShaderProgram> GetShaderProgram(const std::wstring& strId = "")
-		{
-			return AllocEmpty<IDxShaderProgram>(strId);
-		}*/
-
-		//TResourceHandle<IDxShaderProgram> GetShaderProgram(uint32_t id)
-		//{
-		//	//return AllocEmpty<IDxShaderProgram>(id);
-		//}
-
-
-
 	private:
-		void GetResourceFromCallBack(QList<QString> & qstrMissingFiles, QList<QByteArray>& destBinaries)
+		void GetResourcesFromCallBack(QList<QString> & qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
 				throw exception("No asset callback function set");
 			}						
 
-
-			m_assetCallBack(&qstrMissingFiles, &destBinaries);
-
-			// TODO: REMOVE when done
-			auto DEBUg_1 = 1;
+			m_assetCallBack(&qstrMissingFiles, &destBinaries);			
 		}
-
+		
 
 	private:
+		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
+
 		std::map<uint32_t, std::shared_ptr<IDxResource>> m_umapResourceSptrDataById;
-		StringkeyMap<IDxResource*> m_umapResourcePtrByString;
+		WStringkeyMap<IDxResource*> m_umapResourcePtrByString;
 
 		/*template <typename VALUE>
 		using StringkeyMap

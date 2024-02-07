@@ -543,7 +543,7 @@ void SpriteBatch::Impl::GrowSpriteQueue()
     mSpriteQueue = std::move(newArray);
     mSpriteQueueArraySize = newSize;
 
-    // Clear any dangling SpriteInfo pointers left over from previous rendering.
+    // ClearItems any dangling SpriteInfo pointers left over from previous rendering.
     mSortedSprites.clear();
 }
 
@@ -812,7 +812,7 @@ void XM_CALLCONV SpriteBatch::Impl::RenderSprite(SpriteInfo const* sprite,
     FXMVECTOR textureSize,
     FXMVECTOR inverseTextureSize)
 {
-    // Load sprite parameters into SIMD registers.
+    // CreateNode sprite parameters into SIMD registers.
     XMVECTOR source = XMLoadFloat4A(&sprite->source);
     const XMVECTOR destination = XMLoadFloat4A(&sprite->destination);
     const XMVECTOR color = XMLoadFloat4A(&sprite->color);

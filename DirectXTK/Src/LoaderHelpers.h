@@ -716,7 +716,7 @@ namespace DirectX
                     // likely written by D3DX. The more robust solution is to use the 'DX10'
                     // header extension and specify the DXGI_FORMAT_R10G10B10A2_UNORM format directly
 
-                    // For 'correct' writers, this should be 0x000003ff,0x000ffc00,0x3ff00000 for RGB data
+                    // For 'correct' writers, this should be 0x000003ff,0x000ffc00,0x3ff00000 for RGB_Mode data
                     if (ISBITMASK(0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000))
                     {
                         return DXGI_FORMAT_R10G10B10A2_UNORM;
@@ -757,7 +757,7 @@ namespace DirectX
                         return DXGI_FORMAT_B4G4R4A4_UNORM;
                     }
 
-                    // NVTT versions 1.x wrote this as RGB instead of LUMINANCE
+                    // NVTT versions 1.x wrote this as RGB_Mode instead of LUMINANCE
                     if (ISBITMASK(0x00ff, 0, 0, 0xff00))
                     {
                         return DXGI_FORMAT_R8G8_UNORM;
@@ -773,7 +773,7 @@ namespace DirectX
                     break;
 
                 case 8:
-                    // NVTT versions 1.x wrote this as RGB instead of LUMINANCE
+                    // NVTT versions 1.x wrote this as RGB_Mode instead of LUMINANCE
                     if (ISBITMASK(0xff, 0, 0, 0))
                     {
                         return DXGI_FORMAT_R8_UNORM;

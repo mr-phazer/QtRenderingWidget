@@ -33,7 +33,7 @@ namespace rmv2 {
 	public:
 		LODHeaderCreatorFactory();
 
-		void HandleKeyFound(Rmv2VersionEnum keyValue) override
+		void HandleKeyNotFound(Rmv2VersionEnum keyValue) override
 		{
 			throw std::exception("Unsuported RigidModelV2 version (Action: Reading LOD headers.");
 		}

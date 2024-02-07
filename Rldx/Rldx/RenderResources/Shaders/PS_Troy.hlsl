@@ -23,22 +23,12 @@ float4 main(in PixelInputType input) : SV_TARGET
 	//	Get the inputs...
     ps30_get_shared_inputs(eye_vector, light_vector, diffuse_colour, specular_colour, smoothness, basis, N, input, faction_colours);
 
-    //    return float4(1, 0, 0, 1);
-    //else
-    //    return float4(0, 0, 0, 1);
-
-    // TODO: REMOEV DEBUGGIN code
-    //return float4(shaderTextures[t_Mask].Sample(SamplerLinear, input.tex1.xy).rgb, 1);
-
     //if (!PisTextureSRGB[t_Diffuse])
     //    diffuse_colour.rgb = _gamma(diffuse_colour.rgb);
 
-	//moving to allow blending
-    float3 pixel_normal = getPixelNormal(input);
+	// Get calculated pixel normal (from normal map x TBN)
+    float3 pixel_normal = getPixelNormal(input);    
     
-   
-    
-    //float3 pixel_normal = input.normal;
 
     // read shadow map
     float2 shadow_buffer_UV;
@@ -86,13 +76,13 @@ float4 main(in PixelInputType input) : SV_TARGET
     );
 
 	//  Tone-map the pixel...
-    //float3 ldr_linear_col = (saturate(Uncharted2ToneMapping(1.3  * hdr_linear_col)));
+    float3 ldr_linear_col = (saturate(Uncharted2ToneMapping(1.3  * hdr_linear_col)));
     //float3 ldr_linear_col = saturate(tone_map_linear_hdr_pixel_value(hdr_linear_col));
 //----------------------------------------------------------
 
 	//  Return gamma corrected value...
-    //return float4( /*_gamma*/(ldr_linear_col), 1.0f);
-    return float4( /*_gamma*/(hdr_linear_col), 1.0f);
+    return float4( /*_gamma*/(ldr_linear_col), 1.0f);
+    //return float4( /*_gamma*/(hdr_linear_col), 1.0f);
 }
 
 float3 doFakeSSR(in float3 env_specular, in float3 specular_color, in float smoothness)

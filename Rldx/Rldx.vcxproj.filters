@@ -18,7 +18,7 @@
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Helpers\DxMeshCreator.cpp">
+    <ClCompile Include="Rldx\Creators\DxMeshCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
@@ -99,7 +99,7 @@
     <ClCompile Include="Rldx\Tools\tools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Helpers\DxSceneCreator.cpp">
+    <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,7 +128,7 @@
     <ClInclude Include="Rldx\DataTypes\ShaderFiles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Helpers\DxMeshCreator.h">
+    <ClInclude Include="Rldx\Creators\DxMeshCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Helpers\MathHelper.h">
@@ -254,7 +254,19 @@
     <ClInclude Include="Rldx\Tools\tools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Helpers\DxSceneCreator.h">
+    <ClInclude Include="Rldx\Creators\DxSceneCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxModelNodeCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxVmdNodeCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -275,11 +287,14 @@
     <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl" />
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl" />
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl" />
     <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl" />
   </ItemGroup>
 </Project>

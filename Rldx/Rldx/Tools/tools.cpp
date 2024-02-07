@@ -192,7 +192,7 @@ std::wstring libtools::GetDirFromFullPath(const std::wstring& _str)
 	return strTemp;
 }
 
-std::string libtools::GetExtensionFromFullPath(const std::string& _str)
+std::string libtools::GetFileExtension(const std::string& _str)
 {
 	if (_str == "")
 		return "";
@@ -217,7 +217,7 @@ std::string libtools::GetExtensionFromFullPath(const std::string& _str)
 	return strTemp;
 }
 
-std::wstring libtools::GetExtensionFromFullPath(const std::wstring& _str)
+std::wstring libtools::GetFileExtension(const std::wstring& _str)
 {
 	if (_str == L"")
 		return L"";

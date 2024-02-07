@@ -3,7 +3,7 @@
 #include "DxMeshNode.h"
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
-#include "..\..\Helpers\DxMeshCreator.h"
+#include "..\..\Creators\DxMeshCreator.h"
 
 namespace rldx
 {
@@ -13,13 +13,13 @@ namespace rldx
     class DxModelNode : public DxBaseNode
     {
         size_t m_activeLod = 0;;
-        std::vector<std::vector<DxMeshNode::SharedPointer>> m_lods =
+        std::vector<std::vector<DxMeshNode::SharedPtr>> m_lods =
         {
-            {DxMeshNode::SharedPointer()}
+            {DxMeshNode::SharedPtr()}
         };
 
     public:
-        void SetMeshNodes(size_t lodIndex, std::vector<std::vector<DxMeshNode::SharedPointer>> lods)
+        void SetMeshNodes(size_t lodIndex, std::vector<std::vector<DxMeshNode::SharedPtr>> lods)
         {
             m_lods = lods;
         };
@@ -49,7 +49,8 @@ namespace rldx
             }                                 
         };
 
-        void SetMaterialData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
+        // TODO add support for (parsed) WSMODEL
+        void LoadMaterialData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
         {
 			size_t iLod = 0;
 			m_lods.resize(1);

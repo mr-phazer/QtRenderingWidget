@@ -1645,9 +1645,11 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
     );
 
     diffuse_colour = shaderTextures[t_Diffuse].Sample(SamplerLinear, input.tex1.xy);
+    alpha_test(diffuse_colour.a);
+    
     diffuse_colour.rgb = _linear(diffuse_colour.rgb);
 
-    alpha_test(diffuse_colour.a);
+    
 
     eye_vector = -normalize(input.eyePos - input.Wpos.xyz);    
     light_vector = -normalize(lightData[0].lightDirection);

@@ -43,9 +43,9 @@ namespace rmv2 {
 
 
 
-		void HandleKeyFound(RigidMaterialEnum keyValue) override
+		void HandleKeyNotFound(RigidMaterialEnum keyValue) override
 		{
-			throw std::exception("Unsuported RigidModelV2 version (Action: Reading LOD headers.");
+			throw std::exception("Unsuported RigidModelV2 version (Action: Reading Mesh header.");
 		}
 
 	};

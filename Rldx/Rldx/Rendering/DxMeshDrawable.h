@@ -23,8 +23,11 @@ namespace rldx {
 		DxMeshShaderProgram* m_poShaderProgram = nullptr;
 		DxDeformerData m_deformerDataBuffer; // only used if node is a a skeleton/defomer node
 		DxMeshNode* m_pDeformerNode = nullptr; // points to deformer/skeleton node, that will deform this mesh
+		
+		// TODO: use this to move attached meshes (weapons/shields in VMDs)
 		sm::Matrix m_mWorldMatrix;
 		sm::Vector3 m_pivotPoint;
+		uint32_t boneIndex = 0; // TODO: is this needed
 
 		// TODO: add DxBoundingBox		
 				

@@ -725,7 +725,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromSDKMESH(
         model->meshBlocks.emplace_back(mesh);
     }
 
-    // Load model bones (if present and requested)
+    // CreateNode model bones (if present and requested)
     if (frameArray)
     {
         static_assert(DXUT::INVALID_FRAME == ModelBone::c_Invalid, "ModelBone invalid type mismatch");

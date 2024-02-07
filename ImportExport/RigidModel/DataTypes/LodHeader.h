@@ -42,6 +42,8 @@ namespace rmv2 {
 
 		struct LODHeaderCommon
 		{
+			bool IsContentValid();
+
 			uint32_t dwMeshCount = 0;
 			uint32_t dwVerticesDataLength = 0;
 			uint32_t dwIndicesDataLength = 0;

@@ -16,9 +16,9 @@ namespace rldx {
 		DxMeshDrawable m_meshDrawable;
 
 	public:
-		using SharedPointer = std::shared_ptr<DxMeshNode>;
+		using SharedPtr = std::shared_ptr<DxMeshNode>;
 	public:
-		static SharedPointer Create(const std::string& name = "");		
+		static SharedPtr Create(const std::string& name = "");		
 
 		void SetMeshData(const rldx::DxCommonMeshData& meshData);
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };

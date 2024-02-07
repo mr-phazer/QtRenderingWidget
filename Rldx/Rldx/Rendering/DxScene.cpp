@@ -3,7 +3,7 @@
 #include "DxScene.h"
 #include "..\Managers\DxDeviceManager.h"
 
-#include "..\Helpers\DxMeshCreator.h"
+#include "..\Creators\DxMeshCreator.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
 
 using namespace rldx;
@@ -15,24 +15,26 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_spoSwapChain->GetBackBuffer()->ClearPixelsAndDepthBuffer(poDeviceContext, { 0.1f, 0.1f, 0.1f, 1.0f });
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);	
 
-	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
-
+	// diable depth buffer, while drawing 2d text
+	// TODO: do NOT create this in the render loop
+	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);	
 	
-	auto textWriter = DxDeviceManager::GetInstance().GetDebugTextWriter();
+	DxDeviceManager::GetInstance().GetDebugTextWriter()->RenderText();
 	
-	textWriter->RenderText();
-
+	// re-enable depthbuffer
+	// TODO: do NOT create states in render loop, store then
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthDefault(), 0);
+		
+	// TODO: do NOT create this in the render loop
+	poDeviceContext->RSSetState(m_upoCommonStates->CullNone());
 
-	auto rasterizerStateNoCull = m_upoCommonStates->CullNone();
-	poDeviceContext->RSSetState(rasterizerStateNoCull);
-
+	//  fetch mesh nodes from scenegraph
 	m_sceneGraph.FetchNodes(GetRootNode(), &m_renderQueue);
 	
 	// -- update + set scene (per frame) constant buffer	
 	BindToDC(poDeviceContext);
 
-	m_renderQueue.Draw(poDeviceContext);	
+	m_renderQueue.Draw(poDeviceContext, m_poDefaultShaderProgram);
 
 	m_spoSwapChain->Present(poDeviceContext);
 }
@@ -58,19 +60,19 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 }
 
 static bool bCtrlDown = false;
-void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
-{
-	SetWindowPos(m_hwndNativeWindowHandle, nullptr,  0, 0, 1024, 1024, SWP_NOOWNERZORDER);
-	
-	RECT windowRect;
-	GetWindowRect(m_hwndNativeWindowHandle = nativeWindowHandle, &windowRect);
-
-	UINT width = windowRect.right - windowRect.left;
-	UINT height = windowRect.bottom - windowRect.top;
-
-	// create swap chain
-	GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_hwndNativeWindowHandle, width, height);	
-}
+//void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
+//{
+//	SetWindowPos(m_hwndNativeWindowHandle, nullptr,  0, 0, 1024, 1024, SWP_NOOWNERZORDER);
+//	
+//	RECT windowRect;
+//	GetWindowRect(m_hwndNativeWindowHandle = nativeWindowHandle, &windowRect);
+//
+//	UINT width = windowRect.right - windowRect.left;
+//	UINT height = windowRect.bottom - windowRect.top;
+//
+//	// create swap chain
+//	GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_hwndNativeWindowHandle, , width, height);	
+//}
 
 LRESULT __stdcall rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {		
@@ -103,7 +105,7 @@ void rldx::DxScene::Update(float timeElapsed)
 	m_globalDirectionalLight.MoveFrame(timeElapsed);
 }
 
-void rldx::DxScene::Init(ID3D11Device* poDevice)
+void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 
@@ -116,7 +118,7 @@ void rldx::DxScene::Init(ID3D11Device* poDevice)
 
 	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
 	ByteStream iblSPecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");
-	ByteStream iblLUTBinary(L"lut");
+	ByteStream iblLUTBinary;
 
 	m_ambientLightSource =
 		DxAmbientLightSource::Create(

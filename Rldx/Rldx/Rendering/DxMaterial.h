@@ -12,15 +12,6 @@
 #include "..\Interfaces\IBindable.h"
 #include "DxTexture.h"
 
-// TODO: should this conditional be left in
-
-// use a disk source when debugging, when in plugin mode, it's using the callback to get files
-#ifdef _DEBUG
-static std::wstring defaultTexturePath = LR"(K:/Modding/WH2/)";
-#else
-static std::wstring defaultTexturePath = L"";
-#endif
-
 namespace rldx {
 	// for texture loading, maybe not needed
 	struct InputTextureElement
@@ -46,22 +37,21 @@ namespace rldx {
 
 		std::vector<RenderTextureElement> m_textures;
 
-		std::string m_pathHash; // TODO: All the texture patha conceated to compare == materials		
+		std::string m_pathHash; // TODO: All the texture paths conceated to able to compared materials with operator==
 
 	public:
 		DxMaterial() = default;
 		bool operator==(const DxMaterial& other) const;
+
 		std::string& GetPathHashRef() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
 			{
-				{0, L"default_texture.dds"},
-				{1, L"default_texture.dds"},
-				{2, L"default_texture.dds"},
-				{3, L"default_texture.dds"},
-			}
-			);
+				{0, L"default_texture.dds"},				
+			});
 
 		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
+
+		// Bind texture to DC, for doing a drawcall
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		int GetTextureStartSlot();
@@ -69,8 +59,6 @@ namespace rldx {
 		ResourceTypeEnum GetType() const override;
 		std::string GetTypeString() const override;
 	};
-
-
 
 	class IMaterialCreator
 	{
@@ -91,9 +79,9 @@ namespace rldx {
 			string hash = "";
 			for (auto& tex : m_data->materialBlock.textureElements)
 			{
-				auto diskPath = defaultTexturePath + libtools::string_to_wstring(tex.szTexturePath);
-				newMaterial->AddTexture(poDevice, tex.dwTextureType, diskPath);
-				newMaterial->GetPathHashRef() += std::string(tex.szTexturePath);
+				auto diskPath = libtools::string_to_wstring(tex.texturePath);
+				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
+				newMaterial->GetPathHashRef() += std::string(tex.texturePath);
 			};
 
 			return newMaterial;

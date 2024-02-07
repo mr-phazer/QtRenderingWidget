@@ -35,7 +35,7 @@ namespace rldx {
 	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
 	public:
-		using SharedPointer = std::shared_ptr<DxBaseNode>;
+		using SharedPtr = std::shared_ptr<DxBaseNode>;
 
 	public:
 		DxBaseNode() = default;
@@ -43,7 +43,7 @@ namespace rldx {
 
 		
 
-		static SharedPointer Create(const std::string& name = "")
+		static SharedPtr Create(const std::string& name = "")
 		{
 			auto newInstance = std::make_shared<DxBaseNode>();
 			newInstance->SetName(name);
@@ -65,7 +65,7 @@ namespace rldx {
 			return m_children.size();
 		}
 
-		void AddChild(SharedPointer spoChild)
+		void AddChild(SharedPtr spoChild)
 		{
 			if (spoChild == nullptr)
 			{
@@ -131,17 +131,17 @@ namespace rldx {
 			return nullptr;
 		};
 
-		const std::vector<SharedPointer>& GetChildren() const
+		const std::vector<SharedPtr>& GetChildren() const
 		{
 			return m_children;
 		}
 
-		std::vector<SharedPointer>& GetChildren()
+		std::vector<SharedPtr>& GetChildren()
 		{
 			return m_children;
 		}
 
-		void RemoveChild(const SharedPointer& spoChild)
+		void RemoveChild(const SharedPtr& spoChild)
 		{
 			for (size_t i = 0; i < m_children.size(); i++)
 			{
@@ -212,7 +212,7 @@ namespace rldx {
 
 	private:
 		// -- tree structure
-		std::vector<SharedPointer> m_children;
+		std::vector<SharedPtr> m_children;
 		DxBaseNode* m_wpoParent = nullptr;
 		// -- node geomtry
 		NodeTransform m_nodeTransform;

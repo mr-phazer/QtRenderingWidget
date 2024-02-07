@@ -93,6 +93,24 @@
     <ClInclude Include="RigidModel\Interfaces\IMeshHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RigidModel\Creators\GameShaders\GameShaderCreators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\PugiXML\pugiconfig.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Libs\PugiXML\pugixml.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WsModel\Reader\WsModelReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WsModel\DataTypes\WsModelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WsModel\DataTypes\XMLMaterialData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helpers\ImportExport.cpp">
@@ -123,6 +141,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libs\PugiXML\pugixml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WsModel\Reader\WsModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

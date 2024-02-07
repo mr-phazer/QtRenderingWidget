@@ -1,6 +1,8 @@
 #pragma once
 #include <DirectXPackedVector.h>
 
+#include "..\DataTypes\MeshEnumsConstants.h"
+
 namespace vertices_raw_packed
 {
 	using ushort4 = DirectX::PackedVector::XMUSHORT4;
@@ -10,7 +12,18 @@ namespace vertices_raw_packed
 
 	struct VertexWeighted2
 	{
-		static constexpr size_t GetSize() { return 28U; }
+		static size_t GetSize(Rmv2VersionEnum rmv2Version)
+		{
+			switch (rmv2Version)
+			{
+				/*case Rmv2VersionEnum::RMV2_V5: return 32U;
+				case Rmv2VersionEnum::RMV2_V6: return 32U;
+				case Rmv2VersionEnum::RMV2_V7: return 32U;*/
+			case Rmv2VersionEnum::RMV2_V8: return 32U;
+			default: return 28U;
+
+			}
+		}
 
 		ushort4 position;
 
@@ -22,11 +35,26 @@ namespace vertices_raw_packed
 
 		ubyte4 tangent;
 		ubyte4 bitangent;
+		
+		ubyte4 color; // RMV2 v8
 	};
 
 	struct VertexDefault
 	{
-		static constexpr size_t GetSize() { return 32U; }
+		static size_t GetSize(Rmv2VersionEnum rmv2Version)
+		{
+			return 32U;
+
+		//	switch (rmv2Version)
+		//	{
+		//		/*case Rmv2VersionEnum::RMV2_V5: return 32U;
+		//		case Rmv2VersionEnum::RMV2_V6: return 32U;
+		//		case Rmv2VersionEnum::RMV2_V7: return 32U;*/
+		////	case Rmv2VersionEnum::RMV2_V8: return 36U;
+		//	default: return 32U;
+
+		//	}
+		}
 
 		ushort4 position;   // 8
 
@@ -42,7 +70,18 @@ namespace vertices_raw_packed
 
 	struct VertexWeighted4
 	{
-		static constexpr size_t GetSize() { return 32U; }
+		static size_t GetSize(Rmv2VersionEnum rmv2Version)
+		{ 
+			switch (rmv2Version)
+			{
+			/*case Rmv2VersionEnum::RMV2_V5: return 32U;
+			case Rmv2VersionEnum::RMV2_V6: return 32U;
+			case Rmv2VersionEnum::RMV2_V7: return 32U;*/
+			case Rmv2VersionEnum::RMV2_V8: return 36U;
+			default: return 32U;
+
+			}
+		}
 
 		ushort4 position;
 		ubyte4 boneIndices; // 8
@@ -54,5 +93,7 @@ namespace vertices_raw_packed
 
 		ubyte4 tangent;
 		ubyte4 bitangent;
+
+		ubyte4 color; // RMV2 v8
 	};
 };

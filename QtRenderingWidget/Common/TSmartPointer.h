@@ -7,8 +7,8 @@ namespace rldx {
 	{
 	public:		
 		
-		using UniquePtr = std::unique_ptr<CLASSNAME>;
-		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using Uptr = std::unique_ptr<CLASSNAME>;
+		using Uptr = std::shared_ptr<CLASSNAME>;
 		using WeakPtr = std::weak_ptr<CLASSNAME>;
 
 
@@ -20,8 +20,8 @@ namespace rldx {
 
 	public:
 
-		using UniquePtr = std::unique_ptr<CLASSNAME>;
-		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using Uptr = std::unique_ptr<CLASSNAME>;
+		using Uptr = std::shared_ptr<CLASSNAME>;
 		using WeakPtr = std::weak_ptr<CLASSNAME>;
 			
 			
@@ -33,8 +33,8 @@ namespace rldx {
 	{
 	public:
 
-		using UniquePtr = std::unique_ptr<CLASSNAME>;
-		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using Uptr = std::unique_ptr<CLASSNAME>;
+		using Uptr = std::shared_ptr<CLASSNAME>;
 		using WeakPtr = std::weak_ptr<CLASSNAME>;		
 	};
 
@@ -44,8 +44,8 @@ namespace rldx {
 	{
 	public:
 
-		using UniquePtr = std::unique_ptr<CLASSNAME>;
-		using SharedPtr = std::shared_ptr<CLASSNAME>;
+		using Uptr = std::unique_ptr<CLASSNAME>;
+		using Uptr = std::shared_ptr<CLASSNAME>;
 		using WeakPtr = std::weak_ptr<CLASSNAME>;
 
 	};

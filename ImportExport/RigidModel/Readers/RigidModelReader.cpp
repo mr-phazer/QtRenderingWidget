@@ -45,7 +45,7 @@ std::vector<LODHeaderCommon> rmv2::RigidModelReader::ReadLodHeaders(ByteStream& 
 	return lodHeaders;
 }
 
-ModelBlockCommon rmv2::RigidModelReader::ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex)
+ModelBlockCommon rmv2::RigidModelReader::ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version, size_t meshCount, size_t lodIndex)
 {
 	ModelBlockCommon modelBlock;
 
@@ -53,13 +53,13 @@ ModelBlockCommon rmv2::RigidModelReader::ReadModelBlock(ByteStream& bytes, Rmv2V
 
 	for (size_t iMesh = 0; iMesh < meshCount; iMesh++)
 	{
-		modelBlock.meshBlocks[iMesh] = ReadMeshBlock(bytes);
+		modelBlock.meshBlocks[iMesh] = ReadMeshBlock(bytes, rmv2Version);
 	}
 
 	return modelBlock;
 }
 
-rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes)
+rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version)
 {
 	MeshBlockCommon meshBlock;
 
@@ -71,7 +71,7 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes)
 
 	// TODO: make "IMeshCreator" too: (instead just reading...?) maybe?
 	// -> auto meshCreator = m_meshCreatorFactory.Get(meshBlock.meshHeader.RigidMaterialId);
-	ReadMeshData(bytes, meshBlock);
+	ReadMeshData(bytes, meshBlock, rmv2Version);
 	
 	// TODO: remove if using the older method?
 	//meshBlock.meshData = ReadMeshData(bytes, meshBlock.meshHeaderType3, meshBlock.meshHeaderType5);
@@ -81,14 +81,14 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes)
 
 // TODO: REMOVE
 
-void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& destMeshblock)
+void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& destMeshblock, Rmv2VersionEnum rmv2Version)
 {
 	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.VertexFormatId);
 
 	destMeshblock.meshData.vertices.resize(destMeshblock.meshHeader.dwVertexCount);
 	for (auto& vertex : destMeshblock.meshData.vertices)
 	{
-		vertex = vertexCreator->Create(bytes);
+		vertex = vertexCreator->Create(bytes, rmv2Version);
 	}
 
 	destMeshblock.meshData.indices.resize(destMeshblock.meshHeader.dwIndexCount);
@@ -100,23 +100,23 @@ void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockComm
 
 // TODO: why do the vectors<vertex> etc not "exist" in debugger?
 
-MeshData16 rmv2::RigidModelReader::ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5)
-{
-	auto vertexCreator = VertexCreatorProvider().Get(meshHeader5.VertexFormatId);
-
-	MeshData16 meshData;
-
-	meshData.vertices.resize(meshHeader3.dwVertexCount);
-	for (size_t iVertex = 0; iVertex < meshHeader3.dwVertexCount; iVertex++)
-	{
-		meshData.vertices[iVertex] = vertexCreator->Create(bytes);
-	}
-
-	meshData.indices.resize(meshHeader3.dwIndexCount);
-	for (size_t iIndex = 0; iIndex < meshHeader3.dwIndexCount; iIndex++)
-	{
-		meshData.indices[iIndex] = bytes.GetElement<uint16_t>();
-	}
-
-	return meshData;
-}
+//MeshData16 rmv2::RigidModelReader::ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5)
+//{
+//	auto vertexCreator = VertexCreatorFactory().Get(meshHeader5.VertexFormatId);
+//
+//	MeshData16 meshData;
+//
+//	meshData.vertices.resize(meshHeader3.dwVertexCount);
+//	for (size_t iVertex = 0; iVertex < meshHeader3.dwVertexCount; iVertex++)
+//	{
+//		meshData.vertices[iVertex] = vertexCreator->Create(bytes.);
+//	}
+//
+//	meshData.indices.resize(meshHeader3.dwIndexCount);
+//	for (size_t iIndex = 0; iIndex < meshHeader3.dwIndexCount; iIndex++)
+//	{
+//		meshData.indices[iIndex] = bytes.GetElement<uint16_t>();
+//	}
+//
+//	return meshData;
+//}

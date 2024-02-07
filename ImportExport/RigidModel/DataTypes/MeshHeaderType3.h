@@ -20,6 +20,8 @@ namespace rmv2
 		//virtual DirectX::XMFLOAT3& MaxBB() = 0;
 		//virtual char* LightingConstants() = 0;
 		
+		bool IsContentValid();
+
 		static constexpr size_t GetHeaderSize()
 		{
 			return sizeof(MeshHeaderType3);

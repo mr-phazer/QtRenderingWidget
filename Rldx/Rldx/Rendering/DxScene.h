@@ -7,7 +7,7 @@
 
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
-#include "..\Helpers\DxMeshCreator.h"
+#include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\SceneGraph.h"
 #include "..\SceneGraph\SceneNodes\DxBaseNode.h"
@@ -35,20 +35,21 @@ namespace rldx {
 		Normal
 	};
 
-	class DxScene : public TIdentifiable<DxSceneTypeEnum>, IResizable, IDrawable, IUpdateable, IBindable
+	class DxScene : public TIdentifiable<DxSceneTypeEnum>, public IResizable, public IDrawable, public IUpdateable, public IBindable
 	{
 	public:
 		friend class IDxSceneBuilder;
 
-		using UniquePtr = std::shared_ptr<DxScene>;
+		using Uptr = std::unique_ptr<DxScene>;
 
 	public:
+		DxScene() = default;
 		DxScene(const std::string& name = "") : TIdentifiable(name) 
 		{
 			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingViewWidget for RPFM version 0.0.1a.");
 		};
 
-		virtual void Init(ID3D11Device* poDevice);
+		virtual void InitRenderView(ID3D11Device* poDevice);
 
 		std::string GetTypeString() const override { return "DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
@@ -60,14 +61,24 @@ namespace rldx {
 		void DeleteNode(DxBaseNode* node);
 
 		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }
-		DxSwapChain::UniquePtr& GetRefSwapChain() { return m_spoSwapChain; }
+		DxSwapChain::Uptr& GetRefSwapChain() { return m_spoSwapChain; }
 
-		void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
+		//void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
 		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
 		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
+
+		void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
+		{
+			m_poDefaultShaderProgram = shaderProgram;
+		};
+
+		DxMeshShaderProgram * GetSceneShaderProgram() const
+		{
+			return m_poDefaultShaderProgram;
+		}
 
 	private:
 		void UpdateViewAndPerspective();
@@ -86,10 +97,12 @@ namespace rldx {
 			}
 		}
 
+	
+
 	private:
 		DxSceneGraph m_sceneGraph;
 		DxMeshRenderBucket m_renderQueue;
-		DxSwapChain::UniquePtr m_spoSwapChain; // back buffer	
+		DxSwapChain::Uptr m_spoSwapChain; // back buffer	
 
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
 
@@ -107,6 +120,8 @@ namespace rldx {
 				
 		DxAmbientLightSource m_ambientLightSource;
 		DxTextureSamplers m_textureSamplers;
+
+		DxMeshShaderProgram* m_poDefaultShaderProgram = nullptr;
 
 	private:
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);

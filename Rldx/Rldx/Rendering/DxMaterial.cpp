@@ -3,18 +3,6 @@
 
 #include "..\Managers\DxDeviceManager.h"
 
-// TODO: which implementation to keep?
-//inline void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDc)
-//{
-//
-//	for (auto& itTextureInfo : m_textures)
-//	{		
-//		poDc->PSSetShaderResources(itTextureInfo.slot, 1, itTextureInfo.pTexture->GetAddressOfShaderResourceView());
-//	}
-//
-//
-//}
-
 bool rldx::DxMaterial::operator==(const DxMaterial& other) const
 {
 	return m_pathHash == other.m_pathHash;
@@ -59,19 +47,20 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 
 		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
 		// TODO: TEST CODE BEING
-		QList<QString> files = { { QString::fromStdWString(path) } };
-		QList<QByteArray> binaries;
-		DxResourceManager::CallAssetFetchCallBack(files, binaries);
+		//QList<QString> files = { { QString::fromStdWString(path) } };
+		//QList<QByteArray> binaries;
+		//DxResourceManager::CallAssetFetchCallBack(files, binaries);
 		// TODO: TEST CODE END;
 
-		if (binaries.size() && IsDDSTextureFile(binaries[0].data()) )
+		//if (binaries.size() && IsDDSTextureFile(binaries[0].data()) )
 		{
 
 			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
+			//textPtr->LoadFileFromMemory(poDevice, (uint8_t*)binaries[0].constData(), binaries[0].size());
 
-		
+			auto bytes = DxResourceManager::GetCallBackFile(path);
 
-			textPtr->LoadFileFromMemory(poDevice, (uint8_t*)binaries[0].constData(), binaries[0].size());
+			textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
 		}		
 
 		m_textures.push_back({ slot, textPtr });

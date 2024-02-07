@@ -167,7 +167,7 @@ namespace DirectX
             enum TransferFunction : unsigned int
             {
                 Linear,             // Pass-through
-                SRGB,               // sRGB (Rec.709 and approximate sRGB display curve)
+                SRGB_Mode,               // sRGB (Rec.709 and approximate sRGB display curve)
                 ST2084,             // HDR10 (Rec.2020 color primaries and ST.2084 display curve)
                 TransferFunction_Max
             };

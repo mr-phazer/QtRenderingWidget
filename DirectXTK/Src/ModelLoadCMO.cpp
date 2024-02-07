@@ -573,7 +573,7 @@ std::unique_ptr<Model> DirectX::Model::CreateFromCMO(
         const XMVECTOR max = XMVectorSet(extents->MaxX, extents->MaxY, extents->MaxZ, 0.f);
         BoundingBox::CreateFromPoints(mesh->boundingBox, min, max);
 
-        // Load model bones (if present and requested)
+        // CreateNode model bones (if present and requested)
         if (*bSkeleton && (flags & ModelLoader_IncludeBones))
         {
             // Bones

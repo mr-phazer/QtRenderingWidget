@@ -14,53 +14,53 @@
 
 #include "..\rldx\rldx\Managers\DxDeviceManager.h"
 #include "..\rldx\rldx\Managers\DxSceneManager.h"
+#include "..\rldx\rldx\Creators\DxSceneCreator.h"
 #include "..\rldx\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
 
 #include "..\rldx\rldx\Rendering\DxShaderProgram.h"
 #include "..\rldx\rldx\DataTypes\DxMeshData.h"
 
-class QtRenderView : public QWidget, public Ui::QtRenderingViewWidgetClass
+class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
+	Q_OBJECT
 
+private:
 	// overriden methods
 	void resizeEvent(QResizeEvent* event) override;
+
 	QPaintEngine* paintEngine() const override;
 	bool event(QEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
-	LRESULT WINAPI NativeWindowProcedure(MSG* pMsg);
-
-
-	Q_OBJECT
+	LRESULT WINAPI NativeWindowProcedure(MSG* pMsg);	
 
 public:
-	QtRenderView(QWidget* parent = Q_NULLPTR);
-
+	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);
 	
+	bool InitRenderView();
 
-	bool Init(/*rldx::DxDeviceManager* dxManager*/);
-
-	void FrameTimeOutHandler();
-	void StartRendering(float _FPS = 60.0f)
+	void MakeScene()
 	{
-		m_upoSceneManager->SetRenderRunningState(true);
-		
-		// TODO: move this to scene manager?
-		m_timer = new QTimer(this);
+		// TODO: use abstract factor, based on incoming game ID
+		auto sceneBuilder = std::make_shared<rldx::DxSceneCreator>();
+		auto scene = 
+			sceneBuilder->Create((HWND)winId(), 
+				rldx::DxDeviceManager::GetInstance().GetDevice(), 
+				rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 
+				GetGameIdString().toStdString());
 
-		connect(m_timer, &QTimer::timeout, [&]()
-				{
-					FrameTimeOutHandler();
-				}
-		);
-
-		m_frameTime = 1000.0f / _FPS;
-		m_timer->start(m_frameTime);
+		m_upoSceneManager->SetScene(scene);
 	}
+	
+	void StartRendering(float _FPS = 60.0f);
 
-	rldx::DxSceneManager& GetSceneManager() { return *m_upoSceneManager; }
+	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
+	QString GetGameIdString() const { return m_gameIdString; };
+	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
-signals:
+
+signals:	
+	void resizeEventHappend(QResizeEvent* event);
 	void keyPressed(QKeyEvent*);
 	void mouseMoved(QMouseEvent*);
 	void mouseClicked(QMouseEvent*);
@@ -69,12 +69,15 @@ signals:
 	void detachedWindowClose();
 
 private:
+	void FrameTimeOutHandler();
+private:
 	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
 	//rldx::DxDeviceManager* m_poDxManager = nullptr;
 	
 	QTimer* m_timer;
 	float m_frameTime = 0;
 
+	QString m_gameIdString;
 };
 
 

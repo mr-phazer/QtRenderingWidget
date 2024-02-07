@@ -1,5 +1,16 @@
 #pragma once
 
+enum Rmv2VersionEnum : uint32_t
+{
+	RMV2_V5 = 5,
+	RMV2_V6 = 6,
+	RMV2_V7 = 7,
+	RMV2_V8 = 8,
+};
+
+
+
+
 constexpr DirectX::XMFLOAT3X4 CAIdentityMatrix3x4 =
 {
 	1, 0, 0, 0,

@@ -546,7 +546,7 @@ namespace
         if (!temp)
             return E_OUTOFMEMORY;
 
-        // Load image data
+        // CreateNode image data
         if (memcmp(&convertGUID, &pixelFormat, sizeof(GUID)) == 0
             && twidth == width
             && theight == height)

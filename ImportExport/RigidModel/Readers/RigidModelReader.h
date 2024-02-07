@@ -11,10 +11,11 @@ namespace rmv2
 	{
 		LODHeaderCreatorFactory m_lodHeaderCreatorFactory;
 		MaterialCommonCreatorFactory m_materialCreatorFactory;
-		VertexCreatorProvider m_vertexCreatorProvider;
+		VertexCreatorFactory m_vertexCreatorProvider;
 
 		// TODO: use this file to store data in? Before returning
 		// RigidModelFileCommon m_rigidModelFile;
+				
 
 	public:
 		RigidModelFileCommon Read(ByteStream& bytes);
@@ -28,12 +29,12 @@ namespace rmv2
 		std::vector<LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
 		
 		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);		
-		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes);
+		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 		
 		// TODO: why do the vectors<vertex> etc not "exist" in debugger?
-		MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5);
+		//MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MeshHeader5Common& meshHeader5);
 
-		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock);
+		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
 		
 	};
 }
