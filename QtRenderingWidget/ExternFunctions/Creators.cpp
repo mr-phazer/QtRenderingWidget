@@ -55,7 +55,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	return poNewRenderingWidget;
 }
 
-void AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData)
+bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData)
 {
 	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
 	auto gameIdString = renderWidget->GetGameIdString();
@@ -70,7 +70,11 @@ void AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	{
 		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 		logging::LogAction(std::string("Error: Excpetion: ") + e.what());				
+
+		return false;
 	}
+
+	return true;
 }
 
 void SetAssetFolder(QString* folder)

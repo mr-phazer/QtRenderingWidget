@@ -33,7 +33,7 @@ extern "C" QWidget * CreateQRenderingWidget(
 /// <param name="pQRendeeWiget">Thee rendering widget pointer</param>
 /// <param name="assetFolder">internal/externala path</param>
 /// <param name="assetData">raw binary data of asset</param>
-extern "C" void AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData);
+extern "C" bool AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData);
 
 /// <summary>
 /// Path where shaders, cubemaps, and defalt material(textues) are stored
