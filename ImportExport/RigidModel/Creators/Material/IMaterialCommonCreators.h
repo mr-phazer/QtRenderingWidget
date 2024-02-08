@@ -41,13 +41,9 @@ namespace rmv2 {
 			Register < RigidMaterialEnum::weighted_decal_dirtmap, DefaultMaterialCreator>();
 		}
 
-
-
 		void HandleKeyNotFound(RigidMaterialEnum keyValue) override
 		{
-			throw std::exception("Unsuported RigidModelV2 version (Action: Reading Mesh header.");
+			throw std::exception(("Error: Unsuported RigidMaterial: Numerical ID: " + to_string(keyValue)).c_str());
 		}
-
 	};
-
 }

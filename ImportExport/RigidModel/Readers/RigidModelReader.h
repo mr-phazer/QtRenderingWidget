@@ -14,8 +14,7 @@ namespace rmv2
 		VertexCreatorFactory m_vertexCreatorProvider;
 
 		// TODO: use this file to store data in? Before returning
-		// RigidModelFileCommon m_rigidModelFile;
-				
+		// RigidModelFileCommon m_rigidModelFile;				
 
 	public:
 		RigidModelFileCommon Read(ByteStream& bytes);

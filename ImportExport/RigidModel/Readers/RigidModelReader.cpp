@@ -28,6 +28,11 @@ RigidModelFileCommon rmv2::RigidModelReader::Read(ByteStream& bytes)
 void rmv2::RigidModelReader::ReadFileHeaders(ByteStream& bytes, rmv2::RigidModelFileCommon& rmv2File)
 {
 	rmv2File.fileHeader = FileHeaderCreatorDefault().Create(bytes);
+	if (!rmv2File.fileHeader.IsContentValid())
+	{
+		throw std::exception("ERROR: File Header Contains Invalid Data.");
+	}
+
 	rmv2File.lodHeaders = ReadLodHeaders(bytes, rmv2File.fileHeader.modelVersionId, rmv2File.fileHeader.wLodCount);
 }
 
@@ -40,6 +45,10 @@ std::vector<LODHeaderCommon> rmv2::RigidModelReader::ReadLodHeaders(ByteStream& 
 	for (auto& lodHeaderElement : lodHeaders)
 	{
 		lodHeaderElement = lodHeaderCreator->Create(bytes);
+
+		if (!lodHeaderElement.IsContentValid())	{
+			throw std::exception("Error: LOD Header contains invalid data.");
+		}
 	}
 
 	return lodHeaders;
@@ -65,7 +74,10 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, R
 
 	// get info on mesh
 	meshBlock.meshHeader = MeshHeaderType3Creator().Create(bytes);
-
+	if (!meshBlock.meshHeader.IsContentValid()) {
+		throw std::exception("Error: Mesh Header Type 3 contains invalid data.");
+	}
+	
 	auto materialCreator = m_materialCreatorFactory.Get(meshBlock.meshHeader.RigidMaterialId);
 	meshBlock.materialBlock = materialCreator->Create(bytes);
 
@@ -83,7 +95,7 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, R
 
 void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& destMeshblock, Rmv2VersionEnum rmv2Version)
 {
-	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.vertexFormatId);
+	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.vertexFormatId);	
 
 	destMeshblock.meshData.vertices.resize(destMeshblock.meshHeader.dwVertexCount);
 	for (auto& vertex : destMeshblock.meshData.vertices)

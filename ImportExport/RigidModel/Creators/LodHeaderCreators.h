@@ -36,7 +36,7 @@ namespace rmv2 {
 		void HandleKeyNotFound(Rmv2VersionEnum keyValue) override
 		{
 			throw std::exception("Unsuported RigidModelV2 version (Action: Reading LOD headers.");
-		}
+		}		
 	};
 
 }; // namespace rmv2

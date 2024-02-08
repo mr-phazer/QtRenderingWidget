@@ -6,7 +6,11 @@ MaterialCommon DefaultMaterialCreator::Create(ByteStream& bytes)
 {
  	MaterialCommon matBlock;
 	
+	// TODO: maybe solved this, so IsContentValid() is called from withing factory itself
 	matBlock.materialHeader = MaterielHeaderType5Creator().Create(bytes);
+	if (!matBlock.materialHeader.IsContentValid()) {
+		throw std::exception("Error: MeshHeaderType5 contains invalid data.");
+	}
 
 	ReadAttachPointTable(bytes, matBlock, matBlock.materialHeader);
 	ReadTextures(bytes, matBlock, matBlock.materialHeader);

@@ -51,9 +51,7 @@ namespace helpers
 			return it->second;
 		}
 
-		virtual void HandleKeyNotFound(KEY_TYPE KeyValue)
-		{			
-		}
+		virtual void HandleKeyNotFound(KEY_TYPE keyValue) = 0;
 
 	};
 	template <typename BASE_TYPE>

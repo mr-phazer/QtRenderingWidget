@@ -26,7 +26,7 @@ MaterialHeaderType5 MaterielHeaderType5Creator::Create(ByteStream& bytes)
 	bytes.Read(&meshHeader5.dwTextureCount, 4);
 	bytes.Read(&meshHeader5.materialParams, sizeof(meshHeader5.materialParams));
 
-	bytes.Read(meshHeader5.szPadding, sizeof(meshHeader5.szPadding));
+	bytes.Read(meshHeader5.szPadding, sizeof(meshHeader5.szPadding));	
 
 	return meshHeader5;
 }

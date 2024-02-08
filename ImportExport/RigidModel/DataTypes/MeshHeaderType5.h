@@ -20,7 +20,6 @@ namespace rmv2
 				(!isnan(transforms.vPivot.y)) &&
 				(!isnan(transforms.vPivot.z));
 			// TODO: could check all floats, like the matices, for NANs			
-
 		}
 
 		static constexpr size_t GetSsize = 860;

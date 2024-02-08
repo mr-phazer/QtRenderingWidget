@@ -55,5 +55,12 @@ namespace rmv2 {
 			Register<VertexFormatEnum::WeightedVertexFormat, Weighted2CommonVertexCreator>();
 			Register<VertexFormatEnum::CinematicVertexFormat, Weighted4CommonVertexCreator>();
 		}
+
+	public:
+		virtual void HandleKeyNotFound(VertexFormatEnum keyValue)
+		{
+			throw std::exception(("ERROR: Model using unsported vertex format: Numerical Vertex Format ID: " + std::to_string(keyValue)).c_str());
+		}
+
 	};
 };

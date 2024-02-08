@@ -16,6 +16,7 @@ namespace rmv2 {
 			bool IsContentValid()  override
 			{				
 				return
+					(wLodCount > 0) &&
 					(signature == Rmv2FileSignatureEnum::RMV2_ValidFile) &&
 					(modelVersionId <= 8);
 			}
