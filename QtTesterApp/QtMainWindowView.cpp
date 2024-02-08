@@ -23,7 +23,6 @@ TestData testData_WH3_Weapon =
     LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\ksl\ksl_props\ksl_archer_sword_1h_01.rigid_model_v2)"
 };
 
-
 QtMainWindowView::QtMainWindowView(QWidget *parent)
     : QMainWindow(parent)
 {
