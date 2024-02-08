@@ -70,7 +70,7 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	{
 		//MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 
-		*outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what()));
+		*outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
 		logging::LogAction(std::string("Error: Excpetion: ") + e.what());				
 
 		return false;
