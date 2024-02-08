@@ -82,9 +82,18 @@ float4 main(in PixelInputType input) : SV_Target0
 
     //float smoothness = _gamma(smoothness_curve * reflect_curve);
 
-    float smoothness = pow(GlossTex.x, 2 * smoothness_curve);
-    float reflectivity = pow(GlossTex.y, 2 * reflect_curve);
+    //float smoothness = pow(GlossTex.x, 1/2 * smoothness_curve);
+    float smoothness = pow(GlossTex.x, 2.2);
+    //float smoothness = GlossTex.x;
+    
+    
+    
+    //float reflectivity = pow(GlossTex.y, 2 * reflect_curve);
+    float reflectivity = pow(GlossTex.y, 2.2);
+    //float reflectivity = GlossTex.y;
 
+    
+    
     float mask_p1 = MaskTex[0]; //   puiMaskIndices[0]
     float mask_p2 = MaskTex[1];
     float mask_p3 = MaskTex[2];
@@ -119,8 +128,8 @@ float4 main(in PixelInputType input) : SV_Target0
     if (b_do_decal)
     {
         ps_common_blend_decal(
-            diffuse_colour, N, specular_colour.rgb, GlossTex.y,
-            diffuse_colour, N, specular_colour.rgb, GlossTex.y, input.tex1.xy, 0, decal_uv_rect, 1.0
+            diffuse_colour, N, specular_colour.rgb, reflectivity,
+            diffuse_colour, N, specular_colour.rgb, reflectivity, input.tex1.xy, 0, decal_uv_rect, 1.0
         );
 
     }
@@ -135,11 +144,11 @@ float4 main(in PixelInputType input) : SV_Target0
         diffuse_colour,
         N,
         specular_colour.rgb,
-        GlossTex.y,
+        reflectivity,
         diffuse_colour,
         N,
         specular_colour.rgb,
-        GlossTex.y,
+        reflectivity,
         decal_uv,
         float2(u_div, v_div) //        float2(0, 0)
     );
@@ -164,10 +173,10 @@ float4 main(in PixelInputType input) : SV_Target0
 
     const float shadow = getShadow(input);
 
-    standard_mat.Shadow = shadow; //    1.0f; //lerp(1.0f, shadow, shadow_factor);
+    // no shadowing:
+    standard_mat.Shadow = 1.0f; //shadow; //    1.0f; //lerp(1.0f, shadow, shadow_factor);
 
-    float3 hdr_linear_col = standard_lighting_model_directional_light_UPDATED(
-        //0.5 *lightData[0].radiance * lightData[0].color.rgb,
+    float3 hdr_linear_col = standard_lighting_model_directional_light_UPDATED(      
         lightData[0].radiance * lightData[0].color.rgb,
 	    normalize(light_vector),
 	    normalize(eye_vector),
@@ -180,6 +189,9 @@ float4 main(in PixelInputType input) : SV_Target0
     {
         alpha = 0.4f;
     }    
-    
-    return float4(hdr_linear_col, alpha);
+
+
+    float3 ldr_linear_color = Uncharted2ToneMapping(hdr_linear_col);
+    //return float4(hdr_linear_col, alpha);
+    return float4(ldr_linear_color, alpha);
 };

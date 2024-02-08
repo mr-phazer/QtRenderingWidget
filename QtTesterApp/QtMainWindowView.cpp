@@ -71,7 +71,7 @@ void QtMainWindowView::InitRenderView()
 
 #endif
 
-	auto ptestData = &testData_WH3_Person;
+	auto ptestData = &testData_Rome2_Armor;
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);

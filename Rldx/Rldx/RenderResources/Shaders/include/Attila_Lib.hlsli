@@ -86,7 +86,7 @@ float _gamma(in float fLinear)
 
 float get_diffuse_scale_factor()
 {
-    return 0.004f;
+     return 0.004f;
 }
 
 float get_game_hdr_lighting_multiplier()
@@ -763,18 +763,15 @@ float4 plot_standard_lighting_model_test_func(in float4 vpos)
 }
 
 float3 get_reflectivity_base(in float3 light_vec, in float3 normal_vec, in float3 view_vec, in float3 material_reflectivity, in float smoothness, in float roughness, in float light_vec_reflected_view_vec_angle)
-{
-    float n_dot_l = dot(light_vec, normal_vec);
-
+{    
+    float n_dot_l = dot(light_vec, normal_vec); 
+    
     if (n_dot_l <= 0.0f)
         return float3(0, 0, 0);
 
     float fraction_of_facets = determine_fraction_of_facets_at_reflection_angle(smoothness, light_vec_reflected_view_vec_angle);
-
-    // TODO: REMOVE - DEBUGGIN CODE:
-    float facet_visibility = 1.0;
-
-    //float facet_visibility = determine_facet_visibility(roughness, normal_vec, light_vec); // Looks ok
+    
+    float facet_visibility = determine_facet_visibility(roughness, normal_vec, light_vec); // Looks ok
 
     float3 surface_reflectivity = determine_surface_reflectivity(material_reflectivity, roughness, light_vec, view_vec);
 
@@ -869,28 +866,25 @@ float3 standard_lighting_model_directional_light_UPDATED(in float3 LightColor, i
     float texture_num_lods = reflections_roughness;
 
     float env_map_lod = roughness * (texture_num_lods - 1);
-
+    
     float3 environment_colour = get_environment_colour_UPDATED(reflected_view_vec, env_map_lod);
-
-    // BEGIN: DEBUGGING CODE
-    //return float4(environment_colour, 1);
-    // END: DEBUGGIN CODE
-
-    float3 dlight_pixel_reflectivity = get_reflectivity_dir_light(normalised_light_dir, material.Normal, normalised_view_dir, reflected_view_vec, material.Reflectivity, material.Smoothness, roughness);
+    
+    float3 dlight_pixel_reflectivity = get_reflectivity_dir_light(normalised_light_dir, material.Normal, normalised_view_dir, reflected_view_vec, material.Reflectivity, material.Smoothness, roughness);    
+    
     float3 dlight_specular_colour = dlight_pixel_reflectivity * material.Specular_Colour * LightColor;
     float3 dlight_material_scattering = 1.0f.xxx - max(dlight_pixel_reflectivity, material.Reflectivity.xxx); //  All photons not accounted for by reflectivity are accounted by scattering. From the energy difference between in-coming light and emitted light we could calculate the amount of energy turned into heat. This energy would not be enough to make a viewable difference at standard illumination levels.
 
     float3 env_light_pixel_reflectivity = max(material.Reflectivity, get_reflectivity_env_light(reflected_view_vec, material.Normal, normalised_view_dir, material.Reflectivity, material.Smoothness, roughness));
-    float3 env_light_specular_colour = environment_colour * env_light_pixel_reflectivity * material.Specular_Colour;
-
+    float3 env_light_specular_colour = environment_colour * env_light_pixel_reflectivity * material.Specular_Colour;                                                                         
+        
     float3 dlight_diffuse = material.Diffuse_Colour * normal_dot_light_vec * LightColor * dlight_material_scattering;
-
+    
     float3 ambient_colour = cube_ambient(material.Normal);
-
-    float3 env_light_diffuse = ambient_colour * material.Diffuse_Colour * (1.0f - material.Reflectivity);
-
-    dlight_diffuse *= diffuse_scale_factor;
-
+         
+    float3 env_light_diffuse = ambient_colour * material.Diffuse_Colour * (1.0f - material.Reflectivity);            
+    
+    dlight_diffuse *= diffuse_scale_factor;     
+    
 	//if (!b_shadows)
 	//{
 	//	material.Shadow = 1.0f;
