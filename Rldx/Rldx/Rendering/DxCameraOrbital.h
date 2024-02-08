@@ -144,6 +144,9 @@ namespace rldx
 
 		void SetEyePosition(const sm::Vector3& pos);
 		void SetLookAt(const sm::Vector3& lookAt);
+		void SetRotate(float yaw, float pitch);
+
+
 
 		void SetFieldOfView(float value);
 

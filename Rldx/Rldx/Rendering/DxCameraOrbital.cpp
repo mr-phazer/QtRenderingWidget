@@ -30,6 +30,12 @@ void DxCameraOrbital::SetLookAt(const sm::Vector3& pos)
 	m_geometryData.v3LookAt = pos;
 }
 
+void rldx::DxCameraOrbital::SetRotate(float yaw, float pitch)
+{
+	m_geometryData.fYaw = yaw;
+	m_geometryData.fPitch = pitch;
+}
+
 
 const sm::Matrix& DxCameraOrbital::GetViewMatrix()
 {

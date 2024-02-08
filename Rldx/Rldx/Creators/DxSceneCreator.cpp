@@ -95,6 +95,9 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	modelNodeRmv2->LoadMaterialData(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 
+	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 6.0f);
+	poScene->GetCamera().SetRadius(4.0);
+
 	poScene->GetRootNode()->AddChild(modelNodeRmv2);
 }
 

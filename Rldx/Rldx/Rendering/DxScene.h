@@ -70,25 +70,30 @@ namespace rldx {
 
 		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 
+		// TODO: remove?
 		void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
 		{
 			m_poDefaultShaderProgram = shaderProgram;
 		};
 
-		DxMeshShaderProgram * GetSceneShaderProgram() const
+		// TODO: remove?
+		DxMeshShaderProgram * GeDefaultShaderProgram() const
 		{
-			return m_poDefaultShaderProgram;
+			return m_poDefaultShaderProgram;		
 		}
+
+		DxCameraOrbital& GetCamera() { return m_globalCamera; };
 
 	private:
 		void UpdateViewAndPerspective();
 
-
+		// TODO: remove?
 		//void UpdateAmbientLight();
 
-
+		// TODO: remove?
 		void DEBUGGING_SetViewAndPerspective();
 
+		// TODO: remove?
 		void BindAllBindable(ID3D11DeviceContext* poDeviceContext)
 		{
 			for (auto& bindable : m_bindableObjects)
@@ -97,7 +102,6 @@ namespace rldx {
 			}
 		}
 
-	
 
 	private:
 		DxSceneGraph m_sceneGraph;
