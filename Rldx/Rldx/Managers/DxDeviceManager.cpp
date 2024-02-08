@@ -59,7 +59,7 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 	try
 	{
 
-#ifdef _DEBUG
+#ifdef NOT_DEBUG
 		hr = D3D11CreateDevice(
 			NULL,
 			D3D_DRIVER_TYPE_HARDWARE,

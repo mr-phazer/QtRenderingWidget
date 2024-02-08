@@ -70,11 +70,10 @@ enum RigidMaterialEnum : uint16_t
 	global_terrain = 98,
 	decal_overlay = 99,
 	alpha_blend = 100,
-
-	NOT_SET = 0xFFFF
+	
 };
 
-enum class VertexFormatEnum : uint16_t
+enum VertexFormatEnum : uint16_t
 {
 	DefaultVertexFormat = 0,
 	CollisionVertexFormat = 1,

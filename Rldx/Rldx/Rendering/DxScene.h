@@ -66,7 +66,7 @@ namespace rldx {
 		//void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
 		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
-		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT WINAPI ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 
@@ -125,6 +125,7 @@ namespace rldx {
 
 	private:
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);
+		bool m_bCtrlDown = false; // TODO: should not be here, a more formal "input handler" is needed
 	};
 
 

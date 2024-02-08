@@ -4,14 +4,23 @@
 #include "..\Constants\Rmv2Constants.h"
 #include "..\DataTypes\MeshEnumsConstants.h"
 
+#include "IDataStructure.h"
 
 namespace rmv2 {	
 
 		// TODO: better than 'uint32_t RMV2_SIGNATURE = 0x32564D52' ?
 		enum Rmv2FileSignatureEnum : uint32_t { RMV2_ValidFile = RMV2_SIGNATURE };
 			
-		struct FileHeaderCommon
+		struct FileHeaderCommon : IDataStructure
 		{					
+			bool IsContentValid()  override
+			{				
+				return
+					(signature == Rmv2FileSignatureEnum::RMV2_ValidFile) &&
+					(modelVersionId <= 8);
+			}
+
+
 			Rmv2FileSignatureEnum signature = Rmv2FileSignatureEnum(0);			// the 32 bit numberical eqauivalent for "RVM2" = 0x32564D52
 			Rmv2VersionEnum modelVersionId = Rmv2VersionEnum(0);		// 6 for Rome2/Atilla/Thrones, 7 for WH/WH2, 8 for 3K 
 			

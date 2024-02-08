@@ -5,6 +5,8 @@
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\ImportExport\Helpers\ByteStream.h"
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
+#include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
 
 struct TestData
 {
@@ -36,23 +38,43 @@ QtMainWindowView::QtMainWindowView(QWidget *parent)
 void QtMainWindowView::InitRenderView()
 {   
 
-    auto ptestData = &testData_WH3_Person;
-    QString gameIdString = QString::fromStdString(ptestData->gameId);
+    // TODO: remove debuggin code
+#if _DEBUG
+    auto newResHandle = rldx::DxResourceManager::Instance()->AllocEmpty<rldx::DxResourceByteStream>(L"myASS");
+    newResHandle.GetPtr()->byteStream = ByteStream(testData_WH3_Person.filePath);
 
-    auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
+    auto resHandler = rldx::DxResourceManager::Instance()->GetResourceByString<rldx::DxResourceByteStream>(L"MYass");
 
-    auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);    
-    SetAssetFolder(&qAssetPath);
-   
-    if (!renderWidget)
-        return;    
+#endif
+
+
+    //for (size_t i = 0; i < 2; i++)
     
-    ByteStream bytes(ptestData->filePath);
-    QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
-    QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 
-    AddNewPrimaryAsset(renderWidget, &fileName, &qBytes);
+        auto ptestData = &testData_WH3_Person;
+        QString gameIdString = QString::fromStdString(ptestData->gameId);
 
+        auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
+
+        auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
+        SetAssetFolder(&qAssetPath);
+
+        if (!renderWidget)
+            return;
+
+        ByteStream bytes(ptestData->filePath);
+        QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
+        QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
+
+        AddNewPrimaryAsset(renderWidget, &fileName, &qBytes);
+
+        PauseRendering(renderWidget);
+        ResumeRendering(renderWidget);
+        /*renderWidget->setWindowFlag(Qt::WindowType::Window, true);
+        renderWidget->resize(1024, 1024);
+
+        renderWidget->show();*/
+    
     this->setCentralWidget(renderWidget);    
 }
 

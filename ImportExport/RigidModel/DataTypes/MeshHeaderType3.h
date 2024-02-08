@@ -2,12 +2,23 @@
 
 #include <DirectXMath.h>
 #include "MeshEnumsConstants.h"
+#include "IDataStructure.h"
 
 namespace rmv2
 {
 	// pure virtual getter methods returning references for all member variables
-	struct MeshHeaderType3
+	struct MeshHeaderType3 : public IDataStructure
 	{
+
+		bool IsContentValid()  override
+		{
+			return
+				(dwVertexCount <= 0xFFFF) &&
+				(RigidMaterialId < 101);				
+		};
+
+
+		// TODO: you COULD have such a thing, like oles IMaterial, tho it doesn't fit for this, as it is apparently the same for ALL rmv2s
   //      // Getters
 		//virtual RigidMaterialEnum& RigidMaterialId() = 0;
 		//virtual uint16_t& RenderFlags() = 0;
@@ -19,11 +30,7 @@ namespace rmv2
 		//virtual DirectX::XMFLOAT3& MinBB() = 0;
 		//virtual DirectX::XMFLOAT3& MaxBB() = 0;
 		//virtual char* LightingConstants() = 0;
-		
-		bool IsContentValid()
-		{
-		// TOD:	"implement"
-		}
+				
 
 		static constexpr size_t GetHeaderSize()
 		{
@@ -35,7 +42,7 @@ namespace rmv2
 			return static_cast<size_t>((dwVertexOffset - dwIndexOffset) / dwVertexCount);
 		};
 
-		RigidMaterialEnum RigidMaterialId = RigidMaterialEnum::NOT_SET;		// Indicates the material of the group, some material make the group chunk larger, which merits further discovery
+		RigidMaterialEnum RigidMaterialId = RigidMaterialEnum(0);	// Indicates the material of the group, some material make the group chunk larger, which merits further discovery
 		uint16_t  wRenderFlags = 0;
 		// number of bytes from the start of this header to the begining of the next group (starting at the header)
 		uint32_t dwMeshSectionSize = 0;	// Size of the entire group (header + attachment blocks + texture blocks + vertices + indices)

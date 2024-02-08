@@ -12,7 +12,7 @@
 
 #include <string>
 
-#include "..\Managers\ResourceManager\IDxResouce.h"
+#include "..\Managers\ResourceManager\IDxResource.h"
 
 
 namespace rldx {

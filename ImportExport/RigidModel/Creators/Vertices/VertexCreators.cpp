@@ -24,13 +24,16 @@ rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes,
 	};
 
 	// bone weights
-	outVertex.weights.x = FloatConverter::GetUNORMFloatFromByte(rawVertex.boneWeights.x),
-	outVertex.weights.y = 1.0f - outVertex.weights.x;
+	// TODO: RESTOR and REMOVE DEBUGGIN CODE
+	//outVertex.weights.x = FloatConverter::GetUNORMFloatFromByte(rawVertex.boneWeights.x),
+	outVertex.weights.x = FloatConverter::GetUNormFloat(rawVertex.boneWeights.x);
+	
+		outVertex.weights.y = 1.0f - outVertex.weights.x;
 			
 	// TBN
-	outVertex.normal = FloatConverter::GetSNORMFloat3(rawVertex.normal);
-	outVertex.tangent = FloatConverter::GetSNORMFloat3(rawVertex.tangent);
-	outVertex.bitangent = FloatConverter::GetSNORMFloat3(rawVertex.bitangent);
+	outVertex.normal = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.normal);
+	outVertex.tangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.tangent);
+	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.bitangent);
 	
 	// texture coordinates
 	outVertex.textureCoordinate = FloatConverter::GetFloat2FromHalf2(rawVertex.uv);
@@ -70,9 +73,9 @@ rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes,
 
 	outVertex.position = CAVertexHelpers::DoRMV2Version8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
 
-	outVertex.normal = FloatConverter::GetSNORMFloat3(rawVertex.normal);
-	outVertex.tangent = FloatConverter::GetSNORMFloat3(rawVertex.tangent);
-	outVertex.bitangent = FloatConverter::GetSNORMFloat3(rawVertex.bitangent);
+	outVertex.normal = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.normal);
+	outVertex.tangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.tangent);
+	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.bitangent);
 
 	outVertex.textureCoordinate = FloatConverter::GetFloat2FromHalf2(rawVertex.uv);
 
@@ -91,6 +94,10 @@ rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes,
 	outVertex.weights.w = 1.0f - (outVertex.weights.x + outVertex.weights.y + outVertex.weights.z); // quick-dirty normalization
 
 	
+	if (rmv2Version == Rmv2VersionEnum::RMV2_V8)
+	{
+		outVertex.color = FloatConverter::GetUNORMFloat4FromByte4(rawVertex.color);
+	}
 
 	return outVertex;
 }

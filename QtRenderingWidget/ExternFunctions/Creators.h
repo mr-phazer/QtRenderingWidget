@@ -42,7 +42,17 @@ extern "C" void AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolde
 /// <param name="path"></param>
 extern "C" void SetAssetFolder(QString* folder);
 
+
 /// <summary>
+/// Sets the number of ms between each frame, FPS = 1000 / FrameTimeMS
+/// </summary>
+//extern "C" void SetFrameTime(QWidget * pQRendeeWiget, int FrameTimeMS);
+
+extern "C" void PauseRendering(QWidget * pQRendeeWiget);
+extern "C" void ResumeRendering(QWidget * pQRendeeWiget);
+
+
+
 /// Path where shaders, cubemaps, and defalt material(textues) are stored
 /// </summary>
 //extern "C" void SetAssetLogPath(QWidget * pQRendeeWiget, const QString& path);

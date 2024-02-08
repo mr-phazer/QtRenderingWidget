@@ -32,12 +32,22 @@ private:
 	bool event(QEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
-	LRESULT WINAPI NativeWindowProcedure(MSG* pMsg);	
+	LRESULT WINAPI ForwardNativeWindowEvents(MSG* pMsg);	
 
 public:
 	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);
 	
 	bool InitRenderView();
+
+	void PauseRendering()
+	{
+		m_timer->stop();
+	}
+
+	void ResumeRendering()
+	{
+		m_timer->start();
+	}
 
 	void MakeScene()
 	{
@@ -58,6 +68,10 @@ public:
 	QString GetGameIdString() const { return m_gameIdString; };
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
+	protected:
+	virtual void focusInEvent(QFocusEvent* event) override;
+	virtual void focusOutEvent(QFocusEvent* event) override;
+
 
 signals:	
 	void resizeEventHappend(QResizeEvent* event);
@@ -70,13 +84,13 @@ signals:
 
 private:
 	void FrameTimeOutHandler();
-private:
-	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
-	//rldx::DxDeviceManager* m_poDxManager = nullptr;
-	
-	QTimer* m_timer;
-	float m_frameTime = 0;
+	void MakeConnections();
 
+private:
+	rldx::DxSceneManager::UniquePtr m_upoSceneManager;	
+	
+	QTimer* m_timer = nullptr;
+	float m_frameTime = 0;
 	QString m_gameIdString;
 };
 

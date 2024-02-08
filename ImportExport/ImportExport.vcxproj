@@ -155,6 +155,7 @@
     <ClInclude Include="RigidModel\Creators\MeshHeaderType3Creator.h" />
     <ClInclude Include="RigidModel\Creators\Vertices\VertexCreators.h" />
     <ClInclude Include="RigidModel\DataTypes\AttachElement.h" />
+    <ClInclude Include="RigidModel\DataTypes\IDataStructure.h" />
     <ClInclude Include="RigidModel\DataTypes\MaterialBlockCommon.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType5.h" />
     <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h" />

@@ -7,7 +7,7 @@
 //struct MaterialHeaderType5
 //{
 //	static constexpr size_t size = 860;
-//	RigidModelV2::VertexFormatInfo::EVertexFormat VertexFormatId = RigidModelV2::VertexFormatInfo::EVertexFormat::eERROR_NOT_SET;
+//	RigidModelV2::VertexFormatInfo::EVertexFormat vertexFormatId = RigidModelV2::VertexFormatInfo::EVertexFormat::eERROR_NOT_SET;
 //
 //	char szMeshName[32] = "mesh_no_name";		// First believed to be zero padded 32 char, but is not present at all in certain "obscure" RMV2 "sub formats"
 //	

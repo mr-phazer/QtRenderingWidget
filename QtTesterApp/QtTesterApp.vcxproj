@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\zz QtRenderingWidget (NEW).lib;$(SolutionDir)$(Platform)\$(Configuration)\QtRenderingWidget.lib;$(SolutionDir)$(Platform)\$(Configuration)\QtRenderingWidget.lib;$(SolutionDir)$(Platform)\$(Configuration)\ImportExport.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\QtRenderingWidget.lib;$(SolutionDir)$(Platform)\$(Configuration)\ImportExport.lib</AdditionalDependencies>
     </Link>
     <ClCompile>
       <TreatWarningAsError>true</TreatWarningAsError>

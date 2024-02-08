@@ -17,6 +17,16 @@ namespace rldx {
 
 	public:		
 		virtual void AddItem(IRenderQueueItem* renderItem) override { m_renderItems.push_back(renderItem); };
+
+		/// <summary>
+		/// Get a bounding box that is precisely big enough to contain all the meshes in the bucket-queue
+		/// </summary>
+		/// <returns></returns>
+		DirectX::BoundingBox MakeMergedBoundBox()
+		{
+			
+		}
+
 		virtual void ClearItems() override { m_renderItems.clear(); };
 		
 		void Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram = nullptr)

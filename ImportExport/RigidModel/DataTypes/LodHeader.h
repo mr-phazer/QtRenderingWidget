@@ -2,6 +2,9 @@
 
 #include <cstdint>
 
+#include "IDataStructure.h"
+#include <math.h>
+
 namespace rmv2 {
 		// make all variable into virtual methods retuning references, dont use  "" prefix
 
@@ -40,9 +43,16 @@ namespace rmv2 {
 			LodHeaderData_V6 data;		
 		};
 
-		struct LODHeaderCommon
+		struct LODHeaderCommon : IDataStructure
 		{
-			bool IsContentValid();
+			bool IsContentValid()  override
+			{
+				// TODO: check if 100 is an ok max vaue
+				return
+					(dwMeshCount < 100) && // 100 = just a randomly picked max. 
+					(!isnan(fVisibilityDistance)); // float being a NAN meaning corrupted data read
+			}
+
 
 			uint32_t dwMeshCount = 0;
 			uint32_t dwVerticesDataLength = 0;

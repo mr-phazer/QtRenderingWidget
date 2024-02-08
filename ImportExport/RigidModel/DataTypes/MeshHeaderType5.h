@@ -5,21 +5,27 @@
 
 #include "..\..\Helpers\ByteStream.h"
 #include "MeshEnumsConstants.h"
+#include "IDataStructure.h"
 
 namespace rmv2
 {
 	// TODO this is a not a bit for bit data struct it is a COMMON...
-	struct MaterialHeaderType5
-	{
-		// TODO: implement
-		bool IsContentValid()
-		{
-		//	TODO: "implement!!!"
+	struct MaterialHeaderType5 : public IDataStructure
+	{		
+		bool IsContentValid()  override
+		{			
+			return
+				(vertexFormatId < 20) && // TODO: 20 is just a random pick, 
+				(!isnan(transforms.vPivot.x)) &&
+				(!isnan(transforms.vPivot.y)) &&
+				(!isnan(transforms.vPivot.z));
+			// TODO: could check all floats, like the matices, for NANs			
+
 		}
 
 		static constexpr size_t GetSsize = 860;
 
-		VertexFormatEnum VertexFormatId = VertexFormatEnum(0);
+		VertexFormatEnum vertexFormatId = VertexFormatEnum(0);
 
 		char szMeshName[32] = "NOT_SET_MESH_NAME";
 		char szTextureDirectory[256] = "NOT_SET_TEXT_DIR";
@@ -41,7 +47,7 @@ namespace rmv2
 			DirectX::XMFLOAT3X4 matrix2 = CAIdentityMatrix3x4;
 			DirectX::XMFLOAT3X4 matrix3 = CAIdentityMatrix3x4;
 		}
-		transformation;
+		transforms;
 
 		int32_t iMatrixIndex = -1;
 		int32_t iParentMatrixIndex = -1;

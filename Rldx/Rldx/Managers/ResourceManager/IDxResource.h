@@ -10,7 +10,9 @@ namespace rldx {
 		MeshData,
 		ShaderProgram,
 		Texture,
-		Material
+		Material,
+		BytesStream
+
 	};
 
 	class IDxResource : public TIdentifiable<ResourceTypeEnum>

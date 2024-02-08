@@ -42,16 +42,19 @@ namespace rldx {
 			}
 		}
 		
-		LRESULT WINAPI NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
+
+		/// <summary>
+		/// Send Native Window events to a DxScene, as the low-level camera impl needs them
+		/// </summary>		
+		LRESULT WINAPI ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
 		{		
 			if (m_spoCurrentScene)
 			{
-				return m_spoCurrentScene->NativeWindowProcedure(hWnd, uMsg, wParam, lParam);
+				return m_spoCurrentScene->ForwardNativeWindowEvents(hWnd, uMsg, wParam, lParam);
 			}
 
 			return false;
 		}
-
 
 		DxScene* GetCurrentScene()
 		{
@@ -66,7 +69,5 @@ namespace rldx {
 		libtools::SystemClock m_systemClock;
 		bool m_bRenderingRunning = false;
 	};
-
-
 
 }; // namespace rldx

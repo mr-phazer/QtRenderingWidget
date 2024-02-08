@@ -179,7 +179,7 @@
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h">
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h">
@@ -267,6 +267,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceByteStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

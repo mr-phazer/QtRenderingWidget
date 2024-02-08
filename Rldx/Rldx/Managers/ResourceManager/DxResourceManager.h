@@ -10,7 +10,7 @@
 
 // author heade
 #include "..\..\Helpers\StringKeyMap.h"
-#include "IDxResouce.h"
+#include "IDxResource.h"
 #include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
 
@@ -118,7 +118,7 @@ namespace rldx {
 		static DxResourceManager* Instance();
 
 		template<typename TYPE_DERIVED>
-		TResourceHandle<TYPE_DERIVED> AllocEmpty(const std::wstring& stringId = "");
+		TResourceHandle<TYPE_DERIVED> AllocEmpty(const std::wstring& stringId = L"");
 
 
 		template <typename TYPE_DERIVED>
@@ -213,7 +213,8 @@ namespace rldx {
 		if (!stringId.empty()) {
 			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, pDerived));
 						
-			pszStringKey = it.first->first.data();
+			// TODO: does this need to be a pointer? Can't the handle just contain an std::wstring?
+			pszStringKey = it.first->first.data(); // set pointer to string key, in handle struct, 
 		}
 
 		return { resourceId, pDerived, pszStringKey };

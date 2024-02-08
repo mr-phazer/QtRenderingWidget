@@ -83,7 +83,7 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, R
 
 void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& destMeshblock, Rmv2VersionEnum rmv2Version)
 {
-	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.VertexFormatId);
+	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.vertexFormatId);
 
 	destMeshblock.meshData.vertices.resize(destMeshblock.meshHeader.dwVertexCount);
 	for (auto& vertex : destMeshblock.meshData.vertices)
@@ -102,7 +102,7 @@ void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockComm
 
 //MeshData16 rmv2::RigidModelReader::ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MaterialHeaderType5& meshHeader5)
 //{
-//	auto vertexCreator = VertexCreatorFactory().Get(meshHeader5.VertexFormatId);
+//	auto vertexCreator = VertexCreatorFactory().Get(meshHeader5.vertexFormatId);
 //
 //	MeshData16 meshData;
 //

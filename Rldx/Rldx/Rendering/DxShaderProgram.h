@@ -14,7 +14,7 @@
 #include "..\DataTypes\ShaderFiles.h"
 #include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
-#include "..\Managers\ResourceManager\IDxResouce.h"
+#include "..\Managers\ResourceManager\IDxResource.h"
 
 #include "..\Logging\Logging.h"
 
@@ -137,7 +137,7 @@ namespace rldx {
 			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 
 			// TODO: remove debugging  code
-			auto DEBUGGIN_retrievedId = rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>(L"shader01");
+			auto DEBUGGIN_retrievedId = rldx::DxResourceManager::Instance()->GetResourceByString<SHADER_TYPE>(L"ShADer01");
 
 			return newInstance;
 		}

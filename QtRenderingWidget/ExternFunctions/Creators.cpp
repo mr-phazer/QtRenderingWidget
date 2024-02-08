@@ -55,9 +55,9 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	return poNewRenderingWidget;
 }
 
-void AddNewPrimaryAsset(QWidget* pQRenderWidget, QString* assetFolder, QByteArray* assetData)
+void AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData)
 {
-	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWidget);
+	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
 
 	auto gameIdString = renderWidget->GetGameIdString();
 
@@ -71,6 +71,18 @@ void AddNewPrimaryAsset(QWidget* pQRenderWidget, QString* assetFolder, QByteArra
 void SetAssetFolder(QString* folder)
 {
 	rldx::DxResourceManager::SetAssetFolder(folder->toStdWString());
+}
+
+void PauseRendering(QWidget* pQRenderWiget)
+{
+	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+	renderWidget->PauseRendering();
+}
+
+void ResumeRendering(QWidget* pQRenderWiget)
+{
+	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+	renderWidget->ResumeRendering();
 }
 
 void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)

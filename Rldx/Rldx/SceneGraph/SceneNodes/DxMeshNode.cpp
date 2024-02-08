@@ -19,7 +19,7 @@ rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::string& name)
 	return newMeshNode;
 }
 
-void rldx::DxMeshNode::SetNewModel(const rldx::DxCommonMeshData& meshData)
+void rldx::DxMeshNode::SetModelData(const rldx::DxCommonMeshData& meshData)
 {
 	auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
 	m_meshDrawable.m_poMesh = newMeshHandle.GetPtr();

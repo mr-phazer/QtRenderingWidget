@@ -7,7 +7,7 @@ MaterialHeaderType5 MaterielHeaderType5Creator::Create(ByteStream& bytes)
 {
     MaterialHeaderType5 meshHeader5;
 
-	bytes.Read(&meshHeader5.VertexFormatId, sizeof(meshHeader5.VertexFormatId));		
+	bytes.Read(&meshHeader5.vertexFormatId, sizeof(meshHeader5.vertexFormatId));		
 	
 	bytes.Read(&meshHeader5.szMeshName, RMV2_MAX_MESH_NAME);
 	bytes.Read(meshHeader5.szTextureDirectory, RMV2_MAX_PATH);
@@ -16,7 +16,7 @@ MaterialHeaderType5 MaterielHeaderType5Creator::Create(ByteStream& bytes)
 	bytes.Read(&meshHeader5.paddingByte0, 1);
 	bytes.Read(&meshHeader5.paddingByte1, 1);
 
-	bytes.Read(&meshHeader5.transformation, sizeof(meshHeader5.transformation));	
+	bytes.Read(&meshHeader5.transforms, sizeof(meshHeader5.transforms));	
 
 	bytes.Read(&meshHeader5.iMatrixIndex, 4);
 	bytes.Read(&meshHeader5.iParentMatrixIndex, 4);

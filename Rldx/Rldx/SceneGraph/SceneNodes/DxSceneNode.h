@@ -10,7 +10,7 @@
 //#include "..\Interfaces\IIdentifiable.h"
 //#include "..\Interfaces\IUpdateable.h"
 //#include "..\Interfaces\IFlushAble.h"
-//#include "..\rldx\Managers\ResourceManager\IDxResouce.h"
+//#include "..\rldx\Managers\ResourceManager\IDxResource.h"
 //#include "..\..\SceneGraph\BaseNode\DxBaseNode.h"
 //
 //namespace rldx {

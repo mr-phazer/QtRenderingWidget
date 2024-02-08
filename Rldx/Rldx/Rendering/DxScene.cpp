@@ -59,7 +59,6 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 	}
 }
 
-static bool bCtrlDown = false;
 //void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
 //{
 //	SetWindowPos(m_hwndNativeWindowHandle, nullptr,  0, 0, 1024, 1024, SWP_NOOWNERZORDER);
@@ -74,21 +73,21 @@ static bool bCtrlDown = false;
 //	GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_hwndNativeWindowHandle, , width, height);	
 //}
 
-LRESULT __stdcall rldx::DxScene::NativeWindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {		
 	if (uMsg == WM_KEYDOWN)
 	{ 
 		if (wParam == VK_CONTROL)
-			bCtrlDown = true;		
+			m_bCtrlDown = true;		
 	}	
 
 	if (uMsg == WM_KEYUP)
 	{ 
 		if (wParam == VK_CONTROL)
-			bCtrlDown = false;		
+			m_bCtrlDown = false;		
 	}	
 
-	if (bCtrlDown)
+	if (m_bCtrlDown)
 	{
 		return m_globalDirectionalLight.HandleMessages(hWnd, uMsg, wParam, lParam);
 	}

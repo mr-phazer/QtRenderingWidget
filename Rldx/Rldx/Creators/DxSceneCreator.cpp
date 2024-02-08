@@ -56,7 +56,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
-	meshNodeGrid->SetNewModel(gridMeshData);
+	meshNodeGrid->SetModelData(gridMeshData);
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
 	
@@ -91,7 +91,7 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 
 	rmv2::RigidModelReader rigidModelFileReader;
 	auto rmv2File = rigidModelFileReader.Read(fileData);
-	modelNodeRmv2->SetNewModel(poDevice, rmv2File);
+	modelNodeRmv2->SetModelData(poDevice, rmv2File);
 	modelNodeRmv2->LoadMaterialData(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 

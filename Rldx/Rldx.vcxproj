@@ -48,7 +48,8 @@
     <ClInclude Include="Rldx\Managers\DxSceneManager.h" />
     <ClInclude Include="Rldx\Managers\DxTypes.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h" />
-    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResouce.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceByteStream.h" />
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h" />
     <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h" />
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h" />
     <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h" />

@@ -111,6 +111,9 @@
     <ClInclude Include="WsModel\DataTypes\XMLMaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RigidModel\DataTypes\IDataStructure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helpers\ImportExport.cpp">

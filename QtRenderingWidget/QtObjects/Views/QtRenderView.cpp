@@ -109,7 +109,7 @@ bool QtRenderWidgetView::nativeEvent(const QByteArray& eventType, void* message,
 	if (m_upoSceneManager)
 	{
 		MSG* pMsg = reinterpret_cast<MSG*>(message);
-		NativeWindowProcedure(pMsg);
+		ForwardNativeWindowEvents(pMsg);
 
 
 
@@ -120,9 +120,9 @@ bool QtRenderWidgetView::nativeEvent(const QByteArray& eventType, void* message,
 	//return QWidget::nativeEvent(eventType, message, result);
 }
 
-LRESULT WINAPI QtRenderWidgetView::NativeWindowProcedure(MSG* pMsg)
+LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvents(MSG* pMsg)
 {
-	return m_upoSceneManager->NativeWindowProcedure(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
+	return m_upoSceneManager->ForwardNativeWindowEvents(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
 }
 
 bool QtRenderWidgetView::InitRenderView()
@@ -149,16 +149,24 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 {
 	m_upoSceneManager->SetRenderRunningState(true);
 
-	// TODO: move this to scene manager?
-	m_timer = new QTimer(this);
+	if (!m_timer) 
+	{
+		m_timer = new QTimer(this);
 
-	connect(m_timer, &QTimer::timeout, [&]()
-		{
-			FrameTimeOutHandler();
-		}
-	);
+
+		connect(m_timer, &QTimer::timeout, [&]()
+			{
+				FrameTimeOutHandler();
+			}
+		);
+	}
+	else
+	{
+		m_timer->stop();
+	}
 
 	m_frameTime = 1000.0f / framesPerSecond;
+	m_timer->setInterval(1000);
 	m_timer->start(m_frameTime);
 }
 
@@ -168,5 +176,19 @@ void QtRenderWidgetView::FrameTimeOutHandler()
 		return;
 
 	m_upoSceneManager->GetCurrentScene()->Draw(rldx::DxDeviceManager::GetInstance().GetDeviceContext());
-	m_upoSceneManager->MoveFrame();
+	m_upoSceneManager->MoveFrame(); // TODO: typically "move geometry" would not be synced with frame-rate like this, but it is good eought for this simple thing.
+}
+
+void QtRenderWidgetView::MakeConnections()
+{
+}
+
+void QtRenderWidgetView::focusInEvent(QFocusEvent* event)
+{
+	// TODO: set frame rate to normal
+}
+
+void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
+{
+	// TODO: set frame to the lower possible, to allow many views being open without lagging
 }

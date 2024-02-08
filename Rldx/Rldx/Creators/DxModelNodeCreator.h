@@ -59,7 +59,7 @@ namespace rldx {
 			auto rmv2File = rigidModelFileReader.Read(fileData);
 
 			auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("ModelNode");
-			modelNodeRmv2->SetNewModel(poDevice, rmv2File);
+			modelNodeRmv2->SetModelData(poDevice, rmv2File);
 			modelNodeRmv2->LoadMaterialData(poDevice, rmv2File); // TODO add support for (parsed) WSMODEL			
 
 			return modelNodeRmv2;
