@@ -18,13 +18,13 @@ void SetLogPath(const QString& path)
 /// <summary>
 /// Demostration/test of using callback to set resources
 /// </summary>
-static void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+static void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
 
 QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
 {
 // Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
 #ifdef _DEBUG
-	rldx::DxResourceManager::SetAssetFetchCallback(&FileGetter);
+	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 #else
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
 #endif	
@@ -39,7 +39,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	}
 	catch (std::exception& e)
 	{
-		MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
+		//MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		delete poNewRenderingWidget;
@@ -55,7 +55,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	return poNewRenderingWidget;
 }
 
-bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData)
+bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
 {
 	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
 	auto gameIdString = renderWidget->GetGameIdString();
@@ -68,7 +68,9 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	}
 	catch (std::exception& e)
 	{
-		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
+		//MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
+
+		*outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what()));
 		logging::LogAction(std::string("Error: Excpetion: ") + e.what());				
 
 		return false;
@@ -94,7 +96,7 @@ void ResumeRendering(QWidget* pQRenderWiget)
 	renderWidget->ResumeRendering();
 }
 
-void FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
+void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
 {
 	outBinFiles->clear();
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
