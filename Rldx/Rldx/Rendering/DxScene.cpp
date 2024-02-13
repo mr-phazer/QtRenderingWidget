@@ -150,9 +150,7 @@ void rldx::DxScene::UpdateViewAndPerspective()
 	m_sceneFramePSConstBuffer.data.lightData[0].direction = -m_globalDirectionalLight.GetEyePt(); // negative = light comes from "forward"
 	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();
 
-	m_ambientLightSource.m_oPSConstBuffer.data.radiance = 3.0f;
-	// TODO: DEBUG: "Sub in MS Demo "rendering framework" projectiong and view matrix, and see which one is wrong"
-	// _DEBUGGING_SetViewAndPerspective();
+	m_ambientLightSource.m_oPSConstBuffer.data.radiance = 3.0f;	
 }
 
 void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
