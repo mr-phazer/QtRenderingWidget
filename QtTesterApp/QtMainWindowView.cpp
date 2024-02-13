@@ -33,6 +33,13 @@ TestData testData_WH3_Person_Malekith =
 	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
 };
 
+TestData testData_WH3_Prop_missing_specglos
+{
+	LR"(I:\Modding\WH3\)",
+	game_id_keys::KEY_WARHAMMER_3,
+	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\emp\emp_props\emp_amber_wizard_staff_01.rigid_model_v2)"
+};
+
 TestData testData_WH3_Building_Mean_to_not_work_yet =
 {
 	LR"(I:\Modding\WH3\)",
@@ -92,7 +99,7 @@ void QtMainWindowView::InitRenderView()
 
 #endif
 
-	auto ptestData = &testData_WH3_Person;
+	auto ptestData = &testData_WH3_Weapon;
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);

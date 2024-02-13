@@ -108,15 +108,17 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 
 void rldx::DxSceneCreator::SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene)
 {
-	auto& boundBox = modelNodeRmv2->GetBoundingBox();
-	float s = boundBox.Extents.y * 2.0f;
-	float a = poScene->GetCamera().GetFieldOfView();
+	auto& boundBox = modelNodeRmv2->GetBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
+	const float adjustBBExtend = 0.3f;
+	float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x)) * (2.0f + adjustBBExtend);
+	float fieldIOfView = poScene->GetCamera().GetFieldOfView();
+	auto DEBUG_CENTER = boundBox.Center;
 
-	float d = (s / 2) / tan(a / 2);
+	float cameraDistance = (bbSize / 2.0f) / tan(fieldIOfView / 2.0f);
 
-	poScene->GetCamera().SetRadius(d);
-	poScene->GetCamera().SetLookAt({ 0, 0.9f, 0 });
-	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 6.0f);
+	poScene->GetCamera().SetRadius(cameraDistance);
+	poScene->GetCamera().SetLookAt(boundBox.Center); // bound box fomula doesn't take "look at" into account, so move up a bit
+	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 8.0f); // rotate the scene into a neat orientation
 }
 
 

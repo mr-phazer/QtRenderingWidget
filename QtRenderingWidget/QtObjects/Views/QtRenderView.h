@@ -70,6 +70,9 @@ public:
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
 	
+private:
+	void LoadDefaultTextures(ID3D11Device* poDevice);
+
 
 	protected:
 	virtual void focusInEvent(QFocusEvent* event) override;

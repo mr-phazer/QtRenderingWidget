@@ -23,6 +23,7 @@ float4 main(in PixelInputType input) : SV_TARGET
 	//	Get the inputs...
     ps30_get_shared_inputs(eye_vector, light_vector, diffuse_colour, specular_colour, smoothness, basis, N, input, faction_colours);
 
+    
     //if (!PisTextureSRGB[t_Diffuse])
     //    diffuse_colour.rgb = _gamma(diffuse_colour.rgb);
 

@@ -52,7 +52,7 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 			logging::LogActionError("Loading From CALLBACK failed, missing or empty file, (will load default)" + libtools::wstring_to_string(path));
 						
 
-			LoadDefaultTexture(poDevice, slot);
+			textPtr = LoadDefaultTexture(poDevice, slot);
 		}
 		else {
 			textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
@@ -72,7 +72,7 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 	{	
 	case TextureTypeEnum::eBaseColor:
 	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_base_colour.dds");
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
 		return resHandleDiffuse.GetPtr();
 	}
 
@@ -84,7 +84,25 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 
 	case TextureTypeEnum::eDiffuse:
 	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_diffuse.dds");
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	case TextureTypeEnum::eGlossMap:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_gloss_map.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	case TextureTypeEnum::eSpecular:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	case TextureTypeEnum::eNormal:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_normal.dds");
 		return resHandleDiffuse.GetPtr();
 	}
 

@@ -138,34 +138,11 @@ bool QtRenderWidgetView::InitRenderView()
 
 	logging::LogAction("Retriving Default Textures from .exe");
 
-	Q_INIT_RESOURCE(QtRenderView);	
-
-	QStringList resourceList = {
-		":/QtRenderingWidget/default_base_colour.dds",
-		":/QtRenderingWidget/default_blue.dds",
-		":/QtRenderingWidget/default_diffuse.dds",
-		":/QtRenderingWidget/default_gloss_map.dds",
-		":/QtRenderingWidget/default_grey.dds",
-		":/QtRenderingWidget/default_metal_material_map.dds",
-		":/QtRenderingWidget/default_normal.dds",
-		":/QtRenderingWidget/default_specular.dds"
-	};
-
-
-	for (auto& itRes : resourceList)
-	{
-		QFile file(itRes);		
-		file.open(QIODevice::ReadOnly);
-		auto fileName = QUrl(itRes).fileName();
-		auto isOpen = file.isOpen();
-		auto isReadable = file.isReadable();		
-		auto fileSize = file.size();
-		auto bytes = file.readAll();
-		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString()).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
-	}
 
 	logging::LogAction("Create New Scene");
 	
+	LoadDefaultTextures(poDevice);
+
 	MakeScene();
 	
 
@@ -213,6 +190,33 @@ void QtRenderWidgetView::MakeConnections()
 {
 }
 
+void QtRenderWidgetView::LoadDefaultTextures(ID3D11Device* poDevice)
+{
+	Q_INIT_RESOURCE(QtRenderView);
+
+	QStringList resourceList = {
+		":/QtRenderingWidget/default_base_colour.dds",
+		":/QtRenderingWidget/default_blue.dds",
+		":/QtRenderingWidget/default_diffuse.dds",
+		":/QtRenderingWidget/default_gloss_map.dds",
+		":/QtRenderingWidget/default_grey.dds",
+		":/QtRenderingWidget/default_metal_material_map.dds",
+		":/QtRenderingWidget/default_normal.dds",
+		":/QtRenderingWidget/default_specular.dds"
+	};
+
+	for (auto& itRes : resourceList)
+	{
+		QFile file(itRes);
+		file.open(QIODevice::ReadOnly);
+		auto fileName = QUrl(itRes).fileName();
+		auto isOpen = file.isOpen();
+		auto isReadable = file.isReadable();
+		auto fileSize = file.size();
+		auto bytes = file.readAll();
+		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString()).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+	}
+}
 void QtRenderWidgetView::focusInEvent(QFocusEvent* event)
 {
 	// TODO: set frame rate to normal
