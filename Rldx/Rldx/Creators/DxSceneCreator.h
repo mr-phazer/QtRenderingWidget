@@ -27,6 +27,9 @@ namespace rldx {
 		static void AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString);
 
 	private:
+		static void SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene);
+
+	private:
 		HWND m_nativeWindowHandle = static_cast<HWND>(0);
 		DxScene::Uptr m_newScene;
 	};

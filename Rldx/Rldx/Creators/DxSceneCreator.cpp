@@ -70,7 +70,7 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	// TODO: REMOVE
 	// BEGIN: DEBUGGIN CODE
 #ifdef _DEBUG
-#if 1
+#if 0
 	ByteStream wsModelBinaryData(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\sn2\def\def_medusa\def_medusa_body_01.wsmodel)");
 	auto wsModelData = rmv2::WsModelReader().Read(wsModelBinaryData);	
 	// END: DEBUGGIN CODE
@@ -101,16 +101,22 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 
+	SetCameraAutoFit(modelNodeRmv2, poScene);
+
+	poScene->GetRootNode()->AddChild(modelNodeRmv2);
+}
+
+void rldx::DxSceneCreator::SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene)
+{
 	auto& boundBox = modelNodeRmv2->GetBoundingBox();
-	float s = boundBox.Extents.y*2.0f;
+	float s = boundBox.Extents.y * 2.0f;
 	float a = poScene->GetCamera().GetFieldOfView();
 
 	float d = (s / 2) / tan(a / 2);
 
+	poScene->GetCamera().SetRadius(d);
+	poScene->GetCamera().SetLookAt({ 0, 0.9f, 0 });
 	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 6.0f);
-	poScene->GetCamera().SetRadius(4.0);
-
-	poScene->GetRootNode()->AddChild(modelNodeRmv2);
 }
 
 

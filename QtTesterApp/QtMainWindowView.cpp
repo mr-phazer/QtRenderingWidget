@@ -92,7 +92,7 @@ void QtMainWindowView::InitRenderView()
 
 #endif
 
-	auto ptestData = &testData_WH3_Person_Malekith;
+	auto ptestData = &testData_WH3_Person;
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
