@@ -30,6 +30,22 @@ inline char char_toupper(char ch)
 	return static_cast<char>(std::toupper(static_cast<unsigned char>(ch)));
 }
 
+inline wchar_t wchar_toupper(wchar_t ch)
+{
+	return static_cast<wchar_t>(std::towupper(static_cast<unsigned short>(ch)));
+}
+
+inline char char_tolower(char ch)
+{
+	return static_cast<char>(std::tolower(static_cast<unsigned char>(ch)));
+}
+
+inline wchar_t wchar_tolower(wchar_t ch)
+{
+	return static_cast<wchar_t>(std::towlower(static_cast<unsigned short>(ch)));
+}
+
+
 inline std::string toUpper(std::string s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),		
@@ -37,11 +53,6 @@ inline std::string toUpper(std::string s)
 	);
 	
 	return s;
-}
-
-inline wchar_t wchar_to_upper(wchar_t ch)
-{
-	return static_cast<wchar_t>(std::towupper(static_cast<unsigned short>(ch)));
 }
 
 inline std::wstring toUpper(std::wstring s)
@@ -53,9 +64,26 @@ inline std::wstring toUpper(std::wstring s)
 	return s;
 }
 
-
-inline std::wstring toUpper_WRONG(const std::wstring& _strInput)
+inline std::string toLower(std::string s)
 {
+	std::transform(s.begin(), s.end(), s.begin(),		
+		[](unsigned char c) { return char_tolower(c); } // correct
+	);
+	
+	return s;
+}
+
+inline std::wstring toLower(std::wstring s)
+{
+	std::transform(s.begin(), s.end(), s.begin(),		
+		[](wchar_t c) { return std::towlower(c); } // correct
+	);
+	
+	return s;
+}
+
+
+/*inline std::wstring toUpper_WRONG(const std::wstring& _strInput){
 	std::wstring strOut = _strInput;
 
 	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
@@ -70,7 +98,7 @@ inline std::string toUpper(const std::string& _strInput)
 	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
 
 	return strOut;
-}
+}*/
 
 template <typename CONST_BUF_DATA_TYPE>
 CONST_BUF_DATA_TYPE Sign(CONST_BUF_DATA_TYPE in)
@@ -79,23 +107,23 @@ CONST_BUF_DATA_TYPE Sign(CONST_BUF_DATA_TYPE in)
 }
 
 
-static std::string toLower(const std::string& _strInput)
-{
-	std::string strOut = _strInput;
-
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
-
-	return strOut;
-}
-
-static std::wstring toLower(const std::wstring& _strInput)
-{
-	std::wstring strOut = _strInput;
-
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
-
-	return strOut;
-}
+//static std::string toLower(const std::string& _strInput)
+//{
+//	std::string strOut = _strInput;
+//
+//	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+//
+//	return strOut;
+//}
+//
+//static std::wstring toLower(const std::wstring& _strInput)
+//{
+//	std::wstring strOut = _strInput;
+//
+//	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+//
+//	return strOut;
+//}
 
 namespace std
 {

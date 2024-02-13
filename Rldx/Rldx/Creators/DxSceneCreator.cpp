@@ -53,6 +53,13 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 			libtools::GetExePath() + LR"(PS_Simple.cso)"
 		);
 
+	auto newNotTextureShaderProgram =
+		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
+			poDevice,
+			libtools::GetExePath() + LR"(VS_Simple.cso)",
+			libtools::GetExePath() + LR"(PS_NoTextures.cso)"
+		);
+
 	// make grid node, mesh, fill node, set shaders
 	auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
@@ -61,6 +68,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
 	
+	DxResourceManager::Instance()->SetDefaultShaderProgram(newNotTextureShaderProgram);
 
 	return std::move(m_newScene);
 }
@@ -93,13 +101,15 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 		throw std::exception("Error Creating Shader");
 	}
 
-	poScene->SetDefaultShaderProgram(newPbrShaderProgram);
+	// TODO: REMOVE?
+	//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
 
 	rmv2::RigidModelReader rigidModelFileReader;
 	auto rmv2File = rigidModelFileReader.Read(fileData);
 	modelNodeRmv2->SetModelData(poDevice, rmv2File);
 	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+	
 
 	SetCameraAutoFit(modelNodeRmv2, poScene);
 

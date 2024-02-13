@@ -112,7 +112,8 @@ bool rldx::DxTexture::LoadFileFromMemory(ID3D11Device* poD3DDevice, const uint8_
 	// TODO: get to work, get texture data into "m_cpoTexture"
 	ID3D11Resource* poTextureResource = nullptr;
 	DirectX::CreateDDSTextureFromMemory(poD3DDevice, pbinarFileData, dataSize, &poTextureResource, &m_cpoShaderResourceView);
-	
+		
+
 	DXUT_SetDebugName(poTextureResource, std::string("DDS:TEX " + objectName).c_str());
 	DXUT_SetDebugName(m_cpoShaderResourceView.Get(), std::string("DDS:SRV " + objectName).c_str());
 
@@ -131,8 +132,11 @@ bool rldx::DxTexture::PlaceResourceBuffer(ID3D11Resource* poTextureResource)
 
 	if (resourceType == D3D11_RESOURCE_DIMENSION_TEXTURE2D)
 	{
+		// WHY do you need to store a 2d texture??
 		HRESULT hrResult = poTextureResource->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&m_cpoTexture);
 		DirectX::ThrowIfFailed(hrResult);
+
+		m_cpoTexture->GetDesc(&m_textureDesc);
 
 		return true;
 	}
@@ -140,6 +144,8 @@ bool rldx::DxTexture::PlaceResourceBuffer(ID3D11Resource* poTextureResource)
 	{
 		HRESULT hrResult = poTextureResource->QueryInterface(__uuidof(ID3D11Texture3D), (void**)&m_cpoCubeMapTexture);
 		DirectX::ThrowIfFailed(hrResult);
+		
+		// TODO: is this needed?
 
 		return true;
 	}

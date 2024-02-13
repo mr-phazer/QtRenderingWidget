@@ -747,7 +747,7 @@ float3 get_environment_colour(in float3 direction, in float lod)
 	//TEX return texCUBElod( s_hdr_environment_map, float4 ( texcoordEnvSwizzle( direction ) , lod ) ).rgb;
     //return t_hdr_environment_map.SampleLevel(s_cubemap, (texcoordEnvSwizzle(direction)), lod).rgb;
     return tex_cube_specular.SampleLevel(s_AnisoClamp, (texcoordEnvSwizzle(direction)), lod).rgb
-    * env_color.rgb * env_radiance;
+    * env_color.rgb * env_radiance * 0.5;
 }
 
 //	Ambient diffuse
@@ -757,7 +757,7 @@ float3 cube_ambient(in float3 N)
 
     //return t_hdr_ambient.Sample(s_cubemap, texcoordEnvSwizzle(N)).rgb;
     return tex_cube_diffuse.Sample(s_AnisoClamp, texcoordEnvSwizzle(N)).rgb
-    * env_color.rgb * env_radiance;
+    * env_color.rgb * env_radiance * 0.5;
 
 }
 

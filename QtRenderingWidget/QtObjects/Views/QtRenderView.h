@@ -71,7 +71,7 @@ public:
 
 	
 private:
-	void LoadDefaultTextures(ID3D11Device* poDevice);
+	void LoadExeResources(ID3D11Device* poDevice);
 
 
 	protected:

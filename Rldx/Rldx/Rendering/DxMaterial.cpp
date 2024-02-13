@@ -5,6 +5,16 @@
 
 using namespace rldx;
 
+void rldx::DxMaterial::InitWithDefaulTextures()
+{
+	m_textures[TextureTypeEnum::eBaseColor] = { DxResourceManager::Instance()->GetTexture(L"default_base_colour.dds").GetPtr() };
+	m_textures[TextureTypeEnum::eDiffuse] = { DxResourceManager::Instance()->GetTexture(L"default_grey.dds").GetPtr() };
+	m_textures[TextureTypeEnum::eSpecular] = { DxResourceManager::Instance()->GetTexture(L"default_specular.dds").GetPtr() };
+	m_textures[TextureTypeEnum::eGlossMap] = { DxResourceManager::Instance()->GetTexture(L"default_gloss_map.dds").GetPtr() };
+	m_textures[TextureTypeEnum::eMaterialMap] = { DxResourceManager::Instance()->GetTexture(L"default_material_map.dds").GetPtr() };
+	m_textures[TextureTypeEnum::eNormal] = { DxResourceManager::Instance()->GetTexture(L"default_normal.dds").GetPtr() };
+}
+
 bool DxMaterial::operator==(const DxMaterial& other) const
 {
 	return m_pathHash == other.m_pathHash;
@@ -22,7 +32,7 @@ DxMaterial* DxMaterial::Create(ID3D11Device* poDevice, const std::vector<InputTe
 	return new DxMaterial();
 }
 
-static bool IsDDSTextureFile(char* bin)
+inline bool IsDDSTextureFile(char* bin)
 {
 	return
 		(bin[0] == 'D') &&
@@ -30,46 +40,45 @@ static bool IsDDSTextureFile(char* bin)
 		(bin[2] == 'S');
 }
 
+inline bool IsTextureCriticalForMaterial(const wstring& filePath)
+{
+	return !(
+		(toLower(filePath).find(L"mask") != std::wstring::npos)
+		);
+}
 
 void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path)
 {
 	DxTexture* textPtr = nullptr;
 
-	if ((textPtr = DxResourceManager::Instance()->GetResourceByString<DxTexture>(path)) != nullptr)
+	textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
+
+	logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
+
+	auto bytes = DxResourceManager::GetCallBackFile(path);
+
+	if (!bytes.IsValid()) // texture file is missing or empty
 	{
-		// TODO: REMOVE and clean up block
-		auto DEBUG_1 = 1;
-	}
-	else
-	{
-		textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
+		logging::LogActionError("Loading From CALLBACK failed, missing or empty file, " + libtools::wstring_to_string(path));
 
-		logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
-
-		auto bytes = DxResourceManager::GetCallBackFile(path);
-
-		if (!bytes.IsValid()) {
-			logging::LogActionError("Loading From CALLBACK failed, missing or empty file, (will load default)" + libtools::wstring_to_string(path));
-						
-
-			textPtr = LoadDefaultTexture(poDevice, slot);
-		}
-		else {
-			textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
-			
-			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));			
-		}
-
-		
+		return;
 	}
 
-	m_textures.push_back({ slot, textPtr });
+	textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
+
+	logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
+
+	m_textures[TextureTypeEnum(slot)] = { textPtr };
 }
+
+
+
+
 
 DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 {
 	switch (TextureTypeEnum(slot))
-	{	
+	{
 	case TextureTypeEnum::eBaseColor:
 	{
 		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
@@ -121,9 +130,9 @@ void DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	for (auto& itTextureInfo : m_textures)
 	{
 		poDeviceContext->PSSetShaderResources(
-			GetTextureStartSlot() + itTextureInfo.slot,
+			GetTextureStartSlot() + itTextureInfo.first,
 			1,
-			itTextureInfo.pTexture->GetAddressOfShaderResourceView()
+			itTextureInfo.second.pTexture->GetAddressOfShaderResourceView()
 		);
 	}
 }

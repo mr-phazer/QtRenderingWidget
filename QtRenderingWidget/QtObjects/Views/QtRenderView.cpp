@@ -141,7 +141,7 @@ bool QtRenderWidgetView::InitRenderView()
 
 	logging::LogAction("Create New Scene");
 	
-	LoadDefaultTextures(poDevice);
+	LoadExeResources(poDevice);
 
 	MakeScene();
 	
@@ -159,7 +159,6 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 	if (!m_timer) 
 	{
 		m_timer = new QTimer(this);
-
 
 		connect(m_timer, &QTimer::timeout, [&]()
 			{
@@ -190,7 +189,7 @@ void QtRenderWidgetView::MakeConnections()
 {
 }
 
-void QtRenderWidgetView::LoadDefaultTextures(ID3D11Device* poDevice)
+void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 {
 	Q_INIT_RESOURCE(QtRenderView);
 
@@ -201,6 +200,7 @@ void QtRenderWidgetView::LoadDefaultTextures(ID3D11Device* poDevice)
 		":/QtRenderingWidget/default_gloss_map.dds",
 		":/QtRenderingWidget/default_grey.dds",
 		":/QtRenderingWidget/default_metal_material_map.dds",
+		":/QtRenderingWidget/default_material_map.dds",
 		":/QtRenderingWidget/default_normal.dds",
 		":/QtRenderingWidget/default_specular.dds"
 	};
@@ -210,10 +210,12 @@ void QtRenderWidgetView::LoadDefaultTextures(ID3D11Device* poDevice)
 		QFile file(itRes);
 		file.open(QIODevice::ReadOnly);
 		auto fileName = QUrl(itRes).fileName();
-		auto isOpen = file.isOpen();
-		auto isReadable = file.isReadable();
-		auto fileSize = file.size();
 		auto bytes = file.readAll();
+
+		if (!file.isOpen() || !file.isReadable() || file.size() == 0) {
+			throw std::exception((FULL_FUNC_INFO("Error loading internal resource: " + itRes.toStdString())).c_str());
+		}
+
 		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString()).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
 	}
 }

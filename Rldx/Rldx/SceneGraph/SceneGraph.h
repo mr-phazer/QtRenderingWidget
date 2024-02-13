@@ -36,10 +36,6 @@ namespace rldx {
 				// ready shader program
 				itItem->BindToDC(poDC);
 
-				// TODO: re-enable!! 
-				//if(defaultShaderProgram) // use supplied shader
-				//	defaultShaderProgram->BindToDC(poDC);
-
 				// draw mesh
 				itItem->Draw(poDC);
 

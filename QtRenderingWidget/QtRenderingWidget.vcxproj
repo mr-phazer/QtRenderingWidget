@@ -133,7 +133,7 @@
     <ClInclude Include="Constants\GameIdKeys.h" />
     <ClInclude Include="ExternFunctions\Callbacks.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
-    <QtRcc Include="QtObjects\Views\QtRenderView.qrc" />
+    <QtRcc Include="Resources\QtRenderView.qrc" />
     <QtUic Include="QtObjects\Views\QtRenderView.ui" />
   </ItemGroup>
   <ItemGroup>

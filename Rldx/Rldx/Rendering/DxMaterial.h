@@ -22,9 +22,9 @@ namespace rldx {
 
 	// Texture element for SRV
 	struct RenderTextureElement
-	{
-		UINT slot = 0; // type(abledo/normal) used as slot in shader
+	{	
 		DxTexture* pTexture = nullptr;
+		std::wstring path = L"";
 	};
 
 	/// <summary>
@@ -35,13 +35,14 @@ namespace rldx {
 	{
 		IDxShaderProgram* m_pShaderProgram = nullptr;
 
-		std::vector<RenderTextureElement> m_textures;
+		std::map<TextureTypeEnum, RenderTextureElement> m_textures;
 		std::vector<ID3D11ShaderResourceView*> m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);
 
 		std::string m_pathHash; // TODO: All the texture paths conceated to able to compared materials with operator==
 
 	public:
 		DxMaterial() = default;
+		void InitWithDefaulTextures();
 		bool operator==(const DxMaterial& other) const;
 
 		std::string& GetPathHashRef() { return m_pathHash; };
@@ -58,9 +59,7 @@ namespace rldx {
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 		void UnbindFromDC(ID3D11DeviceContext* poDC) override;
 	
-		
-
-
+		bool IsValid() const  { return m_bIsValid; } ;
 		int GetTextureStartSlot();
 
 		ResourceTypeEnum GetType() const override;
@@ -68,6 +67,8 @@ namespace rldx {
 
 	private:
 		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
+	private:
+		bool m_bIsValid = true;
 	};
 
 	class IMaterialCreator
@@ -86,9 +87,12 @@ namespace rldx {
 		{
 			auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();
 
+			newMaterial->InitWithDefaulTextures();
+
 			string hash = "";
 			for (auto& tex : m_data->materialBlock.textureElements)
 			{
+				// TODO: clean up this "is material loaded right"-check
 				auto diskPath = libtools::string_to_wstring(tex.texturePath);
 				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
 				newMaterial->GetPathHashRef() += std::string(tex.texturePath);

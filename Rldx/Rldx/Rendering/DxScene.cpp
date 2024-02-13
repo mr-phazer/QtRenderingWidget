@@ -145,8 +145,9 @@ void rldx::DxScene::UpdateViewAndPerspective()
 	m_sceneFrameVSConstBuffer.data.projection = m_globalCamera.GetProjMatrix().Transpose();
 	m_sceneFrameVSConstBuffer.data.eyePosition = m_globalCamera.GetEyePt();
 
+	// TODO: set a proper direction as init:
 	m_globalDirectionalLight.GetViewMatrix();
-	m_sceneFramePSConstBuffer.data.lightData[0].direction = m_globalDirectionalLight.GetEyePt();
+	m_sceneFramePSConstBuffer.data.lightData[0].direction = -m_globalDirectionalLight.GetEyePt(); // negative = light comes from "forward"
 	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();
 
 	m_ambientLightSource.m_oPSConstBuffer.data.radiance = 3.0f;

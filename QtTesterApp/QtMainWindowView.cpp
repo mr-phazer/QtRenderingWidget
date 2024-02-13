@@ -33,6 +33,13 @@ TestData testData_WH3_Person_Malekith =
 	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
 };
 
+TestData testData_WH3_Person_Malekith_Wrong_Folder =
+{
+	LR"(I:\Modding\WH3\WRONG\WRONG\)",
+	game_id_keys::KEY_WARHAMMER_3,
+	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
+};
+
 TestData testData_WH3_Prop_missing_specglos
 {
 	LR"(I:\Modding\WH3\)",
@@ -85,6 +92,8 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 	InitRenderView();
 
 	setWindowTitle("TWViewer 0.0.1a - Total War Viewing/Conversion Tool");
+
+	resize(1525, 1525);
 }
 
 void QtMainWindowView::InitRenderView()
@@ -99,7 +108,7 @@ void QtMainWindowView::InitRenderView()
 
 #endif
 
-	auto ptestData = &testData_WH3_Weapon;
+	auto ptestData = &testData_WH3_Person_Malekith;
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);

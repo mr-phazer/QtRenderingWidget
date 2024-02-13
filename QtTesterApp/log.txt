@@ -247,3 +247,24 @@ ACTION: TIdentifiable: Line: 48: # 9: created.
 [QRenderingView Debug:] ERROR: Create: Line: 131: Loading pixel shader: I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release\VS_Simple.cso
 [QRenderingView Debug:] ERROR: Create: Line: 135: D3D Call: Create Shader(s): 
 [QRenderingView Debug:] ERROR: AddTexture: Line: 45: DEBUG: attempting to get 1 file from CALLBACK: variantmeshes/wh_variantmodels/hu1/ksl/ksl_katarin/tex/ksl_katarin_head_01_base_colour.dds
+[QRenderingView Debug:] ERROR: Create: Line: 16: Creating New Device Mangager
+[QRenderingView Debug:] ERROR: Create: Line: 19: Calling InitDirectd3d11..
+[QRenderingView Debug:] ERROR: InitDirect3d11: Line: 44: Attempting to create Direct3d 11 Device...
+[QRenderingView Debug:] D3D11CreateDevice()...Finsihed. Success.
+[QRenderingView Debug:] ERROR: Create: Line: 26: Create State Object..
+[QRenderingView Debug:] ERROR: InitRenderView: Line: 132: 
+[QRenderingView Debug:] ERROR: InitRenderView: Line: 133: Make new Device Manager
+[QRenderingView Debug:] ERROR: InitRenderView: Line: 137: Create New Scene
+[QRenderingView Debug:] Created Swap Chain.. Success.
+[QRenderingView Debug:] m_pSwapChain1->GetBuffer().. Success.
+[QRenderingView Debug:] CreateRenderTargetView().. Success.
+[QRenderingView Debug:] m_oSwapChainData.m_pBackBuffer->Release().. Success.
+[QRenderingView Debug:] ERROR: Create: Line: 114: Creating Shaders...
+[QRenderingView Debug:] ERROR: Create: Line: 125: Loading vertex shader: I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release\VS_Simple.cso
+[QRenderingView Debug:] ERROR: Create: Line: 131: Loading pixel shader: I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release\VS_Simple.cso
+[QRenderingView Debug:] ERROR: Create: Line: 135: D3D Call: Create Shader(s): 
+[QRenderingView Debug:] ERROR: Create: Line: 114: Creating Shaders...
+[QRenderingView Debug:] ERROR: Create: Line: 125: Loading vertex shader: I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release\VS_Simple.cso
+[QRenderingView Debug:] ERROR: Create: Line: 131: Loading pixel shader: I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release\VS_Simple.cso
+[QRenderingView Debug:] ERROR: Create: Line: 135: D3D Call: Create Shader(s): 
+[QRenderingView Debug:] ERROR: AddTexture: Line: 45: DEBUG: attempting to get 1 file from CALLBACK: variantmeshes/wh_variantmodels/hu1/ksl/ksl_katarin/tex/ksl_katarin_head_01_base_colour.dds

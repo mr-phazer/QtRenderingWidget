@@ -108,6 +108,7 @@ namespace rldx {
 		
 
 		void SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram);
+		DxMeshShaderProgram * GetDefaultShaderProgram() const { return m_defaultShaderProgram; }
 
 		~DxResourceManager()
 		{
