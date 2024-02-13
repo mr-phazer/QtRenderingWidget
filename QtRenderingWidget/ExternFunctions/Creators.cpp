@@ -66,7 +66,7 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 
 	try {
 
-		ByteStream fileDataStream(assetData->data(), assetData->size());
+		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
 		rldx::DxSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdString());
 	}
 	catch (std::exception& e)

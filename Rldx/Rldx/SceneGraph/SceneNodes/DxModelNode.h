@@ -20,7 +20,7 @@ namespace rldx
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
 		
 		// TODO add support for (parsed) WSMODEL
-		void LoadMaterialData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
+		void LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
 		virtual void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;;
 
 	private:

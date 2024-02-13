@@ -46,7 +46,7 @@ namespace rmv2 {
 		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
-	class VertexCreatorFactory : public helpers::TFactory<IVertexCreator, VertexFormatEnum>
+	class VertexCreatorFactory : public templates::TAbstractFactory<IVertexCreator, VertexFormatEnum>
 	{
 	public:
 		VertexCreatorFactory()

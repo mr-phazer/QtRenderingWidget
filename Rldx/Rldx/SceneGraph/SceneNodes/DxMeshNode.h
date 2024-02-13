@@ -14,8 +14,7 @@ namespace rldx {
 	class DxMeshShaderProgram;	
 
 	class DxMeshNode : public DxBaseNode
-	{	
-	
+	{		
 		DxMeshDrawable m_meshDrawable;
 
 	public:

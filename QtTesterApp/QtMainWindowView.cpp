@@ -26,6 +26,27 @@ TestData testData_WH3_Weapon =
 	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\ksl\ksl_props\ksl_archer_sword_1h_01.rigid_model_v2)"
 };
 
+TestData testData_WH3_Person_Malekith =
+{
+	LR"(I:\Modding\WH3\)",
+	game_id_keys::KEY_WARHAMMER_3,
+	LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
+};
+
+TestData testData_WH3_Building_Mean_to_not_work_yet =
+{
+	LR"(I:\Modding\WH3\)",
+	game_id_keys::KEY_WARHAMMER_3,
+	LR"(I:\Modding\WH3\rigidmodels/buildings/brt_seacliff_a/brt_seacliff_a_piece01_destruct01.rigid_model_v2)"
+};
+
+TestData testData_WH3_Building_missing_texture =
+{
+	LR"(I:\Modding\WH3\)",
+	game_id_keys::KEY_WARHAMMER_3,
+	LR"(I:\Modding\WH3\rigidmodels\buildings\chd_chimney_small_01a\chd_chimney_small_01a_piece01_destruct01.rigid_model_v2)"
+};
+
 TestData testData_WH3_Terrain_Made_To_Crash =
 {
 	LR"(I:\Modding\WH3\)",
@@ -56,7 +77,7 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 	// TODO: maybe not have this constructor !!!! even for test program
 	InitRenderView();
 
-	setWindowTitle("QRenderingWidget pluging for RPFM - Tester App");
+	setWindowTitle("TWViewer 0.0.1a - Total War Viewing/Conversion Tool");
 }
 
 void QtMainWindowView::InitRenderView()
@@ -71,7 +92,7 @@ void QtMainWindowView::InitRenderView()
 
 #endif
 
-	auto ptestData = &testData_WH3_Person;
+	auto ptestData = &testData_WH3_Person_Malekith;
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);

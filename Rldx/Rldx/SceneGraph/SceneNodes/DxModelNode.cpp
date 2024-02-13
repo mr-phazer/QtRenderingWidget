@@ -61,7 +61,7 @@ void rldx::DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_
 }
 
 
-void rldx::DxModelNode::LoadMaterialData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
+void rldx::DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
 {
 	size_t iLod = 0;
 	m_lods.resize(1);

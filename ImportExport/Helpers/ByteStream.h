@@ -6,8 +6,10 @@
 
 #include <Windows.h>
 
+// TODO move thhese to .CPP
 #include "FileHelpers.h"
 #include "..\..\Rldx\Rldx\Tools\tools.h"
+#include "..\..\Rldx\Rldx\Logging\Logging.h"
 
 
 using ByteVector = std::vector<uint8_t>;
@@ -111,144 +113,26 @@ public:
 
 	std::wstring GetPath() const { return m_currentFilePath; }
 
+	void SetOffset(size_t position) {
+
+		if (position >= m_data.size()) {			
+			throw std::exception((FULL_FUNC_INFO("ByteStream SetOffset out of bound >= data size")).c_str());
+		}
+
+		m_currentOffset = position;
+	}
+
+	void Seek(int steps)
+	{
+		if (m_currentOffset + steps >= m_data.size() || m_currentOffset + steps < 0) {
+			throw std::exception((FULL_FUNC_INFO("ByteStream Seek out of bounds > data size or < 0")).c_str());
+		}
+
+		m_currentOffset += steps;
+	}
+
 	bool IsValid() const
 	{
 		return m_data.size() > 0;
 	};
 };
-
-
-// TODO: remove?
-/// <summary>
-/// Used to read a string of bytes
-/// </summary>
-//class IByteStream
-//{
-//public:
-//	template<typename DERIVED_TYPE>
-//	static std::unique_ptr<IByteStream> Create(const std::wstring& fileName)
-//	{
-//		return std::make_unique<DERIVED_TYPE>(fileName);
-//	}
-//
-//	template<typename DERIVED_TYPE>
-//	static std::unique_ptr<IByteStream> Create(void* pMem, size_t sizeInBytes)
-//	{
-//		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
-//	}
-//
-//	virtual void Read(void* pDest, size_t bytesToCopy, long long offset = -1) = 0;
-//
-//	virtual void Read(void* pDest, size_t bytesToCopy) = 0;
-//
-//	template <typename CONST_BUF_DATA_TYPE>
-//	CONST_BUF_DATA_TYPE GetElement()
-//	{
-//		CONST_BUF_DATA_TYPE element;
-//		Read(&element, sizeof(CONST_BUF_DATA_TYPE));
-//		return element;
-//	}
-//};
-
-
-
-
-
-// TODO: remove? Use?
-// TODO: REMOVE?
-//class CibstByteVector
-//{
-//	std::vector <uint8_t> m_data;
-//
-//public:
-//	ConstVector(const std::vector<uint8_t>& input)
-//		: m_data(input)	{};
-//
-//	ConstVector(size_t size, uint8_t value = 0)
-//		: m_data(size, value)	{};
-//
-//	operator const std::vector<uint8_t>& () const
-//	{
-//		return m_data;
-//	}
-//
-//	const std::vector<uint8_t>* operator->() const
-//	{
-//		return &m_data;
-//	}
-//
-//	const std::vector<uint8_t>& operator*() const
-//	{
-//		return m_data;
-//	}
-//};
-//
-//void abd()
-//{
-//	ByteStream mbs(L"");
-//	auto chunk = mbs.GetChunk(10);
-//	chunk.Read(nullptr, 10);
-//
-//	ConstVector cv(10);
-//	auto stuff = (*cv)[0];
-//}
-//
-
-///// <summary>
-///// Implementation of IByteStream that reads from a c++ (disk file) stream
-///// </summary>
-//class DiskDataSource : public IDataSource
-//{
-//	std::wstring m_filePath = L"";
-//
-//
-//	DiskDataSource() = delete;
-//	static std::unique_ptr<IDataSource> Create(const std::wstring& filePath)
-//	{
-//		auto newInstance = std::make_unique<DiskDataSource>();
-//		newInstance->m_filePath = filePath;
-//		newInstance->m_fileLength = GetFileSize(filePath);
-//
-//		return newInstance;
-//	}
-//
-//
-//	virtual void ReadAllData(ByteVector& dest) override
-//	{
-//		std::ifstream inputFileStream(m_filePath, std::ios::binary);
-//		dest.resize(m_fileLength);
-//		inputFileStream.read((char*)dest.data(), m_fileLength);
-//		inputFileStream.close();
-//	}
-//};
-
-//
-///// <summary>
-///// Used to read a string of binary from anywhere
-///// </summary>
-//class IDataSource
-//{
-//	long long m_dataLength = 0;
-//
-//	template<typename DERIVED_TYPE>
-//	static std::unique_ptr<IDataSource> Create(const std::wstring& fileName)
-//	{
-//		return std::make_unique<DERIVED_TYPE>(fileName);
-//	}
-//
-//	template<typename DERIVED_TYPE>
-//	static std::unique_ptr<IDataSource> Create(void* pMem, size_t sizeInBytes)
-//	{
-//		return std::make_unique<DERIVED_TYPE>(pMem, sizeInBytes);
-//	}
-//
-//	ByteVector GetAllData()
-//	{
-//		ByteVector buffer;
-//		GetAllData(buffer);
-//		return buffer;
-//	}
-//
-//
-//	virtual ByteVector GetAllData() = 0;
-//};

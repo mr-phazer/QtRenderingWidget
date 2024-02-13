@@ -36,6 +36,7 @@ namespace rldx {
 		IDxShaderProgram* m_pShaderProgram = nullptr;
 
 		std::vector<RenderTextureElement> m_textures;
+		std::vector<ID3D11ShaderResourceView*> m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);
 
 		std::string m_pathHash; // TODO: All the texture paths conceated to able to compared materials with operator==
 
@@ -45,19 +46,28 @@ namespace rldx {
 
 		std::string& GetPathHashRef() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
+			// TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
 			{
 				{0, L"default_texture.dds"},				
 			});
 
 		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
+		
 
 		// Bind texture to DC, for doing a drawcall
 		void BindToDC(ID3D11DeviceContext* poDC) override;
+		void UnbindFromDC(ID3D11DeviceContext* poDC) override;
+	
+		
+
 
 		int GetTextureStartSlot();
 
 		ResourceTypeEnum GetType() const override;
 		std::string GetTypeString() const override;
+
+	private:
+		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
 	};
 
 	class IMaterialCreator

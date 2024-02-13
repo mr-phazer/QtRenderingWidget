@@ -149,6 +149,7 @@ namespace rldx
 
 
 		void SetFieldOfView(float value);
+		float GetFieldOfView() const;
 
 		void SetViewParams(const sm::Vector3& pos, const sm::Vector3& lookAt)
 		{

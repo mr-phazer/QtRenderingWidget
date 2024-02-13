@@ -44,7 +44,7 @@ namespace rmv2
 		static size_t GetPathLength() { return RMV2_MAX_PATH; };
 
 		TextureTypeEnum textureType = TextureTypeEnum(0);
-		string texturePath = "";
+		std::string texturePath = "";
 		
 	};
 }

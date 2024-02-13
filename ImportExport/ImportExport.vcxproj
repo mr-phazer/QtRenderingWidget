@@ -112,7 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -131,7 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Helpers\DataConversion.h" />
+    <ClInclude Include="Helpers\CustomExceptions.h" />
+    <ClInclude Include="Helpers\TTree.h" />
     <ClInclude Include="Libs\PugiXML\pugiconfig.hpp" />
     <ClInclude Include="Libs\PugiXML\pugixml.hpp" />
     <ClInclude Include="RigidModel\Constants\Rmv2Constants.h" />
@@ -173,16 +175,17 @@
     <ClInclude Include="Helpers\ByteStream.h" />
     <ClInclude Include="RigidModel\DataTypes\MeshHeaderType3.h" />
     <ClInclude Include="RigidModel\Creators\Vertices\WeightedVertexCreator.h" />
-    <ClInclude Include="WsModel\DataTypes\XMLMaterialData.h" />
+    <ClInclude Include="XmMaterial\DataTypes\XMLMaterialData.h" />
     <ClInclude Include="WsModel\Reader\WsModelReader.h" />
     <ClInclude Include="WsModel\DataTypes\WsModelData.h" />
+    <ClInclude Include="XmMaterial\Readers\XmMaterialReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
     <ClCompile Include="Helpers\FileHelpers.cpp" />
     <ClCompile Include="Helpers\ImportExport.cpp" />
-    <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="RigidModel\Creators\MeshMaterialCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\MeshHeaderType3Creator.cpp" />
     <ClCompile Include="RigidModel\Creators\Vertices\VertexCreators.cpp" />
@@ -190,6 +193,7 @@
     <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
     <ClCompile Include="WsModel\Reader\WsModelReader.cpp" />
+    <ClCompile Include="XmMaterial\Readers\XmMaterialReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RigidModel\Helpers\VertexCAHelpers.inl" />

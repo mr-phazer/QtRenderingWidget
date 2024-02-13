@@ -1,7 +1,7 @@
 #pragma once
 
 
-
+#include  <cwctype>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -21,14 +21,49 @@
 //#include <locale>
 #include <DirectXMath.h>
 
+using namespace std;;
+
 //#include "..\SystemLib\Console\QConsole.h"
 
+inline char char_toupper(char ch)
+{
+	return static_cast<char>(std::toupper(static_cast<unsigned char>(ch)));
+}
 
-using namespace std;
+inline std::string toUpper(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(),		
+		[](unsigned char c) { return std::toupper(c); } // correct
+	);
+	
+	return s;
+}
+
+inline wchar_t wchar_to_upper(wchar_t ch)
+{
+	return static_cast<wchar_t>(std::towupper(static_cast<unsigned short>(ch)));
+}
+
+inline std::wstring toUpper(std::wstring s)
+{
+	std::transform(s.begin(), s.end(), s.begin(),		
+		[](wchar_t c) { return std::towupper(c); } // correct
+	);
+	
+	return s;
+}
 
 
+inline std::wstring toUpper_WRONG(const std::wstring& _strInput)
+{
+	std::wstring strOut = _strInput;
 
-static string toUpper(const std::string& _strInput)
+	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+
+	return strOut;
+}
+
+inline std::string toUpper(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
@@ -43,16 +78,8 @@ CONST_BUF_DATA_TYPE Sign(CONST_BUF_DATA_TYPE in)
 	return (abs(in) / in);
 }
 
-static wstring toUpper(const std::wstring& _strInput)
-{
-	std::wstring strOut = _strInput;
 
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
-
-	return strOut;
-}
-
-static string toLower(const std::string& _strInput)
+static std::string toLower(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
@@ -61,7 +88,7 @@ static string toLower(const std::string& _strInput)
 	return strOut;
 }
 
-static wstring toLower(const std::wstring& _strInput)
+static std::wstring toLower(const std::wstring& _strInput)
 {
 	std::wstring strOut = _strInput;
 
@@ -72,19 +99,19 @@ static wstring toLower(const std::wstring& _strInput)
 
 namespace std
 {
-	//static string tolower(const char* _szIn)
+	//static std::string tolower(const char* _szIn)
 	//{
 	//	string strTemp = _szIn;
 	//	return tolower(strTemp);
 	//}
 
-	//static wstring tolower(const wchar_t* _wszIn)
+	//static std::wstring tolower(const wchar_t* _wszIn)
 	//{
 	//	wstring wstrTemp = _wszIn;
 	//	return tolower(wstrTemp);
 	//}
 
-	static string tolower(const std::string& _strInput)
+	static std::string tolower(const std::string& _strInput)
 	{
 		std::string strOut = _strInput;
 
@@ -93,7 +120,7 @@ namespace std
 		return strOut;
 	}
 
-	static string toupper(const std::string& _strInput)
+	static std::string toupper(const std::string& _strInput)
 	{
 		std::string strOut = _strInput;
 
@@ -102,7 +129,7 @@ namespace std
 		return strOut;
 	}
 
-	static wstring tolower(const std::wstring& _strInput)
+	static std::wstring tolower(const std::wstring& _strInput)
 	{
 		std::wstring strOut;
 		strOut.resize(_strInput.size(), L' ');
@@ -115,7 +142,7 @@ namespace std
 		return strOut;
 	}
 
-	static wstring toupper(const std::wstring& _strInput)
+	static std::wstring toupper(const std::wstring& _strInput)
 	{
 		std::wstring strOut = _strInput;
 
@@ -196,7 +223,7 @@ namespace libtools
 		std::chrono::steady_clock::time_point m_startTime;
 	};
 
-	static bool isDiskFile(const string& _str)
+	static bool isDiskFile(const std::string& _str)
 	{
 		if (_str.size() < 2)
 			return false; 
@@ -204,7 +231,7 @@ namespace libtools
 		return (_str[1] == ':');
 	};
 
-	static bool isDiskFile(const wstring& _str)
+	static bool isDiskFile(const std::wstring& _str)
 	{
 		if (_str.size() < 2)
 			return false;
@@ -263,7 +290,7 @@ namespace libtools
 
 
 	template <typename STRING_TYPE>
-	static bool string_compare(const STRING_TYPE& str1, const STRING_TYPE& str2)
+	static bool STRING_TYPEe(const STRING_TYPE& str1, const STRING_TYPE& str2)
 	{
 		// if they are not the same length, they cannot be equal
 		if (str1.length() != str2.length())
@@ -271,16 +298,16 @@ namespace libtools
 			return false;
 		}
 
-		// strings are same length, so we can use either length
+		// std::strings are same length, so we can use either length
 		for (size_t i = 0; i < str1.length(); i++)
 		{
-			if (str1[i] != str2[i]) // if one character is not equal, the string are not equal,
+			if (str1[i] != str2[i]) // if one character is not equal, the std::string are not equal,
 			{
 				return false;
 			}
 		}
 
-		// made it through the loop, meaning string are equal
+		// made it through the loop, meaning std::string are equal
 		return true;
 	}
 
@@ -293,21 +320,21 @@ namespace libtools
 			return false;
 		}
 
-		// strings are same length, so we can use either length
+		// std::strings are same length, so we can use either length
 		for (size_t i = 0; i < str1.length(); i++)
 		{
-			if (std::toupper(str1[i]) != std::toupper(str2[i])) // if one character is not equal, the string are not equal,
+			if (std::toupper(str1[i]) != std::toupper(str2[i])) // if one character is not equal, the std::string are not equal,
 			{
 				return false;
 			}
 		}
 
-		// made it through the loop, meaning string are equal
+		// made it through the loop, meaning std::string are equal
 		return true;
 	}
 
 
-	static string decToHex(int dec)
+	static std::string decToHex(int dec)
 	{
 		std::ostringstream ss;
 		ss << std::hex << dec;
@@ -315,7 +342,7 @@ namespace libtools
 		return ss.str();
 	}
 
-	static wstring decToHexW(int dec)
+	static std::wstring decToHexW(int dec)
 	{
 		std::wostringstream ss;
 		ss << std::hex << dec;
@@ -403,7 +430,7 @@ namespace libtools
 	static inline void SequenceToUpperCase(T_it begin, T_it end)
 	{
 		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
-		// inverted bit string (~).
+		// inverted bit std::string (~).
 		for (auto it = begin; it != end; ++it)
 			*it &= ~0x20;
 	}
@@ -412,7 +439,7 @@ namespace libtools
 	static inline void SequenceToLowerCase(T_it begin, T_it end)
 	{
 		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
-		// inverted bit string (~).
+		// inverted bit std::string (~).
 		for (auto it = begin; it != end; ++it)
 			*it |= 0x20;
 	}
@@ -421,7 +448,7 @@ namespace libtools
 	static inline std::string _ToLowerCase(const std::string& in)
 	{
 		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
-		// inverted bit string (~).
+		// inverted bit std::string (~).
 
 		string strTemp = "";
 		strTemp.resize(in.size());
@@ -461,7 +488,7 @@ namespace libtools
 	static bool compare(CONST_BUF_DATA_TYPE _1, CONST_BUF_DATA_TYPE _2);
 
 	template <>
-	static bool compare(string _1, string _2);
+	static bool compare(string _1, std::string _2);
 
 	std::wstring GetExePath();
 
@@ -503,7 +530,7 @@ namespace libtools
 	}
 
 
-	static string toForwardSlash(const std::string& _strInput)
+	static std::string toForwardSlash(const std::string& _strInput)
 	{
 		string tempString = _strInput;
 		for (auto& ch : tempString)
@@ -517,7 +544,7 @@ namespace libtools
 		return tempString;
 	}
 
-	static wstring toForwardSlash(const std::wstring& _strInput)
+	static std::wstring toForwardSlash(const std::wstring& _strInput)
 	{
 		wstring tempString = _strInput;
 		for (auto& ch : tempString)
@@ -544,7 +571,7 @@ namespace libtools
 	}
 
 	template<>
-	bool compare(string _1, string _2)
+	bool compare(string _1, std::string _2)
 	{
 		auto s1 = lower(_1);
 		auto s2 = lower(_2);
@@ -552,7 +579,7 @@ namespace libtools
 		return (s1 == s2);
 	}
 
-	int fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset);
+	int fileOffsetToLineNumber(const std::wstring& _strFile, uint64_t _offset);
 
 	int fileOffsetToLineNumberMem(const char*, size_t size, size_t _offset);
 
@@ -574,7 +601,7 @@ namespace libtools
 		return wstring_to_string(errorMesssage);
 	}
 
-	static bool comAssert_Box(HRESULT hr, string _func = "", string _operation = "")
+	static bool comAssert_Box(HRESULT hr, std::string _func = "", std::string _operation = "")
 	{
 		bool bResult = SUCCEEDED(hr);
 
@@ -598,7 +625,7 @@ namespace libtools
 					std::wstring(L"Error Code: ") + L"\n\r" +
 					std::wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
 					to_wstring(hr) + L" :" + L"\n\r" +
-					std::wstring(L"Error String: " + msg)).c_str(),
+					std::wstring(L"Error std::string: " + msg)).c_str(),
 				L"Critical Direct3d Error!",
 				MB_OK | MB_ICONERROR
 			);
@@ -609,7 +636,7 @@ namespace libtools
 		return true;
 	};
 
-	static bool comAssert_LogOnly(HRESULT hr, string _func = "", string _operation = "");;
+	static bool comAssert_LogOnly(HRESULT hr, std::string _func = "", std::string _operation = "");;
 
 	class COMException : public std::exception
 	{
@@ -642,10 +669,10 @@ const auto _sw = libtools::string_to_wstring;
 #define COM_ASSERT_OP(HR, op) libtools::comAssert_LogOnly(HR, __FUNCTION__, op)
 
 #define ComMessageBox(hr, _title, _op) \
-		auto message = wstring(libtools::string_to_wstring(__FUNCTION__) + L"\r\n") \
-	+ wstring(L"Failed: " + wstring(_op) + _wstrPath + L"\r\n") \
-		+ wstring(L"HRESULT: ") + std::to_wstring(hr) + L"\r\n" \
-		+ wstring(L"String: ") + libtools::getComError(hr) + L"\r\n"; \
+		auto message = std::wstring(libtools::string_to_wstring(__FUNCTION__) + L"\r\n") \
+	+ std::wstring(L"Failed: " + std::wstring(_op) + _wstrPath + L"\r\n") \
+		+ std::wstring(L"HRESULT: ") + std::to_wstring(hr) + L"\r\n" \
+		+ std::wstring(L"String: ") + libtools::getComError(hr) + L"\r\n"; \
 	MessageBox(NULL, message.c_str(), _title, MB_OK | MB_ICONERROR);\
 
 

@@ -1,3 +1,6 @@
+- CLean up tools, so is does use "using vamespace std"
+
+
 - Make sure all paths sent/read from the resource_callback use "/"   
 
 - Make the NVVM-like pattern work neatly, as neatly as is possible

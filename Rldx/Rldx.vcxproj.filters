@@ -1,303 +1,394 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\DataTypes</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Creators\DxMeshCreator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Creators</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Logging\Logging.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Logging</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Managers\ResourceManager\DxResourceManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Managers\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxAmbientLightSource.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxCameraOrbital.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxLightSource.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxTexture.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxTextureSamplers.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\Helpers\SceneGraphParser.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\NodeTransform\NodeTransform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\NodeTransform</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneGraph.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\ShaderLoadingHelpers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Tools\tools.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Rldx\Tools</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Creators</Filter>
     </ClCompile>
+    <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxModelNodeCreator.cpp" />
+    <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxRmv2ModelNodeCreator.cpp" />
+    <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxWSModelModelnodeCreator.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPUConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\DerformerData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\DxMeshData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\ShaderFiles.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Creators\DxMeshCreator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\MathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\StringKeyMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IBindable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IDrawable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IFlushable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IResizable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\IUpdateable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Logging\Logging.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\DxDeviceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\DxSceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\DxTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxConstBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxLightSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxMaterial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxMesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxShaderProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DXSwapChain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxTextureSamplers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneGraph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\COMerrors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\ModelImporter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Creators\DxSceneCreator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Creators\DxModelNodeCreator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Creators</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Creators\DxVmdNodeCreator.h">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Creators</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Rldx\DataTypes\CommonVertex.h">
+      <Filter>Rldx\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPUConstBuffers.h">
+      <Filter>Rldx\DataTypes\ConstBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h">
+      <Filter>Rldx\DataTypes\ConstBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h">
+      <Filter>Rldx\DataTypes\ConstBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h">
+      <Filter>Rldx\DataTypes\ConstBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\DerformerData.h">
+      <Filter>Rldx\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\DxMeshData.h">
+      <Filter>Rldx\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\DataTypes\ShaderFiles.h">
+      <Filter>Rldx\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxMeshCreator.h">
+      <Filter>Rldx\Creators</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxModelNodeCreators\DxModelNodeCreator.h">
+      <Filter>Rldx\Creators</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxSceneCreator.h">
+      <Filter>Rldx\Creators</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Helpers\MathHelper.h">
+      <Filter>Rldx\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Helpers\StringKeyMap.h">
+      <Filter>Rldx\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IBindable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IDrawable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IFlushable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IRenderBucket.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IRenderQueueItem.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IResizable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\IUpdateable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Interfaces\TIdentifiable.h">
+      <Filter>Rldx\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Logging\Logging.h">
+      <Filter>Rldx\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h">
+      <Filter>Rldx\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\DxDeviceManager.h">
+      <Filter>Rldx\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\DxSceneManager.h">
+      <Filter>Rldx\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\DxTypes.h">
+      <Filter>Rldx\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h">
+      <Filter>Rldx\Managers\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceByteStream.h">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Managers\ResourceManager</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h">
+      <Filter>Rldx\Managers\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h">
+      <Filter>Rldx\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxConstBuffer.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxLightSource.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxMaterial.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxMesh.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxScene.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxShaderProgram.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DXSwapChain.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxTexture.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Rendering\DxTextureSamplers.h">
+      <Filter>Rldx\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\Helpers\SceneGraphParser.h">
+      <Filter>Rldx\SceneGraph\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\NodeTransform\NodeTransform.h">
+      <Filter>Rldx\SceneGraph\NodeTransform</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneGraph.h">
+      <Filter>Rldx\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxBaseNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
+      <Filter>Rldx\ShaderLoadingHelpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Tools\COMerrors.h">
+      <Filter>Rldx\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Tools\ModelImporter.h">
+      <Filter>Rldx\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Tools\tools.h">
+      <Filter>Rldx\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Creators\DxModelNodeCreators\IDxModelNodeCreator.h" />
+    <ClInclude Include="Rldx\Creators\DxModelNodeCreators\DxRmv2ModelNodeCreator.h" />
+    <ClInclude Include="Rldx\Creators\DxModelNodeCreators\DxWSModelModelnodeCreator.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.h" />
+    <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli">
+      <Filter>Rldx\RenderResources\Shaders\include</Filter>
+    </None>
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Logging\Inl</Filter>
     </None>
     <None Include="Rldx\Logging\Inl\WinConsoleColors.inl">
-      <Filter>Header Files</Filter>
+      <Filter>Rldx\Logging\Inl</Filter>
     </None>
-    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
-    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl" />
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl" />
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl" />
-    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl" />
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl" />
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
+      <Filter>Rldx\RenderResources\Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Rldx">
+      <UniqueIdentifier>{01cdf7bc-502f-4366-8ee7-919c4dee00eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\RenderResources">
+      <UniqueIdentifier>{3d1dbfcc-97d3-4c1d-9e02-9bd4e2b6b017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\RenderResources\Shaders">
+      <UniqueIdentifier>{e1997f17-d660-462b-b3ee-6ad306d19ae2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\RenderResources\Shaders\include">
+      <UniqueIdentifier>{e2cce867-6216-4933-901b-56658edf93c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\DataTypes">
+      <UniqueIdentifier>{9ba5c02d-b245-462d-bfb4-50c39e295184}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Creators">
+      <UniqueIdentifier>{c9c0b4d5-1b5e-47a7-a42c-22224fec1ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Interfaces">
+      <UniqueIdentifier>{31266335-35fa-41bd-b26a-566f00d8766a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Logging">
+      <UniqueIdentifier>{159bb926-4f56-4d67-b6d1-a16f44f0ec32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Managers">
+      <UniqueIdentifier>{8bb83529-6be2-415a-b8ac-34199d8a1f1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Managers\ResourceManager">
+      <UniqueIdentifier>{93da6bca-634f-4b75-aefb-9ba2f2c74c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Rendering">
+      <UniqueIdentifier>{6d517f5b-74fb-4c6d-843c-5162d8ab9170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\SceneGraph">
+      <UniqueIdentifier>{60290bfe-52f2-4552-abe5-b75001fbd13a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\SceneGraph\Helpers">
+      <UniqueIdentifier>{269dca85-bd58-4ab5-9897-edb1f07c7a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\SceneGraph\NodeTransform">
+      <UniqueIdentifier>{6f1e0f36-ab22-4c26-9f6d-c30d03ccffcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\SceneGraph\SceneNodes">
+      <UniqueIdentifier>{3c5221d0-a503-4333-b3ed-d1b697c2da48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\ShaderLoadingHelpers">
+      <UniqueIdentifier>{b7f033d7-00d8-47de-8f5f-acf7f653d092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Tools">
+      <UniqueIdentifier>{bea07d4d-90bb-44c2-85a4-8b353e86e1ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\DataTypes\ConstBuffers">
+      <UniqueIdentifier>{611f5bbf-cd87-4eff-b9a0-0fa33b0e1267}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Helpers">
+      <UniqueIdentifier>{9387e0f2-8b76-465d-be52-f5942e5eae24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rldx\Logging\Inl">
+      <UniqueIdentifier>{302a7c32-0373-4ffe-a44c-3bb09cd6c8f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

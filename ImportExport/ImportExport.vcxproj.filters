@@ -108,18 +108,24 @@
     <ClInclude Include="WsModel\DataTypes\WsModelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WsModel\DataTypes\XMLMaterialData.h">
+    <ClInclude Include="XmMaterial\DataTypes\XMLMaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RigidModel\DataTypes\IDataStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Helpers\CustomExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XmMaterial\Readers\XmMaterialReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers\TTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helpers\ImportExport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Helpers\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Helpers\FileHelpers.cpp">
@@ -150,6 +156,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WsModel\Reader\WsModelReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XmMaterial\Readers\XmMaterialReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Helpers\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

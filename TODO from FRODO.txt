@@ -1,0 +1,12 @@
+ (DONE) Error Handling: missing exception throws and Header.IsContentValid().
+- Initial camera positioning (needs math autozoom, fit combined bound boxes).
+- SetAssetForlder usage (still pending, though you mentioned including the files in the lib so this is not needed?).
+- no-texture causing models to no load (needs no-texture shader and fixing the bug where some models share loaded textures).
+
+ADDED BY PHAZER:
+- Link shaders, Cubemaps, default textyres, fonts, etc, into the .lib (using qt)
+- Load these into the resource manager, using file name as id
+- Figure out a way to load these seamlessly, 
+  - like "calback get file", 
+    - create a DxFileManager, that can look on disk, in resoucers, and finally 
+    requesting files from to RPFM

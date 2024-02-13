@@ -11,7 +11,7 @@
 
 namespace rmv2 {	
 
-		class IFileHeaderCreator : public helpers::TByteCreator<FileHeaderCommon> { };
+		class IFileHeaderCreator : public templates::TByteCreator<FileHeaderCommon> { };
 
 		class FileHeaderCreatorDefault : public IFileHeaderCreator
 		{

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <map>
+#include <memory>
+#include "..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\..\Rldx\Rldx\Helpers\StringKeyMap.h"
 
 //////////////////////////////////////////////////////////////////////////
-namespace helpers
+namespace templates
 {
-
 	template <typename CONST_BUF_DATA_KeyValue>
 	class TByteCreator
 	{
@@ -16,19 +17,13 @@ namespace helpers
 	//////////////////////////////////////////////////////////////////////////
 
 	template <typename BASE_TYPE, typename KEY_TYPE>
-	class TFactory
+	class TAbstractFactory
 	{
 		std::map<KEY_TYPE, std::shared_ptr<BASE_TYPE>> m_map;
 
-	public:
-		// TODO: remove is othre method is better
-		//template<KeyValuename DERIVED_TYPE>
-		//void Register(KEY_TYPE KeyValue, DERIVED_TYPE* poRawPtr)
-		//{
-		//	m_map[KeyValue] = std::unique_ptr<DERIVED_TYPE>(poRawPtr);
-		//}
+	public:	
 
-		bool IsKeyKnown(KEY_TYPE KeyValue)
+		bool ContainsKey(KEY_TYPE KeyValue)
 		{
 			return (m_map.find(KeyValue) != m_map.end);
 		}
@@ -36,7 +31,7 @@ namespace helpers
 		template<KEY_TYPE KeyValue, typename DERIVED_TYPE>
 		void Register()
 		{
-			m_map[KeyValue] = std::make_shared<DERIVED_TYPE>();			
+			m_map[KeyValue] = std::make_shared<DERIVED_TYPE>();
 		}
 
 		std::shared_ptr<BASE_TYPE> Get(KEY_TYPE KeyValue)
@@ -51,9 +46,12 @@ namespace helpers
 			return it->second;
 		}
 
+		/// <summary>
+		/// Client forced tp supply own handling
+		/// </summary>		
 		virtual void HandleKeyNotFound(KEY_TYPE keyValue) = 0;
-
 	};
+
 	template <typename BASE_TYPE>
 	class TFactoryStringKey
 	{
@@ -64,10 +62,10 @@ namespace helpers
 		//template<KeyValuename DERIVED_TYPE>
 		//void Register(KEY_TYPE KeyValue, DERIVED_TYPE* poRawPtr)
 		//{
-		//	m_map[KeyValue] = std::unique_ptr<DERIVED_TYPE>(poRawPtr);
+		//	m_map[KeyValue] = std::shared_ptr<DERIVED_TYPE>(poRawPtr);
 		//}
 
-		bool IsKeyKnown(std::string KeyValue)
+		bool ContainsKey(std::string KeyValue)
 		{
 			return (m_map.find(KeyValue) != m_map.end);
 		}
@@ -90,12 +88,52 @@ namespace helpers
 			return it->second;
 		}
 
-		virtual void HandleKeyNotFound(std::string KeyValue)
-		{			
-		}
+		virtual void HandleKeyNotFound(std::string KeyValue) = 0;
+
 
 	};
 
-} // namespace helpers
+	template <typename BASE_TYPE>
+	class TFactoryWStringKey
+	{
+		WStringkeyMap<std::shared_ptr<BASE_TYPE>> m_map;
+
+	public:
+		// TODO: remove is othre method is better
+		//template<KeyValuename DERIVED_TYPE>
+		//void Register(KEY_TYPE KeyValue, DERIVED_TYPE* poRawPtr)
+		//{
+		//	m_map[KeyValue] = std::shared_ptr<DERIVED_TYPE>(poRawPtr);
+		//}
+
+		bool ContainsKey(std::wstring KeyValue)
+		{
+			return (m_map.find(KeyValue) != m_map.end);
+		}
+
+		template<typename DERIVED_TYPE>
+		void Register(const std::wstring& KeyValue)
+		{
+			m_map[KeyValue] = std::make_shared<DERIVED_TYPE>();			
+		}
+
+		std::shared_ptr<BASE_TYPE> Get(const std::wstring& KeyValue)
+		{
+			auto it = m_map.find(KeyValue);
+			
+			if (it == m_map.end()) {
+				HandleKeyNotFound(KeyValue);
+				return nullptr;
+			}
+
+			return it->second;
+		}
+
+		virtual void HandleKeyNotFound(std::wstring KeyValue) = 0;
+
+	};
+	
+
+} // namespace templates
 
 //////////////////////////////////////////////////////////////////////////

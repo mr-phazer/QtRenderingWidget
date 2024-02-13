@@ -100,7 +100,7 @@ namespace rldx {
 	class DxMeshCreatorHelper
 	{
 	public:
-		static DxCommonMeshData Create(ID3D11Device* poDevice, const std::vector<CommonVertex>& vertices, const std::vector<uint16_t>& indices);
+		//static DxCommonMeshData Create(ID3D11Device* poDevice, const std::vector<CommonVertex>& vertices, const std::vector<uint16_t>& indices);
 		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
 		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
 
@@ -111,6 +111,7 @@ namespace rldx {
 	{
 		static std::vector<DxCommonMeshData> CreateFromRmv2File(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2Model);
 	};
+
 
 }; // namespace rldx
 

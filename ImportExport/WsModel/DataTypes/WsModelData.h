@@ -1,12 +1,14 @@
 #pragma once
 
-#include "XMLMaterialData.h"
+#include <vector>
+#include "..\..\RigidModel\DataTypes\TextureElement.h"
+#include "..\..\XmMaterial\DataTypes\XMLMaterialData.h"
 
-namespace rmv2 {
+namespace rmv2 {	
 
 	struct WsModelData
 	{
 		std::wstring geometryPath;
-		std::vector<std::vector<std::wstring>> xmlMateriFilePaths;
+		std::vector<std::vector<XMLMaterialData>> xmlMateriData;
 	};
 }

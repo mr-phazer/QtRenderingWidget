@@ -3,12 +3,14 @@
 
 #include "..\Managers\DxDeviceManager.h"
 
-bool rldx::DxMaterial::operator==(const DxMaterial& other) const
+using namespace rldx;
+
+bool DxMaterial::operator==(const DxMaterial& other) const
 {
 	return m_pathHash == other.m_pathHash;
 }
 
-rldx::DxMaterial* rldx::DxMaterial::Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures)
+DxMaterial* DxMaterial::Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures)
 {
 	auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();
 
@@ -29,7 +31,7 @@ static bool IsDDSTextureFile(char* bin)
 }
 
 
-void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path)
+void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path)
 {
 	DxTexture* textPtr = nullptr;
 
@@ -47,19 +49,56 @@ void rldx::DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::
 		auto bytes = DxResourceManager::GetCallBackFile(path);
 
 		if (!bytes.IsValid()) {
-			logging::LogActionError("Loading From CALLBACK failed, missing or empty file" + libtools::wstring_to_string(path));
+			logging::LogActionError("Loading From CALLBACK failed, missing or empty file, (will load default)" + libtools::wstring_to_string(path));
+						
+
+			LoadDefaultTexture(poDevice, slot);
 		}
 		else {
-			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
+			textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
+			
+			logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));			
 		}
 
-		textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
+		
 	}
 
 	m_textures.push_back({ slot, textPtr });
 }
 
-void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
+DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
+{
+	switch (TextureTypeEnum(slot))
+	{	
+	case TextureTypeEnum::eBaseColor:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_base_colour.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	case TextureTypeEnum::eMaterialMap:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_metal_material_map.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	case TextureTypeEnum::eDiffuse:
+	{
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_diffuse.dds");
+		return resHandleDiffuse.GetPtr();
+	}
+
+	default:
+	{
+		auto resHandleDefaultGrey = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+		return resHandleDefaultGrey.GetPtr();
+	}
+
+	}
+
+}
+
+void DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
 {
 	for (auto& itTextureInfo : m_textures)
 	{
@@ -71,17 +110,23 @@ void rldx::DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	}
 }
 
-int rldx::DxMaterial::GetTextureStartSlot()
+void DxMaterial::UnbindFromDC(ID3D11DeviceContext* poDC)
+{
+	// TODO: TEST THHIS:
+	poDC->PSSetShaderResources(GetTextureStartSlot(), (UINT)m_textures.size(), m_emptyMaterial.data());
+}
+
+int DxMaterial::GetTextureStartSlot()
 {
 	return 47;
 }
 
-rldx::ResourceTypeEnum rldx::DxMaterial::GetType() const
+ResourceTypeEnum DxMaterial::GetType() const
 {
 	return ResourceTypeEnum::Material;
 }
 
-std::string rldx::DxMaterial::GetTypeString() const
+std::string DxMaterial::GetTypeString() const
 {
 	return "DxMaterial";
 }

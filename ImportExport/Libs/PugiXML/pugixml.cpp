@@ -22,6 +22,10 @@
 #include <assert.h>
 #include <limits.h>
 
+// phazer added
+#include "..\..\..\Rldx\Rldx\Tools\tools.h"
+
+
 #ifdef PUGIXML_WCHAR_MODE
 #	include <wchar.h>
 #endif
@@ -5657,6 +5661,20 @@ namespace pugi
 		{
 			const char_t* iname = i->name;
 			if (iname && impl::strequal(name_, iname))
+				return xml_node(i);
+		}
+
+		return xml_node();
+	}
+
+	PUGI_IMPL_FN xml_node xml_node::child_no_case(const char_t* name_) const
+	{
+		if (!_root) return xml_node();
+
+		for (xml_node_struct* i = _root->first_child; i; i = i->next_sibling)
+		{
+			const char_t* iname = i->name;
+			if (iname && /*impl::strequal(name_, iname*/  toUpper(name_) == toUpper(iname))
 				return xml_node(i);
 		}
 

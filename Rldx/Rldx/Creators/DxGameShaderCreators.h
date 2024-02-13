@@ -53,7 +53,7 @@ public:
 	};
 };
 
-class GameShaderProgramCreatorFactory : public helpers::TFactoryStringKey<IShaderProgramCreator>
+class GameShaderProgramCreatorFactory : public templates::TFactoryStringKey<IShaderProgramCreator>
 {
 public:
 	GameShaderProgramCreatorFactory()
@@ -69,5 +69,13 @@ public:
 		
 		Register<WH3_ShaderProgramCreator>(game_id_keys::KEY_WARHAMMER_3);
 		Register<WH3_ShaderProgramCreator>(game_id_keys::KEY_THREE_KINGDOMS);
+
+		
+
+	}
+
+	virtual void HandleKeyNotFound(std::string KeyValue) override
+	{
+
 	}
 };

@@ -26,14 +26,14 @@ namespace rmv2
 
 	private:
 		std::vector<LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
-		
-		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);		
+
+		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
 		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
-		
+
 		// TODO: why do the vectors<vertex> etc not "exist" in debugger?
 		//MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MaterialHeaderType5& meshHeader5);
 
 		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
-		
+
 	};
-}
+};

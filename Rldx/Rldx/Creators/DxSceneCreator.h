@@ -32,7 +32,7 @@ namespace rldx {
 	};
 
 
-	//class SceneCreatorFactory : public helpers::TFactory<IDxSceneBuilder, std::string>
+	//class SceneCreatorFactory : public templates::TAbstractFactory<IDxSceneBuilder, std::string>
 	//{
 	//	
 	//};

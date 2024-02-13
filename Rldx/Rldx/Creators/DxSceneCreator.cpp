@@ -3,6 +3,7 @@
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 
 #include "..\Creators\DxGameShaderCreators.h"
+#include "..\Creators\DxModelNodeCreators\DxModelNodeCreator.h"
 #include "..\..\..\ImportExport\WsModel\Reader\WsModelReader.h"
 
 
@@ -68,12 +69,17 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 {	
 	// TODO: REMOVE
 	// BEGIN: DEBUGGIN CODE
-#if 0
+#ifdef _DEBUG
+#if 1
 	ByteStream wsModelBinaryData(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\sn2\def\def_medusa\def_medusa_body_01.wsmodel)");
-	rmv2::WsModelReader wsModelReader = rmv2::WsModelReader::Create(wsModelBinaryData);
-	auto wsModelData = wsModelReader.Read();
+	auto wsModelData = rmv2::WsModelReader().Read(wsModelBinaryData);	
 	// END: DEBUGGIN CODE
-#endif
+
+	auto modelNode = rldx::ModelNodeCreator().CreateNode(poDevice, poScene->GetRootNode(), fileData);
+	fileData.SetOffset(0);
+	
+#endif	
+#endif	
 
 	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("ModelNode RMV2");		
 
@@ -92,8 +98,14 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	rmv2::RigidModelReader rigidModelFileReader;
 	auto rmv2File = rigidModelFileReader.Read(fileData);
 	modelNodeRmv2->SetModelData(poDevice, rmv2File);
-	modelNodeRmv2->LoadMaterialData(poDevice, rmv2File);	
+	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+
+	auto& boundBox = modelNodeRmv2->GetBoundingBox();
+	float s = boundBox.Extents.y*2.0f;
+	float a = poScene->GetCamera().GetFieldOfView();
+
+	float d = (s / 2) / tan(a / 2);
 
 	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 6.0f);
 	poScene->GetCamera().SetRadius(4.0);

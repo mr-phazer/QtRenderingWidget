@@ -38,6 +38,7 @@ public:
 	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);
 	
 	bool InitRenderView();
+	
 
 	void PauseRendering()
 	{
@@ -67,6 +68,8 @@ public:
 	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
 	QString GetGameIdString() const { return m_gameIdString; };
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
+
+	
 
 	protected:
 	virtual void focusInEvent(QFocusEvent* event) override;

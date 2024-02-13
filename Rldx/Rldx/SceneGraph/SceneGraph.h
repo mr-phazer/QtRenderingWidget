@@ -42,6 +42,8 @@ namespace rldx {
 
 				// draw mesh
 				itItem->Draw(poDC);
+
+				itItem->UnbindFromDC(poDC);
 			};
 
 			// -- clear queue after each full draw

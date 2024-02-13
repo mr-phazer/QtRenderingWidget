@@ -50,13 +50,15 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 {
 	auto nodeResult = DxBaseNode::FindChild(node, GetRootNode());
 
-	if (nodeResult != nullptr)
-	{
-		if (nodeResult->GetParent())
-		{
-			nodeResult->GetParent()->RemoveChild(nodeResult);
-		}
+	if (!nodeResult) {
+		return;
+	};
+
+	if (nodeResult->GetParent()) {
+		return;
 	}
+	
+	nodeResult->GetParent()->RemoveChild(nodeResult);
 }
 
 //void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)

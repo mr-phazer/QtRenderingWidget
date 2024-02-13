@@ -13,6 +13,7 @@ namespace rldx {
 	{
 	public:
 		virtual void BindToDC(ID3D11DeviceContext* poDC) = 0;
+		virtual void UnbindFromDC(ID3D11DeviceContext* poDC) {};
 		virtual UINT GetStartSlot() { return 0; }
 	};
 };

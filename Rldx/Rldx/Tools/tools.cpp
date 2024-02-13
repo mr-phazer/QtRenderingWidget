@@ -1,8 +1,9 @@
 #include "tools.h"
 #include <string>
 
+using namespace std;
 
-int libtools::fileOffsetToLineNumber(const wstring& _strFile, uint64_t _offset)
+int libtools::fileOffsetToLineNumber(const std::wstring& _strFile, uint64_t _offset)
 {
 	ifstream in(_strFile, ios::binary);
 	if (!in.is_open())
@@ -68,7 +69,7 @@ bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 
 		auto msg = getComErrorWide(hr);
 
-//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(result) + ": ") + wstring_to_string(strHex));
+//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(result) + ": ") + std::wstring_to_string(strHex));
 
 
 		/*	MessageBox(

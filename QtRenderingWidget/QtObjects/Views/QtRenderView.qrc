@@ -1,4 +1,12 @@
 <RCC>
-    <qresource prefix="QtRenderingViewWidget">
+    <qresource prefix="/QtRenderingWidget">
+        <file>default_base_colour.dds</file>
+        <file>default_blue.dds</file>
+        <file>default_diffuse.dds</file>
+        <file>default_gloss_map.dds</file>
+        <file>default_grey.dds</file>
+        <file>default_metal_material_map.dds</file>
+        <file>default_normal.dds</file>
+        <file>default_specular.dds</file>
     </qresource>
 </RCC>

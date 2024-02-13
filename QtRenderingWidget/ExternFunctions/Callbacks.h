@@ -1,10 +1,11 @@
 #pragma once
 
 
-#include "QtWidgets\qwidget.h"
-#include "QtCore\qvector.h"
+
 #include "QtCore/qbytearray.h"
 #include "QtCore/qstring.h"
+#include "QtCore/qlist.h"
+
 
 /// <summary>
 /// Callback function, for the Rendering Engine to call when it needs to load an asset

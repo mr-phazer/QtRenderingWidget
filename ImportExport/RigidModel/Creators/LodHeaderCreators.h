@@ -28,7 +28,7 @@ namespace rmv2 {
 		size_t GetHeaderSize() override;
 	};
 
-	class LODHeaderCreatorFactory : public helpers::TFactory<ILODHeaderCreator, Rmv2VersionEnum>
+	class LODHeaderCreatorFactory : public templates::TAbstractFactory<ILODHeaderCreator, Rmv2VersionEnum>
 	{
 	public:
 		LODHeaderCreatorFactory();

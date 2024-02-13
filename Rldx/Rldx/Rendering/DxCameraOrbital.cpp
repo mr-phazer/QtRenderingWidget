@@ -19,6 +19,11 @@ void DxCameraOrbital::SetFieldOfView(float value)
 	m_geometryData.fFieldOfView = value;
 }
 
+float rldx::DxCameraOrbital::GetFieldOfView() const
+{
+	return m_geometryData.fFieldOfView;
+}
+
 void DxCameraOrbital::SetWindow(int width, int height)
 {
 	m_width = width;

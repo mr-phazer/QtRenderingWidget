@@ -1,6 +1,12 @@
 #include "WsModelReader.h"
 
-pugi::xml_attribute get_attribute_nocase(pugi::xml_node& root, const std::wstring& attrName)
+#include "..\..\XmMaterial\Readers\XmMaterialReader.h"
+#include "..\..\Helpers\CustomExceptions.h"
+
+using namespace std;
+using namespace rmv2;
+
+pugi::xml_attribute get_attribute_nocase(const pugi::xml_node& root, const std::wstring& attrName)
 {
 	// find first tag <model> in case there is XML header crap before
 	return root.find_attribute(
@@ -11,52 +17,95 @@ pugi::xml_attribute get_attribute_nocase(pugi::xml_node& root, const std::wstrin
 	);
 }
 
-pugi::xml_node get_child_nocase(pugi::xml_node& root, const std::wstring& attrName)
+pugi::xml_node get_child_nocase(const pugi::xml_node& root, const std::wstring& childName)
 {
-
 	int i = 1;
 	// find first tag <model> in case there is XML header crap before
 	return root.find_child(
 		[&](pugi::xml_node& node)
 		{
-			return (toLower(node.name()) == toLower(attrName));
+			return (toLower(node.name()) == toLower(childName));
 		}
 	);
 }
 
-rmv2::WsModelReader rmv2::WsModelReader::Create(ByteStream& fileData)
+rmv2::WsModelData rmv2::WsModelReader::Read(ByteStream& fileData)
 {
-	WsModelReader newInstance;
-	auto parseResult = newInstance.xmlFile.load_buffer(fileData.GetBufferPtr(), fileData.GetBufferSize());
+	LoadXML(fileData);	
+	
+	auto xmlModel = get_child_nocase(m_xmlFile, L"model");	
 
-	if (!parseResult) {
-		throw std::exception(string("Error Parsing WSModel File: " + narrow(fileData.GetPath())).c_str());
+	GetRMVPath(xmlModel);
+	ReadMaterialPaths(xmlModel);
+
+	return m_wsmodelData;
+}
+
+std::vector<TextureElement> rmv2::WsModelReader::GetTexturesFromXmlMaterial(size_t lodIndex, size_t partIndex)
+{
+	if (lodIndex >= m_wsmodelData.xmlMateriData.size())
+	{
+		throw std::exception("GetTexturesForMaterial: LOD index is out of bounbds");
 	}
 
-	return newInstance;
+	if (partIndex >= m_wsmodelData.xmlMateriData[lodIndex].size())
+	{
+		throw std::exception("GetTexturesForMaterial: Mesh(part) indexi is out of bounds.");
+	}
+
+	return m_wsmodelData.xmlMateriData[lodIndex][partIndex].textures;
 }
 
-rmv2::WsModelData rmv2::WsModelReader::Read()
+void rmv2::WsModelReader::ReadMaterialPaths(const pugi::xml_node & xmlModel)
 {
-	WsModelData wsModelData;
-	auto xmlModel = get_child_nocase(xmlFile, L"model");
+	auto xmlMaterialList = xmlModel.child_no_case(L"Materials");
+	auto xmlMaterialItem = xmlMaterialList.child_no_case(L"mAterial");
 
-	// TODO: parse <Geomtry>
-	// TODO: parse <materials>, use "AddXmlMaterialPath()"
+	while (xmlMaterialItem) // run throughh the <material> tags
+	{
+		auto part_index = get_attribute_nocase(xmlMaterialItem, L"part_index").as_uint();
+		auto lod_index = get_attribute_nocase(xmlMaterialItem, L"lod_index").as_uint();
+		
+		auto& materialData = AllocXmLMaterial(lod_index, part_index);
+		materialData.xmlMaterialFilePath = xmlMaterialItem.text().get();
 
-	return wsModelData;
+		rmv2::XmMaterialReader(&materialData).Read();
+
+		xmlMaterialItem = xmlMaterialItem.next_sibling();
+	}
 }
 
-void rmv2::WsModelReader::AddXmlMaterialPath(WsModelData& wsmodelData, const std::wstring& xmlMaterialFilePath, size_t lodIndex, size_t partIndex)
+void rmv2::WsModelReader::GetRMVPath(const pugi::xml_node & xmlModel)
+{ 
+	// TODO: remove this line, when no_case worksW
+	//auto xmlGeomtry = get_child_nocase(xmlModel, L"geometry");
+	auto xmlGeomtry = xmlModel.child_no_case(L"Geometry");
+	m_wsmodelData.geometryPath = xmlGeomtry.text().as_string();
+}
+
+void rmv2::WsModelReader::LoadXML(ByteStream& fileData)
+{
+	auto parseResult = m_xmlFile.load_buffer(fileData.GetBufferPtr(), fileData.GetBufferSize());
+
+	if (!parseResult)
+	{
+		// TODO: remove these two lines if the custom exception works well
+		//std::string errorText = parseResult.description();
+		//throw std::exception(("Error Parsing WSModel File: " + libtools::wstring_to_string(fileData.GetPath()) + ", Decsription:" + errorText).c_str());
+		throw XMLException(parseResult);
+	}
+}
+
+XMLMaterialData& rmv2::WsModelReader::AllocXmLMaterial(size_t lodIndex, size_t partIndex)
 {
 	// resize 2d vectors as needed
-	if (lodIndex >= wsmodelData.xmlMateriFilePaths.size()) {
-		wsmodelData.xmlMateriFilePaths.resize(lodIndex + 1);
+	if (lodIndex >= m_wsmodelData.xmlMateriData.size()) {
+		m_wsmodelData.xmlMateriData.resize(lodIndex + 1);
 	}
 
-	if (partIndex >= wsmodelData.xmlMateriFilePaths[lodIndex].size()) {
-		wsmodelData.xmlMateriFilePaths[lodIndex].resize(partIndex + 1);
+	if (partIndex >=m_wsmodelData.xmlMateriData[lodIndex].size()) {
+		m_wsmodelData.xmlMateriData[lodIndex].resize(partIndex + 1);
 	}
 
-	wsmodelData.xmlMateriFilePaths[lodIndex][partIndex] = xmlMaterialFilePath;
+	return m_wsmodelData.xmlMateriData[lodIndex][partIndex];
 }

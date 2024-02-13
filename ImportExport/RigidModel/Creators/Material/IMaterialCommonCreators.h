@@ -29,7 +29,7 @@ namespace rmv2 {
 		void ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
 	};
 
-	class MaterialCommonCreatorFactory : public helpers::TFactory<IMaterialCommonCreator, RigidMaterialEnum>
+	class MaterialCommonCreatorFactory : public templates::TAbstractFactory<IMaterialCommonCreator, RigidMaterialEnum>
 	{
 	public:
 		MaterialCommonCreatorFactory()
