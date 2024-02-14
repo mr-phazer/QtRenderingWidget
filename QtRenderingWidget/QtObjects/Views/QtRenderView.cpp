@@ -203,9 +203,6 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 		":/QtRenderingWidget/default_material_map.dds",
 		":/QtRenderingWidget/default_normal.dds",
 		":/QtRenderingWidget/default_specular.dds",
-
-		":/Cubemaps/CubeMaps/LandscapeCubeMapIBLDiffuse.dds",
-		":/Cubemaps/CubeMaps/LandscapeCubeMapIBLSpecular.dds",
 	};
 
 	for (auto& itRes : resourceList)

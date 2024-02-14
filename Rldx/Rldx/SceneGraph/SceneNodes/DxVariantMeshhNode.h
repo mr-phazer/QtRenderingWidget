@@ -5,7 +5,7 @@
 
 namespace rldx
 {
-	class Asset
+	class AssetInfo
 	{
 		std::wstring pathRigidModelFile;
 		std::vector<rmv2::TextureElement> texures;
@@ -26,9 +26,14 @@ namespace rldx
 
 
 	class DxVariantMeshhNode : public DxModelNode
-	{		
-		Asset m_assets;
+	{	
+		AssetInfo m_assetInfo;
 		VmdTag m_vmdTag;
+
+	public:
+		using SharedPtr = std::shared_ptr<DxVariantMeshhNode>;
+	public:
+
 
 
 	};
