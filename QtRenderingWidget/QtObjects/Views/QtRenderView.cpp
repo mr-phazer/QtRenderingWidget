@@ -222,6 +222,7 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString()).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
 	}
 }
+
 void QtRenderWidgetView::focusInEvent(QFocusEvent* event)
 {
 	// TODO: set frame rate to normal
