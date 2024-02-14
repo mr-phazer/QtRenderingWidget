@@ -19,6 +19,8 @@ using ByteVector = std::vector<uint8_t>;
 /// </summary>
 class ByteStream
 {
+	static std::wstring sm_searchFolder; // TODO: static for now, easiest, maybe change to fancier?
+
 	ByteVector m_data;
 	size_t m_currentOffset = 0;
 
@@ -41,19 +43,35 @@ public:
 	}
 
 	ByteStream(const std::wstring& fileName, bool doThrow = true)
-	{		
-		if (!file_helpers::DoesFileExist(fileName))
+	{
+		if (file_helpers::DoesFileExist(fileName))
+		{
+			m_currentFilePath = fileName;
+			m_data = file_helpers::ReadFileToVector(m_currentFilePath);
+		}
+		else if (file_helpers::DoesFileExist(sm_searchFolder + fileName))
+		{
+			m_currentFilePath = sm_searchFolder + fileName;
+			m_data = file_helpers::ReadFileToVector(fileName);
+		}
+		else
 		{
 			if (doThrow)
-				throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) +"', file does not exist.").c_str());
+				throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) + "', file does not exist.").c_str());
 			else
-				m_data.clear(); 
+				m_data.clear();  // TODO: redundant
 			return;
 		}
-
-		m_currentFilePath = fileName;
-		m_data = file_helpers::ReadFileToVector(fileName);
 	};
+
+	static void SetSearchFolder(const std::wstring& path) // TODO: static for now, easiest, maybe change to fancier?
+	{
+		sm_searchFolder = path;
+		if (sm_searchFolder[sm_searchFolder.size() - 1] != L'\\') // make sure search folder ends with slash to avoid incorent paths
+		{
+			sm_searchFolder += L'\\';
+		}
+	}
 
 	ByteVector GetRawChunk(size_t bytes) const
 	{
@@ -69,12 +87,12 @@ public:
 			throw std::exception("MemoryByteStream::GetRawChunk: out of bounds");
 
 		return ByteVector(m_data.begin() + offset, m_data.begin() + offset + bytes);
-	}	
+	}
 
 	void Read(void* pDest, size_t bytesToCopy)
-	{		
+	{
 		if (m_currentOffset + bytesToCopy > m_data.size())
-		{			
+		{
 			throw std::exception("MemoryByteStream::Read: out of bounds");
 		}
 
@@ -104,18 +122,18 @@ public:
 		CONST_BUF_DATA_TYPE element;
 		Read(&element, sizeof(CONST_BUF_DATA_TYPE));
 		return element;
-	}	
+	}
 
-	const uint8_t* GetBufferPtr() const { return m_data.data(); }	
+	const uint8_t* GetBufferPtr() const { return m_data.data(); }
 	uint8_t* GetBufferPtr() { return m_data.data(); }
-	
+
 	size_t GetBufferSize() { return m_data.size(); }
 
 	std::wstring GetPath() const { return m_currentFilePath; }
 
 	void SetOffset(size_t position) {
 
-		if (position >= m_data.size()) {			
+		if (position >= m_data.size()) {
 			throw std::exception((FULL_FUNC_INFO("ByteStream SetOffset out of bound >= data size")).c_str());
 		}
 
