@@ -47,6 +47,14 @@ namespace rldx {
 			UINT startSlotConstBuf = 0,
 			UINT startSlotSRV = 0);
 
+		static DxAmbientLightSource Create(
+			ID3D11Device* poDevice,
+			DxTexture* diffuseCubemap,
+			DxTexture* specularCubmap,
+			DxTexture* lut,
+			UINT startSlotConstBuf,
+			UINT startSlotSRV);
+
 	private:
 		void SetTexturesFromFiles(
 			ID3D11Device* poDevice,
