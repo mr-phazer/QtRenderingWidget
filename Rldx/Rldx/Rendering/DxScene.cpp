@@ -116,20 +116,17 @@ void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 	
 	auto cubeMapFolder = std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
-
-	// TODO: remove
-	//ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
-	//ByteStream iblSPecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");
-	//ByteStream iblLUTBinary;
-
-	//
-
+		
+	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
+	ByteStream iblSpecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");
+	ByteStream iblLUTBinary;
+	
 	m_ambientLightSource =
 		DxAmbientLightSource::Create(
 			poDevice,
-			DxResourceManager::Instance()->GetTexture(L"LandscapeCubeMapIBLDiffuse.dds").GetPtr(),
-			DxResourceManager::Instance()->GetTexture(L"LandscapeCubeMapIBLSpecular.dds").GetPtr(), 
-			nullptr,
+			iblDiffuseMapBinary,
+			iblSpecularMapBinary,
+			iblLUTBinary,
 			1
 		);
 
