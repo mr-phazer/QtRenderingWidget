@@ -10,4 +10,10 @@
         <file>default_specular.dds</file>
         <file>default_material_map.dds</file>
     </qresource>
+    <qresource prefix="/Cubemaps">
+        <file>CubeMaps/LandscapeCubeMapIBLDiffuse.dds</file>
+        <file>CubeMaps/LandscapeCubeMapIBLSpecular.dds</file>
+        <file>CubeMaps/SkyCubemapIBLDiffuse.dds</file>
+        <file>CubeMaps/SkyCubemapIBLSpecular.dds</file>
+    </qresource>
 </RCC>

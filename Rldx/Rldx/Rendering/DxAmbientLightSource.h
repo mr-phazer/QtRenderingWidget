@@ -41,6 +41,14 @@ namespace rldx {
 
 		static DxAmbientLightSource Create(
 			ID3D11Device* poDevice,
+			DxTexture* diffuseCubemap, 
+			DxTexture* specularCubemap, 
+			DxTexture* lut = nullptr,
+			UINT startSlotConstBuf = 0,
+			UINT startSlotSRV = 0);
+
+		static DxAmbientLightSource Create(
+			ID3D11Device* poDevice,
 			ByteStream& pathDiffuseMap,
 			ByteStream& pathSpecularMap,
 			ByteStream& pathLUT,
@@ -71,6 +79,8 @@ namespace rldx {
 			ByteStream& pathLUT, 
 			UINT startSlotSRV = 0
 		);
+
+		
 
 		
 	};
