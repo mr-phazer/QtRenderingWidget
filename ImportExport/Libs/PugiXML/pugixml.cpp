@@ -2249,7 +2249,7 @@ PUGI_IMPL_NS_BEGIN
 		const uint8_t* data = static_cast<const uint8_t*>(contents);
 		size_t data_length = size;
 
-		// get size of prefix that does not need utf8 conversion
+		// get size of sm_prefix that does not need utf8 conversion
 		size_t prefix_length = get_latin1_7bit_prefix_length(data, data_length);
 		assert(prefix_length <= data_length);
 
@@ -8698,14 +8698,14 @@ PUGI_IMPL_NS_BEGIN
 
 	struct namespace_uri_predicate
 	{
-		const char_t* prefix;
+		const char_t* sm_prefix;
 		size_t prefix_length;
 
 		namespace_uri_predicate(const char_t* name)
 		{
 			const char_t* pos = find_char(name, ':');
 
-			prefix = pos ? name : NULL;
+			sm_prefix = pos ? name : NULL;
 			prefix_length = pos ? static_cast<size_t>(pos - name) : 0;
 		}
 
@@ -8715,7 +8715,7 @@ PUGI_IMPL_NS_BEGIN
 
 			if (!starts_with(name, PUGIXML_TEXT("xmlns"))) return false;
 
-			return prefix ? name[5] == ':' && strequalrange(name + 6, prefix, prefix_length) : name[5] == 0;
+			return sm_prefix ? name[5] == ':' && strequalrange(name + 6, sm_prefix, prefix_length) : name[5] == 0;
 		}
 	};
 
@@ -8742,7 +8742,7 @@ PUGI_IMPL_NS_BEGIN
 		namespace_uri_predicate pred = attr.name();
 
 		// Default namespace does not apply to attributes
-		if (!pred.prefix) return PUGIXML_TEXT("");
+		if (!pred.sm_prefix) return PUGIXML_TEXT("");
 
 		xml_node p = parent;
 

@@ -41,7 +41,7 @@ extern "C" bool AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolde
 /// <param name="parent"></param>
 /// <param name="path"></param>
 extern "C" void SetAssetFolder(QString* folder);
-
+extern "C" void SetLogFolder(QString * folder);
 
 /// <summary>
 /// Sets the number of ms between each frame, FPS = 1000 / FrameTimeMS
@@ -53,9 +53,9 @@ extern "C" void ResumeRendering(QWidget * pQRendeeWiget);
 
 
 
-/// Path where shaders, cubemaps, and defalt material(textues) are stored
-/// </summary>
-//extern "C" void SetAssetLogPath(QWidget * pQRendeeWiget, const QString& path);
+ 
+ 
+
 
 /// <summary>
 /// Starts rendering, at certain FPS (optional)

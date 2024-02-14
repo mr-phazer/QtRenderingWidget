@@ -43,7 +43,7 @@ namespace rmv2 {
 
 		void HandleKeyNotFound(RigidMaterialEnum keyValue) override
 		{
-			throw std::exception(("Error: Unsuported RigidMaterial: Numerical ID: " + to_string(keyValue)).c_str());
+			throw std::exception(("Error: Unsuported RigidMaterial: Numerical ID: " + std::to_string(keyValue)).c_str());
 		}
 	};
 }

@@ -1,5 +1,7 @@
 #include "ShaderLoadingHelpers.h"
 #include "..\Tools\tools.h"
+#include "..\..\ImportExport\Helpers\ByteStream.h"
+
 #include <exception>
 
 #pragma comment(lib, "D3DCompiler.lib")
@@ -7,16 +9,8 @@
 
 std::vector<uint8_t> rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
 {
-	if (!libtools::DoesFileExist(shaderPath))	{
-		throw std::runtime_error("Shader file: '" + libtools::wstring_to_string(shaderPath) + "' not found");
-	}
-
-	size_t shaderCodeSize = libtools::GetFileSize(shaderPath);
-	std::vector<uint8_t> shaderCodeRaw(shaderCodeSize);
-
-	std::ifstream inputFile(shaderPath, std::ios::binary);
-	inputFile.read((char*)shaderCodeRaw.data(), shaderCodeSize);
-	inputFile.close();
+	ByteStream shaderBytes(shaderPath);
+	auto shaderCodeRaw = shaderBytes.GetAll();
 
 	return shaderCodeRaw;
 }

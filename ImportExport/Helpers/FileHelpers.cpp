@@ -29,7 +29,6 @@ std::streamoff file_helpers::GetFileSize(const std::wstring& filePath)
 std::vector<uint8_t> file_helpers::ReadFileToVector(const std::wstring& filePath)
 {   
     auto fileSize = GetFileSize(filePath);
-
     
     std::vector<uint8_t> destBuffer(fileSize);
     

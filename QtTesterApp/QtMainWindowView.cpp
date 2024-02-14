@@ -106,16 +106,20 @@ void QtMainWindowView::InitRenderView()
 
 	auto resHandler = rldx::DxResourceManager::Instance()->GetResourceByString<rldx::DxResourceByteStream>(L"MYass");
 
-#endif
-
+#endif	
 	auto ptestData = &testData_WH3_Person_Malekith;
+	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
+	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
+	
+	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps)");
+	SetAssetFolder(&globalAssetFolder);	
+
+	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
+	SetLogFolder(&globalLogFolder);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
-
-	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
-	SetAssetFolder(&qAssetPath);
-
+		
 	if (!renderWidget)
 		return;
 

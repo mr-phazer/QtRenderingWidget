@@ -3,7 +3,11 @@
 
 using namespace logging;
 
-std::wstring ImplLog::prefix = L"[QRenderingView Debug:] ";
+
+ std::wstring ImplLog::sm_loggingFolder = L"";
+ std::wstring ImplLog::sm_logFileName = L"RenderViewLog.txt";
+
+std::wstring ImplLog::sm_prefix = L"[QRenderingView Debug:] ";
 
 void logging::ImplLog::Log_Exception(const std::string& strMsg)
 {
@@ -21,13 +25,13 @@ void logging::ImplLog::DoLog(
 	WORD colorFlags,
 	WORD tagColorFlags)
 {
-	WinConsole::Print(prefix + stow(strTag), tagColorFlags);
+	WinConsole::Print(sm_prefix + stow(strTag), tagColorFlags);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg), colorFlags);
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << libtools::wstring_to_string(prefix) + "ERROR: " << strMsg;
+	logString << std::endl << libtools::wstring_to_string(sm_prefix) + "ERROR: " << strMsg;
 	WriteToLogFile(logString.str());
 	
 }
@@ -46,27 +50,27 @@ void ImplLog::LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags)
 
 void ImplLog::LogAction_success(const std::string& strMsg)
 {	
-	WinConsole::Print(prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
+	WinConsole::Print(sm_prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg));
 	//WinConcole::Print(L"Success.", BG_BLUE | FG_WHITE);
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << libtools::wstring_to_string(prefix) << strMsg << ". Success.";
+	logString << std::endl << libtools::wstring_to_string(sm_prefix) << strMsg << ". Success.";
 	
 	WriteToLogFile(logString.str());	
 }
 
 bool ImplLog::LogActionErrorFalse(const std::string& strMsg)
 {	
-	WinConsole::Print(prefix + L"ERROR:", BG_BLACK | FG_RED);
+	WinConsole::Print(sm_prefix + L"ERROR:", BG_BLACK | FG_RED);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg));
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << wtos(prefix) +  "ERROR: " << strMsg;
+	logString << std::endl << wtos(sm_prefix) +  "ERROR: " << strMsg;
 
 	WriteToLogFile(logString.str());
 
@@ -75,13 +79,13 @@ bool ImplLog::LogActionErrorFalse(const std::string& strMsg)
 
 bool ImplLog::LogAction_warning(const std::string& strMsg)
 {
-	WinConsole::Print(prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
+	WinConsole::Print(sm_prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg));
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << libtools::wstring_to_string(prefix) + "WARNING:: " << strMsg;
+	logString << std::endl << libtools::wstring_to_string(sm_prefix) + "WARNING:: " << strMsg;
 
 	 WriteToLogFile(logString.str());
 
@@ -95,7 +99,7 @@ void ImplLog::LogWrite(const std::string& strMsg)
 
 void ImplLog::WriteToLogFile(const std::string& logString)
 {
-    std::ofstream oOutFile(L"log.txt", std::ios::app);
+    std::ofstream oOutFile(GetOutLogFilePath(), std::ios::app);
     oOutFile << logString;
     oOutFile.close();
 }

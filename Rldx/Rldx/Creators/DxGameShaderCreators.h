@@ -14,8 +14,8 @@ class Troy_ShaderProgramCreator : public IShaderProgramCreator
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_Troy.cso)");		
+			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
+			/*libtools::GetExePath() +*/ LR"(PS_Troy.cso)");		
 	};
 };
 
@@ -25,8 +25,8 @@ class Attila_ShaderProgramCreator : public IShaderProgramCreator
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_Attila_Weigted.cso)");		
+			/*libtools::GetExePath() */+ LR"(VS_Simple.cso)",
+			/*libtools::GetExePath()*/ + LR"(PS_Attila_Weigted.cso)");		
 	};
 };
 
@@ -36,8 +36,8 @@ class WH3_ShaderProgramCreator : public IShaderProgramCreator
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_Three_Kingdoms.cso)");		
+			/*/*libtools::GetExePath() + **/LR"(VS_Simple.cso)",
+			/*libtools::GetExePath() + */LR"(PS_Three_Kingdoms.cso)");		
 	};
 };
 
@@ -48,8 +48,8 @@ public:
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_Simple.cso)");		
+			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
+			/*libtools::GetExePath() + */LR"(PS_Simple.cso)");		
 	};
 };
 

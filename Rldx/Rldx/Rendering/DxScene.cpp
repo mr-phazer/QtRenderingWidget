@@ -115,7 +115,8 @@ void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_sceneFrameVSConstBuffer.buffer.Create(poDevice);
 	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 	
-	auto cubeMapFolder = std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
+	// TODO: test? Needed?
+	std::wstring cubeMapFolder = L""; // std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
 
 	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
 	ByteStream iblSPecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");

@@ -6,7 +6,7 @@
 #include <math.h>
 
 namespace rmv2 {
-		// make all variable into virtual methods retuning references, dont use  "" prefix
+		// make all variable into virtual methods retuning references, dont use  "" sm_prefix
 
 		struct ILODHeader
 		{

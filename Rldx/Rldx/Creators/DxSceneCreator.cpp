@@ -49,15 +49,15 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	auto newSimpleShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_Simple.cso)"
+			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
+			/*libtools::GetExePath() + */LR"(PS_Simple.cso)"
 		);
 
 	auto newNotTextureShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			libtools::GetExePath() + LR"(VS_Simple.cso)",
-			libtools::GetExePath() + LR"(PS_NoTextures.cso)"
+			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
+			/*libtools::GetExePath() + */LR"(PS_NoTextures.cso)"
 		);
 
 	// make grid node, mesh, fill node, set shaders

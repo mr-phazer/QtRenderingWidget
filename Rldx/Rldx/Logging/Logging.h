@@ -62,7 +62,23 @@ namespace logging
     class ImplLog
     {
     public:
-        static std::wstring prefix;
+        // TODO clean this up with better encapsulation, setters/getters
+        static void SetLogFolder(const std::wstring& path)
+        {
+            sm_loggingFolder = path;
+            if (sm_loggingFolder.back() != '\\' && sm_loggingFolder.back() != '/')
+            {
+                sm_loggingFolder += '\\';
+            }
+
+        }
+
+        static std::wstring sm_loggingFolder;
+        static std::wstring sm_logFileName;
+
+        static std::wstring sm_prefix;
+
+        static std::wstring GetOutLogFilePath() { return sm_loggingFolder + sm_logFileName; }
 
         static void Log_Exception(const std::string& strMsg);
         static void LogActionInfo(const std::string& strMsg);
@@ -115,14 +131,14 @@ namespace logging
         {
             TimeLogAction newInstance;
             newInstance.m_message = messageToShow;
-            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + newInstance.m_message + ".", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::sm_prefix) + newInstance.m_message + ".", BG_BLACK | FG_WHITE);
 
             return newInstance;
         };
 
         void PrintDone(const std::string& messageToShow = "")
         {
-            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + m_message + ". Done.", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::sm_prefix) + m_message + ". Done.", BG_BLACK | FG_WHITE);
 
             auto timeElapsedMessageString = "Time Elapsed: " + std::to_string(m_clock.GetLocalTime()) + " seconds";
             ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);
@@ -130,7 +146,7 @@ namespace logging
 
         void PrintDoneSuccess(const std::string& messageToShow = "")
         {
-            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::prefix) + m_message + ". Completed Succesfully.", BG_BLACK | FG_WHITE);
+            ImplLog::LogSimpleWithColor(NarrowStr(ImplLog::sm_prefix) + m_message + ". Completed Succesfully.", BG_BLACK | FG_WHITE);
 
             auto timeElapsedMessageString = "Time Elapsed: " + std::to_string(m_clock.GetLocalTime()) + " seconds";
             ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);

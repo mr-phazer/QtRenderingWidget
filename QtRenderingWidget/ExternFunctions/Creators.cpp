@@ -85,8 +85,13 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 }
 
 void SetAssetFolder(QString* folder)
+{	
+	ByteStream::SetSearchFolder(folder->toStdWString());
+}
+
+void SetLogFolder(QString* folder)
 {
-	rldx::DxResourceManager::SetAssetFolder(folder->toStdWString());
+	logging::ImplLog::SetLogFolder(folder->toStdWString());
 }
 
 void PauseRendering(QWidget* pQRenderWiget)
@@ -101,13 +106,15 @@ void ResumeRendering(QWidget* pQRenderWiget)
 	renderWidget->ResumeRendering();
 }
 
+
 void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
 {
 	outBinFiles->clear();
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
-		auto fileName = rldx::DxResourceManager::GetAssetFolder() + (*missingFiles)[iAsset].toStdWString();
-		ByteStream newStream(fileName, false);
+		// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
+		auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + (*missingFiles)[iAsset].toStdWString();		
+		ByteStream newStream(filePath, false);
 
 		// force list to be same size, maybe redundant
 		*outBinFiles = QList<QByteArray>::fromVector(QVector<QByteArray>(missingFiles->size()));

@@ -76,13 +76,23 @@ namespace rldx {
 	class DxResourceManager : public IdCounterBase
 	{
 	public:
-		static void SetAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
+		/// <summary>
+		/// For debugging
+		/// </summary>		
+		static void SetGameAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
 		
-		static std::wstring GetAssetFolder() { return Instance()->m_rooPathAssetPath; }
+		/// <summary>
+		/// For debugging
+		/// </summary>		
+		static std::wstring GetGameAssetFolder() { return Instance()->m_rooPathAssetPath; }
+		
+		/// <summary>
+		/// For debugging
+		/// </summary>		
 		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
 
-		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
-		
+
+		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }		
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 		static ByteStream GetCallBackFile(const std::wstring& fileName) 
 		{ 
