@@ -66,7 +66,7 @@ void rmv2::WsModelReader::ReadMaterialPaths(const pugi::xml_node & xmlModel)
 		auto part_index = get_attribute_nocase(xmlMaterialItem, L"part_index").as_uint();
 		auto lod_index = get_attribute_nocase(xmlMaterialItem, L"lod_index").as_uint();
 		
-		auto& materialData = AllocXmLMaterial(lod_index, part_index);
+		auto& materialData = m_wsmodelData.AllocXmLMaterial(lod_index, part_index);
 		materialData.xmlMaterialFilePath = xmlMaterialItem.text().get();
 
 		rmv2::XmMaterialReader(&materialData).Read();
@@ -96,16 +96,3 @@ void rmv2::WsModelReader::LoadXML(ByteStream& fileData)
 	}
 }
 
-XMLMaterialData& rmv2::WsModelReader::AllocXmLMaterial(size_t lodIndex, size_t partIndex)
-{
-	// resize 2d vectors as needed
-	if (lodIndex >= m_wsmodelData.xmlMateriData.size()) {
-		m_wsmodelData.xmlMateriData.resize(lodIndex + 1);
-	}
-
-	if (partIndex >=m_wsmodelData.xmlMateriData[lodIndex].size()) {
-		m_wsmodelData.xmlMateriData[lodIndex].resize(partIndex + 1);
-	}
-
-	return m_wsmodelData.xmlMateriData[lodIndex][partIndex];
-}

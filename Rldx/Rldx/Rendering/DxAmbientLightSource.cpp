@@ -10,7 +10,19 @@ DxAmbientLightSource rldx::DxAmbientLightSource::Create(ID3D11Device* poDevice, 
 {
 	DxAmbientLightSource oNewInstance;
 	oNewInstance.SetTexturesFromFiles(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);
-	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);	
+	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);		
+
+	return oNewInstance;
+}
+
+DxAmbientLightSource rldx::DxAmbientLightSource::Create(ID3D11Device* poDevice, DxTexture* diffuseCubemap, DxTexture* specularCubmap, DxTexture* lut, UINT startSlotConstBuf, UINT startSlotSRV)
+{
+	DxAmbientLightSource oNewInstance;
+	
+	oNewInstance.m_poDiffuseMap = diffuseCubemap;
+	oNewInstance.m_poSpecularMap = specularCubmap;
+
+	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);
 
 	return oNewInstance;
 }
@@ -18,8 +30,7 @@ DxAmbientLightSource rldx::DxAmbientLightSource::Create(ID3D11Device* poDevice, 
 DxAmbientLightSource rldx::DxAmbientLightSource::Create(ID3D11Device* poDevice, ByteStream& pathDiffuseMap, ByteStream& pathSpecularMap, ByteStream& pathLUT, UINT startSlotSRV, UINT startSlotConstBuf)
 {
 	DxAmbientLightSource oNewInstance;
-	oNewInstance.SetTexturesFromMemory(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);		
-	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);	
+	oNewInstance.SetTexturesFromMemory(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);			
 
 	return oNewInstance;
 }
@@ -40,7 +51,7 @@ void rldx::DxAmbientLightSource::SetTexturesFromFiles(
 	m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap);
 	m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap);
 
-	m_oPSConstBuffer.buffer.Create(poDevice);
+	
 
 	// TODO: if needed make an impl thata loads an LUT
 	/*if (!pathLUT.empty())
@@ -73,11 +84,10 @@ void rldx::DxAmbientLightSource::SetTexturesFromMemory(
 		poDevice,
 		streamDiffuseMap.GetBufferPtr(),
 		streamDiffuseMap.GetBufferSize(),
-		"IBL CubeMcap Diffuse");
-	
-
-	m_oPSConstBuffer.buffer.Create(poDevice);
+		"IBL CubeMcap Diffuse");	
 }
+
+
 
 void rldx::DxAmbientLightSource::BindToDC(ID3D11DeviceContext* poDC)
 {

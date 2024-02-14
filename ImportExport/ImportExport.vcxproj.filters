@@ -164,6 +164,9 @@
     <ClCompile Include="Helpers\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WsModel\DataTypes\WsModelData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="RigidModel\DataTypes\MeshEnumsConstants.h">

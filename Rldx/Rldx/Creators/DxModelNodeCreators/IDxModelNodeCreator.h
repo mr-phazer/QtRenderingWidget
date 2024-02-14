@@ -6,6 +6,7 @@ class ByteStream;
 
 namespace rldx {
 	class DxScene;
+	class DxVmdNode;
 
 	class IDxModelNodeCreator
 	{
@@ -14,5 +15,6 @@ namespace rldx {
 		//virtual DxModelNode::SharedPtr AlloNode(ID3D11De	vice* poDevice, DxBaseNode* rootNode, ByteStream& data) = 0;
 
 	};
+
 
 }

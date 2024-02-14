@@ -25,8 +25,7 @@ namespace rmv2
 
 		std::vector<TextureElement> GetTexturesFromXmlMaterial(size_t lodIndex, size_t partIndex);
 
-	private:
-		XMLMaterialData& AllocXmLMaterial(size_t lodIndex, size_t partIndex);;
+	private:		
 		void ReadMaterialPaths(const pugi::xml_node& xmlModel);
 		void GetRMVPath(const pugi::xml_node& xmlModel);
 		void LoadXML(ByteStream& fileData);

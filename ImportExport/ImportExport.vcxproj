@@ -192,6 +192,7 @@
     <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp" />
     <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp" />
+    <ClCompile Include="WsModel\DataTypes\WsModelData.cpp" />
     <ClCompile Include="WsModel\Reader\WsModelReader.cpp" />
     <ClCompile Include="XmMaterial\Readers\XmMaterialReader.cpp" />
   </ItemGroup>
