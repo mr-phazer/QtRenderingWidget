@@ -9,6 +9,15 @@ using namespace logging;
 
 std::wstring ImplLog::sm_prefix = L"[QRenderingView Debug:] ";
 
+void logging::ImplLog::SetLogFolder(const std::wstring& path)
+{
+	sm_loggingFolder = path;
+	if (sm_loggingFolder.back() != '\\' && sm_loggingFolder.back() != '/')
+	{
+		sm_loggingFolder += '\\';
+	}
+}
+
 void logging::ImplLog::Log_Exception(const std::string& strMsg)
 {
 	DoLog(strMsg, "EXCEPTION Caught: " + strMsg, BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);

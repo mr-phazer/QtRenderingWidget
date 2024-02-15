@@ -63,15 +63,7 @@ namespace logging
     {
     public:
         // TODO clean this up with better encapsulation, setters/getters
-        static void SetLogFolder(const std::wstring& path)
-        {
-            sm_loggingFolder = path;
-            if (sm_loggingFolder.back() != '\\' && sm_loggingFolder.back() != '/')
-            {
-                sm_loggingFolder += '\\';
-            }
-
-        }
+        static void SetLogFolder(const std::wstring& path);
 
         static std::wstring sm_loggingFolder;
         static std::wstring sm_logFileName;
