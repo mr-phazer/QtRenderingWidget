@@ -202,7 +202,7 @@ namespace rldx {
 		}
 				
 		void Update(float timeElapsed) override;		
-		virtual void FlushToRenderQueue(IRenderBucket* pRenderQueue)/* override*/;
+		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
 
 	private:
 		void SetParent(DxBaseNode* poParent)

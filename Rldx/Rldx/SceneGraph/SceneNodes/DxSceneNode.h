@@ -26,7 +26,7 @@
 //		SceneNodeTypeEnum GetType() const { return SceneNodeTypeEnum::EmptyNode; };
 //
 //		void Update(float timeElapsed) override;
-//		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;
+//		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 //	};
 //
 //	

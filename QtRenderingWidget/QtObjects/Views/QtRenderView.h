@@ -32,7 +32,7 @@ private:
 	bool event(QEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
-	LRESULT WINAPI ForwardNativeWindowEvents(MSG* pMsg);	
+	LRESULT WINAPI ForwardNativeWindowEvent(MSG* pMsg);	
 
 public:
 	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);

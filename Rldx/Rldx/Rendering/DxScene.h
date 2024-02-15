@@ -66,7 +66,7 @@ namespace rldx {
 		//void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
 		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
 
-		LRESULT WINAPI ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 

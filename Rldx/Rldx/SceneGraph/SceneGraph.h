@@ -60,9 +60,6 @@ namespace rldx {
 		void UpdateNodes(DxBaseNode* pRootNode, float timeElapsed)
 		{
 			pRootNode->Update(timeElapsed);
-						// TODO: REMOVE: debugging code
-			pRootNode->SetName("Node Updated!!");
-			// END: REMOVE: debugging code
 
 			for (auto& itChildNode : pRootNode->GetChildren())
 			{
@@ -70,18 +67,13 @@ namespace rldx {
 			};
 		}
 
-		static void SumBoundBoxes()
-		{
-			DirectX::BoundingBox testerBB;
-		}
+		void FillRenderBucket(DxBaseNode* pNode, IRenderBucket* pDestRenderQueue)
+		{			
+			pNode->FlushToRenderBucket(pDestRenderQueue);
 
-		void FetchNodes(DxBaseNode* pRootNode, IRenderBucket* pRenderQueue)
-		{
-			pRootNode->FlushToRenderQueue(pRenderQueue);
-
-			for (auto& itChildNode : pRootNode->GetChildren())
+			for (auto& itChildNode : pNode->GetChildren())
 			{
-				FetchNodes(itChildNode.get(), pRenderQueue);
+				FillRenderBucket(itChildNode.get(), pDestRenderQueue);
 			};
 		}
 	};

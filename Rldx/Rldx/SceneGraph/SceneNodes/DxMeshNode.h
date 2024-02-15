@@ -29,7 +29,7 @@ namespace rldx {
 		
 		DirectX::BoundingBox& GetBoundingBox() { return m_meshDrawable.m_BB; }
 
-		void FlushToRenderQueue(IRenderBucket* pRenderQueue) override;
+		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 
 		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
 		std::string GetTypeString() const override { return "DxMeshNode"; };	

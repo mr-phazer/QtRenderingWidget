@@ -74,10 +74,10 @@ void rldx::DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const r
 	}
 }
 
-void rldx::DxModelNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+void rldx::DxModelNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
 	for (auto& itMeshNode : m_lods[m_activeLod])
 	{
-		itMeshNode->FlushToRenderQueue(pRenderQueue);
+		itMeshNode->FlushToRenderBucket(pRenderQueue);
 	};
 }

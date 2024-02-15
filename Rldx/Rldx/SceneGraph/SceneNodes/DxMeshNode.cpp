@@ -48,7 +48,7 @@ void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLO
 //}
 
 
-void DxMeshNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+void DxMeshNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
 	m_meshDrawable.m_mWorldMatrix = GetCurrentGlobalTransForm();
 	m_meshDrawable.m_pivotPoint = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0

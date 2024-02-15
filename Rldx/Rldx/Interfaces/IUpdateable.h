@@ -9,6 +9,6 @@
 class IUpdateable
 {
 public:
-	virtual void Update(float timeElapsed) = 0;
+	virtual void Update(float timeElapsed = 0.0f) = 0;
 };
 

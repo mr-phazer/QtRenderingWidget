@@ -46,11 +46,11 @@ namespace rldx {
 		/// <summary>
 		/// Send Native Window events to a DxScene, as the low-level camera impl needs them
 		/// </summary>		
-		LRESULT WINAPI ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
+		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)		
 		{		
 			if (m_spoCurrentScene)
 			{
-				return m_spoCurrentScene->ForwardNativeWindowEvents(hWnd, uMsg, wParam, lParam);
+				return m_spoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
 			}
 
 			return false;

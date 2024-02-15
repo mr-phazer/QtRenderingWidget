@@ -15,7 +15,7 @@ void rldx::DxBaseNode::Update(float timeElapsed)
     UppdateGlobalTransform(timeElapsed);
 }
 
-void rldx::DxBaseNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+void rldx::DxBaseNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-    // TODO: add small cube to reneder cue, cube for specifying node position
+    // TODO: add small cube to renderqueue, cube for specifying node position
 }

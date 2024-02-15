@@ -22,14 +22,14 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->RenderText();
 	
 	// re-enable depthbuffer
-	// TODO: do NOT create states in render loop, store then
+	// TODO: do NOT create states in render loop, store them
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthDefault(), 0);
 		
 	// TODO: do NOT create this in the render loop
 	poDeviceContext->RSSetState(m_upoCommonStates->CullNone());
 
 	//  fetch mesh nodes from scenegraph
-	m_sceneGraph.FetchNodes(GetRootNode(), &m_renderQueue);
+	m_sceneGraph.FillRenderBucket(GetRootNode(), &m_renderQueue);
 	
 	// -- update + set scene (per frame) constant buffer	
 	BindToDC(poDeviceContext);
@@ -75,7 +75,7 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 //	GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_hwndNativeWindowHandle, , width, height);	
 //}
 
-LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvents(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {		
 	if (uMsg == WM_KEYDOWN)
 	{ 
@@ -104,6 +104,8 @@ void rldx::DxScene::Update(float timeElapsed)
 
 	m_globalCamera.MoveFrame(timeElapsed);
 	m_globalDirectionalLight.MoveFrame(timeElapsed);
+
+	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
 }
 
 void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
@@ -155,8 +157,7 @@ void rldx::DxScene::UpdateViewAndPerspective()
 }
 
 void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
-{
-	//m_sceneFrameVSConstBuffer.buffer.SetData(poDeviceContext, m_sceneFrameVSConstBuffer.data);
+{	
 	m_sceneFrameVSConstBuffer.RefreshGPUData(poDeviceContext);
 	m_sceneFrameVSConstBuffer.SetStartSlot(0);	
 
@@ -167,32 +168,33 @@ void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	m_ambientLightSource.m_oPSConstBuffer.SetStartSlot(0);
 	m_ambientLightSource.BindToDC(poDeviceContext);
 
-	// vertex
-	//  shader buffer
+	// vertex	//  shader buffer
 	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
 	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
 	
-	// pixel shader buffer
-	ID3D11Buffer* pixelShaderSceneConstBuffers0[] = 
+	// TODO: build this into "ConstBuffer"??
+	// pixel shader const buffer
+	ID3D11Buffer* pPS_AmbientLIghtBuffer[] = 
 	{ 
 		m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 		
 	};
-	poDeviceContext->PSSetConstantBuffers(1, 0, pixelShaderSceneConstBuffers0);
+	poDeviceContext->PSSetConstantBuffers(1, 0, pPS_AmbientLIghtBuffer);
 	
-	ID3D11Buffer* pixelShaderSceneConstBuffers1[] = 
+	// TODO: build this into "ConstBuffer"??
+	// vertex shader const buffer
+	ID3D11Buffer* m_pPS_DirectionalLightBuffer[] = 
 	{ 
 		m_sceneFramePSConstBuffer.buffer.GetBuffer(),
 	};
-	poDeviceContext->PSSetConstantBuffers(1, 1, pixelShaderSceneConstBuffers1);
+	poDeviceContext->PSSetConstantBuffers(1, 1, m_pPS_DirectionalLightBuffer);
 		
-
 	m_textureSamplers.BindToDC(poDeviceContext);
 }
 
 inline void rldx::DxScene::DEBUGGING_SetViewAndPerspective()
 {
-	// Use DirectXMath to create view and perspective matrices.
-
+	// TODO: method full of crap, is it still useful/remove?
+	// Use DirectXMath to create view and perspective matrices, for debuggin purposes
 	DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.7f, 1.5f, 0.f);
 	DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, -0.1f, 0.0f, 0.f);
 	DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.f);

@@ -9,6 +9,6 @@ namespace rldx {
 	class IFlushable
 	{
 	public:
-		virtual void FlushToRenderQueue(IRenderBucket* pRenderQueue) = 0;
+		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue) = 0;
 	};
 };

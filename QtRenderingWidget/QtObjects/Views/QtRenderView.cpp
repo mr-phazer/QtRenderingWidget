@@ -111,7 +111,7 @@ bool QtRenderWidgetView::nativeEvent(const QByteArray& eventType, void* message,
 	if (m_upoSceneManager)
 	{
 		MSG* pMsg = reinterpret_cast<MSG*>(message);
-		ForwardNativeWindowEvents(pMsg);
+		ForwardNativeWindowEvent(pMsg);
 
 
 
@@ -122,9 +122,9 @@ bool QtRenderWidgetView::nativeEvent(const QByteArray& eventType, void* message,
 	//return QWidget::nativeEvent(eventType, message, result);
 }
 
-LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvents(MSG* pMsg)
+LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 {
-	return m_upoSceneManager->ForwardNativeWindowEvents(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
+	return m_upoSceneManager->ForwardNativeWindowEvent(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
 }
 
 bool QtRenderWidgetView::InitRenderView()

@@ -31,7 +31,7 @@
 //{
 //}
 //
-//void rldx::DxSceneNode::FlushToRenderQueue(IRenderBucket* pRenderQueue)
+//void rldx::DxSceneNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 //{
 //}
 //
