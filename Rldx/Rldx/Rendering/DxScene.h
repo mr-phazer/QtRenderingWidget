@@ -46,7 +46,7 @@ namespace rldx {
 		DxScene() = default;
 		DxScene(const std::string& name = "") : TIdentifiable(name) 
 		{
-			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingViewWidget for RPFM version 0.0.1a.");
+			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", {1,1,1,1}, 6.0f);
 		};
 
 		virtual void InitRenderView(ID3D11Device* poDevice);

@@ -1,5 +1,7 @@
-- CLean up tools, so is does use "using vamespace std"
+- When rendering-object store a pointer to resource, make it a pointer-pointer (or some shared_ptr/weak_ptr solution)
+so if/when resoources are changed the render-object has a valid pointer to the changed resource
 
+- CLean up tools, so is does NOT use "using vamespace std" in the HEADER
 
 - Make sure all paths sent/read from the resource_callback use "/"   
 

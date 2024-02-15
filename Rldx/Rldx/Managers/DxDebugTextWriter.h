@@ -76,7 +76,7 @@ namespace rldx {
 		std::unique_ptr<DirectX::SpriteFont> m_upoFont;
 		std::vector<std::wstring> m_stringRenderQueue = { L"D3D\nIt Works\nNOW: Scenegrapdh" };
 
-		std::vector<RenderTextString> m_stringExtQueue = {
+		std::vector<RenderTextString> m_stringExtQueue;/* = {
 			{L"Test String1", {1,1,1,1},  9.0f },
 			{L"Test String2", {1,1,1,1},  5.0f },
 			{L"Test String3", {1,1,1,1},  15.0f },
@@ -84,7 +84,7 @@ namespace rldx {
 			{L"Test String5", {1,1,1,1},  7.0f },
 			{L"Test String6", {1,1,1,1},  4.0f }
 			,
-		};
+		};*/
 
 		size_t m_maxStringQueueSize = 20;
 	};
