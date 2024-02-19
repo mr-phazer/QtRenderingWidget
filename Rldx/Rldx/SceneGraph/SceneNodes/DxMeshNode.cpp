@@ -5,7 +5,7 @@
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\Rendering\DxMesh.h"
 #include "DxMeshNode.h"
-#include "..\..\Rendering\DxMeshDrawable.h"
+#include "..\..\Rendering\DxMeshData.h"
 //#include "..\SceneNodes\DxBaseNode.h"
 
 
@@ -22,8 +22,8 @@ rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::string& name)
 void rldx::DxMeshNode::SetModelData(const rldx::DxCommonMeshData& meshData)
 {
 	auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-	m_meshDrawable.m_poMesh = newMeshHandle.GetPtr();
-	m_meshDrawable.m_poMesh->SetMeshData(meshData);
+	m_meshData.m_poMesh = newMeshHandle.GetPtr();
+	m_meshData.m_poMesh->SetMeshData(meshData);
 
 	// TODO: REMOVE:
 	auto DEBUG_BREAK = 1;
@@ -35,7 +35,7 @@ void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLO
 	DirectX::XMVECTOR xmMin = DirectX::XMLoadFloat3(&minPoint);
 	DirectX::XMVECTOR xmMax = DirectX::XMLoadFloat3(&maxPoint);
 
-	DirectX::BoundingBox::CreateFromPoints(m_meshDrawable.m_BB, xmMin, xmMax);	
+	DirectX::BoundingBox::CreateFromPoints(m_meshData.m_BB, xmMin, xmMax);	
 }
 
 //void rldx::DxMeshNode::Draw(ID3D11DeviceContext* poDC)
@@ -50,8 +50,8 @@ void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLO
 
 void DxMeshNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-	m_meshDrawable.m_mWorldMatrix = GetCurrentGlobalTransForm();
-	m_meshDrawable.m_pivotPoint = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0
+	m_meshData.m_mWorldMatrix = GetCurrentGlobalTransForm();
+	m_meshData.m_pivotPoint = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0
 
-	pRenderQueue->AddItem(&m_meshDrawable);
+	pRenderQueue->AddItem(&m_meshData);
 }

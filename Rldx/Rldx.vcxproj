@@ -62,7 +62,7 @@
     <ClInclude Include="Rldx\Rendering\DxLightSource.h" />
     <ClInclude Include="Rldx\Rendering\DxMaterial.h" />
     <ClInclude Include="Rldx\Rendering\DxMesh.h" />
-    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h" />
+    <ClInclude Include="Rldx\Rendering\DxMeshData.h" />
     <ClInclude Include="Rldx\Rendering\DxScene.h" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
     <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxWSModelModelnodeCreator.cpp" />
@@ -100,7 +100,7 @@
     <ClCompile Include="Rldx\Rendering\DxLightSource.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp" />
-    <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp" />
+    <ClCompile Include="Rldx\Rendering\DMeshData.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp" />

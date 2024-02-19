@@ -13,7 +13,7 @@ namespace rldx {
 
 	typedef TDxVSShaderConstBuffer<DxDeformerData> DxDeformerDataConstBuffer;
 
-	class DxMeshDrawable : public IRenderQueueItem
+	class DxMeshData : public IRenderQueueItem
 	{
 		// TODO: use friend or interface methods
 		friend class DxMeshNode;
@@ -32,8 +32,7 @@ namespace rldx {
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_BB = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 
-		// TODO: add DxBoundingBox		
-				
+	public:				
 		void SetMeshData(DxMesh* meshData) { m_poMesh = meshData; };
 		void SetMaterial(DxMaterial* material) { m_poMaterial = material; };
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_poShaderProgram = shaderProgram; };

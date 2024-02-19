@@ -40,7 +40,7 @@
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp">
       <Filter>Rldx\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Rendering\DxMeshDrawable.cpp">
+    <ClCompile Include="Rldx\Rendering\DMeshData.cpp">
       <Filter>Rldx\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Rendering\DxScene.cpp">
@@ -208,7 +208,7 @@
     <ClInclude Include="Rldx\Rendering\DxMesh.h">
       <Filter>Rldx\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Rendering\DxMeshDrawable.h">
+    <ClInclude Include="Rldx\Rendering\DxMeshData.h">
       <Filter>Rldx\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxScene.h">

@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 
-#include "..\..\Rendering\DxMeshDrawable.h"
+#include "..\..\Rendering\DxMeshData.h"
 #include "..\..\Rendering\DxMaterial.h"
 #include "DxBaseNode.h"
 #include "..\..\DataTypes\DxMeshData.h"
@@ -15,7 +15,7 @@ namespace rldx {
 
 	class DxMeshNode : public DxBaseNode
 	{		
-		DxMeshDrawable m_meshDrawable;
+		DxMeshData m_meshData;
 
 	public:
 		using SharedPtr = std::shared_ptr<DxMeshNode>;
@@ -23,11 +23,11 @@ namespace rldx {
 		static SharedPtr Create(const std::string& name = "");		
 
 		void SetModelData(const rldx::DxCommonMeshData& meshData);	
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshDrawable.m_poShaderProgram = shaderProgram; };
-		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshDrawable.m_poMaterial = pDxMaterial; };
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshData.m_poShaderProgram = shaderProgram; };
+		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshData.m_poMaterial = pDxMaterial; };
 		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
 		
-		DirectX::BoundingBox& GetBoundingBox() { return m_meshDrawable.m_BB; }
+		DirectX::BoundingBox& GetBoundingBox() { return m_meshData.m_BB; }
 
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 
