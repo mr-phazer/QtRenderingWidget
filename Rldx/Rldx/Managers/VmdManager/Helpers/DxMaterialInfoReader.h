@@ -1,20 +1,21 @@
-#pragma once#pragma once
+#pragma once
 
 #include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
-#include "..\..\..\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.h"
+#include "..\..\Rldx\Rldx\Tools\tools.h"
+#include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
 #include "VmdNodeCreators.h"
+
 
 namespace rldx
 {
-
 	/// <summary>
 	/// Find material info by pase thse files
 	/// </summary>
-	class DxMaterialReader
+	class DxMaterialInfoReader
 	{
 		VMDNodeData* m_pVmdModeData;
 	public:
-		DxMaterialReader(VMDNodeData* pVmdModeData) : m_pVmdModeData(pVmdModeData) {};
+		DxMaterialInfoReader(VMDNodeData* pVmdModeData) : m_pVmdModeData(pVmdModeData) {};
 
 		void Parse()
 		{
@@ -31,11 +32,17 @@ namespace rldx
 		}
 
 	private:
-		void  GetMaterialsFromRmv2()
+		void GetMaterialsFromRmv2()
 		{
+			if (m_pVmdModeData->varintMeshData.modelPath.empty()) {
+				return;
+			}
+
 			auto bytesRmv2 = DxResourceManager::GetCallBackFile(m_pVmdModeData->varintMeshData.modelPath);
 			auto Rmv2File = rmv2::RigidModelReader().Read(bytesRmv2);
 
+			// set geometry path is WSMODEL data, so RMV2/WSMODEL reads their geomtry path fromm the same place
+			m_pVmdModeData->varintMeshData.wsModelData.geometryPath = m_pVmdModeData->varintMeshData.modelPath;
 
 			for (size_t iLod = 0; iLod < Rmv2File.lods.size(); iLod++)
 			{
@@ -49,17 +56,12 @@ namespace rldx
 			}
 		}
 
-		void  GetMaterialsWSModel()
+		void GetMaterialsWSModel()
 		{
 			auto bytesWsModel = DxResourceManager::GetCallBackFile(m_pVmdModeData->varintMeshData.modelPath);
 
 			rmv2::WsModelReader wsModelReader;
-			m_pVmdModeData->varintMeshData.wsModelData = wsModelReader.Read(bytesWsModel);
-
-			auto debug_1 = 1;
-
+			m_pVmdModeData->varintMeshData.wsModelData = wsModelReader.Read(bytesWsModel);			
 		}
-
 	};
-
 }

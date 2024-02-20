@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DxModelNode.h"
+#include "DxModelNode.h"
 #include "..\..\ImportExport\WsModel\Reader\WsModelReader.h"
 #include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
 
@@ -15,11 +15,10 @@ namespace rldx {
 
 	enum class VMDTagEnum
 	{
+		INVALID = 0, 
 		Slot,
 		VariantMesh,
-		VariantMeshRef,
-
-		NOT_SET = 0xFFFFF
+		VariantMeshRef		
 	};
 
 	struct FileExtensions {
@@ -54,7 +53,7 @@ namespace rldx {
 
 	struct VMDNodeData
 	{
-		VMDTagEnum Tag = VMDTagEnum::NOT_SET; // State
+		VMDTagEnum Tag = VMDTagEnum::INVALID; 
 		std::wstring Name;
 
 		struct VaritantMeshData
@@ -95,7 +94,7 @@ namespace rldx {
 	class IDxVmdNodeAllocator
 	{
 	public:
-		virtual void Allocate(ID3D11Device* poDevice, DxVmdNode* node) = 0;
+		virtual void AllocateDxBuffers(ID3D11Device* poDevice, DxVmdNode* node) = 0;
 		//virtual DxModelNode::SharedPtr AlloNode(ID3D11De	vice* poDevice, DxBaseNode* rootNode, ByteStream& data) = 0;
 
 	};

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
-#include "..\..\..\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.h"
+#include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
 #include "VmdNodeCreators.h"
 
 namespace rldx
@@ -16,7 +16,7 @@ namespace rldx
 			// Inherited via TFactoryStringKey
 			void HandleKeyNotFound(std::string KeyValue) override
 			{
-				throw LogException("Stuff");
+				throw std::exception("VmdNodeTreeBuilder");
 			}
 		} factory;
 

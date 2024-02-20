@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\Rendering\DxScene.h"
+#include "..\Managers\VmdManager\DxVmdManager.h"
 #include "..\..\ImportExport\Helpers\Templates.h"
 
 namespace rldx {
@@ -20,6 +21,9 @@ namespace rldx {
 
 	class DxSceneCreator : public IDxSceneBuilder
 	{
+
+		DxVmdManager m_variantMeshCreator;
+
 		DxScene::Uptr InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB = true, const std::string& name = "");;		
 
 	public:

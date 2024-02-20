@@ -74,8 +74,31 @@ void rldx::DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const r
 	}
 }
 
+
+void rldx::DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData)
+{
+	if (wsModelData.xmlMateriData.empty()) {
+		throw std::exception("lod_size == 0, unexpected!");
+	}
+
+	size_t iLod = 0;
+
+	if (wsModelData.xmlMateriData[iLod].size() != m_lods[iLod].size()) {
+		throw std::exception("mateial.mesh_count != mesh_count, unexpected!");
+	}
+
+	for (size_t iMesh = 0; iMesh < wsModelData.xmlMateriData[0].size(); iMesh++)
+	{
+		auto material = DxMaterial::Create(wsModelData.xmlMateriData[0][iMesh].textures);
+		m_lods[0][iMesh]->SetMaterial(material);
+	}
+}
+
 void rldx::DxModelNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
+	if (m_activeLod >= m_lods.size() || )
+		return;
+
 	for (auto& itMeshNode : m_lods[m_activeLod])
 	{
 		itMeshNode->FlushToRenderBucket(pRenderQueue);

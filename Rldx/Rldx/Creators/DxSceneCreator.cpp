@@ -54,7 +54,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 			/*libtools::GetExePath() + */LR"(PS_Simple.cso)"
 		);
 
-	auto newNotTextureShaderProgram =
+	auto noTextures_ShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
 			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
@@ -69,7 +69,13 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
 	
-	DxResourceManager::Instance()->SetDefaultShaderProgram(newNotTextureShaderProgram);
+	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
+
+	ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_state_troops_swordsmen_ror.variantmeshdefinition)");
+	m_variantMeshCreator.Create(vmdBinary);
+	m_variantMeshCreator.AllocateNodes();
+		
+	m_newScene->GetRootNode()->AddChild(m_variantMeshCreator.GetNode());
 
 	return std::move(m_newScene);
 }
@@ -111,10 +117,10 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
 	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 	
-
 	SetCameraAutoFit(modelNodeRmv2, poScene);
 
-	poScene->GetRootNode()->AddChild(modelNodeRmv2);
+	// TODO: re-enable, disabled to test VMD code
+	//poScene->GetRootNode()->AddChild(modelNodeRmv2);
 }
 
 void rldx::DxSceneCreator::SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene)

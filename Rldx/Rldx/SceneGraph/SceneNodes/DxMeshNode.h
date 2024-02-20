@@ -25,7 +25,7 @@ namespace rldx {
 		static SharedPtr Create(const std::string& name = "");		
 
 		void SetModelData(const rldx::DxCommonMeshData& meshData);	
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshData.m_poShaderProgram = shaderProgram; };
+		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshData.m_poShaderProgram = shaderProgram; };
 		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshData.m_poMaterial = pDxMaterial; };
 		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
 		

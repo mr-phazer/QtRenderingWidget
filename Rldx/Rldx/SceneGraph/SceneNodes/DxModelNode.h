@@ -2,6 +2,7 @@
 
 #include "DxMeshNode.h"
 #include "..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
+#include "..\..\ImportExport\WsModel\DataTypes\WsModelData.h"
 
 namespace rldx
 {
@@ -12,18 +13,22 @@ namespace rldx
 	/// </summary>
 	class DxModelNode : public DxMeshNode
 	{
-
+	protected:
 		size_t m_activeLod = 0;;
 		std::vector<std::vector<DxMeshNode::SharedPtr>> m_lods;
 	public:
 		using SharedPtr = std::shared_ptr<DxModelNode>;
 
 	public:
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram);;
+		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
-		
+
 		// TODO add support for (parsed) WSMODEL
 		void LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
+
+		// TODO: TEEEEESST
+		void LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData);
+
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;;
 
 	private:

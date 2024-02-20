@@ -43,6 +43,8 @@ namespace rldx {
 
 	public:
 		DxMaterial() = default;
+		static DxMaterial* Create(std::vector<rmv2::TextureElement>& textures);
+
 		void InitWithDefaulTextures();
 		bool operator==(const DxMaterial& other) const;
 		void SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex);

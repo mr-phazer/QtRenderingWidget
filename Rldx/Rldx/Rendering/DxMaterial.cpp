@@ -5,6 +5,16 @@
 
 using namespace rldx;
 
+DxMaterial* rldx::DxMaterial::Create(std::vector<rmv2::TextureElement>& textures)
+{
+	auto newMaterial = rldx::DxResourceManager::Instance()->AllocMaterial().GetPtr();
+	newMaterial->InitWithDefaulTextures();
+
+	newMaterial->SetTextures(DxDeviceManager::Device(), textures);
+
+	return newMaterial;
+}
+
 void rldx::DxMaterial::InitWithDefaulTextures()
 {
 	m_textures[TextureTypeEnum::eBaseColor] = { DxResourceManager::Instance()->GetTexture(L"default_base_colour.dds").GetPtr() };

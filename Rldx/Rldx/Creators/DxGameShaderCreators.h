@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include "..\Rendering\DxShaderProgram.h"
 
 class IShaderProgramCreator
 {

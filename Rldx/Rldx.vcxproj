@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
-    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialReader.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Rldx\Rendering\DxMesh.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshRenderData.h" />
     <ClInclude Include="Rldx\Rendering\DxScene.h" />
+    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
@@ -86,7 +88,7 @@
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
     <ClInclude Include="Rldx\Tools\COMerrors.h" />
     <ClInclude Include="Rldx\Tools\ModelImporter.h" />
@@ -120,7 +122,7 @@
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
     <ClCompile Include="Rldx\Tools\tools.cpp" />
   </ItemGroup>

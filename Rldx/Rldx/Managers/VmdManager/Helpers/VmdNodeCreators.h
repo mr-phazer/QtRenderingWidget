@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "..\..\..\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.h"
+#include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
 
 
 namespace rldx
