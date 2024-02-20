@@ -7,11 +7,6 @@
 #include "..\..\Libs\PugiXML\pugixml.hpp"
 #include "..\..\Helpers\ByteStream.h"
 #include "..\DataTypes\WsModelData.h"
-#include "..\..\XmMaterial\Readers\XmMaterialReader.h"
-
-
-extern pugi::xml_attribute get_attribute_nocase(const pugi::xml_node& root, const std::wstring& attrName);;
-extern pugi::xml_node get_child_nocase(const  pugi::xml_node& root, const std::wstring& attrName);
 
 namespace rmv2
 {
@@ -22,12 +17,12 @@ namespace rmv2
 
 	public:
 		WsModelData Read(ByteStream& fileData);
-
-		std::vector<TextureElement> GetTexturesFromXmlMaterial(size_t lodIndex, size_t partIndex);
+		//std::vector<TextureElement> GetTexturesFromXmlMaterial(size_t lodIndex, size_t partIndex);
 
 	private:		
-		void ReadMaterialPaths(const pugi::xml_node& xmlModel);
+		void ReadMaterialPaths(const pugi::xml_node& xmlModel);		
 		void GetRMVPath(const pugi::xml_node& xmlModel);
 		void LoadXML(ByteStream& fileData);
+		void ReadXMLMaterialFiles(XMLMaterialData& materialdata);
 	};
 }

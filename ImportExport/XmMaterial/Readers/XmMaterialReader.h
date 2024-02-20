@@ -11,6 +11,7 @@ namespace rmv2
 		XMLMaterialData* m_poMaterialData;
 		pugi::xml_document m_xmlDoc;
 
+		XmMaterialReader() {};
 	public: 
 		XmMaterialReader(XMLMaterialData* pData) : m_poMaterialData(pData) {};
 		XMLMaterialData Read();

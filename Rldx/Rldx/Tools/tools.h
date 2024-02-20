@@ -82,6 +82,17 @@ inline std::wstring toLower(std::wstring s)
 	return s;
 }
 
+inline  bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
+{
+	return toLower(str1) == toLower(str2);
+}
+
+inline  bool CompareNoCase(const std::string& str1, const std::string& str2)
+{
+	return toLower(str1) == toLower(str2);
+}
+
+
 
 /*inline std::wstring toUpper_WRONG(const std::wstring& _strInput){
 	std::wstring strOut = _strInput;
@@ -734,4 +745,15 @@ namespace guard
 			throw out_of_range(strWhat.c_str());
 		};
 	}
+}
+
+
+inline  bool CompareExtension(const std::string& str1, const std::string& str2)
+{
+	return CompareNoCase(libtools::GetFileExtension(str1), libtools::GetFileExtension(str2));
+}
+
+inline  bool CompareExtension(const std::wstring& str1, const std::wstring& str2)
+{
+	return CompareNoCase(libtools::GetFileExtension(str1), libtools::GetFileExtension(str2));
 }

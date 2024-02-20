@@ -6,6 +6,7 @@
 #include "..\Creators\DxModelNodeCreators\DxModelNodeCreator.h"
 #include "..\..\..\ImportExport\WsModel\Reader\WsModelReader.h"
 
+#include "..\SceneGraph\SceneNodes\DxVmdNode.h"
 
 rldx::DxScene::Uptr rldx::DxSceneCreator::InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::string& name)
 {

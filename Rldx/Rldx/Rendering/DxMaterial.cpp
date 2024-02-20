@@ -20,6 +20,14 @@ bool DxMaterial::operator==(const DxMaterial& other) const
 	return m_pathHash == other.m_pathHash;
 }
 
+void rldx::DxMaterial::SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex)
+{
+	for (auto& itText : inTex)
+	{
+		AddTexture(poDevice, itText.textureType, libtools::string_to_wstring(itText.texturePath));
+	}
+}
+
 DxMaterial* DxMaterial::Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures)
 {
 	auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();

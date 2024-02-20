@@ -11,6 +11,7 @@
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Interfaces\IBindable.h"
 #include "DxTexture.h"
+#include "..\..\..\ImportExport\RigidModel\DataTypes\TextureElement.h"
 
 namespace rldx {
 	// for texture loading, maybe not needed
@@ -44,6 +45,9 @@ namespace rldx {
 		DxMaterial() = default;
 		void InitWithDefaulTextures();
 		bool operator==(const DxMaterial& other) const;
+		void SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex);
+
+		
 
 		std::string& GetPathHashRef() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =

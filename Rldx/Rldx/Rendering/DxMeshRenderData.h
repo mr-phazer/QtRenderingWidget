@@ -7,13 +7,15 @@
 namespace rldx {
 
 	class DxMeshNode;
+	class DxBaseNode;
 	class DxMesh;	
 	class DxMaterial;
 	class DxMeshShaderProgram;
+	class DxDeformerNode;
 
 	typedef TDxVSShaderConstBuffer<DxDeformerData> DxDeformerDataConstBuffer;
 
-	class DxMeshData : public IRenderQueueItem
+	class DxMeshRenderData : public IRenderQueueItem
 	{
 		// TODO: use friend or interface methods
 		friend class DxMeshNode;
@@ -25,9 +27,12 @@ namespace rldx {
 		DxMeshNode* m_pDeformerNode = nullptr; // points to deformer/skeleton node, that will deform this mesh
 		
 		// TODO: use this to move attached meshes (weapons/shields in VMDs)
-		sm::Matrix m_mWorldMatrix;
-		sm::Vector3 m_pivotPoint;
-		uint32_t boneIndex = 0; // TODO: is this needed?
+		sm::Matrix m_mWorldMatrix = sm::Matrix::Identity;; 
+		sm::Matrix m_mModelSpaceMatrix = sm::Matrix::Identity;
+		sm::Vector3 m_pivotPoint = { 1,1,1 };
+		
+		DxDeformerNode* m_deformNode = nullptr;
+		DxBaseNode* m_attachNode = nullptr;
 
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_BB = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });

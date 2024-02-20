@@ -544,7 +544,11 @@ namespace pugi
 		// Get child, attribute or next/previous sibling with the specified name
 		xml_node child(const char_t* name) const;
 		
+		// added by phazer, 15-2-2024
 		xml_node child_no_case(const char_t* name) const;
+		
+		// added by phazer, 19-2-2024
+		xml_attribute attribute_no_case(const char_t* name_) const;
 
 		xml_attribute attribute(const char_t* name) const;
 		xml_node next_sibling(const char_t* name) const;

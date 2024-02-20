@@ -8,7 +8,7 @@
 #include "AttachElement.h"
 #include "MeshHeaderType5.h"
 
-namespace rmv2 
+namespace rmv2
 {
 	template <typename CONST_BUF_DATA_TYPE>
 	struct ExtraMaterialElement
@@ -26,10 +26,10 @@ namespace rmv2
 	};
 
 	struct MaterialCommon
-	{	
+	{
 		MaterialHeaderType5 materialHeader;
 		std::vector<AttachmentPointTableEntry_V6_V7_V8> attachElements;
 		std::vector<TextureElement> textureElements;
 		ExtraMaterialParams extraMaterialParams;
 	};
-}
+} // END: namespace "rmv2"

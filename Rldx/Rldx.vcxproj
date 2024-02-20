@@ -19,7 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialReader.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.h" />
     <ClInclude Include="Rldx\Creators\DxModelNodeCreators\DxWSModelModelnodeCreator.h" />
     <ClInclude Include="Rldx\Creators\DxModelNodeCreators\DxRmv2ModelNodeCreator.h" />
@@ -62,8 +66,10 @@
     <ClInclude Include="Rldx\Rendering\DxLightSource.h" />
     <ClInclude Include="Rldx\Rendering\DxMaterial.h" />
     <ClInclude Include="Rldx\Rendering\DxMesh.h" />
-    <ClInclude Include="Rldx\Rendering\DxMeshData.h" />
+    <ClInclude Include="Rldx\Rendering\DxMeshRenderData.h" />
     <ClInclude Include="Rldx\Rendering\DxScene.h" />
+    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
+    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
     <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxWSModelModelnodeCreator.cpp" />
     <ClCompile Include="Rldx\Creators\DxModelNodeCreators\DxRmv2ModelNodeCreator.cpp" />
@@ -80,11 +86,12 @@
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
     <ClInclude Include="Rldx\Tools\COMerrors.h" />
     <ClInclude Include="Rldx\Tools\ModelImporter.h" />
     <ClInclude Include="Rldx\Tools\tools.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
@@ -100,7 +107,7 @@
     <ClCompile Include="Rldx\Rendering\DxLightSource.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMaterial.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMesh.cpp" />
-    <ClCompile Include="Rldx\Rendering\DMeshData.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMeshRenderData.cpp" />
     <ClCompile Include="Rldx\Rendering\DxScene.cpp" />
     <ClCompile Include="Rldx\Rendering\DxShaderProgram.cpp" />
     <ClCompile Include="Rldx\Rendering\DXSwapChain.cpp" />
@@ -113,6 +120,7 @@
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxMeshNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxSceneNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\VariannMeshNode\DxVmdNode.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
     <ClCompile Include="Rldx\Tools\tools.cpp" />
   </ItemGroup>

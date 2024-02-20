@@ -5667,6 +5667,7 @@ namespace pugi
 		return xml_node();
 	}
 
+	// added by phazer, 15-2-2024
 	PUGI_IMPL_FN xml_node xml_node::child_no_case(const char_t* name_) const
 	{
 		if (!_root) return xml_node();
@@ -5674,7 +5675,8 @@ namespace pugi
 		for (xml_node_struct* i = _root->first_child; i; i = i->next_sibling)
 		{
 			const char_t* iname = i->name;
-			if (iname && /*impl::strequal(name_, iname*/  toUpper(name_) == toUpper(iname))
+			//if (iname && impl::strequal(name_, iname))
+			if (iname &&  toUpper(name_) == toUpper(iname))			
 				return xml_node(i);
 		}
 
@@ -5688,7 +5690,23 @@ namespace pugi
 		for (xml_attribute_struct* i = _root->first_attribute; i; i = i->next_attribute)
 		{
 			const char_t* iname = i->name;
-			if (iname && impl::strequal(name_, iname))
+			if (iname && impl::strequal(name_, iname))			
+				return xml_attribute(i);
+		}
+
+		return xml_attribute();
+	}
+
+	// added by phazer, 19-2-2024
+	PUGI_IMPL_FN xml_attribute xml_node::attribute_no_case(const char_t* name_) const
+	{
+		if (!_root) return xml_attribute();
+
+		for (xml_attribute_struct* i = _root->first_attribute; i; i = i->next_attribute)
+		{
+			const char_t* iname = i->name;
+			//if (iname && impl::strequal(name_, iname))
+			if (iname && toUpper(name_) == toUpper(iname))
 				return xml_attribute(i);
 		}
 

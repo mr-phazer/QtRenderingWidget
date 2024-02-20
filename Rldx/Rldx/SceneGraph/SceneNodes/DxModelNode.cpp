@@ -47,7 +47,7 @@ void rldx::DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_
 	auto rm2MeshData = rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
 	m_lods[iLod][iMesh]->SetModelData(rm2MeshData);
 
-	// Iinit the bound from RMV2 header
+	// Iinit the bound from RigidModelV2 header
 	m_lods[iLod][iMesh]->SetBoundingBox(
 		meshHeader.vMinBB,
 		meshHeader.vMaxBB

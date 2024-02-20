@@ -16,9 +16,9 @@ namespace rldx
 
 	// TODO: clean up, remove out-commented, at the very least!
 	template <typename VERTEX_TYPE, typename INDEX_TYPE>
-	struct TDxMeshData
+	struct TDxMeshRenderData
 	{
-		~TDxMeshData() = default;
+		~TDxMeshRenderData() = default;
  
 		uint32_t                                                indexCount = 0;
 		uint32_t                                                startIndex = 0;
@@ -34,5 +34,5 @@ namespace rldx
 		TRawMeshData<VERTEX_TYPE, INDEX_TYPE> originalMeshData;
 	};
 
-	using DxCommonMeshData = TDxMeshData<CommonVertex, uint32_t>;
+	using DxCommonMeshData = TDxMeshRenderData<CommonVertex, uint32_t>;
 };

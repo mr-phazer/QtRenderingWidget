@@ -5,7 +5,7 @@
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\Rendering\DxMesh.h"
 #include "DxMeshNode.h"
-#include "..\..\Rendering\DxMeshData.h"
+#include "..\..\Rendering\DxMeshRenderData.h"
 //#include "..\SceneNodes\DxBaseNode.h"
 
 

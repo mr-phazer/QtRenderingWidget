@@ -27,7 +27,7 @@ extern "C" QWidget * CreateQRenderingWidget(
 
 
 /// <summary>
-/// Add an RMV2, WSMODEL or VMD (model) to scene
+/// Add an RigidModelV2, WSMODEL or VMD (model) to scene
 /// TODO: WIP
 /// </summary>
 /// <param name="pQRendeeWiget">Thee rendering widget pointer</param>

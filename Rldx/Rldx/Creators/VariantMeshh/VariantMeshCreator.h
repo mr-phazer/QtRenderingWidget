@@ -54,9 +54,9 @@ namespace rldx
 					- fil tag info into node (for later variant randomization (and saving)
 					- for each tag that need parsing
 					  - VARIANT_MESH_REFERENCE: request file from callback
-					  - WSMODEL: parse, and store RMV2 and material INFO in node
-					  - RMV2: do the same
-						 - (maybe store WSMODEL/xmlmaterial, and RMV2 file material in the same structs)
+					  - WSMODEL: parse, and store RigidModelV2 and material INFO in node
+					  - RigidModelV2: do the same
+						 - (maybe store WSMODEL/xmlmaterial, and RigidModelV2 file material in the same structs)
 
 
 					(- pause rendering, maybe)

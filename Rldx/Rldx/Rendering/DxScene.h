@@ -94,13 +94,13 @@ namespace rldx {
 		void DEBUGGING_SetViewAndPerspective();
 
 		// TODO: remove?
-		void BindAllBindable(ID3D11DeviceContext* poDeviceContext)
-		{
-			for (auto& bindable : m_bindableObjects)
-			{
-				bindable->BindToDC(poDeviceContext);
-			}
-		}
+		//void BindAllBindable(ID3D11DeviceContext* poDeviceContext)
+		//{
+		//	for (auto& bindable : m_bindableObjects)
+		//	{
+		//		bindable->BindToDC(poDeviceContext);
+		//	}
+		//}
 
 
 	private:

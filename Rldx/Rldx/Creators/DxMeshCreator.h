@@ -2,27 +2,28 @@
 
 #include <assert.h>
 #include "..\DataTypes\DxMeshData.h"
+
 #include "..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
 
 namespace rldx {
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
-	class DxMeshDataCreator
+	class DxMeshRenderDataCreator
 	{
 	public:
-		TDxMeshData<VERTEX_TYPE, INDEX_TYPE> CreateDxMeshData(ID3D11Device* _poDevice, const std::vector<VERTEX_TYPE>& vertices, const std::vector<INDEX_TYPE>& indices);
+		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> CreateDxMeshRenderData(ID3D11Device* _poDevice, const std::vector<VERTEX_TYPE>& vertices, const std::vector<INDEX_TYPE>& indices);
 
 	private:
 		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices);
 		bool FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices);
 	private:
-		TDxMeshData<VERTEX_TYPE, INDEX_TYPE> m_poMesh;
+		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> m_poMesh;
 
 	}; // class DxMeshCreatorHelper
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
 
-	inline TDxMeshData<VERTEX_TYPE, INDEX_TYPE> DxMeshDataCreator<VERTEX_TYPE, INDEX_TYPE>::CreateDxMeshData(
+	inline TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> DxMeshRenderDataCreator<VERTEX_TYPE, INDEX_TYPE>::CreateDxMeshRenderData(
 		ID3D11Device* _poDevice,
 		const std::vector<VERTEX_TYPE>& vertices,
 		const std::vector<INDEX_TYPE>& indices)
@@ -41,7 +42,7 @@ namespace rldx {
 	}
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
-	inline bool DxMeshDataCreator<VERTEX_TYPE, INDEX_TYPE>::FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices)
+	inline bool DxMeshRenderDataCreator<VERTEX_TYPE, INDEX_TYPE>::FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices)
 	{
 		if (indexCount == 0 || pIndices == nullptr)
 			return false;
@@ -69,7 +70,7 @@ namespace rldx {
 	}
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
-	inline bool DxMeshDataCreator<VERTEX_TYPE, INDEX_TYPE>::FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices)
+	inline bool DxMeshRenderDataCreator<VERTEX_TYPE, INDEX_TYPE>::FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices)
 	{
 		if (vertexCount == 0)
 			return false;
@@ -107,10 +108,11 @@ namespace rldx {
 		static DxCommonMeshData CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh);
 	};
 
-	class DxModelCreatorHelper
-	{
-		static std::vector<DxCommonMeshData> CreateFromRmv2File(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2Model);
-	};
+	// TODO: remove?
+	//class DxModelCreator
+	//{
+	//	static std::vector<DxCommonMeshData> CreateFromRmv2File(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2Model);
+	//};
 
 
 }; // namespace rldx

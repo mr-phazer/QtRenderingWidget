@@ -195,6 +195,17 @@ std::wstring libtools::GetDirFromFullPath(const std::wstring& _str)
 
 std::string libtools::GetFileExtension(const std::string& _str)
 {
+	std::string out = _str;
+
+	auto dotPosition = out.find('.');
+	if (dotPosition == std::string::npos) // no dot, return unchanged
+		return out;
+
+	out.erase(0, dotPosition);
+
+	return out;
+
+
 	if (_str == "")
 		return "";
 
@@ -220,6 +231,17 @@ std::string libtools::GetFileExtension(const std::string& _str)
 
 std::wstring libtools::GetFileExtension(const std::wstring& _str)
 {
+	std::wstring out = _str;
+
+	auto dotPosition = out.find('.');
+	if (dotPosition == std::wstring::npos) // no dot, return unchanged
+		return out;
+
+	out.erase(0, dotPosition+1);
+
+	return out;
+
+
 	if (_str == L"")
 		return L"";
 

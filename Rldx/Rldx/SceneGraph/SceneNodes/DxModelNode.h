@@ -12,8 +12,11 @@ namespace rldx
 	/// </summary>
 	class DxModelNode : public DxMeshNode
 	{
+
 		size_t m_activeLod = 0;;
 		std::vector<std::vector<DxMeshNode::SharedPtr>> m_lods;
+	public:
+		using SharedPtr = std::shared_ptr<DxModelNode>;
 
 	public:
 		void SetShaderProgram(DxMeshShaderProgram* shaderProgram);;

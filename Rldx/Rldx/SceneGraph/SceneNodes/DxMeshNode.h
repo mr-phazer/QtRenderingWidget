@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 
-#include "..\..\Rendering\DxMeshData.h"
+#include "..\..\Rendering\DxMeshRenderData.h"
 #include "..\..\Rendering\DxMaterial.h"
 #include "DxBaseNode.h"
 #include "..\..\DataTypes\DxMeshData.h"
@@ -10,12 +10,14 @@
 namespace rldx {		
 
 	// forward decl	
-	class DxMeshData;	
+	class DxMeshRenderData;	
 	class DxMeshShaderProgram;	
+	
 
 	class DxMeshNode : public DxBaseNode
 	{		
-		DxMeshData m_meshData;
+	
+		DxMeshRenderData m_meshData;
 
 	public:
 		using SharedPtr = std::shared_ptr<DxMeshNode>;

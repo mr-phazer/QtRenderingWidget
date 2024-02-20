@@ -34,8 +34,8 @@ rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::MakeTestCubeMesh(ID3D11Device*
 		rawMeshData.indices.push_back(indices[iIndex]);
 	}
 	
-	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
-	auto result = meshCreator.CreateDxMeshData(poDevice, rawMeshData.vertices, rawMeshData.indices);
+	auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
+	auto result = meshCreator.CreateDxMeshRenderData(poDevice, rawMeshData.vertices, rawMeshData.indices);
 
 	return result;
 }
@@ -98,8 +98,8 @@ rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::MakeGrid(ID3D11Device* poDevic
 		vecIndex.push_back(index++);
 	}
 
-	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
-	auto result = meshCreator.CreateDxMeshData(poDevice, vecVertex, vecIndex);
+	auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
+	auto result = meshCreator.CreateDxMeshRenderData(poDevice, vecVertex, vecIndex);
 
 	result.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 
@@ -108,7 +108,7 @@ rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::MakeGrid(ID3D11Device* poDevic
 
 rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh)
 {
-	auto meshCreator = DxMeshDataCreator<CommonVertex, uint32_t>();
+	auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
 	
 	std::vector<uint32_t> vecIndices32;
 	for (auto index : rmv2Mesh.meshData.indices)
@@ -116,7 +116,7 @@ rldx::DxCommonMeshData rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(ID3D11Devic
 		vecIndices32.push_back(index);
 	}
 	
-	auto result = meshCreator.CreateDxMeshData(poDevice, rmv2Mesh.meshData.vertices, vecIndices32);
+	auto result = meshCreator.CreateDxMeshRenderData(poDevice, rmv2Mesh.meshData.vertices, vecIndices32);
 
 	return result;
 }
