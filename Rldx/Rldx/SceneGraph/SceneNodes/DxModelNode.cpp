@@ -96,8 +96,9 @@ void rldx::DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::Ws
 
 void rldx::DxModelNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-	if (m_activeLod >= m_lods.size() || )
+	if (m_activeLod >= m_lods.size() || !GetDrawState()) {
 		return;
+	}
 
 	for (auto& itMeshNode : m_lods[m_activeLod])
 	{

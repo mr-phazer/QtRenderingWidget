@@ -204,6 +204,9 @@ namespace rldx {
 		void Update(float timeElapsed) override;		
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
 
+		void SetDrawState(bool bState) { m_bDrawState = bState; }
+		bool GetDrawState() const { return m_bDrawState; }
+
 	private:
 		void SetParent(DxBaseNode* poParent)
 		{
@@ -217,6 +220,8 @@ namespace rldx {
 		// -- node geomtry
 		NodeTransform m_nodeTransform;
 		sm::Matrix m_tempGlobalTransForm = sm::Matrix::Identity;
+
+		bool m_bDrawState = true;
 
 		// TODO: DxNodeCube (DxDrawableMesh) HERE, so a little cube can be drawn
 
