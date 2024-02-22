@@ -112,7 +112,7 @@ void QtMainWindowView::InitRenderView()
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
 	
-	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps)");
+	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Debug)");
 	SetAssetFolder(&globalAssetFolder);	
 
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
