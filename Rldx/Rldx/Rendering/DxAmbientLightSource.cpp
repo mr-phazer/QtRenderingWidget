@@ -4,6 +4,7 @@
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Rendering\DxTexture.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "..\..\..\DXUT\Core\DXUTmisc.h"
 
 using namespace rldx;
 
@@ -14,6 +15,7 @@ DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, const 
 	oNewInstance.SetTexturesFromFiles(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);
 
 	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);
+	DXUT_SetDebugName(oNewInstance.m_oPSConstBuffer.buffer.GetBuffer(), psConstBufferName);
 
 	return oNewInstance;
 }
@@ -26,6 +28,7 @@ DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, DxText
 	oNewInstance.m_poSpecularMap = specularCubmap;
 
 	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);
+	DXUT_SetDebugName(oNewInstance.m_oPSConstBuffer.buffer.GetBuffer(), psConstBufferName);
 
 	return oNewInstance;
 }
@@ -37,6 +40,7 @@ DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, ByteSt
 	oNewInstance.SetTexturesFromMemory(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);
 
 	oNewInstance.m_oPSConstBuffer.buffer.Create(poDevice);
+	DXUT_SetDebugName(oNewInstance.m_oPSConstBuffer.buffer.GetBuffer(), psConstBufferName);
 
 	return oNewInstance;
 }
@@ -92,19 +96,16 @@ void DxAmbientLightSource::SetTexturesFromMemory(
 }
 
 void DxAmbientLightSource::BindToDC(ID3D11DeviceContext* poDC)
-{
+{		
+	m_oPSConstBuffer.SetStartSlot(0);
 	m_oPSConstBuffer.BindToDC(poDC);
-
-	// TODO: test/finish this
+		
 	ID3D11ShaderResourceView* ppShaderResourceViews0[] = {
-		m_poDiffuseMap->GetShaderResourceView(),
-		//m_poLUT->GetShaderResourceView(),
+		m_poDiffuseMap->GetShaderResourceView(),		
 	};
 
 	ID3D11ShaderResourceView* ppShaderResourceViews1[] = {
-
-		m_poSpecularMap->GetShaderResourceView(),
-		//m_poLUT->GetShaderResourceView(),
+		m_poSpecularMap->GetShaderResourceView(),		
 	};
 
 	poDC->PSSetShaderResources(0, 1, ppShaderResourceViews0);

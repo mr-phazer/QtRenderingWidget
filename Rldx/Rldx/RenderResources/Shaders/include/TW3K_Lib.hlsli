@@ -743,11 +743,11 @@ float3 get_sun_colour()
 }
 
 float3 get_environment_colour(in float3 direction, in float lod)
-{
+{    
 	//TEX return texCUBElod( s_hdr_environment_map, float4 ( texcoordEnvSwizzle( direction ) , lod ) ).rgb;
     //return t_hdr_environment_map.SampleLevel(s_cubemap, (texcoordEnvSwizzle(direction)), lod).rgb;
-    return tex_cube_specular.SampleLevel(s_AnisoClamp, (texcoordEnvSwizzle(direction)), lod).rgb
-    * env_color.rgb * env_radiance * 0.5;
+    return (tex_cube_specular.SampleLevel(s_AnisoClamp, (texcoordEnvSwizzle(direction)), lod).rgb * env_color.rgb * env_radiance); 
+
 }
 
 //	Ambient diffuse
@@ -756,8 +756,7 @@ float3 cube_ambient(in float3 N)
 	//TEX return texCUBE( s_hdr_ambient, texcoordEnvSwizzle(N) ).rgb;
 
     //return t_hdr_ambient.Sample(s_cubemap, texcoordEnvSwizzle(N)).rgb;
-    return tex_cube_diffuse.Sample(s_AnisoClamp, texcoordEnvSwizzle(N)).rgb
-    * env_color.rgb * env_radiance * 0.5;
+    return (tex_cube_diffuse.Sample(s_AnisoClamp, texcoordEnvSwizzle(N)).rgb * env_color.rgb * env_radiance);
 
 }
 
@@ -1328,7 +1327,7 @@ float get_env_map_lod(in float roughness_in)
     float roughness = 1.0 - smoothness;
 
 	//	This must be the number of mip-maps in the environment map!
-    float texture_num_lods = 10.0f;
+    float texture_num_lods = 8.0f;
 
     float env_map_lod = roughness * (texture_num_lods - 1.0);
 
@@ -1336,7 +1335,7 @@ float get_env_map_lod(in float roughness_in)
 }
 
 float3 sample_environment_specular(in float roughness_in, in float3 reflected_view_vec)
-{
+{    
     float env_map_lod = get_env_map_lod(roughness_in);
 
     return get_environment_colour(reflected_view_vec, env_map_lod);

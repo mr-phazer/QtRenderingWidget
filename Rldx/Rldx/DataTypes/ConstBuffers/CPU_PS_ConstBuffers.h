@@ -4,8 +4,6 @@
 
 namespace rldx
 {
-
-
 	enum lightType : uint
 	{
 		DirectionalLight = 0,
@@ -24,10 +22,10 @@ namespace rldx
 		float3      position;
 		float       reserved;
 
-		float3      direction;		
-		float       reversed1;
+		float3      direction;
+		float       reserved001;
 
-		float4      color  = { 1, 1, 1, 1 };
+		float4      color = { 1, 1, 1, 1 };
 
 		float       SpotAngle;
 		float       ConstantAttenuation;
@@ -37,7 +35,7 @@ namespace rldx
 		uint		lightType;
 		uint		lighState;
 		float		radiance = 1.0f;
-		uint		reserved1;
+		uint		reserved002;
 	};
 
 	/***************************************************************/
@@ -46,10 +44,7 @@ namespace rldx
 
 	struct PS_Light_ConstBuffer
 	{
-		Light_Data lightData[10];
-
-		float4 env_color;
-		float4x4 mEnv;
+		Light_Data lightData[1];
 
 		float4 solidColor;
 
@@ -58,7 +53,7 @@ namespace rldx
 		float reflections_roughness;
 		float shadow_factor;
 
-		float env_light_radiance;
+		float reserved001;
 		uint use_AO;
 		uint all_transparent;
 		float exposure;
@@ -66,7 +61,7 @@ namespace rldx
 		float bloom_threshold;
 		float bloom_intensity;
 		int maskIndex;
-		float reserved___PS_LightBuffer_2;
+		float reserved003;
 
 		float4 screenRes;
 
@@ -75,13 +70,13 @@ namespace rldx
 
 	struct PS_AmbientLight_Data_ConstBuffer
 	{
-		float radiance = 1.0f;
+		float radiance = 0.0f;
 		float roughness = 1.0f;
 		float speculatFactor = 1.0f;
 		float diffuseFactor = 1.0f;
 
 		DirectX::XMFLOAT4X4 roatation = sm::Matrix::Identity;
-		DirectX::XMFLOAT4 color = { 1,1,1,1 };
+		DirectX::XMFLOAT4 color = { 1, 1, 1, 1 };
 	};
 
 	/***************************************************************/

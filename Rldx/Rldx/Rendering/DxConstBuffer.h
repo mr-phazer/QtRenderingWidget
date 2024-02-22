@@ -70,10 +70,11 @@ namespace rldx {
 		}
 
 		void BindToDC(ID3D11DeviceContext* poDeviceContext) override
-		{						
-			this->RefreshGPUData(poDeviceContext);
-			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { this->buffer.GetBuffer() };
-			poDeviceContext->PSSetConstantBuffers(m_startSlot, 1, vertexShaderSceneConstBuffers);
+		{		
+			TConstBuffer<DATA_TYPE>::RefreshGPUData(poDeviceContext);
+			//this->RefreshGPUData(poDeviceContext);
+			ID3D11Buffer* pixelShaderSceneConstBuffers[1] = { this->buffer.GetBuffer() };
+			poDeviceContext->PSSetConstantBuffers(m_startSlot, 1, pixelShaderSceneConstBuffers);
 		}
 	};	
 };

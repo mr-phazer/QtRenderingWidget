@@ -1,21 +1,3 @@
-#define NUMBER_OF_LIGHTS 10
-
-//cbuffer PS_LightSourceBuffer : register(b0)
-//{
-//    float3 lightDirection;
-//    float radiannce;
-    
-//    float4 lightColor;
-//};
-
-
-struct LightSourceData
-{
-    float3 lightDirection;
-    float radiannce;
-    float4 lightColor;
-};
-
 struct Light_Data
 {
     float3 position;
@@ -48,25 +30,22 @@ cbuffer PS_AmbientLight_ConstBuffer : register(b0)
     float env_roughness;
     float env_speculatFactor;
     float env_diffuseFactor;
-    float4x4 env_roatation;
+    float4x4 mEnv;
     float4 env_color;
 };                     
 
-cbuffer PS_AmbientLight_Data_ConstBuffer : register(b1)
+cbuffer PS_DirectionalLight_ConstBuffer : register(b1)
 {
-    Light_Data lightData[10]; 
-    
-    float4 ___env_color;
-    float4x4 mEnv;
-    
+    Light_Data lightData[1];
+		
     float4 solidColor;
-    
+
     float smoothness_curve;
     float reflect_curve;
     float reflections_roughness;
     float shadow_factor;
 
-    float ___env_light_radiance;
+    float reserved001;
     uint use_AO;
     uint all_transparent;
     float exposure;
@@ -74,11 +53,10 @@ cbuffer PS_AmbientLight_Data_ConstBuffer : register(b1)
     float bloom_threshold;
     float bloom_intensity;
     int maskIndex;
-    float reserved0;
+    float reserved003;
 
-    float4 screenRes;  	                 	
-    
-    //    color1, color2, color3  for faction coloring
+    float4 screenRes;
+
     float4 colorTable[3];
 };
 

@@ -10,13 +10,27 @@
 #include <string>
 
 namespace rldx {
+
+	// make this base class of all buffers
+	class IBuffer : public IBindable
+	{
+		UINT m_startSlot = 0;
+	public:
+		void SetStartSlot(UINT startSlot) { m_startSlot = startSlot; }
+	};
+
+
 	class DxTexture;	
+
+
 
 	/// <summary>
 	/// Sets 2/3 cubemaps needed for PBR imagebased lightng rendering
 	/// </summary>	
 	class DxAmbientLightSource : public IBindable
 	{
+		static auto constexpr  psConstBufferName = "PS_CB:AmbientLight";
+
 		DxTexture* m_poDiffuseMap = nullptr;
 		DxTexture* m_poSpecularMap = nullptr;
 		DxTexture* m_poLUT = nullptr;
@@ -25,6 +39,11 @@ namespace rldx {
 
 	public:
 		TDxPSShaderConstBuffer<PS_AmbientLight_Data_ConstBuffer> m_oPSConstBuffer;
+		
+		void SetStartSlot(UINT startSlot) { m_textureStartSlot = startSlot; }		
+		void SetLightRadiance(float radiance) { m_oPSConstBuffer.data.radiance = radiance;	}
+		void SetLightColor(const DirectX::XMFLOAT4& vColor = { 1,1,1,1 }) {	m_oPSConstBuffer.data.color = vColor; }
+
 		/// <summary>
 		/// Bind IBL const buffer, and set cubemap textures
 		/// </summary>
@@ -70,10 +89,6 @@ namespace rldx {
 			ByteStream& pathSpecularMap,
 			ByteStream& pathLUT, 
 			UINT startSlotSRV = 0
-		);
-
-		
-
-		
+		);		
 	};
 }; // namespace rldx

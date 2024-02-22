@@ -388,7 +388,7 @@ float4 main(in PixelInputType input) : SV_TARGET
 
         // TODO: when rotating environment, make a rotate version of "Lr" here, so that cosLo and other things are not
         // TODO: affecteted by the rotation of the env
-        float3 rot_N = mul(N, (float3x3) mEnv);
+        float3 rot_N = mul(N, (float3x3)mEnv);
         irradiance = tex_cube_diffuse.Sample(s_anisotropic, rot_N).rgb;
 
         //return float4(irradiance, 1);                                     //           DEBUGGIN code

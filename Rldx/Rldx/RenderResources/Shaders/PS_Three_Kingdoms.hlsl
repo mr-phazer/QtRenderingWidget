@@ -20,6 +20,8 @@
 
 float4 main(in PixelInputType input) : SV_TARGET
 {
+    //return float4(env_radiance, 0, 0, 1);                                                   
+
     //PIXELDATA OUT;
 
     float3 eye_vector;
