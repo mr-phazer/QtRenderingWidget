@@ -1,4 +1,5 @@
 ﻿#include "DxCameraOrbital.h"
+#include "..\Managers\DxDeviceManager.h"
 
 #include <Vector>
 #include <cmath>
@@ -234,6 +235,7 @@ void rldx::DxCameraOrbital::RotateCamera()
 	rotateCamera_Yaw(m_vRotVelocity.x);
 	rotateCamera_Pitch(m_vRotVelocity.y);
 
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(m_geometryData.fPitch) + L", " + to_wstring(m_geometryData.fYaw) + L")");
 	// TODO: renabel
 	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")");
 }
@@ -249,13 +251,13 @@ void DxCameraOrbital::rotateCamera_Yaw(float angle)
 		m_geometryData.fYaw += angle;
 	}
 
-	return;
+	
 
-	//const auto fullCircle = 2.0f * DirectX::XM_PI;
-	//m_geometryData.fYaw = fmodf(m_geometryData.fYaw, fullCircle);
-	//if (m_geometryData.fYaw < 0.0f) {
-	//	m_geometryData.fYaw = fullCircle + m_geometryData.fYaw;
-	//}
+	const auto fullCircle = 2.0f * DirectX::XM_PI;
+	m_geometryData.fYaw = fmodf(m_geometryData.fYaw, fullCircle);
+	if (m_geometryData.fYaw < 0.0f) {
+		m_geometryData.fYaw = fullCircle + m_geometryData.fYaw;
+	}
 
 }
 
@@ -273,13 +275,13 @@ void DxCameraOrbital::rotateCamera_Pitch(float angle)
 
 
 
-	//const auto fullCircle = 2.0f * DirectX::XM_PI;	
-	//m_geometryData.fPitch = fmodf(m_geometryData.fPitch, fullCircle);
-	//if (m_geometryData.fPitch < 0.0f) {
-	//	m_geometryData.fPitch = fullCircle + m_geometryData.fPitch;
-	//}
+	const auto fullCircle = 2.0f * DirectX::XM_PI;	
+	m_geometryData.fPitch = fmodf(m_geometryData.fPitch, fullCircle);
+	if (m_geometryData.fPitch < 0.0f) {
+		m_geometryData.fPitch = fullCircle + m_geometryData.fPitch;
+	}
 
-	//return;
+	return;
 
 
 	// TODO: make these values into const(s) vars

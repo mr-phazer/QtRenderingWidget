@@ -52,6 +52,11 @@ namespace rldx
 			//   UpdateOrder = (int)ComponentUpdateOrderEnum.Camera;
 		}
 
+		void SetRotationScale(float value)
+		{
+			m_fRotationScaler = value;
+		}
+
 
 		sm::Vector3 WorldSpaceToScreenSpace(const sm::Vector3& worldPosition, const sm::Matrix& worldMatrix)
 		{
