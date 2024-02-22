@@ -128,7 +128,7 @@ namespace rldx {
 
 			if (!pixelShaderPath.empty())
 			{
-				logging::LogAction("Loading pixel shader: " + libtools::wstring_to_string(vertexShaderPath));
+				logging::LogAction("Loading pixel shader: " + libtools::wstring_to_string(pixelShaderPath));
 				newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
 			}
 
