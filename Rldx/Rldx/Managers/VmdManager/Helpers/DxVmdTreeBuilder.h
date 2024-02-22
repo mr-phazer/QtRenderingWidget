@@ -7,7 +7,7 @@
 namespace rldx
 {
 
-	class VmdNodeTreeBuilder
+	class DxVmdTreeBuilder
 	{
 		std::vector<std::wstring> m_attachPoints;
 
@@ -22,6 +22,8 @@ namespace rldx
 
 	public:
 		void Build(DxVmdNode* sceneGraphRoot, const pugi::xml_node& xmlNode);
+
+		
 
 
 	};

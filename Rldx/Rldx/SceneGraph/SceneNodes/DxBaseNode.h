@@ -16,7 +16,7 @@ namespace rldx {
 		EmptyNode,		
 		BaseNode,
 		MeshNode,
-	};
+	};	
 	
 	class IRenderBucket;
 
@@ -34,14 +34,19 @@ namespace rldx {
 
 	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
+		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
+		DirectX::BoundingBox m_BoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 	public:
 		using SharedPtr = std::shared_ptr<DxBaseNode>;
+
+	public:		
+		enum class DrawStateEnum : bool	{ DontDraw = false, Draw = true	};
 
 	public:
 		DxBaseNode() = default;
 		virtual ~DxBaseNode() = default;
 
-		
+		virtual DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
 
 		static SharedPtr Create(const std::string& name = "")
 		{
@@ -204,8 +209,8 @@ namespace rldx {
 		void Update(float timeElapsed) override;		
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
 
-		void SetDrawState(bool bState) { m_bDrawState = bState; }
-		bool GetDrawState() const { return m_bDrawState; }
+		void SetDrawState(DrawStateEnum state) { m_drawState = state; }
+		DrawStateEnum GetDrawState() const { return m_drawState; }
 
 	private:
 		void SetParent(DxBaseNode* poParent)
@@ -221,7 +226,7 @@ namespace rldx {
 		NodeTransform m_nodeTransform;
 		sm::Matrix m_tempGlobalTransForm = sm::Matrix::Identity;
 
-		bool m_bDrawState = true;
+		DrawStateEnum m_drawState = DrawStateEnum::Draw;
 
 		// TODO: DxNodeCube (DxDrawableMesh) HERE, so a little cube can be drawn
 

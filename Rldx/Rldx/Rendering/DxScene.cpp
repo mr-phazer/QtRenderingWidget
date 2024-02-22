@@ -1,6 +1,7 @@
-
-
 #include "DxScene.h"
+
+#include "..\..\..\DXUT\Core\DXUTmisc.h"
+
 #include "..\Managers\DxDeviceManager.h"
 
 #include "..\Creators\DxMeshCreator.h"
@@ -111,16 +112,20 @@ void rldx::DxScene::Update(float timeElapsed)
 void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
+	m_globalDirectionalLight.SetRotationScale(0.005f);
+	m_globalDirectionalLight.SetRotate(5.48f, 5.95f);
 
 	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
 
 	m_sceneFrameVSConstBuffer.buffer.Create(poDevice);
-	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
 	
+	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
+	DXUT_SetDebugName(m_sceneFramePSConstBuffer.buffer.GetBuffer(), "PS_CB:DirectionalLight");
+
 	// TODO: test? Needed?
 	std::wstring cubeMapFolder = L""; // std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
 
-	// TODO: remove
+	// TODO: Put into DxAmbientLightSource::CreateFromFiles()
 	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");
 	ByteStream iblSPecularMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLSpecular.dds");
 	ByteStream iblLUTBinary;
@@ -130,10 +135,10 @@ void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 			poDevice,
 			iblDiffuseMapBinary,
 			iblSPecularMapBinary,
-			iblLUTBinary,			
-			1
+			iblLUTBinary
 		);
 
+	m_ambientLightSource.SetLightRadiance(0.7f);	
 	m_textureSamplers = DxTextureSamplers::Create(*m_upoCommonStates);
 }
 
@@ -152,22 +157,25 @@ void rldx::DxScene::UpdateViewAndPerspective()
 	// TODO: set a proper direction as init:
 	m_globalDirectionalLight.GetViewMatrix();
 	m_sceneFramePSConstBuffer.data.lightData[0].direction = -m_globalDirectionalLight.GetEyePt(); // negative = light comes from "forward"
-	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();
-
-	m_ambientLightSource.m_oPSConstBuffer.data.radiance = 3.0f;	
+	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();	
 }
 
 void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 {	
+	m_sceneFrameVSConstBuffer.SetStartSlot(0);
 	m_sceneFrameVSConstBuffer.RefreshGPUData(poDeviceContext);
-	m_sceneFrameVSConstBuffer.SetStartSlot(0);	
+	
 
-	m_sceneFramePSConstBuffer.RefreshGPUData(poDeviceContext);
-	m_sceneFramePSConstBuffer.SetStartSlot(1);
-
-	m_ambientLightSource.m_oPSConstBuffer.RefreshGPUData(poDeviceContext);
-	m_ambientLightSource.m_oPSConstBuffer.SetStartSlot(0);
 	m_ambientLightSource.BindToDC(poDeviceContext);
+
+	m_sceneFramePSConstBuffer.SetStartSlot(1);
+	m_sceneFramePSConstBuffer.RefreshGPUData(poDeviceContext);
+	
+
+	//m_ambientLightSource.m_oPSConstBuffer.RefreshGPUData(poDeviceContext);
+	//m_ambientLightSource.m_oPSConstBuffer.SetStartSlot(0);
+	
+	
 
 	// vertex	//  shader buffer
 	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
@@ -175,11 +183,11 @@ void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	
 	// TODO: build this into "ConstBuffer"??
 	// pixel shader const buffer
-	ID3D11Buffer* pPS_AmbientLIghtBuffer[] = 
-	{ 
-		m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 		
-	};
-	poDeviceContext->PSSetConstantBuffers(1, 0, pPS_AmbientLIghtBuffer);
+	//ID3D11Buffer* pPS_AmbientLIghtBuffer[] = 
+	//{ 
+	//	m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 		
+	//};
+	//poDeviceContext->PSSetConstantBuffers(0, 1, pPS_AmbientLIghtBuffer);
 	
 	// TODO: build this into "ConstBuffer"??
 	// vertex shader const buffer

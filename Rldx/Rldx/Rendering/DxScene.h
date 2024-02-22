@@ -47,7 +47,7 @@ namespace rldx {
 		DxScene(const std::string& name = "") : TIdentifiable(name) 
 		{
 			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", {1,1,1,1}, 6.0f);
-		};
+		};		
 
 		virtual void InitRenderView(ID3D11Device* poDevice);
 
@@ -58,6 +58,9 @@ namespace rldx {
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
 
 		DxBaseNode* GetRootNode();
+		
+		DirectX::BoundingBox GetRootBoundBox() { return m_sceneGraph.GetRootBoundBox(); }
+
 		void DeleteNode(DxBaseNode* node);
 
 		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }

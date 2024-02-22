@@ -128,7 +128,8 @@ void QtMainWindowView::InitRenderView()
 	QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 	QString outErrorString;
 
-	AddNewPrimaryAsset(renderWidget, &fileName, &qBytes, &outErrorString);
+	//AddNewPrimaryAsset(renderWidget, &fileName, &qBytes, &outErrorString);
+	TESTCODE_AddNewPrimaryAsset(renderWidget, &fileName, &qBytes, &outErrorString);
 
 	PauseRendering(renderWidget);
 	ResumeRendering(renderWidget);

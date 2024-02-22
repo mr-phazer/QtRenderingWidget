@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef PUGIXML_WCHAR_MODE
-#define PUGIXML_WCHAR_MODE
-#endif
-
 #include "..\..\Libs\PugiXML\pugixml.hpp"
 #include "..\..\Helpers\ByteStream.h"
 #include "..\DataTypes\WsModelData.h"

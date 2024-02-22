@@ -1,6 +1,5 @@
 #include "DxWSModelModelnodeCreator.h"
 
-#define PUGIXML_WCHAR_MODE
 #include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
 #include "..\..\ImportExport\WsModel\Reader\WsModelReader.h"
 #include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"

@@ -36,6 +36,15 @@ extern "C" QWidget * CreateQRenderingWidget(
 extern "C" bool AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData, QString* outErrorString);
 
 /// <summary>
+/// Add an RigidModelV2, WSMODEL or VMD (model) to scene
+/// TODO: WIP
+/// </summary>
+/// <param name="pQRendeeWiget">Thee rendering widget pointer</param>
+/// <param name="assetFolder">internal/externala path</param>
+/// <param name="assetData">raw binary data of asset</param>
+extern "C" bool TESTCODE_AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData, QString* outErrorString);
+
+/// <summary>
 /// Path where shaders, cubemaps, and defalt material(textues) are stored
 /// </summary>
 /// <param name="parent"></param>

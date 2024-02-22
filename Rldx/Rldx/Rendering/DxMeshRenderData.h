@@ -34,8 +34,7 @@ namespace rldx {
 		DxDeformerNode* m_deformNode = nullptr;
 		DxBaseNode* m_attachNode = nullptr;
 
-		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
-		DirectX::BoundingBox m_BB = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+		
 
 	public:				
 		void SetMeshData(DxMesh* meshData) { m_poMesh = meshData; };

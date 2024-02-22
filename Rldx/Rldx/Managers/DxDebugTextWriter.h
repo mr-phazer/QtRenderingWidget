@@ -19,7 +19,7 @@ namespace rldx {
 		sm::Color m_color = { 1,1,1,1 };
 		libtools::SystemClock m_clock;
 		float m_clock_timeOut = 0;
-		float m_ratioOfTimeOut = 0;
+		float m_ratioOfTimeOut = 1.0f;
 
 	public:
 		RenderTextString(const std::wstring& string, sm::Color color = { 1,1,1,1 }, float fadeOutInSeconds = 5.0f)
@@ -43,7 +43,7 @@ namespace rldx {
 		void Update()
 		{
 			auto localTime = (float)m_clock.GetLocalTime();
-			m_ratioOfTimeOut = 1.0f - std::min<float>(1.0f, localTime / m_clock_timeOut);
+			m_ratioOfTimeOut = 1.0f -std::min<float>(1.0f,  localTime / m_clock_timeOut);
 		}
 
 		DirectX::FXMVECTOR GetColor()

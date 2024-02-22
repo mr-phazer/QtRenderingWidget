@@ -35,7 +35,7 @@ void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLO
 	DirectX::XMVECTOR xmMin = DirectX::XMLoadFloat3(&minPoint);
 	DirectX::XMVECTOR xmMax = DirectX::XMLoadFloat3(&maxPoint);
 
-	DirectX::BoundingBox::CreateFromPoints(m_meshData.m_BB, xmMin, xmMax);	
+	DirectX::BoundingBox::CreateFromPoints(GetNodeBoundingBox(), xmMin, xmMax);
 }
 
 //void rldx::DxMeshNode::Draw(ID3D11DeviceContext* poDC)
@@ -50,10 +50,10 @@ void rldx::DxMeshNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLO
 
 void DxMeshNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-	if (!GetDrawState()) {
+	if (GetDrawState() != DrawStateEnum::Draw) {
 		return;
-	}
-
+	}	
+		
 	m_meshData.m_mWorldMatrix = GetCurrentGlobalTransForm();
 	m_meshData.m_pivotPoint = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0
 

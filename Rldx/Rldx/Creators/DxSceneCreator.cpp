@@ -69,33 +69,30 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
 	
-	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
-
-	ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_state_troops_swordsmen_ror.variantmeshdefinition)");
-	m_variantMeshCreator.Create(vmdBinary);
-	m_variantMeshCreator.AllocateNodes();
-		
-	m_newScene->GetRootNode()->AddChild(m_variantMeshCreator.GetNode());
+	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);	
 
 	return std::move(m_newScene);
 }
 
+void rldx::DxSceneCreator::TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString)
+{	// TODO: clean up -> put all asset insertion into VMDManager
+	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\brt_battle_pilgrims.variantmeshdefinition)");
+	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_ch_karl.variantmeshdefinition)");
+	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\ksl_bear_heavy_katarin.variantmeshdefinition)");
+	ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_flagellants_tattersouls.variantmeshdefinition)");
+
+	DxVariantMeshTree variantMeshCreator;
+	variantMeshCreator.Create(vmdBinary);
+	variantMeshCreator.AllocateNodes();
+	variantMeshCreator.GenerateVariant();
+
+	poScene->GetRootNode()->AddChild(variantMeshCreator.GetNode());
+
+	SetCameraAutoFit(variantMeshCreator.GetNode().get(), poScene);
+}
+
 void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString)
 {	
-	// TODO: REMOVE
-	// BEGIN: DEBUGGIN CODE
-#ifdef _DEBUG
-#if 0
-	ByteStream wsModelBinaryData(LR"(K:\Modding\WH2\variantmeshes\wh_variantmodels\sn2\def\def_medusa\def_medusa_body_01.wsmodel)");
-	auto wsModelData = rmv2::WsModelReader().Read(wsModelBinaryData);	
-	// END: DEBUGGIN CODE
-
-	auto modelNode = rldx::ModelNodeCreator().CreateNode(poDevice, poScene->GetRootNode(), fileData);
-	fileData.SetOffset(0);
-	
-#endif	
-#endif	
-
 	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("ModelNode RMV2");		
 
 	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
@@ -115,17 +112,17 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	auto rmv2File = rigidModelFileReader.Read(fileData);
 	modelNodeRmv2->SetModelData(poDevice, rmv2File);
 	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
-	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
-	
-	SetCameraAutoFit(modelNodeRmv2, poScene);
+	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);	
+		
+	poScene->GetRootNode()->AddChild(modelNodeRmv2);
 
-	// TODO: re-enable, disabled to test VMD code
-	//poScene->GetRootNode()->AddChild(modelNodeRmv2);
+	SetCameraAutoFit(modelNodeRmv2.get(), poScene);
 }
 
-void rldx::DxSceneCreator::SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene)
-{
-	auto& boundBox = modelNodeRmv2->GetBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
+void rldx::DxSceneCreator::SetCameraAutoFit(DxModelNode* modelNodeRmv2, rldx::DxScene* poScene)
+{		
+	auto boundBox = poScene->GetRootBoundBox();
+	//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
 	const float adjustBBExtend = 0.3f;
 	float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x)) * (2.0f + adjustBBExtend);
 	float fieldIOfView = poScene->GetCamera().GetFieldOfView();

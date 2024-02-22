@@ -39,6 +39,8 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers()
 {
 	auto& data = m_sceneVmdNode->GetVMDNodeDataRef();
 
+	m_sceneVmdNode->SetDrawState(DxBaseNode::DrawStateEnum::DontDraw);
+
 	switch (data.Tag)
 	{
 	case VMDTagEnum::VariantMesh:
@@ -55,6 +57,9 @@ void rldx::DxVmdNodeAllocator::AllocateVariantMesh()
 	if (data.varintMeshData.wsModelData.geometryPath.empty())	{ // a "nesting <VariantMesh>, one per file?
 		return;
 	}
+
+
+
 
 	auto rmv2Bytes = DxResourceManager::GetCallBackFile(data.varintMeshData.wsModelData.geometryPath);
 	auto parsedRmv2File = rmv2::RigidModelReader().Read(rmv2Bytes);

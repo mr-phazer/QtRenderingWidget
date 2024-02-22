@@ -39,6 +39,10 @@ std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDev
 
 void DxDebugTextWriter::AddString(const std::wstring& _string, DirectX::XMFLOAT4 color, float timeOut)
 {
+	if (m_stringExtQueue.size() > 0) {
+		m_stringExtQueue.clear();
+	}
+
 	m_stringExtQueue.push_back({ _string, color, timeOut });
 }
 

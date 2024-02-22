@@ -54,7 +54,7 @@ class VariantMeshParser
 
 		if (IsTag(xmlNode, VMDTag::VariantMesh))
 			;
-		if (IsTag(xmlNode, VMDTag::VariantMeshRef))
+		if (IsTag(xmlNode, VMDTag::VariantMeshReference))
 			;
 
 

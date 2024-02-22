@@ -84,6 +84,32 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	return true;
 }
 
+bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
+{
+	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+	auto gameIdString = renderWidget->GetGameIdString();
+	auto currentScene = renderWidget->GetSceneManager()->GetCurrentScene();
+
+	try {
+
+		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
+		rldx::DxSceneCreator::TESTCODE_AddVMD(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdString());
+	}
+	catch (std::exception& e)
+	{
+#ifdef _DEBUG
+		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
+#endif
+
+		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
+		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+
+		return false;
+	}
+
+	return true;
+}
+
 void SetAssetFolder(QString* folder)
 {	
 	ByteStream::SetSearchFolder(folder->toStdWString());

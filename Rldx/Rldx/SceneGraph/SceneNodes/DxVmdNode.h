@@ -3,12 +3,6 @@
 #include "DxModelNode.h"
 #include "..\..\ImportExport\WsModel\Reader\WsModelReader.h"
 #include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
-
-
-// set pugi to wide chars
-#ifndef PUGIXML_WCHAR_MODE
-#define PUGIXML_WCHAR_MODE
-#endif
 #include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
 
 namespace rldx {
@@ -18,14 +12,14 @@ namespace rldx {
 		INVALID = 0, 
 		Slot,
 		VariantMesh,
-		VariantMeshRef		
+		VariantMeshReference		
 	};
 
 	struct FileExtensions {
 
 		static constexpr auto RigidModelV2 = L"rigid_model_v2";
 		static constexpr auto  WSmodel = L"WSMODEL";
-		static constexpr auto  VariantMeshDef = L"variantmeshdefintion";
+		static constexpr auto  VariantMeshDef = L"variantmeshdefinition";
 	};
 
 	/// <summary>
@@ -35,7 +29,7 @@ namespace rldx {
 
 		static constexpr auto Slot = L"SLOT";
 		static constexpr auto  VariantMesh = L"VARIANT_MESH";
-		static constexpr auto  VariantMeshRef = L"VARIANT_MESH_REFERENCE";
+		static constexpr auto  VariantMeshReference = L"VARIANT_MESH_REFERENCE";
 		static constexpr auto  AttachPoint = L"attach_point";
 	};
 
@@ -47,6 +41,7 @@ namespace rldx {
 		static constexpr auto ImposterModel = L"imposter_model";
 		static constexpr auto Model = L"model";
 		static constexpr auto Name = L"name";
+		static constexpr auto Definition = L"definition";
 		static constexpr auto AttachPoint = L"attach_point";
 
 	};
@@ -75,6 +70,8 @@ namespace rldx {
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			std::wstring attcachPointName;
+			float probality = 1.0f;
+
 		} slotData;
 	};
 
@@ -84,10 +81,10 @@ namespace rldx {
 
 	public:
 		using SharedPtr = std::shared_ptr<DxVmdNode>;
-	public:
+	public:						
 
 		VMDNodeData& GetVMDNodeDataRef() { return m_vmdNodeData; }
-
+		const VMDNodeData& GetVMDNodeDataRef() const { return m_vmdNodeData; }
 	};
 
 

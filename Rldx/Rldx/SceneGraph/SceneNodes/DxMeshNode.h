@@ -15,7 +15,7 @@ namespace rldx {
 	
 
 	class DxMeshNode : public DxBaseNode
-	{		
+	{			
 	
 		DxMeshRenderData m_meshData;
 
@@ -27,9 +27,7 @@ namespace rldx {
 		void SetModelData(const rldx::DxCommonMeshData& meshData);	
 		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) { m_meshData.m_poShaderProgram = shaderProgram; };
 		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshData.m_poMaterial = pDxMaterial; };
-		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
-		
-		DirectX::BoundingBox& GetBoundingBox() { return m_meshData.m_BB; }
+		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);		
 
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 

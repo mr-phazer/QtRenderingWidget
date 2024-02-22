@@ -32,4 +32,10 @@ class SlotNodeCreator : public IDxVmdNodeCreator
 public:
 	virtual DxVmdNode::SharedPtr Create(DxVmdNode* root, const pugi::xml_node& xmlNode) override;
 };
+
+class VMDRerenceNodeReator : public IDxVmdNodeCreator
+{
+public:
+	virtual DxVmdNode::SharedPtr Create(DxVmdNode* root, const pugi::xml_node& xmlNode) override;
+};
 }

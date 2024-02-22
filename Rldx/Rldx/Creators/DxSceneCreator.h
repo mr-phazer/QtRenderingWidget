@@ -22,16 +22,19 @@ namespace rldx {
 	class DxSceneCreator : public IDxSceneBuilder
 	{
 
-		DxVmdManager m_variantMeshCreator;
+		
 
 		DxScene::Uptr InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB = true, const std::string& name = "");;		
 
 	public:
-		DxScene::Uptr Create(HWND nativeWindHande, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& gameIdString) override;	
+		DxScene::Uptr Create(HWND nativeWindHande, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& gameIdString) override;
+		
+		static void TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString);
+
 		static void AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString);
 
 	private:
-		static void SetCameraAutoFit(std::shared_ptr<rldx::DxModelNode>& modelNodeRmv2, rldx::DxScene* poScene);
+		static void SetCameraAutoFit(DxModelNode* modelNodeRmv2, rldx::DxScene* poScene);
 
 	private:
 		HWND m_nativeWindowHandle = static_cast<HWND>(0);

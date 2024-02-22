@@ -55,9 +55,9 @@ void rldx::DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_
 
 	// Model's BoundBox has to contain all the mesh bound boxes:
 	DirectX::BoundingBox::CreateMerged(
-		this->GetBoundingBox(),
-		this->GetBoundingBox(),
-		m_lods[iLod][iMesh]->GetBoundingBox());
+		this->GetNodeBoundingBox(),
+		this->GetNodeBoundingBox(),
+		m_lods[iLod][iMesh]->GetNodeBoundingBox());
 }
 
 
@@ -96,7 +96,7 @@ void rldx::DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::Ws
 
 void rldx::DxModelNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-	if (m_activeLod >= m_lods.size() || !GetDrawState()) {
+	if (m_activeLod >= m_lods.size() || GetDrawState() != DrawStateEnum::Draw) {
 		return;
 	}
 

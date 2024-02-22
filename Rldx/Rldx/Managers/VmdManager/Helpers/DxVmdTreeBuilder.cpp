@@ -1,35 +1,32 @@
 #include "DxVmdTreeBuilder.h"
 
-
 using namespace rldx;
 using namespace rmv2;
 
-void rldx::VmdNodeTreeBuilder::Build(DxVmdNode* sceneGraphRoot, const pugi::xml_node& xmlNode)
-{
-	DxVmdNode::SharedPtr currentNode;
+void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
+{	
 	if (CompareNoCase(xmlNode.name(), VMDTag::VariantMesh))
 	{
 		VariantMeshNodeCreator variantMeshNodeCreator;
-		currentNode = variantMeshNodeCreator.Create(sceneGraphRoot, xmlNode);
-		sceneGraphRoot->AddChild(currentNode);
-
+		variantMeshNodeCreator.Create(sceneGraphNode, xmlNode);
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTag::Slot))
 	{
-		currentNode = SlotNodeCreator().Create(sceneGraphRoot, xmlNode);
-		sceneGraphRoot->AddChild(currentNode);
-
+		SlotNodeCreator().Create(sceneGraphNode, xmlNode);		
+	}
+	else if (CompareNoCase(xmlNode.name(), VMDTag::VariantMeshReference))
+	{		
+		VMDRerenceNodeReator().Create(sceneGraphNode, xmlNode);		
+	}
+	else
+	{	
+		sceneGraphNode->GetVMDNodeDataRef().Name = xmlNode.attribute_no_case(VMDTagAtrtibtes::Name).as_string();	
 	}
 
-	currentNode = std::make_shared<DxVmdNode>();
-	currentNode->GetVMDNodeDataRef().Name = xmlNode.attribute_no_case(VMDTagAtrtibtes::Name).value();
-	sceneGraphRoot->AddChild(currentNode);
-
-
-	for (auto& iiVarianMeshsNode : xmlNode.children())
-	{
-		Build(currentNode.get(), iiVarianMeshsNode);
+	for (auto& iiVarianMeshsNode : xmlNode.children())	{
+		
+		auto newSceneNode = std::make_shared<DxVmdNode>(); // new node for each child node
+		sceneGraphNode->AddChild(newSceneNode);
+		Build(newSceneNode.get(), iiVarianMeshsNode);		
 	}
-
 }
-
