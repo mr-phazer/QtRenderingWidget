@@ -18,23 +18,28 @@ struct FloatConverter
 	};
 
 	template <typename UINT_TYPE>
-	inline static constexpr float GetUNormFloat(UINT_TYPE fixedPoint)
+	inline static constexpr float TGetUNormFloatFromUINT(UINT_TYPE fixedPoint)
 	{
 		size_t divider = static_cast<size_t>(2U) << (sizeof(UINT_TYPE) / 8U);
 
 		float retUnormFloat = static_cast<float>(fixedPoint) / static_cast<float>(divider) - 1.f;
 
 		return retUnormFloat;
-	}
+	}	
 
 	inline static constexpr float GetUNormFloat(uint8_t fixedPoint)
 	{
 		return static_cast<float>(fixedPoint) / 256.0f;
 	}
 
-	inline static constexpr float GetSNormFloat(uint8_t fixedPoint)
+	inline static constexpr float GetSNormFloatFromByte(uint8_t fixedPoint)
 	{
 		return (static_cast<float>(fixedPoint) / 127.0f) - 1.f;
+	}
+
+	inline static constexpr float GetSNormFloatFromSINT8(int8_t fixedPoint)
+	{
+		return (static_cast<float>(fixedPoint) / 128.0f);
 	}
 
 	inline static DirectX::XMFLOAT4 GetSNORMFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
@@ -51,11 +56,20 @@ struct FloatConverter
 	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
 	{
 		return
-		{
-			//(static_cast<float>(vIn.x) / 127.0f) - 1.f,
-			GetSNormFloat(vIn.x),
-			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
-			(static_cast<float>(vIn.z) / 127.0f) - 1.f			
+		{		
+			GetSNormFloatFromByte(vIn.x),
+			GetSNormFloatFromByte(vIn.y),
+			GetSNormFloatFromByte(vIn.z),		
+		};
+	};
+
+	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromSINT84(DirectX::PackedVector::XMUBYTE4 vIn)
+	{
+		return
+		{		
+			GetSNormFloatFromSINT8(vIn.x),
+			GetSNormFloatFromSINT8(vIn.y),
+			GetSNormFloatFromSINT8(vIn.z),
 		};
 	};
 
@@ -64,7 +78,7 @@ struct FloatConverter
 		return
 		{
 			//(static_cast<float>(vIn.x) / 127.0f) - 1.f,
-			GetSNormFloat(vIn.x),
+			GetSNormFloatFromByte(vIn.x),
 			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
 			(static_cast<float>(vIn.z) / 127.0f) - 1.f,
 			(static_cast<float>(vIn.w) / 127.0f) - 1.f
