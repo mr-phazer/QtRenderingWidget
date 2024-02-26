@@ -69,6 +69,7 @@ class WinConsole
 };
 
 // TODO: finish making this into a neat singleton
+// TODO Frodo: This generates very big logs. We need a way to clear them.
 class Logger
 {
     public:
@@ -77,15 +78,18 @@ class Logger
         // TODO clean this up with better encapsulation, setters/getters
         static void SetLogFolder(const std::wstring& path);
         static std::wstring GetOutLogFilePath();
-        static void Log_Exception(const std::wstring& strMsg);
-        static void LogActionInfo(const std::wstring& strMsg);
+        
         static void DoLog(const std::wstring& strMsg, const std::wstring& strTag = L"ACTION: ", WORD color = FG_WHITE | BG_BLACK, WORD tagColor = FG_WHITE | BG_BLACK);
         static void LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
-        static void LogAction_success(const std::wstring& strMsg);
+        
+        static void LogActionSuccess(const std::wstring& strMsg);
+        static void LogActionInfo(const std::wstring& strMsg);
+        static bool LogActionWarning(const std::wstring& strMsg);
         static bool LogActionErrorFalse(const std::wstring& strMsg);
-        static bool LogAction_warning(const std::wstring& strMsg);
-        static void LogWrite(const std::wstring& strMsg);
+        static void LogException(const std::wstring& strMsg);
+        
         static void WriteToLogFile(const std::wstring& logString);
+
         static void LogActionTimedBegin(const std::wstring& strMsg);
         static void LogActionTimedEnd(const std::wstring& strMsg);
 

@@ -31,16 +31,6 @@ std::wstring Logger::GetOutLogFilePath() {
 	return sm_loggingFolder + sm_logFileName;
 }
 
-void Logger::Log_Exception(const std::wstring& strMsg)
-{
-	DoLog(strMsg, L"EXCEPTION Caught: " + strMsg, BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
-}
-
-void Logger::LogActionInfo(const std::wstring& strMsg)
-{
-	DoLog(strMsg, L"ACTION");
-}
-
 void Logger::DoLog(const std::wstring& strMsg, const std::wstring& strTag, WORD colorFlags, WORD tagColorFlags)
 {
 	WinConsole::Print(sm_prefix + strTag, tagColorFlags);
@@ -64,8 +54,7 @@ void Logger::LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags)
 	WriteToLogFile(logString.str());
 }
 
-
-void Logger::LogAction_success(const std::wstring& strMsg)
+void Logger::LogActionSuccess(const std::wstring& strMsg)
 {
 	WinConsole::Print(sm_prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
 	WinConsole::Print(L" ");
@@ -77,6 +66,26 @@ void Logger::LogAction_success(const std::wstring& strMsg)
 	logString << std::endl << sm_prefix << strMsg << L". Success.";
 
 	WriteToLogFile(logString.str());
+}
+
+void Logger::LogActionInfo(const std::wstring& strMsg)
+{
+	DoLog(strMsg, L"ACTION");
+}
+
+bool Logger::LogActionWarning(const std::wstring& strMsg)
+{
+	WinConsole::Print(sm_prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
+	WinConsole::Print(L" ");
+	WinConsole::Print(strMsg);
+	WinConsole::Print(L"\r\n");
+
+	std::wstringstream logString;
+	logString << std::endl << sm_prefix + L"WARNING:: " << strMsg;
+
+	WriteToLogFile(logString.str());
+
+	return false;
 }
 
 bool Logger::LogActionErrorFalse(const std::wstring& strMsg)
@@ -94,24 +103,9 @@ bool Logger::LogActionErrorFalse(const std::wstring& strMsg)
 	return false;
 }
 
-bool Logger::LogAction_warning(const std::wstring& strMsg)
+void Logger::LogException(const std::wstring& strMsg)
 {
-	WinConsole::Print(sm_prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
-	WinConsole::Print(L" ");
-	WinConsole::Print(strMsg);
-	WinConsole::Print(L"\r\n");
-
-	std::wstringstream logString;
-	logString << std::endl << sm_prefix + L"WARNING:: " << strMsg;
-
-	WriteToLogFile(logString.str());
-
-	return false;
-}
-
-void Logger::LogWrite(const std::wstring& strMsg)
-{
-	WriteToLogFile(strMsg);
+	DoLog(strMsg, L"EXCEPTION Caught: " + strMsg, BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 }
 
 void Logger::WriteToLogFile(const std::wstring& logString)
