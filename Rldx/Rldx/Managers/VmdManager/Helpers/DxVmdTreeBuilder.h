@@ -4,28 +4,18 @@
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
 #include "VmdNodeCreators.h"
 
-namespace rldx
-{
+namespace rldx {
 
 	class DxVmdTreeBuilder
 	{
 		std::vector<std::wstring> m_attachPoints;
-
-		class Fact : public templates::TFactoryStringKey<IDxVmdNodeAllocator> 
-		{
-			// Inherited via TFactoryStringKey
-			void HandleKeyNotFound(std::string KeyValue) override
-			{
-				throw std::exception("VmdNodeTreeBuilder");
-			}
-		} factory;
+		pugi::xml_document m_xmldoc;
 
 	public:
 		void Build(DxVmdNode* sceneGraphRoot, const pugi::xml_node& xmlNode);
-
-		
-
-
+		void LoadUnknownNode(rldx::DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode);
+		void LoadVarintMeshNode(DxVmdNode* root, const pugi::xml_node& xmlNode);
+		void LoadSlotNode(DxVmdNode* root, const pugi::xml_node& xmlNode);
+		void LoadVariantMeshRerence(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode);
 	};
-
 }
