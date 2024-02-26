@@ -11,6 +11,8 @@ Logger& Logger::GetInstance() {
 	if (!m_poInstance)
 	{
 		m_poInstance = std::make_unique<Logger>();
+		sm_logFileName = L"RenderViewLog.txt";
+		sm_prefix = L"[QRenderingView Debug:] ";
 	}
 	else
 	{
@@ -38,9 +40,7 @@ void Logger::DoLog(const std::wstring& strMsg, const std::wstring& strTag, WORD 
 	WinConsole::Print(strMsg, colorFlags);
 	WinConsole::Print(L"\r\n");
 
-	std::wstringstream logString;
-	logString << std::endl << sm_prefix + L"ERROR: " << strMsg;
-	WriteToLogFile(logString.str());
+	WriteToLogFile(strTag + strMsg);
 }
 
 void Logger::LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags)
@@ -48,24 +48,12 @@ void Logger::LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags)
 	WinConsole::Print(strMsg, wColorFlags);
 	WinConsole::Print(L"\r\n");
 
-	std::wstringstream logString;
-	logString << std::endl << strMsg;
-
-	WriteToLogFile(logString.str());
+	WriteToLogFile(strMsg);
 }
 
 void Logger::LogActionSuccess(const std::wstring& strMsg)
 {
-	WinConsole::Print(sm_prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
-	WinConsole::Print(L" ");
-	WinConsole::Print(strMsg);
-	//WinConcole::Print(L"Success.", BG_BLUE | FG_WHITE);
-	WinConsole::Print(L"\r\n");
-
-	std::wstringstream logString;
-	logString << std::endl << sm_prefix << strMsg << L". Success.";
-
-	WriteToLogFile(logString.str());
+	DoLog(strMsg, L"SUCCESS", BG_BLACK | FG_WHITE, BG_BLACK | FG_GREEN);
 }
 
 void Logger::LogActionInfo(const std::wstring& strMsg)
@@ -73,45 +61,28 @@ void Logger::LogActionInfo(const std::wstring& strMsg)
 	DoLog(strMsg, L"ACTION");
 }
 
-bool Logger::LogActionWarning(const std::wstring& strMsg)
+void Logger::LogActionWarning(const std::wstring& strMsg)
 {
-	WinConsole::Print(sm_prefix + L"WARNING:", BG_BLACK | FG_YELLOW);
-	WinConsole::Print(L" ");
-	WinConsole::Print(strMsg);
-	WinConsole::Print(L"\r\n");
-
-	std::wstringstream logString;
-	logString << std::endl << sm_prefix + L"WARNING:: " << strMsg;
-
-	WriteToLogFile(logString.str());
-
-	return false;
+	DoLog(strMsg, L"SUCCESS", BG_BLACK | FG_WHITE, BG_BLACK | FG_YELLOW);
 }
 
-bool Logger::LogActionErrorFalse(const std::wstring& strMsg)
+void Logger::LogActionError(const std::wstring& strMsg)
 {
-	WinConsole::Print(sm_prefix + L"ERROR:", BG_BLACK | FG_RED);
-	WinConsole::Print(L" ");
-	WinConsole::Print(strMsg);
-	WinConsole::Print(L"\r\n");
-
-	std::wstringstream logString;
-	logString << std::endl << sm_prefix + L"ERROR: " << strMsg;
-
-	WriteToLogFile(logString.str());
-
-	return false;
+	DoLog(strMsg, L"SUCCESS", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 }
 
 void Logger::LogException(const std::wstring& strMsg)
 {
-	DoLog(strMsg, L"EXCEPTION Caught: " + strMsg, BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
+	DoLog(strMsg, L"EXCEPTION Caught: ", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 }
 
-void Logger::WriteToLogFile(const std::wstring& logString)
+void Logger::WriteToLogFile(const std::wstring& strMsg)
 {
+	std::wstringstream logString;
+	logString << std::endl << sm_prefix + strMsg;
+
 	std::ofstream oOutFile(GetOutLogFilePath(), std::ios::app);
-	oOutFile << ToString(logString);
+	oOutFile << ToString(logString.str());
 	oOutFile.close();
 }
 

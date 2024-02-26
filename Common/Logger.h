@@ -84,8 +84,8 @@ class Logger
         
         static void LogActionSuccess(const std::wstring& strMsg);
         static void LogActionInfo(const std::wstring& strMsg);
-        static bool LogActionWarning(const std::wstring& strMsg);
-        static bool LogActionErrorFalse(const std::wstring& strMsg);
+        static void LogActionWarning(const std::wstring& strMsg);
+        static void LogActionError(const std::wstring& strMsg);
         static void LogException(const std::wstring& strMsg);
         
         static void WriteToLogFile(const std::wstring& logString);
