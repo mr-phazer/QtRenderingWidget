@@ -24,13 +24,13 @@
     <ClInclude Include="Logger.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\SystemClock.h">
+    <ClInclude Include="IOUtils.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\StrUtils.h">
+    <ClInclude Include="StrUtils.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\IOUtils.h">
+    <ClInclude Include="SystemClock.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +41,13 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\SystemClock.cpp">
+    <ClCompile Include="IOUtils.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\StrUtils.cpp">
+    <ClCompile Include="StrUtils.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\IOUtils.cpp">
+    <ClCompile Include="SystemClock.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

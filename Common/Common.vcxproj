@@ -145,14 +145,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Utils\IOUtils.h" />
+    <ClInclude Include="IOUtils.h" />
+    <ClInclude Include="StrUtils.h" />
+    <ClInclude Include="SystemClock.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Utils\StrUtils.h" />
-    <ClInclude Include="Utils\SystemClock.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Utils\IOUtils.cpp" />
+    <ClCompile Include="IOUtils.cpp" />
+    <ClCompile Include="StrUtils.cpp" />
+    <ClCompile Include="SystemClock.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -160,8 +162,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Utils\StrUtils.cpp" />
-    <ClCompile Include="Utils\SystemClock.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

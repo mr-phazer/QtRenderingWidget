@@ -42,7 +42,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rldx", "Rldx\Rldx.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileTypes", "FileTypes\FileTypes.vcxproj", "{B8A449A6-A08A-42BA-ADFB-5DE717352084}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Utils.vcxproj", "{D44A9630-6327-49C7-B5E5-91B80722A2A5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{D44A9630-6327-49C7-B5E5-91B80722A2A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
