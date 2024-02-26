@@ -61,6 +61,8 @@ namespace Utils {
         BG_WHITE = BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE,
     };
 
+    #define FULL_FUNC_INFO(message) std::string(__func__) +  std::string(", line ") + std::to_string(__LINE__) + ": " + message
+
     class WinConsole
     {
         public:
@@ -79,7 +81,7 @@ namespace Utils {
             static void SetLogFolder(const std::wstring& path);
             static std::wstring GetOutLogFilePath();
         
-            static void DoLog(const std::wstring& strMsg, const std::wstring& strTag = L"ACTION: ", WORD color = FG_WHITE | BG_BLACK, WORD tagColor = FG_WHITE | BG_BLACK);
+            static void DoLog(const std::wstring& strMsg, const std::wstring& strTag = L"ACTION", WORD color = FG_WHITE | BG_BLACK, WORD tagColor = FG_WHITE | BG_BLACK);
             static void LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
         
             static void LogActionSuccess(const std::wstring& strMsg);

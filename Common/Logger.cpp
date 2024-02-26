@@ -40,7 +40,7 @@ namespace Utils {
 		WinConsole::Print(strMsg, colorFlags);
 		WinConsole::Print(L"\r\n");
 
-		WriteToLogFile(strTag + strMsg);
+		WriteToLogFile(strTag + L": " + strMsg);
 	}
 
 	void Logger::LogSimpleWithColor(const std::wstring& strMsg, WORD wColorFlags)
@@ -73,7 +73,7 @@ namespace Utils {
 
 	void Logger::LogException(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"EXCEPTION Caught: ", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
+		DoLog(strMsg, L"EXCEPTION Caught", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 	}
 
 	void Logger::WriteToLogFile(const std::wstring& strMsg)
