@@ -97,9 +97,9 @@ namespace Utils {
 		auto timeElapsed = m_globalClock.GetLocalTime();
 		LogActionInfo(strMsg);
 
-		auto timeMessage = "Time Elapsed: " + std::to_string(timeElapsed) + " seconds.\n";
+		auto timeMessage = L"Time Elapsed: " + std::to_wstring(timeElapsed) + L" seconds.\n";
 
-		WinConsole::Print(ToWString(timeMessage), BG_BLACK | FG_GREEN);
+		WinConsole::Print(timeMessage, BG_BLACK | FG_GREEN);
 	}
 
 	//---------------------------------------------------------------------//
