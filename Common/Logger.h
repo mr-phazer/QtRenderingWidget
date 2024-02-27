@@ -9,7 +9,6 @@
 #pragma once
 
 #include <consoleapi2.h>
-#include <Windows.h>
 
 #include <string>
 #include <memory>

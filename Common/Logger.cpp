@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Logger.h"
-
+#include <Windows.h>
 #include <fstream>
 #include <sstream>
 #include <StrUtils.h>
