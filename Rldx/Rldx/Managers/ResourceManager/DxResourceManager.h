@@ -1,15 +1,15 @@
 #pragma once
+#include <d3d11.h>
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
-#include <d3d11.h>
-#include <functional>
 
 // author heade
 #include "..\..\Helpers\StringKeyMap.h"
-#include "IDxResource.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "IDxResource.h"
 
 
 
@@ -75,32 +75,44 @@ namespace rldx {
 
 	class DxResourceManager : public IdCounterBase
 	{
+		std::wstring m_gameIdString = L"";
+
 	public:
 		/// <summary>
 		/// For debugging
 		/// </summary>		
 		static void SetGameAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
-		
+
 		/// <summary>
 		/// For debugging
 		/// </summary>		
 		static std::wstring GetGameAssetFolder() { return Instance()->m_rooPathAssetPath; }
-		
+
 		/// <summary>
 		/// For debugging
 		/// </summary>		
 		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
 
 
-		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }		
+		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
+		std::wstring GetGameIdSting() { return m_gameIdString; }
+
+
+		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
-		static ByteStream GetCallBackFile(const std::wstring& fileName) 
-		{ 
+		static ByteStream GetCallBackFile(const std::wstring& fileName)
+		{
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
 			QList<QByteArray> destBinaries;
 
-			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); 
-		
+			if (libtools::IsDiskFile(fileName))
+			{
+				ByteStream diskBytes(fileName);
+				return diskBytes;
+			}
+
+			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries);
+
 			if (destBinaries.size() != 1)
 			{
 				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
@@ -115,10 +127,10 @@ namespace rldx {
 		// TODO: make work?
 		TResourceHandle<DxTexture> MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file);
 
-		
+
 
 		void SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram);
-		DxMeshShaderProgram * GetDefaultShaderProgram() const { return m_defaultShaderProgram; }
+		DxMeshShaderProgram* GetDefaultShaderProgram() const { return m_defaultShaderProgram; }
 
 		~DxResourceManager()
 		{
@@ -168,15 +180,15 @@ namespace rldx {
 
 
 	private:
-		void GetResourcesFromCallBack(QList<QString> & qstrMissingFiles, QList<QByteArray>& destBinaries)
+		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
 				throw exception("No asset callback function set");
-			}						
+			}
 
-			m_assetCallBack(&qstrMissingFiles, &destBinaries);			
+			m_assetCallBack(&qstrMissingFiles, &destBinaries);
 		}
-		
+
 
 	private:
 		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
@@ -224,7 +236,7 @@ namespace rldx {
 		const wchar_t* pszStringKey = nullptr;
 		if (!stringId.empty()) {
 			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, pDerived));
-						
+
 			// TODO: does this need to be a pointer? Can't the handle just contain an std::wstring?
 			pszStringKey = it.first->first.data(); // set pointer to string key, in handle struct, 
 		}
