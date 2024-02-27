@@ -34,16 +34,16 @@ namespace rldx {
 
 	{
 	public:
-		TIdentifiable(const std::string& name) : IdentifiableBase(), m_name(name) {}
+		TIdentifiable(const std::wstring& name) : IdentifiableBase(), m_name(name) {}
 		TIdentifiable();
 		virtual ~TIdentifiable();
 
-		virtual std::string GetTypeString() const = 0;
+		virtual std::wstring GetTypeString() const = 0;
 		virtual KEY_TYPE GetType() const = 0;
 
 
 	protected:
-		std::string m_name = "Unnamed_Object";
+		std::wstring m_name = L"Unnamed_Object";
 	};
 
 	template<typename KEY_TYPE>
