@@ -1,6 +1,6 @@
-#include "XmMaterialReader.h"
-#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 #include "..\..\Libs\PugiXML\pugixml.hpp"
+#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
+#include "XmMaterialReader.h"
 
 #include <map>
 
@@ -18,8 +18,6 @@ bool CmpList(const std::wstring& in, const std::vector<std::wstring>& values)
 
 	return false;
 }
-
-
 
 XMLMaterialData rmv2::XmMaterialReader::Read()
 {
@@ -41,8 +39,9 @@ XMLMaterialData rmv2::XmMaterialReader::Read()
 }
 // TODO: add error checking, for invalid XML nodes, anything that can crash
 // TODO: make this more neat
+
 void rmv2::XmMaterialReader::FetchTexturesFromXML()
-{	
+{
 	std::map < TextureTypeEnum, std::vector<std::wstring>> mapTypeToNames =
 	{
 		{eDiffuse,			{ L"s_diffuse", L"diffuse" }},
@@ -57,7 +56,7 @@ void rmv2::XmMaterialReader::FetchTexturesFromXML()
 	auto xmlMaterial = m_xmlDoc.child_no_case(L"material");
 	auto xmlTextureList = xmlMaterial.child_no_case(L"textures");
 	auto xmlTextureElement = xmlTextureList.child_no_case(L"texture");
-	
+
 	while (xmlTextureElement)
 	{
 		auto xmlSlot = xmlTextureElement.child_no_case(L"slot");
