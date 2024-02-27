@@ -2,21 +2,21 @@
 
 
 #include  <cwctype>
-#include <string>
-#include <sstream>
-#include <vector>
 #include <iterator>
 #include <map>
+#include <sstream>
+#include <string>
+#include <vector>
 #include <vector>
 
+#include <chrono>
 #include <codecvt>
 #include <string>
 #include <string.h>
-#include <chrono>
 
 #include <algorithm>
-#include <fstream>
 #include <comdef.h>
+#include <fstream>
 
 //#include <locale>
 #include <DirectXMath.h>
@@ -48,37 +48,37 @@ inline wchar_t wchar_tolower(wchar_t ch)
 
 inline std::string toUpper(std::string s)
 {
-	std::transform(s.begin(), s.end(), s.begin(),		
+	std::transform(s.begin(), s.end(), s.begin(),
 		[](unsigned char c) { return std::toupper(c); } // correct
 	);
-	
+
 	return s;
 }
 
 inline std::wstring toUpper(std::wstring s)
 {
-	std::transform(s.begin(), s.end(), s.begin(),		
+	std::transform(s.begin(), s.end(), s.begin(),
 		[](wchar_t c) { return std::towupper(c); } // correct
 	);
-	
+
 	return s;
 }
 
 inline std::string toLower(std::string s)
 {
-	std::transform(s.begin(), s.end(), s.begin(),		
+	std::transform(s.begin(), s.end(), s.begin(),
 		[](unsigned char c) { return char_tolower(c); } // correct
 	);
-	
+
 	return s;
 }
 
 inline std::wstring toLower(std::wstring s)
 {
-	std::transform(s.begin(), s.end(), s.begin(),		
+	std::transform(s.begin(), s.end(), s.begin(),
 		[](wchar_t c) { return std::towlower(c); } // correct
 	);
-	
+
 	return s;
 }
 
@@ -221,6 +221,16 @@ static float asin_f(float x)
 
 namespace libtools
 {
+
+	/// <summary>
+	/// Return true at a certain pronanality
+	/// if input is "0.7" there is a 70% change that it will return true
+	/// </summary>
+	/// <param name="propbabality">ratio [0;1]</param>
+	/// <returns></returns>
+	bool ProbablityFunction(float propbabalityRatio);
+
+
 	bool DoesFileExist(const std::wstring& name);
 
 	/// <summary>
@@ -229,6 +239,7 @@ namespace libtools
 	class SystemClock
 	{
 		typedef std::chrono::high_resolution_clock Time;
+
 	public:
 		SystemClock()
 		{
@@ -258,19 +269,27 @@ namespace libtools
 			return retValue;
 		}
 
+		/// <summary>
+		/// Rerturn the CPU "ticks"
+		/// </summary>		
+		long long GetSystemTick() const
+		{
+			return std::chrono::high_resolution_clock::now().time_since_epoch().count();
+		}
+
 	private:
 		std::chrono::steady_clock::time_point m_startTime;
 	};
 
-	static bool isDiskFile(const std::string& _str)
+	static bool IsDiskFile(const std::string& _str)
 	{
 		if (_str.size() < 2)
-			return false; 
+			return false;
 
 		return (_str[1] == ':');
 	};
 
-	static bool isDiskFile(const std::wstring& _str)
+	static bool IsDiskFile(const std::wstring& _str)
 	{
 		if (_str.size() < 2)
 			return false;
@@ -278,7 +297,7 @@ namespace libtools
 
 		return (_str[1] == L':');
 	};
-	
+
 	/// <summary>
 	///  Implemation of 'Polynomial rolling hash function'
 	/// from
@@ -299,7 +318,7 @@ namespace libtools
 		return hash_value;
 	}
 
-	static inline bool doesFileExist(const std::wstring & _wstrPath)
+	static inline bool doesFileExist(const std::wstring& _wstrPath)
 	{
 		std::ifstream inFile(_wstrPath, std::ios::binary);
 		if (!inFile.is_open())
@@ -311,7 +330,7 @@ namespace libtools
 		return true;
 	}
 
-	static uint64_t ___getFileSize(const std::wstring & _wstrPath)
+	static uint64_t ___getFileSize(const std::wstring& _wstrPath)
 	{
 		std::ifstream inFile(_wstrPath, std::ios::binary);
 		if (!inFile.is_open())
@@ -324,7 +343,7 @@ namespace libtools
 		uint64_t offsetEOF = inFile.tellg();
 		inFile.close();
 
-		return offsetEOF+1;
+		return offsetEOF + 1;
 	}
 
 
@@ -377,7 +396,7 @@ namespace libtools
 	{
 		std::ostringstream ss;
 		ss << std::hex << dec;
-		
+
 		return ss.str();
 	}
 
@@ -385,7 +404,7 @@ namespace libtools
 	{
 		std::wostringstream ss;
 		ss << std::hex << dec;
-		
+
 		return ss.str();
 	}
 
@@ -400,7 +419,7 @@ namespace libtools
 		{
 			vecStringOut.push_back(strTempDest);
 		}
-		
+
 		return vecStringOut;
 	}
 
@@ -408,15 +427,15 @@ namespace libtools
 	{
 		// lamda for checking if any of chars
 		auto isDelimiter = [&](wchar_t ch) -> bool
-		{
-			for (const auto& itCh : delimiters) 
 			{
-				if (tolower(itCh) == ch)
-					return true;
-			}
+				for (const auto& itCh : delimiters)
+				{
+					if (tolower(itCh) == ch)
+						return true;
+				}
 
-			return false;
-		};
+				return false;
+			};
 
 		vector<wstring> vecDissolvedPath;
 		size_t str_index = 0;
@@ -438,15 +457,15 @@ namespace libtools
 	static vector<std::string> dissolveStringBytDelimiters(const std::string& _path, const std::string& delimiters)
 	{
 		auto isDelimiter = [&](char ch) -> bool
-		{
-			for (const auto& itCh : delimiters)
 			{
-				if (tolower(itCh) == tolower(ch))
-					return true;
-			}
+				for (const auto& itCh : delimiters)
+				{
+					if (tolower(itCh) == tolower(ch))
+						return true;
+				}
 
-			return false;
-		};
+				return false;
+			};
 
 		vector<string> vecDissolvedPath;
 		size_t str_index = 0;
@@ -521,7 +540,7 @@ namespace libtools
 	extern std::wstring convert_string(const std::string& str);
 	extern std::string convert_string(const std::wstring& wstr);
 
-	
+
 
 	template <class CONST_BUF_DATA_TYPE>
 	static bool compare(CONST_BUF_DATA_TYPE _1, CONST_BUF_DATA_TYPE _2);
@@ -597,11 +616,11 @@ namespace libtools
 		return tempString;
 	}
 
-	
 
-	
 
-	
+
+
+
 
 	template<class CONST_BUF_DATA_TYPE>
 	bool compare(CONST_BUF_DATA_TYPE _1, CONST_BUF_DATA_TYPE _2)
@@ -622,14 +641,14 @@ namespace libtools
 
 	int fileOffsetToLineNumberMem(const char*, size_t size, size_t _offset);
 
-	
+
 
 
 	static std::wstring getComErrorWide(HRESULT hrResult)
 	{
 		_com_error err(hrResult);
-		std::wstring errorMesssage = err.ErrorMessage();	
-		
+		std::wstring errorMesssage = err.ErrorMessage();
+
 		return errorMesssage;
 	}
 
@@ -690,7 +709,7 @@ namespace libtools
 
 	private:
 		HRESULT result;
-		
+
 	};
 };
 
@@ -730,14 +749,14 @@ namespace guard
 {
 
 	template <typename CONST_BUF_DATA_TYPE>
-	static void ThrowIfOutOfBounds(const std::vector<CONST_BUF_DATA_TYPE>& inVector, size_t index, 
+	static void ThrowIfOutOfBounds(const std::vector<CONST_BUF_DATA_TYPE>& inVector, size_t index,
 		const std::string& strWhat = ""
 		/*const std::string& a_callerFunc = __FUNCTION__,
 		const std::string& a_fileName = __FILE__,
 		const std::string& a_lineNumber = std::to_string(__LINE__)
 		*/
-		
-		)
+
+	)
 	{
 		if (inVector.size() <= index)
 		{
@@ -757,3 +776,5 @@ inline  bool CompareExtension(const std::wstring& str1, const std::wstring& str2
 {
 	return CompareNoCase(libtools::GetFileExtension(str1), libtools::GetFileExtension(str2));
 }
+
+

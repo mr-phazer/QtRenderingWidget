@@ -1,5 +1,5 @@
-#include "tools.h"
 #include <string>
+#include "tools.h"
 
 using namespace std;
 
@@ -69,27 +69,35 @@ bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 
 		auto msg = getComErrorWide(hr);
 
-//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(result) + ": ") + std::wstring_to_string(strHex));
+		//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(result) + ": ") + std::wstring_to_string(strHex));
 
 
-		/*	MessageBox(
-		NULL,
-		(
-		wstring(L"Operation:") + op + L"\n\r" +
-		L"Function: " +
-		wstring(func) + L"\n\r" +
-		wstring(L"Error Code: ") + L"\n\r" +
-		wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
-		to_wstring(hr) + L" :" + L"\n\r" +
-		wstring(L"Error String: " + msg)).c_str(),
-		L"Critical Direct3d Error!",
-		MB_OK | MB_ICONERROR
-		);*/
+				/*	MessageBox(
+				NULL,
+				(
+				wstring(L"Operation:") + op + L"\n\r" +
+				L"Function: " +
+				wstring(func) + L"\n\r" +
+				wstring(L"Error Code: ") + L"\n\r" +
+				wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
+				to_wstring(hr) + L" :" + L"\n\r" +
+				wstring(L"Error String: " + msg)).c_str(),
+				L"Critical Direct3d Error!",
+				MB_OK | MB_ICONERROR
+				);*/
 
 		return false;
 	};
 
 	return true;
+}
+
+bool libtools::ProbablityFunction(float ratio)
+{
+	auto randMax = 10000;
+	float randomValue = rand() & randMax;
+
+	return  randomValue <= randMax * ratio;
 }
 
 bool libtools::DoesFileExist(const std::wstring& name)
@@ -237,7 +245,7 @@ std::wstring libtools::GetFileExtension(const std::wstring& _str)
 	if (dotPosition == std::wstring::npos) // no dot, return unchanged
 		return out;
 
-	out.erase(0, dotPosition+1);
+	out.erase(0, dotPosition + 1);
 
 	return out;
 
