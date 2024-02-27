@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "StrUtils.h"
 
-#include <Windows.h>
+#include <algorithm>
+#include <codecvt>
+#include <cwctype>
 
 namespace Utils {
 
@@ -48,8 +50,8 @@ namespace Utils {
 	inline std::wstring ToLower(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			[](wchar_t c) { 
-				return std::towlower(c); 
+			[](wchar_t c) {
+				return std::towlower(c);
 			}
 		);
 
@@ -59,8 +61,8 @@ namespace Utils {
 	inline std::wstring ToUpper(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			[](wchar_t c) { 
-				return std::towupper(c); 
+			[](wchar_t c) {
+				return std::towupper(c);
 			}
 		);
 

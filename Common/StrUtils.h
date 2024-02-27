@@ -1,8 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <codecvt>
-#include <cwctype>
+#include <string>
 
 //---------------------------------------------------------------------//
 // Functions for String manipulation

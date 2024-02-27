@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Logger.h"
 
+#include <fstream>
+#include <sstream>
+#include <StrUtils.h>
+
 //---------------------------------------------------------------------//
 // Logger implementation
 //---------------------------------------------------------------------//
@@ -106,12 +110,12 @@ namespace Utils {
 	// TimeLogAction implementation
 	//---------------------------------------------------------------------//
 
-	TimeLogAction MakeObject() { 
-		return TimeLogAction(); 
+	TimeLogAction MakeObject() {
+		return TimeLogAction();
 	};
 
 	TimeLogAction::TimeLogAction() {
-		m_clock.ResetLocalTime(); 
+		m_clock.ResetLocalTime();
 	};
 
 	TimeLogAction TimeLogAction::PrintStart(const std::wstring& messageToShow)
@@ -140,10 +144,10 @@ namespace Utils {
 	};
 
 	SystemClock& TimeLogAction::GetClock() {
-		return m_clock; 
+		return m_clock;
 	};
 	double TimeLogAction::GetLocalTime() {
-		return m_clock.GetLocalTime(); 
+		return m_clock.GetLocalTime();
 	};
 
 	//---------------------------------------------------------------------//
