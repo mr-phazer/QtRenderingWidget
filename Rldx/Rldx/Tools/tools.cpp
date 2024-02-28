@@ -92,12 +92,10 @@ bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 	return true;
 }
 
+//TODO: check that this actually workjs
 bool libtools::ProbablityFunction(float ratio)
 {
-	auto randMax = 10000;
-	float randomValue = rand() & randMax;
-
-	return  randomValue <= randMax * ratio;
+	return (static_cast<float>(rand()) / static_cast<float>(RAND_MAX + 1)) < ratio;
 }
 
 bool libtools::DoesFileExist(const std::wstring& name)
