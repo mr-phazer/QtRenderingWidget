@@ -1,10 +1,10 @@
 
 
 
-#include "d3d11.h"
-#include "..\..\DXUT\Core\DXUT.h"
 #include "..\..\DirectXTK\Inc\DirectXHelpers.h"
+#include "..\..\DXUT\Core\DXUT.h"
 #include "..\Logging\Logging.h"
+#include "d3d11.h"
 
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 
@@ -30,11 +30,11 @@ inline void rldx::DxTexture::clearPixels(ID3D11DeviceContext* pDeviceContext, sm
 }*/
 
 bool rldx::DxTexture::LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName)
-{	
+{
 	ID3D11Resource* poTextureResource = nullptr;
 	HRESULT hrTextureCreateResult = //DirectX::CreateDDSTextureFromFileEx(
 
-		
+
 		DirectX::CreateDDSTextureFromFileEx(
 			poD3DDevice,
 			fileName.c_str(),
@@ -46,7 +46,7 @@ bool rldx::DxTexture::LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wst
 			DirectX::DX11::DDS_LOADER_FORCE_SRGB,
 			&poTextureResource,
 			&m_cpoShaderResourceView);
-	
+
 	if (FAILED(hrTextureCreateResult))
 	{
 		logging::LogActionWarning("Failed to load texture file: " + wtos(fileName));
@@ -65,15 +65,15 @@ bool rldx::DxTexture::LoadCubeMap(ID3D11Device* poD3DDevice, const std::wstring&
 	ID3D11Resource* poTextureResource = nullptr;
 	DirectX::CreateDDSTextureFromFileEx(
 		poD3DDevice,
-		fileName.c_str(), 
+		fileName.c_str(),
 		0,
 		D3D11_USAGE_DEFAULT,
-		D3D11_BIND_SHADER_RESOURCE, 
-		0, 
-		D3D11_RESOURCE_MISC_TEXTURECUBE, 		
-		DirectX::DX11::DDS_LOADER_DEFAULT,		
+		D3D11_BIND_SHADER_RESOURCE,
+		0,
+		D3D11_RESOURCE_MISC_TEXTURECUBE,
+		DirectX::DX11::DDS_LOADER_DEFAULT,
 		&poTextureResource,
-		&m_cpoShaderResourceView);		
+		&m_cpoShaderResourceView);
 
 	DXUT_SetDebugName(poTextureResource, std::string("DDS:TEX " + objectName).c_str());
 	DXUT_SetDebugName(m_cpoShaderResourceView.Get(), std::string("DDS:SRV " + objectName).c_str());
@@ -99,8 +99,8 @@ bool rldx::DxTexture::LoadCubeMap(ID3D11Device* poD3DDevice, const uint8_t* pbin
 		DirectX::DX11::DDS_LOADER_DEFAULT,
 		&poTextureResource,
 		&m_cpoShaderResourceView);
-	
-	
+
+
 	DXUT_SetDebugName(poTextureResource, std::string("DDS:TEX " + objectName).c_str());
 	DXUT_SetDebugName(m_cpoShaderResourceView.Get(), std::string("DDS:SRV " + objectName).c_str());
 
@@ -112,7 +112,7 @@ bool rldx::DxTexture::LoadFileFromMemory(ID3D11Device* poD3DDevice, const uint8_
 	// TODO: get to work, get texture data into "m_cpoTexture"
 	ID3D11Resource* poTextureResource = nullptr;
 	DirectX::CreateDDSTextureFromMemory(poD3DDevice, pbinarFileData, dataSize, &poTextureResource, &m_cpoShaderResourceView);
-		
+
 
 	DXUT_SetDebugName(poTextureResource, std::string("DDS:TEX " + objectName).c_str());
 	DXUT_SetDebugName(m_cpoShaderResourceView.Get(), std::string("DDS:SRV " + objectName).c_str());
@@ -144,7 +144,7 @@ bool rldx::DxTexture::PlaceResourceBuffer(ID3D11Resource* poTextureResource)
 	{
 		HRESULT hrResult = poTextureResource->QueryInterface(__uuidof(ID3D11Texture3D), (void**)&m_cpoCubeMapTexture);
 		DirectX::ThrowIfFailed(hrResult);
-		
+
 		// TODO: is this needed?
 
 		return true;
@@ -161,7 +161,7 @@ bool rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT 
 {
 	HRESULT hr = S_OK;
 
-	Create2dTextureBuffer(poD3DDevice,  width, height, format, sampleCount);
+	Create2dTextureBuffer(poD3DDevice, width, height, format, sampleCount);
 	CreateRenderTargetViewBuffer(poD3DDevice);
 	CreateShaderResourceViewBuffer(poD3DDevice);
 
@@ -209,7 +209,7 @@ inline HRESULT rldx::DxTexture::CreateShaderResourceViewBuffer(ID3D11Device* poD
 
 	// Create the shader resource view.
 	HRESULT hr = poD3DDevice->CreateShaderResourceView(m_cpoTexture.Get(), &m_shaderResourceViewDesc, &m_cpoShaderResourceView);
-	
+
 	DirectX::ThrowIfFailed(hr);
 
 	return hr;
@@ -225,7 +225,7 @@ inline HRESULT rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3D
 
 	// Create the renderQuad target view.
 	HRESULT hr = poD3DDevice->CreateRenderTargetView(m_cpoTexture.Get(), &renderTargetViewDesc, &m_cpoRenderTargetView);
-	
+
 	DirectX::ThrowIfFailed(hr);
 
 	return hr;
@@ -236,30 +236,30 @@ rldx::ResourceTypeEnum rldx::DxTexture::GetType() const
 	return ResourceTypeEnum::Texture;
 }
 
-std::string rldx::DxTexture::GetTypeString() const
+std::wstring rldx::DxTexture::GetTypeString() const
 {
-	return "DxTexture";
+	return L"DxTexture";
 }
 
 void rldx::DxTexture::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
-{	
+{
 	CreateBuffers(
-		poDevice, 
+		poDevice,
 		m_textureDesc.Width,
-		m_textureDesc.Height, 		
-		DXGI_FORMAT_R32_TYPELESS, 
+		m_textureDesc.Height,
+		DXGI_FORMAT_R32_TYPELESS,
 		1, "Texture"
 	);
 }
 
 UINT rldx::DxTexture::GetHeight()
 {
-    return m_textureDesc.Height;
+	return m_textureDesc.Height;
 }
 
 UINT rldx::DxTexture::GetWidth()
 {
-    return m_textureDesc.Width;
+	return m_textureDesc.Width;
 }
 
 UINT rldx::DxTexture::GetSampleCount()

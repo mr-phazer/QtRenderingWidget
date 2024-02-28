@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "..\..\Interfaces\TIdentifiable.h"
-#include "..\..\Interfaces\IUpdateable.h"
 #include "..\..\Interfaces\IFlushable.h"
+#include "..\..\Interfaces\IUpdateable.h"
+#include "..\..\Interfaces\TIdentifiable.h"
 
 #include "..\NodeTransform\NodeTransform.h"
 
@@ -13,18 +13,18 @@ namespace rldx {
 	enum class SceneNodeTypeEnum : uint32_t
 	{
 		Unknown,
-		EmptyNode,		
+		EmptyNode,
 		BaseNode,
 		MeshNode,
-	};	
-	
+	};
+
 	class IRenderBucket;
 
 	class DxNodeCreator
 	{
 	public:
 		template<typename CONST_BUF_DATA_TYPE>
-		static std::shared_ptr<CONST_BUF_DATA_TYPE> CreateNode(const std::string& name = "")
+		static std::shared_ptr<CONST_BUF_DATA_TYPE> CreateNode(const std::wstring& name = "")
 		{
 			auto newInstance = std::make_shared<CONST_BUF_DATA_TYPE>();
 			newInstance->SetName(name);
@@ -39,8 +39,8 @@ namespace rldx {
 	public:
 		using SharedPtr = std::shared_ptr<DxBaseNode>;
 
-	public:		
-		enum class DrawStateEnum : bool	{ DontDraw = false, Draw = true	};
+	public:
+		enum class DrawStateEnum : bool { DontDraw = false, Draw = true };
 
 	public:
 		DxBaseNode() = default;
@@ -48,16 +48,16 @@ namespace rldx {
 
 		virtual DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
 
-		static SharedPtr Create(const std::string& name = "")
+		static SharedPtr Create(const std::wstring& name = L"")
 		{
 			auto newInstance = std::make_shared<DxBaseNode>();
 			newInstance->SetName(name);
 			return newInstance;
 		}
 
-		virtual void SetName(const std::string& name)
+		virtual void SetName(const std::wstring& name)
 		{
-			m_name = this->GetTypeString() + " # " + name + " # " + std::to_string(GetId());
+			m_name = this->GetTypeString() + L" # " + name + L" # " + std::to_wstring(GetId());
 		}
 
 		DxBaseNode* GetParent()
@@ -205,8 +205,8 @@ namespace rldx {
 		{
 			return m_tempGlobalTransForm;
 		}
-				
-		void Update(float timeElapsed) override;		
+
+		void Update(float timeElapsed) override;
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
 
 		void SetDrawState(DrawStateEnum state) { m_drawState = state; }
@@ -231,7 +231,7 @@ namespace rldx {
 		// TODO: DxNodeCube (DxDrawableMesh) HERE, so a little cube can be drawn
 
 		// Inherited via TIdentifiable
-		std::string GetTypeString() const override;
+		std::wstring GetTypeString() const override;
 
 		SceneNodeTypeEnum GetType() const override;
 

@@ -1,18 +1,18 @@
 #pragma once
 
-#include <d3d11.h>
-#include <wrl/client.h>
-#include <typeinfo>
 #include <cassert>
+#include <d3d11.h>
+#include <typeinfo>
+#include <wrl/client.h>
 
 #include "..\..\..\DirectXTK\Inc\GeometricPrimitive.h"
 #include "..\..\..\DirectXTK\Inc\VertexTypes.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 
-#include "..\Interfaces\IDrawable.h"
-#include "DxShaderProgram.h"
-#include "DxMaterial.h"
 #include "..\DataTypes\DxMeshData.h"
+#include "..\Interfaces\IDrawable.h"
+#include "DxMaterial.h"
+#include "DxShaderProgram.h"
 
 namespace rldx {
 
@@ -20,16 +20,16 @@ namespace rldx {
 	{
 	public:
 		void Draw(ID3D11DeviceContext* poDC) override
-		{	
+		{
 			poDC->DrawIndexed(m_poMesh.indexCount, 0, 0);
 		};
-		
-		ResourceTypeEnum GetType() const override;		
-		std::string GetTypeString() const override;
-		
-		void SetMeshData(const DxCommonMeshData& meshData);				
-	
-	
+
+		ResourceTypeEnum GetType() const override;
+		std::wstring GetTypeString() const override;
+
+		void SetMeshData(const DxCommonMeshData& meshData);
+
+
 		void BindToDC(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);
@@ -40,7 +40,7 @@ namespace rldx {
 		};
 
 	private:
-		DxCommonMeshData m_poMesh;		
+		DxCommonMeshData m_poMesh;
 	};
 
 }; // namespace rldx

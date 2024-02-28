@@ -19,9 +19,9 @@ std::vector<std::string::const_iterator> find_all2(const std::string& s, char c)
 	return res;
 }
 
-std::string rldx::IDxShaderProgram::GetTypeString() const
+std::wstring rldx::IDxShaderProgram::GetTypeString() const
 {
-	return "IDxShaderProgram";
+	return L"IDxShaderProgram";
 }
 
 rldx::ResourceTypeEnum rldx::IDxShaderProgram::GetType() const

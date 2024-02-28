@@ -171,7 +171,7 @@ ResourceTypeEnum DxMaterial::GetType() const
 	return ResourceTypeEnum::Material;
 }
 
-std::string DxMaterial::GetTypeString() const
+std::wstring DxMaterial::GetTypeString() const
 {
-	return "DxMaterial";
+	return L"DxMaterial";
 }

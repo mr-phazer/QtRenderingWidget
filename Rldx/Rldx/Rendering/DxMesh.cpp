@@ -7,9 +7,9 @@ ResourceTypeEnum rldx::DxMesh::GetType() const
 	return ResourceTypeEnum::MeshData;
 }
 
-std::string rldx::DxMesh::GetTypeString() const
+std::wstring rldx::DxMesh::GetTypeString() const
 {
-	return "DxMesh";
+	return L"DxMesh";
 }
 
 void rldx::DxMesh::SetMeshData(const DxCommonMeshData& meshData)

@@ -9,6 +9,7 @@
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
+#include "..\Managers\VmdManager\DxVmdManager.h"
 #include "..\SceneGraph\SceneGraph.h"
 #include "..\SceneGraph\SceneNodes\DxBaseNode.h"
 #include "..\SceneGraph\SceneNodes\DxModelNode.h"
@@ -25,8 +26,8 @@
 namespace rldx {
 
 	enum PS_ConstBufferSlots : UINT
-	{		
-		sTIFF= 0,
+	{
+		sTIFF = 0,
 		Lights = 1
 	};
 
@@ -44,21 +45,22 @@ namespace rldx {
 
 	public:
 		DxScene() = default;
-		DxScene(const std::string& name = "") : TIdentifiable(name) 
+		DxScene(const std::wstring& name = L"") : TIdentifiable(name)
 		{
-			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", {1,1,1,1}, 6.0f);
-		};		
+			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
+		};
+		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
 		virtual void InitRenderView(ID3D11Device* poDevice);
 
-		std::string GetTypeString() const override { return "DxScene"; }
+		std::wstring GetTypeString() const override { return L"DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
 		virtual void Update(float timeElapsed) override;
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
 
 		DxBaseNode* GetRootNode();
-		
+
 		DirectX::BoundingBox GetRootBoundBox() { return m_sceneGraph.GetRootBoundBox(); }
 
 		void DeleteNode(DxBaseNode* node);
@@ -80,9 +82,9 @@ namespace rldx {
 		};
 
 		// TODO: remove?
-		DxMeshShaderProgram * GeDefaultShaderProgram() const
+		DxMeshShaderProgram* GeDefaultShaderProgram() const
 		{
-			return m_poDefaultShaderProgram;		
+			return m_poDefaultShaderProgram;
 		}
 
 		DxCameraOrbital& GetCamera() { return m_globalCamera; };
@@ -106,7 +108,9 @@ namespace rldx {
 		//}
 
 
+
 	private:
+		DxVmdManager m_vmdManager;
 		DxSceneGraph m_sceneGraph;
 		DxMeshRenderBucket m_renderQueue;
 		DxSwapChain::Uptr m_spoSwapChain; // back buffer	
@@ -124,7 +128,7 @@ namespace rldx {
 		// TODO: should this be 2 member? think about integrated solution
 		TDxVSShaderConstBuffer<VS_PerScene_ConstantBuffer> m_sceneFrameVSConstBuffer;
 		TDxPSShaderConstBuffer<PS_Light_ConstBuffer> m_sceneFramePSConstBuffer;
-				
+
 		DxAmbientLightSource m_ambientLightSource;
 		DxTextureSamplers m_textureSamplers;
 
@@ -133,6 +137,7 @@ namespace rldx {
 	private:
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);
 		bool m_bCtrlDown = false; // TODO: should not be here, a more formal "input handler" is needed
+		bool m_bAltDown = false; // TODO: should not be here, a more formal "input handler" is needed
 	};
 
 

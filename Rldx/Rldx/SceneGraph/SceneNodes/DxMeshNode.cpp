@@ -4,15 +4,15 @@
 
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\Rendering\DxMesh.h"
-#include "DxMeshNode.h"
 #include "..\..\Rendering\DxMeshRenderData.h"
+#include "DxMeshNode.h"
 //#include "..\SceneNodes\DxBaseNode.h"
 
 
 
 using namespace rldx;
 
-rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::string& name)
+rldx::DxMeshNode::SharedPtr rldx::DxMeshNode::Create(const std::wstring& name)
 {
 	auto newMeshNode = std::shared_ptr<DxMeshNode>(new DxMeshNode);
 	newMeshNode->SetName(name);
@@ -52,8 +52,8 @@ void DxMeshNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
 	if (GetDrawState() != DrawStateEnum::Draw) {
 		return;
-	}	
-		
+	}
+
 	m_meshData.m_mWorldMatrix = GetCurrentGlobalTransForm();
 	m_meshData.m_pivotPoint = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0
 

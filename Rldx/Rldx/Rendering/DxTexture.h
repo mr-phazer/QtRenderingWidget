@@ -35,7 +35,7 @@ namespace rldx {
 		virtual ~DxTexture() = default;
 
 		ResourceTypeEnum GetType() const override;
-		std::string GetTypeString() const override;
+		std::wstring GetTypeString() const override;
 
 		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();

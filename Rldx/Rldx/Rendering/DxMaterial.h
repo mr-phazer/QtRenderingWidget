@@ -1,17 +1,17 @@
 #pragma once
 
-#include <vector>
-#include <set>
 #include <d3d11.h>
+#include <set>
+#include <vector>
 
 #include "..\..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
-#include "..\Managers\ResourceManager\DxResourceManager.h"
-#include "..\Interfaces\IBindable.h"
-#include "DxTexture.h"
 #include "..\..\..\ImportExport\RigidModel\DataTypes\TextureElement.h"
+#include "..\Interfaces\IBindable.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
+#include "DxTexture.h"
 
 namespace rldx {
 	// for texture loading, maybe not needed
@@ -23,7 +23,7 @@ namespace rldx {
 
 	// Texture element for SRV
 	struct RenderTextureElement
-	{	
+	{
 		DxTexture* pTexture = nullptr;
 		std::wstring path = L"";
 	};
@@ -49,27 +49,27 @@ namespace rldx {
 		bool operator==(const DxMaterial& other) const;
 		void SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex);
 
-		
+
 
 		std::string& GetPathHashRef() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
 			// TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
 			{
-				{0, L"default_texture.dds"},				
+				{0, L"default_texture.dds"},
 			});
 
 		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
-		
+
 
 		// Bind texture to DC, for doing a drawcall
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 		void UnbindFromDC(ID3D11DeviceContext* poDC) override;
-	
-		bool IsValid() const  { return m_bIsValid; } ;
+
+		bool IsValid() const { return m_bIsValid; };
 		int GetTextureStartSlot();
 
 		ResourceTypeEnum GetType() const override;
-		std::string GetTypeString() const override;
+		std::wstring GetTypeString() const override;
 
 	private:
 		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
