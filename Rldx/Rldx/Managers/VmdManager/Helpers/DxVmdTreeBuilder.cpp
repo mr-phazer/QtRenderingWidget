@@ -1,3 +1,4 @@
+#include <functional>
 #include "DxMaterialInfoReader.h"
 #include "DxVmdTreeBuilder.h"
 
@@ -8,67 +9,54 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 {
 	m_attachPoints.clear();
 
-	if (CompareNoCase(xmlNode.name(), VMDTag::VariantMesh))
+	DxVmdNode::SharedPtr spoNewSceneChild = nullptr;
+
+	if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMesh))
 	{
-		LoadVarintMeshNode(sceneGraphNode, xmlNode);
+		spoNewSceneChild = std::make_shared<DxVMDVariantMeshNode>(xmlNode);
+		DxMaterialInfoReader(&spoNewSceneChild->VMDTagData()).Parse(); // -- Load material info		
+		sceneGraphNode->AddChild(spoNewSceneChild);
+
 	}
-	else if (CompareNoCase(xmlNode.name(), VMDTag::Slot))
+	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::Slot))
 	{
-		LoadSlotNode(sceneGraphNode, xmlNode);
+		spoNewSceneChild = std::make_shared<DxVMDSlotNode>(xmlNode, m_attachPoints); //
+		sceneGraphNode->AddChild(spoNewSceneChild);
+
 	}
-	else if (CompareNoCase(xmlNode.name(), VMDTag::VariantMeshReference))
+	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMeshReference))
 	{
-		LoadVariantMeshRerence(sceneGraphNode, xmlNode);
+		// -- Dont create a child node, make the current node into a "VariantMesh" node, but with the data from the reference file
+		LoadVariantMeshRerenceNode(sceneGraphNode, xmlNode);
 	}
 	else
 	{
-		LoadUnknownNode(sceneGraphNode, xmlNode);
+		// TODO: maybe create a "universal" node type that can handle any type of data, so the VMD can saved from this tree
 	}
 
-	for (auto& iiVarianMeshsNode : xmlNode.children()) {
+	for (auto& itXmlChild : xmlNode.children()) {
 
-		auto newSceneNode = std::make_shared<DxVmdNode>(); // new node for each child node
-		sceneGraphNode->AddChild(newSceneNode);
-		Build(newSceneNode.get(), iiVarianMeshsNode);
+		if (spoNewSceneChild)
+			Build(spoNewSceneChild.get(), itXmlChild);
 	}
 }
 
-void rldx::DxVmdTreeBuilder::LoadUnknownNode(rldx::DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
+void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
-	sceneGraphNode->GetVMDNodeDataRef().Name = xmlNode.attribute_no_case(VMDTagAtrtibtes::Name).as_string();
-}
-
-void rldx::DxVmdTreeBuilder::LoadVarintMeshNode(DxVmdNode* root, const pugi::xml_node& xmlNode)
-{
-	VMDNodeData& newData = root->GetVMDNodeDataRef();
-	newData.Tag = VMDTagEnum::VariantMesh;
-	newData.varintMeshData.modelPath = xmlNode.attribute_no_case(VMDTagAtrtibtes::Model).value();
-	newData.varintMeshData.imposterModelPath = xmlNode.attribute_no_case(VMDTagAtrtibtes::ImposterModel).value();
-
-	DxMaterialInfoReader(&newData).Parse();
-}
-
-void rldx::DxVmdTreeBuilder::LoadSlotNode(DxVmdNode* root, const pugi::xml_node& xmlNode)
-{
-	VMDNodeData& vmdNodeData = root->GetVMDNodeDataRef();
-	vmdNodeData.Tag = VMDTagEnum::Slot;
-	vmdNodeData.Name = xmlNode.attribute_no_case(VMDTagAtrtibtes::Name).as_string();
-	vmdNodeData.slotData.name = vmdNodeData.Name;
-	vmdNodeData.slotData.attcachPointName = xmlNode.attribute_no_case(VMDTagAtrtibtes::AttachPoint).as_string();
-
-	m_attachPoints.push_back(vmdNodeData.slotData.attcachPointName);
-}
-
-void rldx::DxVmdTreeBuilder::LoadVariantMeshRerence(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
-{
-	std::wstring vmdFilePath = xmlNode.attribute_no_case(VMDTagAtrtibtes::Definition).as_string();
+	std::wstring vmdFilePath = xmlNode.attribute_no_case(VMDTagAttributes::Definition).as_string();
 	auto vmdBytes = DxResourceManager::GetCallBackFile(vmdFilePath);
 
-	auto xmlParseResult = m_xmldoc.load_buffer(vmdBytes.GetBufferPtr(), vmdBytes.GetBufferSize());
+	if (vmdBytes.GetBufferSize() == 0) {
+		sceneGraphNode->VMDTagData().tagType = VMDTagEnum::INVALID;
+		return;
+	}
+
+	pugi::xml_document xmlDoc;
+	auto xmlParseResult = xmlDoc.load_buffer(vmdBytes.GetBufferPtr(), vmdBytes.GetBufferSize());
 
 	if (!xmlParseResult) {
 		throw std::exception(("Create::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
 	}
 
-	LoadVarintMeshNode(sceneGraphNode, m_xmldoc);
+	DxVmdTreeBuilder().Build(sceneGraphNode, xmlDoc.first_child());
 }

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <time.h>
-#include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
+#include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
 
 // TODO: move impl to .xpp, and forward declare as much as possible
 namespace rldx
@@ -9,15 +8,28 @@ namespace rldx
 	class VariantGenerator
 	{
 		DxVmdNode* m_rootNode = nullptr;
-
+		libtools::SystemClock m_clock; // used to random seed
 	public:
 		VariantGenerator(DxVmdNode* rootNode) : m_rootNode(rootNode) {}
 
 		void GenerateVariant()
 		{
+			auto trueCount = 0;
+			auto runCount = 1000;
+
+			for (size_t i = 0; i < runCount; i++)
+			{
+				if (libtools::ProbablityFunction(0.254f))
+				{
+					trueCount++;
+				}
+			}
+
+			auto result = (float)trueCount / (float)runCount;
+
 			DisbaleAllNodes(m_rootNode);
-			std::srand(time(nullptr));
-			EnableVmdNode(m_rootNode);
+			//EnableSlot(m_rootNode);
+			tester_EnableVariantMesh(m_rootNode);
 		}
 
 	private:
@@ -32,38 +44,78 @@ namespace rldx
 			}
 		};
 
-		void EnableVmdNode(DxVmdNode* node)
+		void EnableVariantMesh(DxVmdNode* node)
 		{
-			libtools::SystemClock clock;
-
-			auto ticks = clock.GetSysstemTick();
-			std::srand(ticks);
-
-			if (node->GetVMDNodeDataRef().Tag == VMDTagEnum::VariantMesh) // if the node is a <variantmesh>, enable all its child <SLOT>s
+			node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+			for (auto& child : node->GetChildren()) // enable all sibling <SLOT>s inside the <VariantMesh>
 			{
-				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
-
-				for (auto& child : node->GetChildren()) // enable all sibling <SLOT>s inside the <VariantMesh>
+				auto vmdNode = static_cast<DxVmdNode*>(child.get());
+				if (vmdNode->VMDTagData().tagType == VMDTagEnum::Slot)
 				{
-					auto pVmdChildNode = static_cast<DxVmdNode*>(child.get());
-					if (pVmdChildNode->GetVMDNodeDataRef().Tag == VMDTagEnum::Slot)
-					{
-						EnableVmdNode(pVmdChildNode);
-					}
-				}
-			}
-			else if (node->GetVMDNodeDataRef().Tag == VMDTagEnum::Slot) // if the node is a <Slot>, enable ONE of its child <VariantMesh>s
-			{
-				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
-
-				if (node->GetChildCount() > 0) // enable only 1 <Variantmesh> inside the <SLOT>
-				{
-
-					auto childIndex = rand() % node->GetChildCount(); // Random variant
-					auto vmdNode = static_cast<DxVmdNode*>(node->GetChild(childIndex));
-					EnableVmdNode(vmdNode);
+					EnableSlot(vmdNode);
 				}
 			}
 		}
+
+		void EnableSlot(DxVmdNode* node)
+		{
+			node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+			if (node->GetChildCount() > 0) // enable only 1 <Variantmesh> inside the <SLOT>
+			{
+				auto childIndex = rand() % node->GetChildCount(); // Random variant
+				auto vmdNode = static_cast<DxVmdNode*>(node->GetChild(childIndex));
+				vmdNode->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+				EnableVariantMesh(vmdNode);
+			}
+		}
+
+		void tester_EnableVariantMesh(DxVmdNode* node)
+		{
+			if (node->VMDTagData().tagType == VMDTagEnum::VariantMesh)
+			{
+				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+				for (auto& child : node->GetChildren()) // enable all sibling <SLOT>s inside the <VariantMesh>
+				{
+					auto vmdNode = static_cast<DxVmdNode*>(child.get());
+					if (vmdNode->VMDTagData().tagType == VMDTagEnum::Slot)
+					{
+						EnableSlot(vmdNode);
+					}
+				}
+			}
+			else if (node->VMDTagData().tagType == VMDTagEnum::Slot)
+			{
+				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+				if (node->GetChildCount() > 0) // enable only 1 <Variantmesh> inside the <SLOT>
+				{
+					auto childIndex = rand() % node->GetChildCount(); // Random variant
+					auto vmdNode = static_cast<DxVmdNode*>(node->GetChild(childIndex));
+					vmdNode->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+					EnableVariantMesh(vmdNode);
+				}
+			}
+		}
+		//void EnableVmdNode(DxVmdNode* node)
+		//{
+		//	auto ticks = m_clock.GetSystemTick();
+		//	std::srand(ticks);
+
+
+
+		//	if (node->VMDTagData().IsVariantMesh()) // if the node is a <variantmesh>, enable all its child <SLOT>s
+		//	{
+		//		EnableSlots(node);
+		//	}
+
+		//	else if (node->VMDTagData().tagType == VMDTagEnum::Slot) // if the node is a <Slot>, enable ONE of its child <VariantMesh>s
+		//	{
+		//		EnableVariantMesh(node);
+		//	}
+		//	else
+		//	{
+		//		// TODO: REMOVE
+		//		auto debug_1 = 1;
+		//	}
+		//}
 	};
-}
+};

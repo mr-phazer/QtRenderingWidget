@@ -1,14 +1,15 @@
 #include "DxVmdAllocator.h"
 
-#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
+#include "..\..\..\Creators\DxGameShaderCreators.h"
 #include "..\..\DxDeviceManager.h"
+#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
 
 // TODO: remove?
 //void rldx::DxVmdNodeAllocator::AllocateDxBuffers(DxVmdNode* sceneVmdNode)
 //{
-//	auto& data = sceneVmdNode->GetVMDNodeDataRef();
+//	auto& data = sceneVmdNode->VMDTagData();
 //
-//	switch (data.Tag)
+//	switch (data.tagType)
 //	{
 //	case VMDTagEnum::VariantMesh:
 //	{
@@ -19,7 +20,7 @@
 //
 //void rldx::DxVmdNodeAllocator::AllocateVariantMesh(DxVmdNode* sceneVmdNode)
 //{
-//	auto& data = sceneVmdNode->GetVMDNodeDataRef();
+//	auto& data = sceneVmdNode->VMDTagData();
 //
 //	auto rmv2Bytes = DxResourceManager::GetCallBackFile(data.varintMeshData.modelPath);
 //	auto parsedRmv2File = rmv2::RigidModelReader().Read(rmv2Bytes);
@@ -37,11 +38,11 @@
 // TODO: remove?
 void rldx::DxVmdNodeAllocator::AllocateDxBuffers()
 {
-	auto& data = m_sceneVmdNode->GetVMDNodeDataRef();
+	auto& data = m_sceneVmdNode->VMDTagData();
 
-	m_sceneVmdNode->SetDrawState(DxBaseNode::DrawStateEnum::DontDraw);
+	m_sceneVmdNode->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
 
-	switch (data.Tag)
+	switch (data.tagType)
 	{
 	case VMDTagEnum::VariantMesh:
 	{
@@ -52,14 +53,22 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers()
 
 void rldx::DxVmdNodeAllocator::AllocateVariantMesh()
 {
-	auto& data = m_sceneVmdNode->GetVMDNodeDataRef();
+	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
+	if (!gameShaderProgramCreator) {
+		throw std::exception("Error loadeinfGame Shader");
+	}
 
-	if (data.varintMeshData.wsModelData.geometryPath.empty())	{ // a "nesting <VariantMesh>, one per file?
-		return;
+	auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
+	if (!newPbrShaderProgram) {
+		throw std::exception("Error Creating Shader");
 	}
 
 
+	auto& data = m_sceneVmdNode->VMDTagData();
 
+	if (data.varintMeshData.wsModelData.geometryPath.empty()) { // a "nesting <VariantMesh>, one per file?
+		return;
+	}
 
 	auto rmv2Bytes = DxResourceManager::GetCallBackFile(data.varintMeshData.wsModelData.geometryPath);
 	auto parsedRmv2File = rmv2::RigidModelReader().Read(rmv2Bytes);

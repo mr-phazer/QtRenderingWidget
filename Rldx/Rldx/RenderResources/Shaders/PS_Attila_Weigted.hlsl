@@ -20,8 +20,7 @@ float2 ScreenToUV(float4 screenPos /*, float2 texSize*/)
 
 }
 
-float4 main(in PixelInputType input) : SV_Target0
-{     
+float4 main(in PixelInputType input) : SV_Target0{   
     
 	// sample textures
     float4 specular_colour = shaderTextures[t_Specular].Sample(s_anisotropic, input.tex1);

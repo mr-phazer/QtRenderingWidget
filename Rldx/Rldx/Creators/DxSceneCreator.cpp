@@ -2,13 +2,12 @@
 
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 
-#include "..\Creators\DxGameShaderCreators.h"
-#include "..\Creators\DxModelNodeCreators\DxModelNodeCreator.h"
 #include "..\..\..\ImportExport\WsModel\Reader\WsModelReader.h"
+#include "..\Creators\DxGameShaderCreators.h"
 
-#include "..\SceneGraph\SceneNodes\DxVmdNode.h"
+#include "..\SceneGraph\SceneNodes\DxVmdNodes.h"
 
-rldx::DxScene::Uptr rldx::DxSceneCreator::InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::string& name)
+rldx::DxScene::Uptr rldx::DxSceneCreator::InitNewScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& name)
 {
 	m_newScene = std::make_unique<DxScene>(name);
 
@@ -28,10 +27,10 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::InitNewScene(ID3D11Device* poDevice, I
 	return std::move(m_newScene);
 }
 
-rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::string& gameStringId)
+rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::wstring& gameStringId)
 {
 	m_nativeWindowHandle = nativeWindHandle;
-	
+
 	RGBModeEnum rgbMode = RGB_Mode;
 
 	if (gameStringId == game_id_keys::KEY_WARHAMMER ||
@@ -62,45 +61,45 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 		);
 
 	// make grid node, mesh, fill node, set shaders
-	auto meshNodeGrid = rldx::DxMeshNode::Create("Grid");
+	auto meshNodeGrid = rldx::DxMeshNode::Create(L"Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
 	meshNodeGrid->SetModelData(gridMeshData);
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetRootNode()->AddChild(meshNodeGrid);
-	
-	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);	
+
+	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
 
 	return std::move(m_newScene);
 }
 
-void rldx::DxSceneCreator::TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString)
+void rldx::DxSceneCreator::TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 {	// TODO: clean up -> put all asset insertion into VMDManager
 	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\brt_battle_pilgrims.variantmeshdefinition)");
 	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_ch_karl.variantmeshdefinition)");
 	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\ksl_bear_heavy_katarin.variantmeshdefinition)");
-	ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_flagellants_tattersouls.variantmeshdefinition)");
+	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_flagellants_tattersouls.variantmeshdefinition)");
 
-	DxVariantMeshTree variantMeshCreator;
-	variantMeshCreator.Create(vmdBinary);
-	variantMeshCreator.AllocateNodes();
-	variantMeshCreator.GenerateVariant();
 
-	poScene->GetRootNode()->AddChild(variantMeshCreator.GetNode());
+	poScene->GetVmdManager().LoadVariantMesh(fileData);
+	poScene->GetVmdManager().AllocateDXBuffers();
+	poScene->GetVmdManager().GenerateVariant();
 
-	SetCameraAutoFit(variantMeshCreator.GetNode().get(), poScene);
+	poScene->GetRootNode()->AddChild(poScene->GetVmdManager().GetNode());
+
+	SetCameraAutoFit(static_cast<DxModelNode*>(poScene->GetVmdManager().GetNode().get()), poScene);
 }
 
-void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::string& gameIdString)
-{	
-	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>("ModelNode RMV2");		
+void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
+{
+	auto modelNodeRmv2 = rldx::DxNodeCreator::CreateNode<DxModelNode>(L"ModelNode RMV2");
 
 	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
 	if (!newPbrShaderCreator) {
 		throw std::exception("No shader program creator found for game");
 	}
 
-	auto newPbrShaderProgram = newPbrShaderCreator->Create(poDevice, fileData);
+	auto newPbrShaderProgram = newPbrShaderCreator->Create(poDevice);
 	if (!newPbrShaderProgram) {
 		throw std::exception("Error Creating Shader");
 	}
@@ -111,16 +110,16 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 	rmv2::RigidModelReader rigidModelFileReader;
 	auto rmv2File = rigidModelFileReader.Read(fileData);
 	modelNodeRmv2->SetModelData(poDevice, rmv2File);
-	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);	
-	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);	
-		
+	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);
+	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+
 	poScene->GetRootNode()->AddChild(modelNodeRmv2);
 
 	SetCameraAutoFit(modelNodeRmv2.get(), poScene);
 }
 
 void rldx::DxSceneCreator::SetCameraAutoFit(DxModelNode* modelNodeRmv2, rldx::DxScene* poScene)
-{		
+{
 	auto boundBox = poScene->GetRootBoundBox();
 	//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
 	const float adjustBBExtend = 0.3f;

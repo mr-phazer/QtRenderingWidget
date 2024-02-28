@@ -35,8 +35,9 @@ float4 main(in PixelInputType input) : SV_TARGET
     bool faction_colours = true;
 
 	//	Get the inputs...
-    ps30_get_shared_inputs(eye_vector, light_vector, base_colour, /*normal,*/roughness, metalness, occlusion, /*basis, */input, faction_colours);
-
+    ps30_get_shared_inputs(eye_vector, light_vector, base_colour, /*normal,*/roughness, metalness, occlusion, /*basis, */input, faction_colours);     
+    
+    
 	//moving to allow blending
     //float3 pixel_normal = normalize(mul(normalize(normal), basis));
     float3 pixel_normal = getPixelNormal(input);

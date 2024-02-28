@@ -1,81 +1,79 @@
 #pragma once
 
+#include "..\..\ImportExport\Helpers\Templates.h"
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\Rendering\DxShaderProgram.h"
 
 class IShaderProgramCreator
 {
 public:
-	virtual rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice, ByteStream& fileData) = 0;
+	virtual rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice) = 0;
 };
 
 class Troy_ShaderProgramCreator : public IShaderProgramCreator
 {
-	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice, ByteStream& fileData) override
+	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
 			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
-			/*libtools::GetExePath() +*/ LR"(PS_Troy.cso)");		
+			/*libtools::GetExePath() +*/ LR"(PS_Troy.cso)");
 	};
 };
 
 class Attila_ShaderProgramCreator : public IShaderProgramCreator
 {
-	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice, ByteStream& fileData) override
+	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			/*libtools::GetExePath() */+ LR"(VS_Simple.cso)",
-			/*libtools::GetExePath()*/ + LR"(PS_Attila_Weigted.cso)");		
+			/*libtools::GetExePath() */+LR"(VS_Simple.cso)",
+			/*libtools::GetExePath()*/ +LR"(PS_Attila_Weigted.cso)");
 	};
 };
 
 class WH3_ShaderProgramCreator : public IShaderProgramCreator
 {
-	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice, ByteStream& fileData) override
+	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
 			/*/*libtools::GetExePath() + **/LR"(VS_Simple.cso)",
-			/*libtools::GetExePath() + */LR"(PS_Three_Kingdoms.cso)");		
+			/*libtools::GetExePath() + */LR"(PS_Three_Kingdoms.cso)");
 	};
 };
 
 class SimpleShaderProgramCreator : public IShaderProgramCreator
 {
 public:
-	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice, ByteStream& fileData) override
+	rldx::DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 	{
 		return rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
 			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
-			/*libtools::GetExePath() + */LR"(PS_Simple.cso)");		
+			/*libtools::GetExePath() + */LR"(PS_Simple.cso)");
 	};
 };
 
-class GameShaderProgramCreatorFactory : public templates::TFactoryStringKey<IShaderProgramCreator>
+class GameShaderProgramCreatorFactory : public templates::TFactoryWStringKey<IShaderProgramCreator>
 {
 public:
 	GameShaderProgramCreatorFactory()
 	{
 		Register<Troy_ShaderProgramCreator>(game_id_keys::KEY_WARHAMMER);
 		Register<Troy_ShaderProgramCreator>(game_id_keys::KEY_WARHAMMER_2);
-		Register<Troy_ShaderProgramCreator>(game_id_keys::KEY_TROY);		
-		
+		Register<Troy_ShaderProgramCreator>(game_id_keys::KEY_TROY);
+
 		Register<Attila_ShaderProgramCreator>(game_id_keys::KEY_ATTILA);
 		Register<Attila_ShaderProgramCreator>(game_id_keys::KEY_ROME_2);
 		Register<Attila_ShaderProgramCreator>(game_id_keys::KEY_THRONES_OF_BRITANNIA);
 		Register<Attila_ShaderProgramCreator>(game_id_keys::KEY_ARENA);
-		
+
 		Register<WH3_ShaderProgramCreator>(game_id_keys::KEY_WARHAMMER_3);
 		Register<WH3_ShaderProgramCreator>(game_id_keys::KEY_THREE_KINGDOMS);
+	};
 
-		
-
-	}
-
-	virtual void HandleKeyNotFound(std::string KeyValue) override
+	virtual void HandleKeyNotFound(std::wstring KeyValue) override
 	{
 
 	}

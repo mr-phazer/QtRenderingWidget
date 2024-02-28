@@ -1,24 +1,24 @@
 #pragma once
 
-#include <qwidget.h>
+#include <mouse.h>
+#include <qevent.h>
+#include <qmessagebox.h>
 #include <qstyle.h>
 #include <qstyleoption.h>
-#include <qmessagebox.h>
 #include <qtimer.h>											   
-#include <qevent.h>
-#include <mouse.h>
+#include <qwidget.h>
 
 #include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 
 #include "ui_QtRenderView.h"
 
+#include "..\rldx\rldx\Creators\DxSceneCreator.h"
 #include "..\rldx\rldx\Managers\DxDeviceManager.h"
 #include "..\rldx\rldx\Managers\DxSceneManager.h"
-#include "..\rldx\rldx\Creators\DxSceneCreator.h"
 #include "..\rldx\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
 
-#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
 #include "..\rldx\rldx\DataTypes\DxMeshData.h"
+#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
@@ -32,13 +32,13 @@ private:
 	bool event(QEvent* event) override;
 	bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 
-	LRESULT WINAPI ForwardNativeWindowEvent(MSG* pMsg);	
+	LRESULT WINAPI ForwardNativeWindowEvent(MSG* pMsg);
 
 public:
 	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);
-	
+
 	bool InitRenderView();
-	
+
 
 	void PauseRendering()
 	{
@@ -54,32 +54,32 @@ public:
 	{
 		// TODO: use abstract factor, based on incoming game ID
 		auto sceneBuilder = std::make_shared<rldx::DxSceneCreator>();
-		auto scene = 
-			sceneBuilder->Create((HWND)winId(), 
-				rldx::DxDeviceManager::GetInstance().GetDevice(), 
-				rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 
-				GetGameIdString().toStdString());
+		auto scene =
+			sceneBuilder->Create((HWND)winId(),
+				rldx::DxDeviceManager::GetInstance().GetDevice(),
+				rldx::DxDeviceManager::GetInstance().GetDeviceContext(),
+				GetGameIdString().toStdWString());
 
 		m_upoSceneManager->SetScene(scene);
 	}
-	
+
 	void StartRendering(float _FPS = 60.0f);
 
 	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
 	QString GetGameIdString() const { return m_gameIdString; };
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
-	
+
 private:
 	void LoadExeResources(ID3D11Device* poDevice);
 
 
-	protected:
+protected:
 	virtual void focusInEvent(QFocusEvent* event) override;
 	virtual void focusOutEvent(QFocusEvent* event) override;
 
 
-signals:	
+signals:
 	void resizeEventHappend(QResizeEvent* event);
 	void keyPressed(QKeyEvent*);
 	void mouseMoved(QMouseEvent*);
@@ -93,8 +93,8 @@ private:
 	void MakeConnections();
 
 private:
-	rldx::DxSceneManager::UniquePtr m_upoSceneManager;	
-	
+	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
+
 	QTimer* m_timer = nullptr;
 	float m_frameTime = 0;
 	QString m_gameIdString;

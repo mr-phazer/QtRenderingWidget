@@ -29,10 +29,10 @@
     <QtUic Include="QtMainWindowView.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="QtMainWindowView.h">
+    <QtMoc Include="QtTestAppView.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <ClCompile Include="QtMainWindowView.cpp">
+    <ClCompile Include="QtTestAppView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

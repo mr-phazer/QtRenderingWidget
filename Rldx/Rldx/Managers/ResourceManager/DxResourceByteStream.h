@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IDxResource.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "IDxResource.h"
 
 namespace rldx
 {
@@ -10,8 +10,8 @@ namespace rldx
 	public:
 		ByteStream byteStream;
 
-		std::string GetTypeString() const { return "ByteStream"; }
-		ResourceTypeEnum GetType() const { return ResourceTypeEnum::BytesStream;  }
+		std::wstring GetTypeString() const { return L"ByteStream"; }
+		ResourceTypeEnum GetType() const { return ResourceTypeEnum::BytesStream; }
 
 	};
 

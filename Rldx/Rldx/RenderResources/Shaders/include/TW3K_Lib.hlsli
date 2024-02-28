@@ -87,8 +87,8 @@
 //> = false;
 
 //	In the metalness scheme, all non-metals have the same reflectivity value.  Value chosen to match up with Marmoset.  Calibration done with Mauro.
-//static const float3 Non_Metals_Reflectivity = float3(0.04f, 0.04f, 0.04f);
-static const float3 Non_Metals_Reflectivity = float3(0.00f, 0.00f, 0.00f);
+static const float3 Non_Metals_Reflectivity = float3(0.04f, 0.04f, 0.04f);
+//static const float3 Non_Metals_Reflectivity = float3(0.00f, 0.00f, 0.00f);
 
 //	Tone mapping values...
 static const float Tone_Map_Black = 0.001;
@@ -1327,7 +1327,7 @@ float get_env_map_lod(in float roughness_in)
     float roughness = 1.0 - smoothness;
 
 	//	This must be the number of mip-maps in the environment map!
-    float texture_num_lods = 8.0f;
+    float texture_num_lods = 10.0f;
 
     float env_map_lod = roughness * (texture_num_lods - 1.0);
 

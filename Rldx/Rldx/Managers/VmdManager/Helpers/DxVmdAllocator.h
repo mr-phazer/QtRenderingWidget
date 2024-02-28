@@ -1,13 +1,11 @@
 #pragma once
 
-#include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
-#include "..\..\..\SceneGraph\SceneNodes\DxVmdNode.h"
-#include "VmdNodeCreators.h"
+#include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
 
 namespace rldx
 {
 	class DxVmdNodeAllocator
-	{		
+	{
 		DxVmdNode* m_sceneVmdNode = nullptr;
 		DxMeshShaderProgram* m_nodeShaderProgram = nullptr;
 
@@ -18,9 +16,9 @@ namespace rldx
 		void AllocateDxBuffers();
 
 	private:
-		void AllocateVariantMesh();		
+		void AllocateVariantMesh();
 	};
-	
+
 	//class DxVmdNodeAllocator
 	//{				
 	//public:

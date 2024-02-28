@@ -42,7 +42,7 @@ namespace rldx {
 	{
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
-		DxBaseNode::SharedPtr m_rootNode = DxBaseNode::Create("RootNode");
+		DxBaseNode::SharedPtr m_rootNode = DxBaseNode::Create(L"RootNode");
 
 	public:
 		DxBaseNode* GetRootNode()
@@ -84,7 +84,7 @@ namespace rldx {
 	private:
 		void UpdateBoundBoxRecursive(DxBaseNode* node)
 		{
-			
+
 			for (auto& itChildeNode : node->GetChildren())
 			{
 				UpdateBoundBoxRecursive(itChildeNode.get());

@@ -2,8 +2,8 @@
 
 #include <exception>
 
-#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 #include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
+#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
 #include "QtObjects\Views\QtRenderView.h"
 
@@ -22,27 +22,28 @@ static void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteA
 
 QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
 {
-// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
+	// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
 #ifdef _DEBUG
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 #else
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
 #endif	
-	
+
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
 	try {
 		poNewRenderingWidget = new QtRenderWidgetView(parent); // nullptr = no parent, free floating window	
 		poNewRenderingWidget->hide();
-		poNewRenderingWidget->InitRenderView();		
+		poNewRenderingWidget->InitRenderView();
 		poNewRenderingWidget->SetGameIdString(*gameIdString);
+		rldx::DxResourceManager::Instance()->SetGameIdSting(gameIdString->toStdWString()); // TODO: maybe ONLY store it here?
 	}
 	catch (std::exception& e)
 	{
 #ifdef _DEBUG
 		MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
-		
+
 		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		delete poNewRenderingWidget;
@@ -53,7 +54,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	poNewRenderingWidget->setWindowTitle("BLAH");// "QRenderingWidget (testing, with various stuff in layout, for testin.");
 	poNewRenderingWidget->show();
 	poNewRenderingWidget->StartRendering();
-	
+
 
 	return poNewRenderingWidget;
 }
@@ -67,7 +68,7 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	try {
 
 		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
-		rldx::DxSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdString());
+		rldx::DxSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
 	}
 	catch (std::exception& e)
 	{
@@ -75,8 +76,8 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
 
-		*outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());				
+		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
+		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		return false;
 	}
@@ -93,7 +94,7 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 	try {
 
 		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
-		rldx::DxSceneCreator::TESTCODE_AddVMD(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdString());
+		rldx::DxSceneCreator::TESTCODE_AddVMD(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
 	}
 	catch (std::exception& e)
 	{
@@ -111,7 +112,7 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 }
 
 void SetAssetFolder(QString* folder)
-{	
+{
 	ByteStream::SetSearchFolder(folder->toStdWString());
 }
 
@@ -139,7 +140,7 @@ void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* 
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
 		// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
-		auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + (*missingFiles)[iAsset].toStdWString();		
+		auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + (*missingFiles)[iAsset].toStdWString();
 		ByteStream newStream(filePath, false);
 
 		// force list to be same size, maybe redundant
