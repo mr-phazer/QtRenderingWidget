@@ -1,18 +1,18 @@
 #pragma once
 
-#include "DxModelNode.h"
-#include "..\..\ImportExport\WsModel\Reader\WsModelReader.h"
-#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
 #include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
+#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
+#include "..\..\ImportExport\WsModel\Reader\WsModelReader.h"
+#include "DxModelNode.h"
 
 namespace rldx {
 
 	enum class VMDTagEnum
 	{
-		INVALID = 0, 
-		Slot,
-		VariantMesh,
-		VariantMeshReference		
+		INVALID = 0,
+		Slot = 1,
+		VariantMesh = 2,
+		VariantMeshReference = 4,
 	};
 
 	struct FileExtensions {
@@ -25,37 +25,40 @@ namespace rldx {
 	/// <summary>
 	/// The STATE tage as string id, for search/Compine
 	/// </summary>
-	struct VMDTag {
+	struct VMDTagStrings {
 
 		static constexpr auto Slot = L"SLOT";
 		static constexpr auto  VariantMesh = L"VARIANT_MESH";
 		static constexpr auto  VariantMeshReference = L"VARIANT_MESH_REFERENCE";
-		static constexpr auto  AttachPoint = L"attach_point";
 	};
 
 	/// <summary>
 	///  const 
 	/// </summary>
-	struct VMDTagAtrtibtes {
+	struct VMDTagAttributes {
 
 		static constexpr auto ImposterModel = L"imposter_model";
 		static constexpr auto Model = L"model";
 		static constexpr auto Name = L"name";
 		static constexpr auto Definition = L"definition";
 		static constexpr auto AttachPoint = L"attach_point";
+		static constexpr auto Probaility = L"probability";
 
 	};
 
 	struct VMDNodeData
 	{
-		VMDTagEnum Tag = VMDTagEnum::INVALID; 
-		std::wstring Name;
+		bool IsVariantMesh() const { return (tagType == VMDTagEnum::VariantMesh || tagType == VMDTagEnum::VariantMeshReference); }
+
+		VMDTagEnum tagType = VMDTagEnum::INVALID;
+		std::wstring tagName;
 
 		struct VaritantMeshData
 		{
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			rmv2::WsModelData wsModelData;
+			unique_ptr<rmv2::RigidModelFileCommon> parsedRigidModelFile; // avoid having to load the file twice (tree.build and tree.allocate
 		} varintMeshData;
 
 		struct VaritantRefereceData
@@ -81,46 +84,24 @@ namespace rldx {
 
 	public:
 		using SharedPtr = std::shared_ptr<DxVmdNode>;
-	public:						
+	public:
 
-		VMDNodeData& GetVMDNodeDataRef() { return m_vmdNodeData; }
-		const VMDNodeData& GetVMDNodeDataRef() const { return m_vmdNodeData; }
+		//SharedPtr Create(DxVmdNode* parent, const pugi::xml_node&);
+
+		VMDNodeData& VMDTagData() { return m_vmdNodeData; }
+		const VMDNodeData& VMDTagData() const { return m_vmdNodeData; }
 	};
 
-
-	class IDxVmdNodeAllocator
+	class DxVMDSlotNode : public DxVmdNode
 	{
 	public:
-		virtual void AllocateDxBuffers(ID3D11Device* poDevice, DxVmdNode* node) = 0;
-		//virtual DxModelNode::SharedPtr AlloNode(ID3D11De	vice* poDevice, DxBaseNode* rootNode, ByteStream& data) = 0;
-
+		DxVMDSlotNode(const pugi::xml_node& xmlNode, std::vector<std::wstring>& destAttachPointNames);
 	};
 
-
-
-
-
-
-
-
-
-
+	class DxVMDVariantMeshNode : public DxVmdNode
+	{
+	public:
+		DxVMDVariantMeshNode(const pugi::xml_node& xmlNode);
+	};
 
 }
-	//class IDxVmdNodeCreator
-	//{
-	//public:
-	//	/// <summary>
-	//	/// Creates a VMD sceneGraphRoot from the XML, with tag, model path, and material
-	//	/// But does not allocate any DX resources
-	//	/// </summary>
-	//	/// <param name="sceneGraphRoot"></param>
-	//	/// <param name="xmlNode"></param>
-	//	virtual DxVmdNode::SharedPtr Create(DxVmdNode* root, const pugi::xml_node& xmlNode) = 0;
-	//	//virtual DxModelNode::SharedPtr AlloNode(ID3D11De	vice* poDevice, DxBaseNode* rootNode, ByteStream& data) = 0;
-	//};
-
-
-
-
-

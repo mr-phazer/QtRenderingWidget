@@ -16,34 +16,39 @@ void rldx::DxModelNode::SetShaderProgram(DxMeshShaderProgram* shaderProgram)
 void rldx::DxModelNode::SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
 {
 	// TODO: loading only LOD 0, load all?
-	size_t iLod = 0;
+	//size_t iLod = 0;
 
 	// TODO: lod all LODs?
 	//m_lods.resize(rmv2File.fileHeader.wLodCount);
 
-	m_lods.resize(1);
+	m_lods.resize(rmv2File.fileHeader.wLodCount);
 
 	// TODO: this for loading all LODs
 	//for (size_t iLod = 0; iLod < m_lods.size(); iLod++)
 
-	m_lods[iLod].resize(rmv2File.lodHeaders[iLod].dwMeshCount);
-	for (size_t iMesh = 0; iMesh < m_lods[iLod].size(); iMesh++)
+
+	for (size_t iLod = 0; iLod < rmv2File.fileHeader.wLodCount; iLod++)
 	{
-		SetSingleMesh(
-			poDevice,
-			iLod,
-			iMesh,
-			rmv2File.lods[iLod].meshBlocks[iMesh].meshHeader,
-			rmv2File.lods[iLod].meshBlocks[iMesh].materialBlock.materialHeader,
-			rmv2File.lods[iLod].meshBlocks[iMesh]
-		);
+
+		m_lods[iLod].resize(rmv2File.lodHeaders[iLod].dwMeshCount);
+		for (size_t iMesh = 0; iMesh < m_lods[iLod].size(); iMesh++)
+		{
+			SetSingleMesh(
+				poDevice,
+				iLod,
+				iMesh,
+				rmv2File.lods[iLod].meshBlocks[iMesh].meshHeader,
+				rmv2File.lods[iLod].meshBlocks[iMesh].materialBlock.materialHeader,
+				rmv2File.lods[iLod].meshBlocks[iMesh]
+			);
+		}
 	}
 }
 
 void rldx::DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_t iMesh, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
 {
 
-	m_lods[iLod][iMesh] = rldx::DxMeshNode::Create(materialHeader.szMeshName);
+	m_lods[iLod][iMesh] = rldx::DxMeshNode::Create(libtools::string_to_wstring(materialHeader.szMeshName));
 	auto rm2MeshData = rldx::DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
 	m_lods[iLod][iMesh]->SetModelData(rm2MeshData);
 
