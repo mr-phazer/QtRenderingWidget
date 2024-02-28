@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "FileHelpers.h"
-#include "..\..\Rldx\Rldx\Tools\tools.h"
 #include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "..\..\Rldx\Rldx\Tools\tools.h"
+#include "FileHelpers.h"
 
 std::wstring ByteStream::sm_searchFolder = L"";
 
