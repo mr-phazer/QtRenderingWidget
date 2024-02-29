@@ -26,7 +26,7 @@ namespace rldx
 
 	public:
 		void LoadVariantMesh(ByteStream& bytes);
-		void AllocateDXBuffers();
+		void AllocateDXBuffers(const std::wstring& gameIdString);
 		void GenerateVariant();
 
 		// TODO: implement

@@ -96,11 +96,18 @@ TestData testData_Rome2_VMD =
 	LR"(I:\Modding\Rome2\variantmeshes\variantmeshdefinitions\roman_legionary.variantmeshdefinition)"
 };
 
-TestData testData_Attila_VMD
+TestData testData_Attila_VMD_legion_comi
 {
 	LR"(I:\Modding\Attila\)",
 	game_id_keys::KEY_ATTILA,
 	LR"(I:\Modding\Attila\variantmeshes\variantmeshdefinitions\att_rom_legio_comitatenses_east.variantmeshdefinition)"
+};
+
+TestData testData_Attila_VMD_spearlegion
+{
+	LR"(I:\Modding\Attila\)",
+	game_id_keys::KEY_ATTILA,
+	LR"(I:\Modding\Attila\variantmeshes\variantmeshdefinitions\att_rom_comitatensis_spears.variantmeshdefinition)"
 };
 
 TestData testData_WH3_VMD
@@ -142,7 +149,7 @@ void QtMainWindowView::InitRenderView()
 	auto resHandler = rldx::DxResourceManager::Instance()->GetResourceByString<rldx::DxResourceByteStream>(L"MYass");
 
 #endif	
-	auto ptestData = &testData_WH3_VMD;
+	auto ptestData = &testData_WH3__chs_knights___VMD;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdWString(ptestData->gameId);

@@ -32,10 +32,9 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
 	try {
-		poNewRenderingWidget = new QtRenderWidgetView(parent); // nullptr = no parent, free floating window	
+		poNewRenderingWidget = new QtRenderWidgetView(parent, *gameIdString); // nullptr = no parent, free floating window			
 		poNewRenderingWidget->hide();
 		poNewRenderingWidget->InitRenderView();
-		poNewRenderingWidget->SetGameIdString(*gameIdString);
 		rldx::DxResourceManager::Instance()->SetGameIdSting(gameIdString->toStdWString()); // TODO: maybe ONLY store it here?
 	}
 	catch (std::exception& e)

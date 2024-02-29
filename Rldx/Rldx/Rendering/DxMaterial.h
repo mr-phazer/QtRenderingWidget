@@ -37,7 +37,7 @@ namespace rldx {
 		IDxShaderProgram* m_pShaderProgram = nullptr;
 
 		std::map<TextureTypeEnum, RenderTextureElement> m_textures;
-		std::vector<ID3D11ShaderResourceView*> m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);
+		static std::vector<ID3D11ShaderResourceView*> m_emptyMaterial; // used for unbinding, made max size, as performance is not an issue
 
 		std::string m_pathHash; // TODO: All the texture paths conceated to able to compared materials with operator==
 
@@ -51,7 +51,7 @@ namespace rldx {
 
 
 
-		std::string& GetPathHashRef() { return m_pathHash; };
+		std::string& PathHash() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
 			// TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
 			{
@@ -75,6 +75,16 @@ namespace rldx {
 		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
 	private:
 		bool m_bIsValid = true;
+
+		std::map<TextureTypeEnum, std::wstring> m_defaultTexturesMap = {
+			{TextureTypeEnum::eBaseColor, L"default_base_colour.dds"},
+			{TextureTypeEnum::eDiffuse, L"default_grey.dds"},
+			{TextureTypeEnum::eSpecular, L"default_specular.dds"},
+			{TextureTypeEnum::eGlossMap, L"default_gloss_map.dds"},
+			{TextureTypeEnum::eMaterialMap, L"default_material_map.dds"},
+			{TextureTypeEnum::eNormal, L"default_normal.dds"},
+		};
+
 	};
 
 	class IMaterialCreator
@@ -101,7 +111,7 @@ namespace rldx {
 				// TODO: clean up this "is material loaded right"-check
 				auto diskPath = libtools::string_to_wstring(tex.texturePath);
 				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
-				newMaterial->GetPathHashRef() += std::string(tex.texturePath);
+				newMaterial->PathHash() += std::string(tex.texturePath);
 			};
 
 			return newMaterial;

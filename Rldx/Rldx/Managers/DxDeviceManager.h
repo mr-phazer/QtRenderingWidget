@@ -22,15 +22,15 @@ namespace rldx
 		DxDeviceManager() {};
 		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
 	public:
-		using PUnique = std::unique_ptr<DxDeviceManager>;		
+		using PUnique = std::unique_ptr<DxDeviceManager>;
 
 		~DxDeviceManager() {
 			auto DEBUG_1 = 1;
 		}
 
 	public:
-		static DxDeviceManager& GetInstance();		
-		
+		static DxDeviceManager& GetInstance();
+
 		static ID3D11DeviceContext* DeviceContext() {
 			return GetInstance().GetDeviceContext();
 		}
@@ -42,7 +42,7 @@ namespace rldx
 		DxDebugTextWriter* GetDebugTextWriter()
 		{
 			return m_upoDebugTextWriter.get();
-		}		
+		}
 
 		ID3D11Device* GetDevice() {
 			return m_cpoDevice.Get();
@@ -79,8 +79,8 @@ namespace rldx
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext>& GetReferenceToDviceContext() {
 			return m_cpoDeviceContext;
 
-		};		
-	
+		};
+
 		DirectX::CommonStates& GetDxStates() {
 			return *m_stateObjects;
 		}
@@ -90,11 +90,11 @@ namespace rldx
 		HRESULT InitDirect3d11();
 		bool InitFont();
 		void RenderText();
-	
+
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11Device> m_cpoDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_cpoDeviceContext;
-		std::unique_ptr<DirectX::CommonStates> m_stateObjects;		
+		std::unique_ptr<DirectX::CommonStates> m_stateObjects;
 
 	public:
 		struct DepthStencilStates
@@ -111,7 +111,7 @@ namespace rldx
 
 
 
-
+// TODO: CLEAN up when everything works
 //DXSwapChain::sptrDXSwapChain createSwapChainForHwnd(HWND _hwnd, UINT width = 1024, UINT height = 1024)
 //{
 //

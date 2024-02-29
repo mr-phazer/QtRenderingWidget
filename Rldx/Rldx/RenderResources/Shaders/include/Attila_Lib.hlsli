@@ -87,6 +87,7 @@ float _gamma(in float fLinear)
 float get_diffuse_scale_factor()
 {
      return 0.004f;
+     //return 0.004f;
 }
 
 float get_game_hdr_lighting_multiplier()
@@ -177,9 +178,10 @@ float get_scurve_y_pos(const float x_coord);
 //	Lighting Functions
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-float get_env_scaler()
+float3 get_env_scaler()
 {
-    return 7.f * env_radiance * 0.2;
+   return 5.f * env_radiance * env_color.rgb;
+    //return 7.f * env_radiance * 0.2;
 }
 
 float3 get_environment_colour_UPDATED(in float3 direction, in float lod)

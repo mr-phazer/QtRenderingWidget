@@ -20,18 +20,37 @@
 namespace logging
 {
 
+
+	inline bool emptyBool() { return false; }
+	inline void empty() {  }
+
+
+#if 1
+#define LogActionColor(message) empty()
+#define LogActionError(msg) emptyBool()
+#define LogInfo(msg) empty()
+#define LogAction(message) empty()
+#define LogActionWarning(message) emptyBool()
+
+#define LogActionSuccess(message) empty()
+
+#define LogException(msg) empty()
+
+#define FULL_FUNC_INFO(message) std::string("")
+
+#define FULL_FUNC_INFO_W(message) std::wstring(L"")
+
+#define FULL_FUNC_INFO_W_EXC(message) std::wstring(L"")
+#else
+
+
 #define FULL_FUNC_INFO(message) std::string(std::string(__func__) +  std::string(": Line: ") + std::to_string(__LINE__) + ": " + message)
 
 #define FULL_FUNC_INFO_W(message) libtools::string_to_wstring(__func__) +  std::wstring(L": Line: ") + std::to_wstring(__LINE__) + L": " + message
 
 #define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
 
-	//#define LogActionColor(message) ;
-	//#define LogActionError(msg) false;
-	//#define LogInfo(msg) ;
-	//#define LogAction(message) ;
-	//#define LogActionWarning(message) false ;
-	//#define LogActionSuccess(message) ;
+
 
 
 
@@ -50,6 +69,8 @@ namespace logging
 #define LogActionSuccess(message) ImplLog::LogAction_success(message);
 
 #define LogActionWarning(message) ImplLog::LogAction_warning(message);
+
+#endif
 
 #include "inl\WinConsoleColors.inl"
 

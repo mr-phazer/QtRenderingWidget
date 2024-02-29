@@ -23,9 +23,9 @@ void rldx::DxVmdManager::LoadVariantMesh(ByteStream& bytes)
 	}
 }
 
-void rldx::DxVmdManager::AllocateDXBuffers()
+void rldx::DxVmdManager::AllocateDXBuffers(const std::wstring& gameIdString)
 {
-	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(game_id_keys::KEY_WARHAMMER_3);
+	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
 	if (!newPbrShaderCreator) {
 		throw std::exception("No shader program creator found for game");
 	}

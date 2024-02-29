@@ -1,5 +1,5 @@
-#include "DXSwapChain.h"
 #include "d3d11.h"
+#include "DXSwapChain.h"
 
 
 using namespace rldx;
@@ -164,7 +164,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	hr = m_cpoSwapChain1->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, 0);
 
 	// Perform error handling here!
-	assert(SUCCEEDED(hr));	
+	assert(SUCCEEDED(hr));
 
 	// Get buffer and create a render-target-view.
 	//ID3D11Texture2D* pBuffer;
@@ -173,7 +173,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	hr = m_cpoSwapChain1->GetBuffer(0, __uuidof(ID3D11Texture2D),
 		(void**)&m_BackBufferTexture.GetComPtrTexture());
 	// Perform error handling here!
-	
+
 
 	assert(SUCCEEDED(hr));
 
@@ -185,7 +185,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 
 	//pBuffer->Release();
 
-	UpdateViewPort(deviceContext, nullptr );
+	UpdateViewPort(deviceContext, nullptr);
 
 	m_BackBufferTexture.InitDepthStencilView(device, width, height);
 
@@ -213,7 +213,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
 {
 	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
-	
+
 	memset(&m_viewPort, 0, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_textureDesc.Height;
 	m_viewPort.Width = (float)m_textureDesc.Width;

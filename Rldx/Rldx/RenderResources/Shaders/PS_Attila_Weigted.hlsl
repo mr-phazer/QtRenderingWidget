@@ -26,7 +26,9 @@ float4 main(in PixelInputType input) : SV_Target0{
     float4 specular_colour = shaderTextures[t_Specular].Sample(s_anisotropic, input.tex1);
     float4 diffuse_colour = shaderTextures[t_Diffuse].Sample(s_anisotropic, input.tex1);
     float4 GlossTex = shaderTextures[t_GlossMap].Sample(s_anisotropic, input.tex1);
-    float4 MaskTex = shaderTextures[t_Mask].Sample(s_anisotropic, input.tex1);
+    float4 MaskTex = float4(0, 0, 0, 0); // TODO: fix masking thing in VMDs
+    
+    shaderTextures[t_Mask].Sample(s_anisotropic, input.tex1);
     float4 NormalMapTex = shaderTextures[t_Normal].Sample(s_anisotropic, input.tex1);
 
     float4 DecalDirtmapTex = shaderTextures[t_DecalDirtmap].Sample(s_anisotropic, input.tex1 * float2(4, 4));

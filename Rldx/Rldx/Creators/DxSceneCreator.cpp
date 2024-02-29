@@ -31,7 +31,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 {
 	m_nativeWindowHandle = nativeWindHandle;
 
-	RGBModeEnum rgbMode = RGB_Mode;
+	RGBModeEnum rgbMode = RGBModeEnum::RGB_Mode;
 
 	if (gameStringId == game_id_keys::KEY_WARHAMMER ||
 		gameStringId == game_id_keys::KEY_WARHAMMER_2 ||
@@ -43,7 +43,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 		rgbMode = RGBModeEnum::SRGB_Mode;
 	}
 
-	m_newScene = InitNewScene(poDevice, poDeviceContext, RGBModeEnum::SRGB_Mode);
+	m_newScene = InitNewScene(poDevice, poDeviceContext, rgbMode);
 
 	// -- make default, fallback shaders
 	auto newSimpleShaderProgram =
@@ -74,15 +74,20 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 }
 
 void rldx::DxSceneCreator::TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
-{	// TODO: clean up -> put all asset insertion into VMDManager
-	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\brt_battle_pilgrims.variantmeshdefinition)");
-	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_ch_karl.variantmeshdefinition)");
-	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\ksl_bear_heavy_katarin.variantmeshdefinition)");
-	//ByteStream vmdBinary(LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\emp_flagellants_tattersouls.variantmeshdefinition)");
+{
+	// TODO: remove if "AllocateDXBuffers(gameIdString);" works
+	/*auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
+	if (!newPbrShaderCreator) {
+		throw std::exception("No shader program creator found for game");
+	}
 
+	auto newPbrShaderProgram = newPbrShaderCreator->Create(poDevice);
+	if (!newPbrShaderProgram) {
+		throw std::exception("Error Creating Shader");
+	}*/
 
 	poScene->GetVmdManager().LoadVariantMesh(fileData);
-	poScene->GetVmdManager().AllocateDXBuffers();
+	poScene->GetVmdManager().AllocateDXBuffers(gameIdString);
 	poScene->GetVmdManager().GenerateVariant();
 
 	poScene->GetRootNode()->AddChild(poScene->GetVmdManager().GetNode());

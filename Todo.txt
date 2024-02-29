@@ -1,3 +1,9 @@
+- Fix MASK issue in Rome/Atilla shader, so faction coloring can be switched back on
+  - probably as mismatch of skin and color mask
+  - mask textures seems to be assigned to wrong meshes, almost def, look into this
+
+- EVENTUALLY, switch on decalling, in parctiuclar for Rome/Atilla, but also for WH3/3K later
+  
 - Get Rid of "scene creators", or at least make them, so they just fill the scene, and the scene takes care ot everything else.
 
 - When rendering-object store a pointer to resource, make it a pointer-pointer (or some shared_ptr/weak_ptr solution)

@@ -13,7 +13,10 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
 	// -- set target, and clear pixels and depth buffer
 	m_spoSwapChain->GetBackBuffer()->BindAsRenderTargetViewWithDepthBuffer(poDeviceContext);
+
+	// TODO: set color conditional on "game ID", as older games in RGB, newer in sRGB, so the BG color will look very different
 	m_spoSwapChain->GetBackBuffer()->ClearPixelsAndDepthBuffer(poDeviceContext, { 0.1f, 0.1f, 0.1f, 1.0f });
+
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
 
 	// diable depth buffer, while drawing 2d text

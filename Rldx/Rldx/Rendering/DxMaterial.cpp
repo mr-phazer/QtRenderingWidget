@@ -58,6 +58,7 @@ inline bool IsDDSTextureFile(char* bin)
 		(bin[2] == 'S');
 }
 
+// TODO: current not used, as all slots are filled with default textures, remove?
 inline bool IsTextureCriticalForMaterial(const wstring& filePath)
 {
 	return !(
@@ -90,57 +91,64 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 }
 
 
-
-
-
 DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 {
-	switch (TextureTypeEnum(slot))
-	{
-	case TextureTypeEnum::eBaseColor:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+	try {
+		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(m_defaultTexturesMap.at(TextureTypeEnum(slot)));
 		return resHandleDiffuse.GetPtr();
 	}
-
-	case TextureTypeEnum::eMaterialMap:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_metal_material_map.dds");
-		return resHandleDiffuse.GetPtr();
+	catch (std::out_of_range& e) {
+		auto debug_1 = e.what(); // TODO: REMOVE!!
+		logging::LogActionError("Failed to load default texture: key enum id: " + to_string(slot) + ", message: " + e.what());
+		return nullptr;
 	}
 
-	case TextureTypeEnum::eDiffuse:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
-		return resHandleDiffuse.GetPtr();
-	}
+	// TODO: remove if above works
 
-	case TextureTypeEnum::eGlossMap:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_gloss_map.dds");
-		return resHandleDiffuse.GetPtr();
-	}
+	//switch (TextureTypeEnum(slot))
+	//{
+	//case TextureTypeEnum::eBaseColor:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
 
-	case TextureTypeEnum::eSpecular:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
-		return resHandleDiffuse.GetPtr();
-	}
+	//case TextureTypeEnum::eMaterialMap:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_metal_material_map.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
 
-	case TextureTypeEnum::eNormal:
-	{
-		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_normal.dds");
-		return resHandleDiffuse.GetPtr();
-	}
+	//case TextureTypeEnum::eDiffuse:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
 
-	default:
-	{
-		auto resHandleDefaultGrey = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
-		return resHandleDefaultGrey.GetPtr();
-	}
+	//case TextureTypeEnum::eGlossMap:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_gloss_map.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
 
-	}
+	//case TextureTypeEnum::eSpecular:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
 
+	//case TextureTypeEnum::eNormal:
+	//{
+	//	auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(L"default_normal.dds");
+	//	return resHandleDiffuse.GetPtr();
+	//}
+
+	//default:
+	//{
+	//	auto resHandleDefaultGrey = DxResourceManager::Instance()->GetTexture(L"default_grey.dds");
+	//	return resHandleDefaultGrey.GetPtr();
+	//}
+	//}
 }
 
 void DxMaterial::BindToDC(ID3D11DeviceContext* poDeviceContext)
@@ -175,3 +183,6 @@ std::wstring DxMaterial::GetTypeString() const
 {
 	return L"DxMaterial";
 }
+
+
+std::vector<ID3D11ShaderResourceView*> DxMaterial::m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);

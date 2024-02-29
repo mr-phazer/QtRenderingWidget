@@ -35,7 +35,7 @@ private:
 	LRESULT WINAPI ForwardNativeWindowEvent(MSG* pMsg);
 
 public:
-	QtRenderWidgetView(QWidget* parent = Q_NULLPTR);
+	QtRenderWidgetView(QWidget* parent, const QString& gameidString);
 
 	bool InitRenderView();
 

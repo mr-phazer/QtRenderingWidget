@@ -8,25 +8,25 @@
 
 using namespace rldx;
 
-QtRenderWidgetView::QtRenderWidgetView(QWidget* parent)
+QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
 	: QWidget(parent)
 {
 	setupUi(this);
 
 	QPalette pal = palette();
-    pal.setColor(QPalette::Window, Qt::black);
-    setAutoFillBackground(true);
-    setPalette(pal);
+	pal.setColor(QPalette::Window, Qt::black);
+	setAutoFillBackground(true);
+	setPalette(pal);
 
-    setFocusPolicy(Qt::StrongFocus);
-    setAttribute(Qt::WA_NativeWindow);
+	setFocusPolicy(Qt::StrongFocus);
+	setAttribute(Qt::WA_NativeWindow);
 
-    // Setting these attributes to our widget and returning null on paintEngine event
-    // tells Qt that we'll handle all drawing and updating the widget ourselves.
-    setAttribute(Qt::WA_PaintOnScreen);
-    setAttribute(Qt::WA_NoSystemBackground);
+	// Setting these attributes to our widget and returning null on paintEngine event
+	// tells Qt that we'll handle all drawing and updating the widget ourselves.
+	setAttribute(Qt::WA_PaintOnScreen);
+	setAttribute(Qt::WA_NoSystemBackground);
 
-
+	SetGameIdString(gameidString);
 
 	/*this->setWindowTitle("QRenderenView (Testing) : Sence");
 
@@ -140,11 +140,11 @@ bool QtRenderWidgetView::InitRenderView()
 
 
 	logging::LogAction("Create New Scene");
-	
+
 	LoadExeResources(poDevice);
 
 	MakeScene();
-	
+
 
 	// TODO: remove
 	//m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 1024, 1024);
@@ -156,7 +156,7 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 {
 	m_upoSceneManager->SetRenderRunningState(true);
 
-	if (!m_timer) 
+	if (!m_timer)
 	{
 		m_timer = new QTimer(this);
 
