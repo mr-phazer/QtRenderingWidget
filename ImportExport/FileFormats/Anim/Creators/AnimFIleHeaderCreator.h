@@ -1,17 +1,19 @@
 #pragma once
 
 #include "..\..\..\Helpers\Templates.h"
+#include "..\DataTypes\AnimHeaderCommon.h"
 
-// forward declartion to avoid too many #includes
+class IAnimHeaderCommonCreator : public  templates::TCreator <anim_file::AnimHeaderCommon> {};
 
-namespace anim
+class Anim_V6_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
 {
-	struct AnimHeaderCommon;
-}
-
-class IAnimHeaderFileCommon : public  templates::TCreator <anim::AnimHeaderCommon> {};
-
-class Anim_V6_HeaderFileCommon : public IAnimHeaderFileCommon
-{
-	virtual anim::AnimHeaderCommon Create(ByteStream& bytes) override;
+public:
+	virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
 };
+
+class Anim_V7_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
+{
+public:
+	virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+};
+

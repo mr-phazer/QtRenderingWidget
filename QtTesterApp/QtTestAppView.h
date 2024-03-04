@@ -5,11 +5,15 @@
 
 class QtMainWindowView : public QMainWindow, public Ui::QtTesterAppClass
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    QtMainWindowView(QWidget *parent = nullptr);
-    ~QtMainWindowView();
+	QtMainWindowView(QWidget* parent = nullptr);
+	~QtMainWindowView();
 
-    void InitRenderView();         
+	// TODO: Debugging code in here, clean up
+	void InitRenderView_DEBUG();
+
+
+
 };

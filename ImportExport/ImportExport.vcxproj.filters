@@ -129,7 +129,25 @@
     <ClInclude Include="FileFormats\Anim\DataTypes\AnimHeaderCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.h">
+    <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Helpers\helpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralTypes\Animation\SkeletonAnimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\DataTypes\BoneTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\DataTypes\TwAnimFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,7 +194,16 @@
     <ClCompile Include="FileFormats\WsModel\DataTypes\WsModelData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.cpp">
+    <ClCompile Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralTypes\Animation\SkeletonAnimator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

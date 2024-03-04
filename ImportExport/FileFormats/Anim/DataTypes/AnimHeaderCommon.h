@@ -3,8 +3,18 @@
 #include <cstdint>
 #include <string>
 
-namespace anim
+namespace anim_file
 {
+	enum AnimVerionEnum :  uint32_t
+	{
+		ANIM_VERSION_5 = 5,
+		ANIM_VERSION_6 = 6,
+		ANIM_VERSION_7 = 7,
+		ANIM_VERSION_8 = 8
+	};
+
+
+
 	/// <summary>
 	/// Structure to contain all possible values of "TW ANIM" (v5), v6, v7, v8
 	/// </summary>
@@ -20,10 +30,10 @@ namespace anim
 
 		struct  SubHeaderV7
 		{
-			uint32_t flag_count = 0;;
+			uint32_t flagCount = 0;;
 			std::string strText = "";
 		}
-		subHeaderV7;
+		subHeader_V7;
 
 		float fEndTime = -1.0f;
 

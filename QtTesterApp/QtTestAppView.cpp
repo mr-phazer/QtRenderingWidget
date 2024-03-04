@@ -8,6 +8,9 @@
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
+
+#include "..\ImportExport\FileFormats\Anim\Creators\AnimFileHeaderCreator.h"
+
 /// <summary>
 /// Debugging data struct, made to unclutter the code
 /// </summary>
@@ -131,24 +134,28 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 	setupUi(this);
 
 	// TODO: maybe not have this constructor !!!! even for test program
-	InitRenderView();
+	InitRenderView_DEBUG();
 
 	setWindowTitle("TWViewer 0.0.1a - Total War Viewing/Conversion Tool");
 
 	resize(1525, 1525);
 }
 
-void QtMainWindowView::InitRenderView()
+// TODO: REMOVE and cleanup
+void QtMainWindowView::InitRenderView_DEBUG()
 {
 
 	// TODO: remove debuggin code
-#ifdef NOT_DEBUG
-	auto newResHandle = rldx::DxResourceManager::Instance()->AllocEmpty<rldx::DxResourceByteStream>(L"myASS");
-	newResHandle.GetPtr()->byteStream = ByteStream(testData_WH3_Person.filePath);
+#ifdef _DEBUG
 
-	auto resHandler = rldx::DxResourceManager::Instance()->GetResourceByString<rldx::DxResourceByteStream>(L"MYass");
+	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
+	Anim_V7_HeaderFileCommonCreator animHeaderCreator;
+	auto testHeaderCOmmon = animHeaderCreator.Create(bytesForAnim);
+
 
 #endif	
+
+
 	auto ptestData = &testData_WH3__chs_knights___VMD;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
@@ -183,6 +190,10 @@ void QtMainWindowView::InitRenderView()
 
 	this->setCentralWidget(renderWidget);
 }
+
+
+
+
 
 QtMainWindowView::~QtMainWindowView()
 {}

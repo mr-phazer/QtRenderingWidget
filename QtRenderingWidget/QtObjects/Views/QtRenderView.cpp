@@ -166,10 +166,12 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 			}
 		);
 	}
-	else
+
+	// TODO: remove?
+	/*else
 	{
 		m_timer->stop();
-	}
+	}*/
 
 	m_frameTime = 1000.0f / framesPerSecond;
 	m_timer->setInterval(1000);

@@ -114,6 +114,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -133,6 +134,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -143,9 +145,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.h" />
+    <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h" />
+    <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h" />
     <ClInclude Include="FileFormats\Anim\DataTypes\AnimHeaderCommon.h" />
+    <ClInclude Include="FileFormats\Anim\DataTypes\BoneTable.h" />
+    <ClInclude Include="FileFormats\Anim\DataTypes\TwAnimFile.h" />
+    <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
+    <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="GeneralTypes\Animation\Skeleton.h" />
+    <ClInclude Include="GeneralTypes\Animation\SkeletonAnimator.h" />
     <ClInclude Include="Helpers\DataConversion.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
     <ClInclude Include="Helpers\TTree.h" />
@@ -184,7 +192,10 @@
     <ClInclude Include="FileFormats\XmMaterial\Readers\XmMaterialReader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.cpp" />
+    <ClCompile Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.cpp" />
+    <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp" />
+    <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp" />
+    <ClCompile Include="GeneralTypes\Animation\SkeletonAnimator.cpp" />
     <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
