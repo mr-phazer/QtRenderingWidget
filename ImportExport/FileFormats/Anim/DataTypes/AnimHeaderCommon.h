@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 
 namespace anim
@@ -26,10 +27,11 @@ namespace anim
 
 		float fEndTime = -1.0f;
 
-		struct  SubHeaderV8 // DOES this exist?
+		struct SubHeaderV8 // DOES this exist?
 		{
 			uint32_t dwUnknown1 = 0;
 			uint32_t dwUnknown2 = 0;
 		}
+		subHeader_v8;
 	};
 }

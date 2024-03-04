@@ -6,7 +6,7 @@
 
 namespace anim
 {
-	class AnimHeaderCommon;
+	struct AnimHeaderCommon;
 }
 
 class IAnimHeaderFileCommon : public  templates::TCreator <anim::AnimHeaderCommon> {};
