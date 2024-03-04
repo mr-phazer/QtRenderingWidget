@@ -1,4 +1,5 @@
 #pragma once
+// TODO: this class/file goes to COMMON
 
 #include <string>
 #include <vector>
@@ -16,7 +17,6 @@ class ByteStream
 	ByteVector m_data;
 	size_t m_currentOffset = 0;
 
-
 public:
 	ByteStream();
 	ByteStream(const ByteVector& input);;
@@ -32,20 +32,23 @@ public:
 
 	std::string ReadLengthPrefixed16StringA();
 
+	//iint32_t ReadInt32();
+
+
 	// TODO: is the working?
 	/// <summary>
 	/// A template version of Read that will automatically determine the size of the type
 	/// ...maybe
 	/// </summary>	
 	template <typename CONST_BUF_DATA_TYPE>
-	void TAutoRead(CONST_BUF_DATA_TYPE* pDest);
+	void TRead(CONST_BUF_DATA_TYPE* pDest);
 
 	// TODO: is working?
 	/// <summary>
 	/// Get an "array" of a certain type, maybbe works
 	/// </summary>	
-	template <typename CONST_BUF_DATA_TYPE>
-	CONST_BUF_DATA_TYPE TReadElement();
+	template <typename DATA_TYPE>
+	DATA_TYPE TReadElement();
 
 	template <typename CONST_BUF_DATA_TYPE>
 	std::vector<CONST_BUF_DATA_TYPE> GetElements(std::size_t elementCount = 1);
@@ -65,7 +68,7 @@ public:
 
 
 template<typename CONST_BUF_DATA_TYPE>
-inline void ByteStream::TAutoRead(CONST_BUF_DATA_TYPE* pDest)
+inline void ByteStream::TRead(CONST_BUF_DATA_TYPE* pDest)
 {
 	auto bytesToCopy = sizeof(CONST_BUF_DATA_TYPE);
 
@@ -76,11 +79,11 @@ inline void ByteStream::TAutoRead(CONST_BUF_DATA_TYPE* pDest)
 	m_currentOffset += bytesToCopy;
 }
 
-template<typename CONST_BUF_DATA_TYPE>
-inline CONST_BUF_DATA_TYPE ByteStream::TReadElement()
+template<typename DATA_TYPE>
+inline DATA_TYPE ByteStream::TReadElement()
 {
-	CONST_BUF_DATA_TYPE element;
-	Read(&element, sizeof(CONST_BUF_DATA_TYPE));
+	DATA_TYPE element;
+	Read(&element, sizeof(DATA_TYPE));
 	return element;
 }
 
