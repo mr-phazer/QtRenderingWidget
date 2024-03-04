@@ -25,8 +25,8 @@ static void ReadParams(ByteStream& bytes, std::vector<ExtraMaterialElement<CONST
 	params.resize(size);
 	for (auto& param : params)
 	{
-		bytes.TAutoRead(&param.id);
-		bytes.TAutoRead(&param.value);
+		bytes.TRead(&param.id);
+		bytes.TRead(&param.value);
 	}
 };
 
