@@ -2,7 +2,7 @@
 
 //#pragma once
 //#include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
-//#include "..\..\ImportExport\RigidModel\DataTypes\TextureElement.h"
+//#include "..\..\ImportExport\FileFormats\RigidModel\DataTypes\TextureElement.h"
 //#include "DxModelNode.h"
 //
 //namespace rldx

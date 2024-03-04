@@ -1,8 +1,8 @@
 #pragma once
 
 #include "DxMeshNode.h"
-#include "..\..\ImportExport\RigidModel\DataTypes\RigidModelFile.h"
-#include "..\..\ImportExport\WsModel\DataTypes\WsModelData.h"
+#include "..\..\ImportExport\FileFormats\RigidModel\DataTypes\RigidModelFile.h"
+#include "..\..\ImportExport\FileFormats\WsModel\DataTypes\WsModelData.h"
 
 namespace rldx
 {

@@ -106,7 +106,7 @@ void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockComm
 	destMeshblock.meshData.indices.resize(destMeshblock.meshHeader.dwIndexCount);
 	for (auto& index : destMeshblock.meshData.indices)
 	{
-		index = bytes.GetElement<uint16_t>();
+		index = bytes.TReadElement<uint16_t>();
 	}
 }
 
@@ -127,7 +127,7 @@ void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockComm
 //	meshData.indices.resize(meshHeader3.dwIndexCount);
 //	for (size_t iIndex = 0; iIndex < meshHeader3.dwIndexCount; iIndex++)
 //	{
-//		meshData.indices[iIndex] = bytes.GetElement<uint16_t>();
+//		meshData.indices[iIndex] = bytes.TReadElement<uint16_t>();
 //	}
 //
 //	return meshData;

@@ -21,7 +21,7 @@
 
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 
-#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
+#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
 namespace rldx {
 

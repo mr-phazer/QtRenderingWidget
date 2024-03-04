@@ -1,15 +1,15 @@
-#include "LodHeaderCreators.h"
-#include "..\..\Helpers\ByteStream.h"
+#include "..\..\..\Helpers\ByteStream.h"
 #include "..\DataTypes\MeshEnumsConstants.h"
+#include "LodHeaderCreators.h"
 
 #include "..\RawStructs\RawLodHeaders.h"
 
 using namespace rmv2;
 
 LODHeaderCommon LodHeader_V6_Creator::Create(ByteStream& bytes)
-{			
+{
 	// TODO: pick which one to use, if any??
-	 
+
 	// raw_structs::LodHeaderElement_V5_V6 lodHeaderRaw;	
 	// bytes.Read(&lodHeaderRaw, sizeof(raw_structs::LodHeaderElement_V5_V6));
 	//LODHeaderCommon lodHeader;
@@ -18,14 +18,14 @@ LODHeaderCommon LodHeader_V6_Creator::Create(ByteStream& bytes)
 	//lodHeader.dwIndicesDataLength = lodHeaderRaw.dwIndicesDataLength;
 	//lodHeader.dwStartOffset = lodHeaderRaw.dwStartOffset;
 	//lodHeader.fVisibilityDistance = lodHeaderRaw.fVisibilityDistance;	
-	
+
 	LODHeaderCommon lodHeader;
 
-	lodHeader.dwMeshCount = bytes.GetElement<uint32_t>();
-	lodHeader.dwVerticesDataLength = bytes.GetElement<uint32_t>();
-	lodHeader.dwIndicesDataLength = bytes.GetElement<uint32_t>();
-	lodHeader.dwStartOffset = bytes.GetElement<uint32_t>();
-	lodHeader.fVisibilityDistance = bytes.GetElement<float>();
+	lodHeader.dwMeshCount = bytes.TReadElement<uint32_t>();
+	lodHeader.dwVerticesDataLength = bytes.TReadElement<uint32_t>();
+	lodHeader.dwIndicesDataLength = bytes.TReadElement<uint32_t>();
+	lodHeader.dwStartOffset = bytes.TReadElement<uint32_t>();
+	lodHeader.fVisibilityDistance = bytes.TReadElement<float>();
 
 	return lodHeader;
 }
@@ -39,13 +39,13 @@ LODHeaderCommon LodHeader_V7_V8_Creator::Create(ByteStream& bytes)
 {
 	LODHeaderCommon lodHeader;
 
-	lodHeader.dwMeshCount = bytes.GetElement<uint32_t>();
-	lodHeader.dwVerticesDataLength = bytes.GetElement<uint32_t>();
-	lodHeader.dwIndicesDataLength = bytes.GetElement<uint32_t>();
-	lodHeader.dwStartOffset = bytes.GetElement<uint32_t>();
-	lodHeader.fVisibilityDistance = bytes.GetElement<float>();
-	lodHeader.dwAuthoredLodNumber = bytes.GetElement<uint32_t>();
-	lodHeader.qualityLevel = bytes.GetElement<LODHeaderCommon::QualityLevel>();
+	lodHeader.dwMeshCount = bytes.TReadElement<uint32_t>();
+	lodHeader.dwVerticesDataLength = bytes.TReadElement<uint32_t>();
+	lodHeader.dwIndicesDataLength = bytes.TReadElement<uint32_t>();
+	lodHeader.dwStartOffset = bytes.TReadElement<uint32_t>();
+	lodHeader.fVisibilityDistance = bytes.TReadElement<float>();
+	lodHeader.dwAuthoredLodNumber = bytes.TReadElement<uint32_t>();
+	lodHeader.qualityLevel = bytes.TReadElement<LODHeaderCommon::QualityLevel>();
 
 	return lodHeader;
 }

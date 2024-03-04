@@ -1,10 +1,10 @@
 #pragma once
 
 #include <vector>
-#include "..\..\XmMaterial\DataTypes\XMLMaterialData.h"
+#include "..\..\..\FileFormats\XmMaterial\DataTypes\XMLMaterialData.h"
 #include "..\..\Rldx\Rldx\Logging\Logging.h"
 
-namespace rmv2 {	
+namespace rmv2 {
 
 	struct WsModelData
 	{
@@ -12,7 +12,7 @@ namespace rmv2 {
 		{
 			if (xmlMateriData.empty()) // whole 2d array empty ?
 				return false;
-				
+
 			if (xmlMateriData[0].empty()) // lod 0 empty?
 				return false;
 

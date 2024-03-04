@@ -4,6 +4,9 @@
 
 namespace anim
 {
+	/// <summary>
+	/// Structure to contain all possible values of "TW ANIM" (v5), v6, v7, v8
+	/// </summary>
 	struct AnimHeaderCommon
 	{
 		std::uint32_t dwVersion = 0;

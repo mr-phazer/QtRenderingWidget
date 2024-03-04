@@ -1,8 +1,8 @@
 #pragma once
 
+#include "..\..\..\Helpers\ByteStream.h"
+#include "..\..\..\Helpers\Templates.h"
 #include "..\DataTypes\MeshHeaderType5.h"
-#include "..\..\Helpers\ByteStream.h"
-#include "..\..\Helpers\Templates.h"
 
 namespace rmv2 {
 
@@ -18,7 +18,7 @@ namespace rmv2 {
 		MaterialHeaderType5 Create(ByteStream& bytes) override;
 	};
 
-	
+
 
 }; // namespace rmv2
 

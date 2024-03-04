@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 using ByteVector = std::vector<uint8_t>;
 
@@ -14,7 +14,8 @@ class ByteStream
 
 	std::wstring m_currentFilePath = L"";
 	ByteVector m_data;
-	size_t m_currentOffset = 0;	
+	size_t m_currentOffset = 0;
+
 
 public:
 	ByteStream();
@@ -29,6 +30,9 @@ public:
 	ByteVector GetRawChunk(size_t bytes, long long offset)	const;
 	void Read(void* pDest, size_t bytesToCopy);
 
+	template <typename LENGH_TYPE>
+	std::string ReadLengthPrefixedStringA();
+
 	// TODO: is the working?
 	/// <summary>
 	/// A template version of Read that will automatically determine the size of the type
@@ -42,9 +46,12 @@ public:
 	/// Get an "array" of a certain type, maybbe works
 	/// </summary>	
 	template <typename CONST_BUF_DATA_TYPE>
-	CONST_BUF_DATA_TYPE GetElement(std::size_t elementCount = 1);
+	CONST_BUF_DATA_TYPE TReadElement();
 
-	const uint8_t* GetBufferPtr() const;	
+	template <typename CONST_BUF_DATA_TYPE>
+	std::vector<CONST_BUF_DATA_TYPE> GetElements(std::size_t elementCount = 1);
+
+	const uint8_t* GetBufferPtr() const;
 	uint8_t* GetBufferPtr();
 
 	size_t GetBufferSize() const;
@@ -56,6 +63,19 @@ public:
 
 	bool IsValid() const;;
 };
+
+template<typename LENGH_TYPE>
+inline std::string ByteStream::ReadLengthPrefixedStringA()
+{
+	LENGH_TYPE stringLength = 0;
+	Read(&stringLength, sizeof(stringLength));
+
+	std::string outString(stringLength);
+
+	Read((char*)outString.data(), stringLength);
+
+	return outString
+}
 
 template<typename CONST_BUF_DATA_TYPE>
 inline void ByteStream::TAutoRead(CONST_BUF_DATA_TYPE* pDest)
@@ -70,9 +90,20 @@ inline void ByteStream::TAutoRead(CONST_BUF_DATA_TYPE* pDest)
 }
 
 template<typename CONST_BUF_DATA_TYPE>
-inline CONST_BUF_DATA_TYPE ByteStream::GetElement(std::size_t elementCount)
+inline CONST_BUF_DATA_TYPE ByteStream::TReadElement()
 {
 	CONST_BUF_DATA_TYPE element;
 	Read(&element, sizeof(CONST_BUF_DATA_TYPE));
+	return element;
+}
+
+template<typename CONST_BUF_DATA_TYPE>
+inline std::vector<CONST_BUF_DATA_TYPE> ByteStream::GetElements(std::size_t elementCount)
+{
+	std::vector<CONST_BUF_DATA_TYPE> out(elementCount).
+		for (auto& itDestElemment : out)
+		{
+			itDestElemment = GetElement<CONST_BUF_DATA_TYPE>();
+		}
 	return element;
 }

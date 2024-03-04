@@ -1,19 +1,19 @@
 #pragma once
 
-#include <DirectXMath.h>
 #include <cstdint>
+#include <DirectXMath.h>
 
-#include "..\..\Helpers\ByteStream.h"
-#include "MeshEnumsConstants.h"
+#include "..\..\..\Helpers\ByteStream.h"
 #include "IDataStructure.h"
+#include "MeshEnumsConstants.h"
 
 namespace rmv2
 {
 	// TODO this is a not a bit for bit data struct it is a COMMON...
 	struct MaterialHeaderType5 : public IDataStructure
-	{		
+	{
 		bool IsContentValid()  override
-		{			
+		{
 			return
 				(vertexFormatId < 20) && // TODO: 20 is just a random pick, 
 				(!isnan(transforms.vPivot.x)) &&

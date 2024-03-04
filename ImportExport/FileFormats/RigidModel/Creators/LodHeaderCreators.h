@@ -1,9 +1,9 @@
 #pragma once
 
-#include "..\DataTypes\LodHeader.h"
+#include "..\..\..\Helpers\ByteStream.h"
+#include "..\..\..\Helpers\Templates.h"
 #include "..\DataTypes\FileHeader.h"
-#include "..\..\Helpers\ByteStream.h"
-#include "..\..\Helpers\Templates.h"
+#include "..\DataTypes\LodHeader.h"
 
 namespace rmv2 {
 
@@ -36,7 +36,7 @@ namespace rmv2 {
 		void HandleKeyNotFound(Rmv2VersionEnum keyValue) override
 		{
 			throw std::exception("Unsuported RigidModelV2 version (Action: Reading LOD headers.");
-		}		
+		}
 	};
 
 }; // namespace rmv2

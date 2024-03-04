@@ -8,8 +8,8 @@ MeshHeaderType3 MeshHeaderType3Creator::Create(ByteStream& bytes)
 {
     MeshHeaderType3 meshHeaderType3;
     
-	// TODO: CLEAN UP!! Dedice whether to use GetElement or Read
-	meshHeaderType3.RigidMaterialId = bytes.GetElement<RigidMaterialEnum>();
+	// TODO: CLEAN UP!! Dedice whether to use TReadElement or Read
+	meshHeaderType3.RigidMaterialId = bytes.TReadElement<RigidMaterialEnum>();
 	//bytes.Read(&meshHeaderType3.RigidMaterialId, 2);
 	bytes.Read(&meshHeaderType3.wRenderFlags, 2);
 	bytes.Read(&meshHeaderType3.dwMeshSectionSize, 4);

@@ -1,7 +1,7 @@
 #pragma once
 
+#include "..\..\..\Libs\PugiXML\pugixml.hpp"
 #include "..\DataTypes\XMLMaterialData.h"
-#include "..\..\Libs\PugiXML\pugixml.hpp"
 
 
 namespace rmv2
@@ -12,7 +12,7 @@ namespace rmv2
 		pugi::xml_document m_xmlDoc;
 
 		XmMaterialReader() {};
-	public: 
+	public:
 		XmMaterialReader(XMLMaterialData* pData) : m_poMaterialData(pData) {};
 		XMLMaterialData Read();
 

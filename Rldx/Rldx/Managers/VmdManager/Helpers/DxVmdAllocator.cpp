@@ -2,7 +2,7 @@
 
 #include "..\..\..\Creators\DxGameShaderCreators.h"
 #include "..\..\DxDeviceManager.h"
-#include "..\..\ImportExport\RigidModel\Readers\RigidModelReader.h"
+#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
 // TODO: remove?
 //void rldx::DxVmdNodeAllocator::AllocateDxBuffers(DxVmdNode* sceneVmdNode)

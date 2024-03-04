@@ -2,7 +2,7 @@
 
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 
-#include "..\..\..\ImportExport\WsModel\Reader\WsModelReader.h"
+#include "..\..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
 #include "..\Creators\DxGameShaderCreators.h"
 
 #include "..\SceneGraph\SceneNodes\DxVmdNodes.h"
@@ -31,8 +31,9 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 {
 	m_nativeWindowHandle = nativeWindHandle;
 
-	RGBModeEnum rgbMode = RGBModeEnum::RGB_Mode;
+	RGBModeEnum rgbMode = RGBModeEnum::RGB_Mode; // default to RGB mode
 
+	// These games use SRGB mode
 	if (gameStringId == game_id_keys::KEY_WARHAMMER ||
 		gameStringId == game_id_keys::KEY_WARHAMMER_2 ||
 		gameStringId == game_id_keys::KEY_WARHAMMER_3 ||
@@ -46,6 +47,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	m_newScene = InitNewScene(poDevice, poDeviceContext, rgbMode);
 
 	// -- make default, fallback shaders
+	// for grid
 	auto newSimpleShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
@@ -53,6 +55,8 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 			/*libtools::GetExePath() + */LR"(PS_Simple.cso)"
 		);
 
+	// TODO: I don't think this is ever used, it is needed, when there are are default matrerial? Maybe it IS needed as a fallback?
+	// for no textures
 	auto noTextures_ShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,

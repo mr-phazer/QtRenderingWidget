@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RigidModel\Creators\FileHeaderCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\FileHeaderCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\LodHeaderCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\LodHeaderCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\ByteStream.h">
@@ -27,73 +27,73 @@
     <ClInclude Include="Helpers\FileHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\FileHeader.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\FileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\LodHeader.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\LodHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\MeshHeaderType3.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\MeshHeaderType3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Readers\RigidModelReader.h">
+    <ClInclude Include="FileFormats\RigidModel\Readers\RigidModelReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\RigidModelFile.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\RigidModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\TextureElement.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\TextureElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\MeshHeaderType3Creator.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\Templates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\RawStructs\RawLodHeaders.h">
+    <ClInclude Include="FileFormats\RigidModel\RawStructs\RawLodHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\RawStructs\RawMeshHeaders.h">
+    <ClInclude Include="FileFormats\RigidModel\RawStructs\RawMeshHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\MeshMaterialCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\MeshHeaderType5.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\MeshHeaderType5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\Vertices\WeightedVertexCreator.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\WeightedVertexCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Interfaces\ILODHeaderCreator.h">
+    <ClInclude Include="FileFormats\RigidModel\Interfaces\ILODHeaderCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\Vertices\VertexCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\VertexCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\DataConversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\RawStructs\VerticesRaw.h">
+    <ClInclude Include="FileFormats\RigidModel\RawStructs\VerticesRaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\AttachElement.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\AttachElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\MaterialBlockCommon.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\MaterialBlockCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\Material\IMaterialCommonCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Constants\Rmv2Constants.h">
+    <ClInclude Include="FileFormats\RigidModel\Constants\Rmv2Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Interfaces\IMeshHeader.h">
+    <ClInclude Include="FileFormats\RigidModel\Interfaces\IMeshHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\Creators\GameShaders\GameShaderCreators.h">
+    <ClInclude Include="FileFormats\RigidModel\Creators\GameShaders\GameShaderCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Libs\PugiXML\pugiconfig.hpp">
@@ -102,25 +102,34 @@
     <ClInclude Include="Libs\PugiXML\pugixml.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WsModel\Reader\WsModelReader.h">
+    <ClInclude Include="FileFormats\WsModel\Reader\WsModelReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WsModel\DataTypes\WsModelData.h">
+    <ClInclude Include="FileFormats\WsModel\DataTypes\WsModelData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmMaterial\DataTypes\XMLMaterialData.h">
+    <ClInclude Include="FileFormats\XmMaterial\DataTypes\XMLMaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RigidModel\DataTypes\IDataStructure.h">
+    <ClInclude Include="FileFormats\RigidModel\DataTypes\IDataStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\CustomExceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="XmMaterial\Readers\XmMaterialReader.h">
+    <ClInclude Include="FileFormats\XmMaterial\Readers\XmMaterialReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\TTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralTypes\Animation\Skeleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\DataTypes\AnimHeaderCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -131,48 +140,51 @@
     <ClCompile Include="Helpers\FileHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\LodHeaderCreators.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\LodHeaderCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\FileHeaderCreators.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\FileHeaderCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\MeshHeaderType3Creator.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\MeshMaterialCreators.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\Material\IMaterialCommonCreators.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Creators\Vertices\VertexCreators.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Creators\Vertices\VertexCreators.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RigidModel\Readers\RigidModelReader.cpp">
+    <ClCompile Include="FileFormats\RigidModel\Readers\RigidModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Libs\PugiXML\pugixml.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WsModel\Reader\WsModelReader.cpp">
+    <ClCompile Include="FileFormats\WsModel\Reader\WsModelReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="XmMaterial\Readers\XmMaterialReader.cpp">
+    <ClCompile Include="FileFormats\XmMaterial\Readers\XmMaterialReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Helpers\ByteStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WsModel\DataTypes\WsModelData.cpp">
+    <ClCompile Include="FileFormats\WsModel\DataTypes\WsModelData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileFormats\Anim\Creators\AnimFIleHeaderCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RigidModel\DataTypes\MeshEnumsConstants.h">
+    <None Include="FileFormats\RigidModel\DataTypes\MeshEnumsConstants.h">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="RigidModel\Helpers\VertexCAHelpers.inl">
+    <None Include="FileFormats\RigidModel\Helpers\VertexCAHelpers.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
