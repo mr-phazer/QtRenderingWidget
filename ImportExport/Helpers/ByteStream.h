@@ -74,7 +74,7 @@ inline std::string ByteStream::ReadLengthPrefixedStringA()
 
 	Read((char*)outString.data(), stringLength);
 
-	return outString
+	return outString;
 }
 
 template<typename CONST_BUF_DATA_TYPE>
