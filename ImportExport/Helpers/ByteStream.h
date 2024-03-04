@@ -30,8 +30,7 @@ public:
 	ByteVector GetRawChunk(size_t bytes, long long offset)	const;
 	void Read(void* pDest, size_t bytesToCopy);
 
-	template <typename LENGH_TYPE>
-	std::string ReadLengthPrefixedStringA();
+	std::string ReadLengthPrefixed16StringA();
 
 	// TODO: is the working?
 	/// <summary>
@@ -64,18 +63,6 @@ public:
 	bool IsValid() const;;
 };
 
-template<typename LENGH_TYPE>
-inline std::string ByteStream::ReadLengthPrefixedStringA()
-{
-	LENGH_TYPE stringLength = 0;
-	Read(&stringLength, sizeof(stringLength));
-
-	std::string outString(stringLength);
-
-	Read((char*)outString.data(), stringLength);
-
-	return outString;
-}
 
 template<typename CONST_BUF_DATA_TYPE>
 inline void ByteStream::TAutoRead(CONST_BUF_DATA_TYPE* pDest)
@@ -100,10 +87,11 @@ inline CONST_BUF_DATA_TYPE ByteStream::TReadElement()
 template<typename CONST_BUF_DATA_TYPE>
 inline std::vector<CONST_BUF_DATA_TYPE> ByteStream::GetElements(std::size_t elementCount)
 {
-	std::vector<CONST_BUF_DATA_TYPE> out(elementCount).
-		for (auto& itDestElemment : out)
-		{
-			itDestElemment = GetElement<CONST_BUF_DATA_TYPE>();
-		}
-	return element;
+	std::vector<CONST_BUF_DATA_TYPE> out(elementCount);
+	for (auto& itDestElemment : out)
+	{
+		itDestElemment = TReadElement<CONST_BUF_DATA_TYPE>();
+	}
+
+	return out;
 }

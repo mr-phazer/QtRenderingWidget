@@ -88,6 +88,18 @@ void ByteStream::Read(void* pDest, size_t bytesToCopy)
 	m_currentOffset += bytesToCopy;
 }
 
+std::string ByteStream::ReadLengthPrefixed16StringA()
+{
+	uint16_t stringLength_uint16 = 0;
+	Read(&stringLength_uint16, sizeof(stringLength_uint16));
+
+	std::string outString(stringLength_uint16, 0);
+
+	Read((char*)outString.data(), stringLength_uint16);
+
+	return outString;
+}
+
 const uint8_t* ByteStream::GetBufferPtr() const { return m_data.data(); }
 
 uint8_t* ByteStream::GetBufferPtr() { return m_data.data(); }
