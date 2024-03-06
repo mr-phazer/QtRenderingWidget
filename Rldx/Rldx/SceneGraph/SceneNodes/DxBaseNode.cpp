@@ -17,5 +17,5 @@ void rldx::DxBaseNode::Update(float timeElapsed)
 
 void rldx::DxBaseNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 {
-	// TODO: add small cube to renderqueue, cube for specifying node position
+	// TODO: add small cube to renderqueue, cube for specifying node translation
 }

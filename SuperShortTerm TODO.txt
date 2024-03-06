@@ -1,0 +1,2 @@
+- Make ANIM v7 loading work
+- Draw a simple stick + cube skeleton

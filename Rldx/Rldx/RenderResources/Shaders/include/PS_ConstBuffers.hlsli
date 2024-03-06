@@ -27,11 +27,18 @@ struct Light_Data
 cbuffer PS_AmbientLight_ConstBuffer : register(b0)
 {
     float env_radiance;
-    float env_roughness;
+    float env_roughnessFactor;
     float env_speculatFactor;
     float env_diffuseFactor;
+    
     float4x4 mEnv;
+    
     float4 env_color;
+    
+    int somvariable;
+    int someStuff;
+    int padding0;
+    int padding2;
 };                     
 
 cbuffer PS_DirectionalLight_ConstBuffer : register(b1)

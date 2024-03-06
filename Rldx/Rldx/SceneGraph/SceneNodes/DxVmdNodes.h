@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
 #include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 #include "..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
+#include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
 #include "DxModelNode.h"
 
 namespace rldx {
@@ -86,8 +86,9 @@ namespace rldx {
 		using SharedPtr = std::shared_ptr<DxVmdNode>;
 	public:
 
+		// TODO: remove?
 		//SharedPtr Create(DxVmdNode* parent, const pugi::xml_node&);
-
+		// TODO: should this just be a public member?
 		VMDNodeData& VMDTagData() { return m_vmdNodeData; }
 		const VMDNodeData& VMDTagData() const { return m_vmdNodeData; }
 	};
@@ -103,5 +104,4 @@ namespace rldx {
 	public:
 		DxVMDVariantMeshNode(const pugi::xml_node& xmlNode);
 	};
-
 }

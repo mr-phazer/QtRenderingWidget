@@ -9,7 +9,7 @@
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
 
-#include "..\ImportExport\FileFormats\Anim\Creators\AnimFileHeaderCreator.h"
+#include "..\ImportExport\FileFormats\Anim\Reader\TwAnimReader.h"
 
 /// <summary>
 /// Debugging data struct, made to unclutter the code
@@ -148,9 +148,10 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	// TODO: remove debuggin code
 #ifdef _DEBUG
 
-	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
-	Anim_V7_HeaderFileCommonCreator animHeaderCreator;
-	auto testHeaderCOmmon = animHeaderCreator.Create(bytesForAnim);
+	//ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
+	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\skeletons\humanoid01.anim)");
+	anim_file::TwAnimFileReader animFileReader(bytesForAnim);
+	auto animFile = animFileReader.Read();
 
 
 #endif	

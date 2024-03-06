@@ -265,65 +265,12 @@
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
-    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli">
-      <Filter>Rldx\RenderResources\Shaders\include</Filter>
-    </None>
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl">
       <Filter>Rldx\Logging\Inl</Filter>
     </None>
     <None Include="Rldx\Logging\Inl\WinConsoleColors.inl">
       <Filter>Rldx\Logging\Inl</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
-      <Filter>Rldx\RenderResources\Shaders</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Rldx">
@@ -386,5 +333,13 @@
     <Filter Include="Rldx\Logging\Inl">
       <UniqueIdentifier>{302a7c32-0373-4ffe-a44c-3bb09cd6c8f1}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl" />
   </ItemGroup>
 </Project>

@@ -147,8 +147,9 @@
   <ItemGroup>
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h" />
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h" />
-    <ClInclude Include="FileFormats\Anim\DataTypes\AnimHeaderCommon.h" />
+    <ClInclude Include="FileFormats\Anim\DataTypes\FileHeader.h" />
     <ClInclude Include="FileFormats\Anim\DataTypes\BoneTable.h" />
+    <ClInclude Include="FileFormats\Anim\DataTypes\QuantMetaTable.h" />
     <ClInclude Include="FileFormats\Anim\DataTypes\TwAnimFile.h" />
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />

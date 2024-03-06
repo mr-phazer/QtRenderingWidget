@@ -20,21 +20,22 @@ float2 ScreenToUV(float4 screenPos /*, float2 texSize*/)
 
 }
 
-float4 main(in PixelInputType input) : SV_Target0{   
+float4 main(in PixelInputType input) : SV_Target0
+{  
     
 	// sample textures
-    float4 specular_colour = shaderTextures[t_Specular].Sample(s_anisotropic, input.tex1);
-    float4 diffuse_colour = shaderTextures[t_Diffuse].Sample(s_anisotropic, input.tex1);
-    float4 GlossTex = shaderTextures[t_GlossMap].Sample(s_anisotropic, input.tex1);
-    float4 MaskTex = float4(0, 0, 0, 0); // TODO: fix masking thing in VMDs
+        float4 specular_colour = shaderTextures[t_Specular].Sample(s_anisotropic, input.tex1);
+        float4 diffuse_colour = shaderTextures[t_Diffuse].Sample(s_anisotropic, input.tex1);
+        float4 GlossTex = shaderTextures[t_GlossMap].Sample(s_anisotropic, input.tex1);
+        float4 MaskTex = float4(0, 0, 0, 0); // TODO: fix masking thing in VMDs
         
-    shaderTextures[t_Mask].Sample(s_anisotropic, input.tex1);
-    float4 NormalMapTex = shaderTextures[t_Normal].Sample(s_anisotropic, input.tex1);
+        shaderTextures[t_Mask].Sample(s_anisotropic, input.tex1);
+        float4 NormalMapTex = shaderTextures[t_Normal].Sample(s_anisotropic, input.tex1);
 
-    float4 DecalDirtmapTex = shaderTextures[t_DecalDirtmap].Sample(s_anisotropic, input.tex1 * float2(4, 4));
-    float4 DecalMaskTex = shaderTextures[t_DecalMask].Sample(s_anisotropic, input.tex1);
-    float4 DecalNormal = shaderTextures[t_DecalNormal].Sample(s_anisotropic, input.tex1);
-    float4 DecalSpecular = shaderTextures[t_DecalSpecular].Sample(s_anisotropic, input.tex1);
+        float4 DecalDirtmapTex = shaderTextures[t_DecalDirtmap].Sample(s_anisotropic, input.tex1 * float2(4, 4));
+        float4 DecalMaskTex = shaderTextures[t_DecalMask].Sample(s_anisotropic, input.tex1);
+        float4 DecalNormal = shaderTextures[t_DecalNormal].Sample(s_anisotropic, input.tex1);
+        float4 DecalSpecular = shaderTextures[t_DecalSpecular].Sample(s_anisotropic, input.tex1);
    
     
 #if 0
@@ -58,16 +59,16 @@ float4 main(in PixelInputType input) : SV_Target0{
 
 #endif
 
-    if (alpha_used)
-    {
-        alpha_test(diffuse_colour.a);
-    }
+        if (alpha_used)
+        {
+            alpha_test(diffuse_colour.a);
+        }
 
-    specular_colour.rgb = pow(specular_colour.rgb, 2.2);
-    diffuse_colour.rgb = pow(diffuse_colour.rgb, 2.2);
+        specular_colour.rgb = pow(specular_colour.rgb, 2.2);
+        diffuse_colour.rgb = pow(diffuse_colour.rgb, 2.2);
 
-    float3 eye_vector = normalize(-input.viewDirection);
-    float3 light_vector = normalize(-lightData[0].lightDirection);
+        float3 eye_vector = normalize(-input.viewDirection);
+        float3 light_vector = normalize(-lightData[0].lightDirection);
 
     
     
@@ -84,34 +85,34 @@ float4 main(in PixelInputType input) : SV_Target0{
     //float smoothness = _gamma(smoothness_curve * reflect_curve);
 
     //float smoothness = pow(GlossTex.x, 1/2 * smoothness_curve);
-    float smoothness = pow(GlossTex.x, 2.2);
+        float smoothness = pow(GlossTex.x, 2.2);
     //float smoothness = GlossTex.x;
     
     
     
     //float reflectivity = pow(GlossTex.y, 2 * reflect_curve);
-    float reflectivity = pow(GlossTex.y, 2.2);
+        float reflectivity = pow(GlossTex.y, 2.2);
     //float reflectivity = GlossTex.y;
 
     
     
-    float mask_p1 = MaskTex[0]; //   puiMaskIndices[0]
-    float mask_p2 = MaskTex[1];
-    float mask_p3 = MaskTex[2];
+        float mask_p1 = MaskTex[0]; //   puiMaskIndices[0]
+        float mask_p2 = MaskTex[1];
+        float mask_p3 = MaskTex[2];
 
     
-    if (bDoFactionColoring)
-    {
-		diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[0].rgb)), mask_p1);
-		diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[1].rgb)), mask_p2);
-		diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[2].rgb)), mask_p3);
-	}
-    else
-    {
-        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p1);
-        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p2);
-        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p3);
-    }
+        if (bDoFactionColoring)
+        {
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[0].rgb)), mask_p1);
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[1].rgb)), mask_p2);
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[2].rgb)), mask_p3);
+        }
+        else
+        {
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p1);
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p2);
+            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p3);
+        }
     
     //if (bDoFactionColoring)
     //{
@@ -120,28 +121,28 @@ float4 main(in PixelInputType input) : SV_Target0{
     //    diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(color3.rgb)), mask_p3);
     //}
     
-    float3 N = getBlueFromOrangeNormalMap(NormalMapTex);    
+        float3 N = getBlueFromOrangeNormalMap(NormalMapTex);
 
     
     
 #if 1
-    bool b_do_decal = true;
-    if (b_do_decal)
-    {
-        ps_common_blend_decal(
+        bool b_do_decal = true;
+        if (b_do_decal)
+        {
+            ps_common_blend_decal(
             diffuse_colour, N, specular_colour.rgb, reflectivity,
             diffuse_colour, N, specular_colour.rgb, reflectivity, input.tex1.xy, 0, decal_uv_rect, 1.0
         );
 
-    }
+        }
 #endif
 #if 1
     //float2 tex = input.tex1;
     //float reflect = reflectivity;
 
-    float2 decal_uv = input.tex1; // * float2(u_div, v_div);
+        float2 decal_uv = input.tex1; // * float2(u_div, v_div);
 
-    ps_common_blend_dirtmap(
+        ps_common_blend_dirtmap(
         diffuse_colour,
         N,
         specular_colour.rgb,
@@ -154,10 +155,10 @@ float4 main(in PixelInputType input) : SV_Target0{
         float2(u_div, v_div) //        float2(0, 0)
     );
 #endif
-    float3x3 basis = float3x3(normalize(input.tangent.xyz), normalize(input.binormal.xyz), normalize(input.normal.xyz));
-    float3 pixel_normal = normalize(mul(normalize(N), basis));
+        float3x3 basis = float3x3(normalize(input.tangent.xyz), normalize(input.binormal.xyz), normalize(input.normal.xyz));
+        float3 pixel_normal = normalize(mul(normalize(N), basis));
 
-    StandardLightingModelMaterial_UPDATED standard_mat =
+        StandardLightingModelMaterial_UPDATED standard_mat =
         create_standard_lighting_material_UPDATED(
             diffuse_colour.rgb,
             specular_colour.rgb,
@@ -167,17 +168,17 @@ float4 main(in PixelInputType input) : SV_Target0{
             float4(normalize(input.Wpos.xyz), 1)
         );
 
-    if (use_AO)
-        standard_mat.SSAO = getSSAO(input);
-    else
-        standard_mat.SSAO = 1.0;
+        if (use_AO)
+            standard_mat.SSAO = getSSAO(input);
+        else
+            standard_mat.SSAO = 1.0;
 
-    const float shadow = getShadow(input);
+        const float shadow = getShadow(input);
 
     // no shadowing:
-    standard_mat.Shadow = 1.0f; //shadow; //    1.0f; //lerp(1.0f, shadow, shadow_factor);
+        standard_mat.Shadow = 1.0f; //shadow; //    1.0f; //lerp(1.0f, shadow, shadow_factor);
 
-    float3 hdr_linear_col = standard_lighting_model_directional_light_UPDATED(      
+        float3 hdr_linear_col = standard_lighting_model_directional_light_UPDATED(
         lightData[0].radiance * lightData[0].color.rgb,
 	    normalize(light_vector),
 	    normalize(eye_vector),
@@ -185,14 +186,15 @@ float4 main(in PixelInputType input) : SV_Target0{
 
     );
 
-    float alpha = 1.0f;
-    if (all_transparent)
-    {
-        alpha = 0.4f;
-    }    
+        float alpha = 1.0f;
+        if (all_transparent)
+        {
+            alpha = 0.4f;
+        }
 
 
-    float3 ldr_linear_color = Uncharted2ToneMapping(hdr_linear_col);
+        float3 ldr_linear_color = Uncharted2ToneMapping(hdr_linear_col);
     //return float4(hdr_linear_col, alpha);
-    return float4(ldr_linear_color, alpha);
-};
+        return float4(ldr_linear_color.rgb, alpha);
+    
+ };

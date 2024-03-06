@@ -126,7 +126,7 @@
     <ClInclude Include="GeneralTypes\Animation\Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\DataTypes\AnimHeaderCommon.h">
+    <ClInclude Include="FileFormats\Anim\DataTypes\FileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h">
@@ -148,6 +148,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\DataTypes\TwAnimFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\DataTypes\QuantMetaTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

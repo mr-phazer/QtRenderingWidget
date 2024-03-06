@@ -9379,7 +9379,7 @@ PUGI_IMPL_NS_BEGIN
 
 			while (PUGI_IMPL_IS_CHARTYPE(*cur, ct_space)) ++cur;
 
-			// save lexeme position for error reporting
+			// save lexeme translation for error reporting
 			_cur_lexeme_pos = cur;
 
 			switch (*cur)
@@ -9684,7 +9684,7 @@ PUGI_IMPL_NS_BEGIN
 		ast_number_constant,			// number constant
 		ast_variable,					// variable
 		ast_func_last,					// last()
-		ast_func_position,				// position()
+		ast_func_position,				// translation()
 		ast_func_count,					// count(left)
 		ast_func_id,					// id(left)
 		ast_func_local_name_0,			// local-name()
@@ -11167,7 +11167,7 @@ PUGI_IMPL_NS_BEGIN
 			{
 				xpath_node_set_raw set = _left->eval_node_set(c, stack, _test == predicate_constant_one ? nodeset_eval_first : nodeset_eval_all);
 
-				// either expression is a number or it contains position() call; sort by document order
+				// either expression is a number or it contains translation() call; sort by document order
 				if (_test != predicate_posinv) set.sort_do();
 
 				bool once = eval_once(set.type(), eval);
@@ -11290,8 +11290,8 @@ PUGI_IMPL_NS_BEGIN
 
 		void optimize_self(xpath_allocator* alloc)
 		{
-			// Rewrite [position()=expr] with [expr]
-			// Note that this step has to go before classification to recognize [position()=1]
+			// Rewrite [translation()=expr] with [expr]
+			// Note that this step has to go before classification to recognize [translation()=1]
 			if ((_type == ast_filter || _type == ast_predicate) &&
 				_right && // workaround for clang static analyzer (_right is never null for ast_filter/ast_predicate)
 				_right->_type == ast_op_equal && _right->_left->_type == ast_func_position && _right->_right->_rettype == xpath_type_number)

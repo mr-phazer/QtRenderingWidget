@@ -14,22 +14,8 @@ namespace rldx
 
 		void GenerateVariant()
 		{
-			auto trueCount = 0;
-			auto runCount = 1000;
-
-			for (size_t i = 0; i < runCount; i++)
-			{
-				if (libtools::ProbablityFunction(0.254f))
-				{
-					trueCount++;
-				}
-			}
-
-			auto result = (float)trueCount / (float)runCount;
-
 			DisbaleAllNodes(m_rootNode);
-			//EnableSlot(m_rootNode);
-			tester_EnableVariantMesh(m_rootNode);
+			GenerateVariant(m_rootNode);
 		}
 
 	private:
@@ -69,7 +55,7 @@ namespace rldx
 			}
 		}
 
-		void tester_EnableVariantMesh(DxVmdNode* node)
+		void GenerateVariant(DxVmdNode* node)
 		{
 			if (node->VMDTagData().tagType == VMDTagEnum::VariantMesh)
 			{
