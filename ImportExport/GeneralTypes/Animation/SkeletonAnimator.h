@@ -1,59 +1,46 @@
 #pragma once
 
+#include "..\..\FileFormats\Anim\DataTypes\TwAnimFile.h"
 #include "Skeleton.h"
-#include "..\..\FileFormats\Anim\DataTypes\BoneTable.h"
 
-namespace animation
+namespace skel_anim
 {
-	class SkeletonBuilder
+	class SkeletonCreator
 	{
 		Skeleton m_skeleton;
-		 
-		void SetMetaData(anim_file::BoneTable& boneData)
+
+	public:
+		void Create(const anim_file::TwAnimFile& inputFile);
+
+	private:
+		void SetNodeMetaData(anim_file::BoneTable& boneData)
 		{
-			m_skeleton.bones.clear();
+			m_skeleton.bones.resize(boneData.bones.size());
 
 			for (auto& itBone : boneData.bones)
 			{
 				SkeletonBoneNode bone;
 				bone.boneIndex = itBone.id;
-				bone.parentIndex = itBone.parent_id;								
-				m_skeleton.bones.push_back(bone);
+				bone.parentIndex = itBone.parent_id;
 			}
-
 		}
-
 	};
+
+
+	class FrameInterPolator
+	{
+	public:
+		static SkeletonFrame InterpolateLocalFrames(const SkeletonFrame& frame0, const SkeletonFrame& frame1, float blendFactor);
+	};
+
 
 	class FrameGenerator
 	{
-		std::vector<sm::Matrix> m_inverseBindPoseMatrices;
-	
-	
-	public:
-		FrameGenerator();
-
-
-		AnimationFrame
-
-
-
-	};
-
-
-
-	class FrameSomething
-	{
-		AnimationFrame m_skeleton;
-		std::vector<sm::Matrix> m_inverseBindPoseMatrices;
-
-		AnimationFrame m_currentFrame;
-		AnimationFrame m_nextFrame;
+		Skeleton m_skeleton;
+		SkeletonFrame m_globalKeys;
 
 	public:
-		static AnimationFrame BlendFrames(const AnimationFrame& frame0, const AnimationFrame& frame1, float blendFactor);
-
-
+		void GeneateFramePoseMatrices(const SkeletonFrame& frameLocal, std::vector<sm::Matrix> destPoseMatrices);
 
 
 

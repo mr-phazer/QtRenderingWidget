@@ -3,21 +3,21 @@
 #include <SimpleMath.h>
 #include <vector>
 
-namespace animation
+namespace skel_anim
 {
-	struct KeyFrame
+	struct BoneKey
 	{
-		KeyFrame() = default;
-		KeyFrame(float time, sm::Vector3 position, sm::Quaternion rotation, sm::Vector3 scale)
+		BoneKey() = default;
+		BoneKey(float time, sm::Vector3 position, sm::Quaternion rotation, sm::Vector3 scale)
 			:
 			time(time),
-			position(position),
+			translation(position),
 			rotation(rotation),
 			scale(scale) {}
 
 
 		float time = 0.0f;
-		sm::Vector3 position = { 0,0,0 };
+		sm::Vector3 translation = { 0,0,0 };
 		sm::Quaternion rotation = sm::Quaternion::Identity;
 		sm::Vector3 scale = { 0,0,0 };;
 	};
@@ -26,31 +26,34 @@ namespace animation
 	{
 		int32_t boneIndex;
 		int32_t parentIndex;
-		KeyFrame transform;
 	};
 
+	struct SkeletonFrame
+	{
+		std::vector<BoneKey> boneKeys;
+	};
+
+	/// <summary>
+	/// Skeleton strucut
+	/// Can be used to frame data
+	/// </summary>
 	struct Skeleton
 	{
 		std::vector<sm::Matrix> inverseBindPoseMatrices;
 		std::vector<SkeletonBoneNode> bones;
+		SkeletonFrame bindPose;
 	};
 
-
-	struct AnimationFrame
+	struct SkeletonAnimationData
 	{
-		std::vector<KeyFrame> skeletonNodes;
+		std::vector<SkeletonFrame> frames;
 	};
 
-	struct Animation
+	struct SkeletonAnimationClip
 	{
-		std::vector<AnimationFrame> frames;
+		SkeletonAnimationData animationData;
+		float clipLength = 0.0f;
+		float keysPerSecond = 0.0f;
 	};
 
-	struct AnimationClip
-	{
-		Animation animation;
-		float lenth = 0.0f
-
-	};
-
-} // namespace animation
+} // namespace skel_anim
