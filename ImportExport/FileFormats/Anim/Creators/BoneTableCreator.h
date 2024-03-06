@@ -6,13 +6,11 @@
 namespace anim_file
 {
 	class BoneTableCreator
-	{	
-		BoneTable & outBoneTable;
+	{
 	public:
-		BoneTableCreator() = delete;
-		BoneTableCreator(BoneTable& destBoneTable) : outBoneTable(destBoneTable) { }
-		void Create(ByteStream& bytes, size_t boneCount)
-		{					
+		BoneTable Create(ByteStream& bytes, size_t boneCount)
+		{
+			BoneTable outBoneTable;
 			outBoneTable.bones.resize(boneCount);
 			uint32_t boneIndex = 0;
 			for (auto& itBone : outBoneTable.bones)
@@ -20,7 +18,9 @@ namespace anim_file
 				itBone.id = boneIndex++;
 				itBone.strName = bytes.ReadLengthPrefixed16StringA();
 				itBone.parent_id = bytes.TReadElement<int32_t>();
-			}			
+			}
+
+			return outBoneTable;
 		}
 	};
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\..\Helpers\Templates.h"
-#include "..\DataTypes\AnimHeaderCommon.h"
+#include "..\DataTypes\FileHeader.h"
 
 class IAnimHeaderCommonCreator : public  templates::TCreator <anim_file::AnimHeaderCommon> {};
 

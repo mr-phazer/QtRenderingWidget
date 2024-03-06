@@ -5,8 +5,8 @@
 #include <vector>
 
 
-#include "..\DataTypes\AnimHeaderCommon.h"
 #include "..\DataTypes\BoneTable.h"
+#include "..\DataTypes\FileHeader.h"
 
 namespace anim_file
 {

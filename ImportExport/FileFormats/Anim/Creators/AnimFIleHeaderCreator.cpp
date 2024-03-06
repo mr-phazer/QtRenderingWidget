@@ -32,8 +32,5 @@ anim_file::AnimHeaderCommon Anim_V7_HeaderFileCommonCreator::Create(ByteStream& 
 	in.fEndTime = bytes.TReadElement<float>();
 	in.dwBoneCount = bytes.TReadElement<uint32_t>();
 
-
 	return in;
 }
-
-

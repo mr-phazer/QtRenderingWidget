@@ -1,6 +1,6 @@
 #include "helpers.h"
 
-#include "..\DataTypes\AnimHeaderCommon.h"
+#include "..\DataTypes\FileHeader.h"
 
 uint32_t anim_file::GetTWAnimFileVersion(ByteStream& bytes)
 {

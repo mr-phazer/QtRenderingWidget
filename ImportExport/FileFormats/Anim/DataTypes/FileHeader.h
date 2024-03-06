@@ -5,7 +5,7 @@
 
 namespace anim_file
 {
-	enum AnimVerionEnum :  uint32_t
+	enum AnimVersionEnum : uint32_t
 	{
 		ANIM_VERSION_5 = 5,
 		ANIM_VERSION_6 = 6,
@@ -44,4 +44,6 @@ namespace anim_file
 		}
 		subHeader_v8;
 	};
+
+
 }
