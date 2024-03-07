@@ -150,8 +150,8 @@ void QtMainWindowView::InitRenderView_DEBUG()
 
 	//ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
 	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\skeletons\humanoid01.anim)");
-	anim_file::TwAnimFileReader animFileReader(bytesForAnim);
-	auto animFile = animFileReader.Read();
+	anim_file::TwAnimFileReader animFileReader;
+	auto animFile = animFileReader.Read(bytesForAnim);
 
 
 #endif	

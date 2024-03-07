@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\FileFormats\Anim\DataTypes\TwAnimFile.h"
+#include "..\..\FileFormats\Anim\Types\Common\TwAnimFile.h"
 #include "Skeleton.h"
 
 namespace skel_anim

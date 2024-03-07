@@ -27,22 +27,22 @@
     <ClInclude Include="Helpers\FileHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\FileHeader.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\FileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\LodHeader.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\LodHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\MeshHeaderType3.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshHeaderType3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\RigidModel\Readers\RigidModelReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\RigidModelFile.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\RigidModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\TextureElement.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\TextureElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.h">
@@ -60,7 +60,7 @@
     <ClInclude Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\MeshHeaderType5.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshHeaderType5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\WeightedVertexCreator.h">
@@ -78,10 +78,10 @@
     <ClInclude Include="FileFormats\RigidModel\RawStructs\VerticesRaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\AttachElement.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\AttachElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\MaterialBlockCommon.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\MaterialBlockCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.h">
@@ -111,7 +111,7 @@
     <ClInclude Include="FileFormats\XmMaterial\DataTypes\XMLMaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\DataTypes\IDataStructure.h">
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\IDataStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\CustomExceptions.h">
@@ -126,7 +126,7 @@
     <ClInclude Include="GeneralTypes\Animation\Skeleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\DataTypes\FileHeader.h">
+    <ClInclude Include="FileFormats\Anim\Types\Common\FileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h">
@@ -141,16 +141,25 @@
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\DataTypes\BoneTable.h">
+    <ClInclude Include="FileFormats\Anim\Types\Common\BoneTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\DataTypes\TwAnimFile.h">
+    <ClInclude Include="FileFormats\Anim\Types\Common\TwAnimFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\DataTypes\QuantMetaTable.h">
+    <ClInclude Include="FileFormats\Anim\Types\Common\QuantMetaTables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Types\Common\FrameHeaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -209,9 +218,12 @@
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FileFormats\RigidModel\DataTypes\MeshEnumsConstants.h">
+    <None Include="FileFormats\RigidModel\Types\Common\MeshEnumsConstants.h">
       <Filter>Header Files</Filter>
     </None>
     <None Include="FileFormats\RigidModel\Helpers\VertexCAHelpers.inl">
