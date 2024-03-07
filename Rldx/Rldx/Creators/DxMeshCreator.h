@@ -3,8 +3,6 @@
 #include <assert.h>
 #include "..\DataTypes\DxMeshData.h"
 
-#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-
 namespace rldx {
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
@@ -96,29 +94,4 @@ namespace rldx {
 
 		return SUCCEEDED(hr);
 	}
-	// TODO: remove once tested
-
-	class DxMeshCreatorHelper
-	{
-	public:
-		//static DxCommonMeshData Create(ID3D11Device* poDevice, const std::vector<CommonVertex>& vertices, const std::vector<uint16_t>& indices);
-		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
-		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
-
-		static DxCommonMeshData CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh);
-	};
-
-	// TODO: remove?
-	//class DxModelCreator
-	//{
-	//	static std::vector<DxCommonMeshData> CreateFromRmv2File(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2Model);
-	//};
-
-
 }; // namespace rldx
-
-
-
-using byte = std::uint8_t;
-using word = std::uint16_t;
-using dword = std::uint32_t;

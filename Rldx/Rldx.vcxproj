@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
+    <ClInclude Include="Rldx\Helpers\DxMeshCreatorHelper.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
@@ -84,7 +86,6 @@
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
     <ClInclude Include="Rldx\Tools\COMerrors.h" />
-    <ClInclude Include="Rldx\Tools\ModelImporter.h" />
     <ClInclude Include="Rldx\Tools\tools.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
   </ItemGroup>

@@ -1,5 +1,7 @@
 #include "DxSceneCreator.h"
 
+#include "..\Helpers\DxMeshCreatorHelper.h"
+
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 
 #include "..\..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"

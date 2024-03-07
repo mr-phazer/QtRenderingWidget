@@ -91,6 +91,7 @@
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
+    <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -249,9 +250,6 @@
     <ClInclude Include="Rldx\Tools\COMerrors.h">
       <Filter>Rldx\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Tools\ModelImporter.h">
-      <Filter>Rldx\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\Tools\tools.h">
       <Filter>Rldx\Tools</Filter>
     </ClInclude>
@@ -263,6 +261,7 @@
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.h" />
+    <ClInclude Include="Rldx\Helpers\DxMeshCreatorHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl">
