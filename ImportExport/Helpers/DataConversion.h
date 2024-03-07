@@ -8,16 +8,22 @@
 struct FloatConverter {
 
 	template <typename UINT_TYPE>
-	inline constexpr float GetUNormFloatFromUINT(UINT_TYPE integerfixedPoint)
+	static inline constexpr float GetUNormFloatFromUINT(UINT_TYPE integerfixedPoint)
 	{
 		//for all support types	
 		static_assert(
-			!(std::is_same<UINT_TYPE, uint8_t> ||
-				std::is_same<UINT_TYPE, uint16_t> ||
-				std::is_same<UINT_TYPE, uint32_t> ||
-				std::is_same<UINT_TYPE, uint64_t>), "Wrong Input Type!");
+			(std::is_same<UINT_TYPE, uint8_t>() ||
+			 std::is_same<UINT_TYPE, uint16_t>() ||
+			 std::is_same<UINT_TYPE, uint32_t>() ||
+			 std::is_same<UINT_TYPE, uint64_t>()), "Not a supported Integer");
 
-		size_t divider = static_cast<size_t>(2U) << (sizeof(UINT_TYPE) / 8U);
+		size_t divider =
+			(
+				static_cast<size_t>(2U)
+				<<
+				(sizeof(UINT_TYPE) * 8U - 1)
+				)
+			- 1;
 
 		float retUnormFloat = static_cast<float>(integerfixedPoint) / static_cast<float>(divider);
 
@@ -25,14 +31,14 @@ struct FloatConverter {
 	}
 
 	template <typename UINT_TYPE>
-	inline constexpr float GetUNormFloatFromUINt_test(UINT_TYPE integerfixedPoint)
+	static inline constexpr float GetUNormFloatFromUINt_test(UINT_TYPE integerfixedPoint)
 	{
 		//for all support types	
 		static_assert(
 			(std::is_same<UINT_TYPE, uint8_t> == true ||
-				std::is_same<UINT_TYPE, uint16_t> == true ||
-				std::is_same<UINT_TYPE, uint32_t> = true ||
-				std::is_same<UINT_TYPE, uint64_t> == true)
+			 std::is_same<UINT_TYPE, uint16_t> == true ||
+			 std::is_same<UINT_TYPE, uint32_t> = true ||
+			 std::is_same<UINT_TYPE, uint64_t> == true)
 			, "Wrong Input Type!");
 
 		size_t divider = static_cast<size_t>(2U) << ((sizeof(UINT_TYPE) / 8U) - 1);
@@ -69,7 +75,13 @@ struct FloatConverter {
 		return (static_cast<float>(fixedPoint) / 128.0f);
 	}
 
-	inline static DirectX::XMFLOAT4 GetSNORMFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
+	inline static constexpr float GetSNormFloatFromInt16(int16_t fixedPoint)
+	{
+		return (static_cast<float>(fixedPoint) / (32767.0f));
+
+	}
+
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
 	{
 		return
 		{
@@ -80,7 +92,7 @@ struct FloatConverter {
 		};
 	};
 
-	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
+	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromUByte4(DirectX::PackedVector::XMUBYTE4 vIn)
 	{
 		return
 		{
@@ -100,19 +112,28 @@ struct FloatConverter {
 		};
 	};
 
-	inline static DirectX::XMFLOAT4 GetSNORMFloat4FromByte4(DirectX::PackedVector::XMBYTE4 vIn)
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedInt4(DirectX::PackedVector::XMBYTE4 vIn)
 	{
 		return
 		{
-			//(static_cast<float>(vIn.x) / 127.0f) - 1.f,
 			GetSNormFloatFromByte(vIn.x),
-			(static_cast<float>(vIn.y) / 127.0f) - 1.f,
-			(static_cast<float>(vIn.z) / 127.0f) - 1.f,
-			(static_cast<float>(vIn.w) / 127.0f) - 1.f
+			GetSNormFloatFromByte(vIn.y),
+			GetSNormFloatFromByte(vIn.z),
+			GetSNormFloatFromByte(vIn.w)
 		};
 	};
 
-	inline static DirectX::XMFLOAT4 GetUNORMFloat4FromByte4(DirectX::PackedVector::XMBYTE4 vIn)
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedInt4(DirectX::PackedVector::XMSHORT4 vIn)
+	{
+		return	{
+			GetSNormFloatFromInt16(vIn.x),
+			GetSNormFloatFromInt16(vIn.y),
+			GetSNormFloatFromInt16(vIn.z),
+			GetSNormFloatFromInt16(vIn.w),
+		};
+	};
+
+	inline static DirectX::XMFLOAT4 GetUNORMFloat4FromUnsigned4(DirectX::PackedVector::XMBYTE4 vIn)
 	{
 		return
 		{
