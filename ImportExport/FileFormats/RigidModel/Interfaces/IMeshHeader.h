@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\DataTypes\MeshHeaderType3.h"
-#include "..\DataTypes\MeshHeaderType5.h"
+#include "..\Types\Common\MeshHeaderType3.h"
+#include "..\Types\Common\MeshHeaderType5.h"
 
 namespace rmv2
 {

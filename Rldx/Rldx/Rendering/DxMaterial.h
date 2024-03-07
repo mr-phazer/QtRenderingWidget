@@ -4,11 +4,11 @@
 #include <set>
 #include <vector>
 
+#include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
 #include "..\..\..\ImportExport\Helpers\ByteStream.h"
-#include "..\..\..\ImportExport\FileFormats\RigidModel\DataTypes\RigidModelFile.h"
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
-#include "..\..\..\ImportExport\FileFormats\RigidModel\DataTypes\TextureElement.h"
+#include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\TextureElement.h"
 #include "..\Interfaces\IBindable.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "DxTexture.h"

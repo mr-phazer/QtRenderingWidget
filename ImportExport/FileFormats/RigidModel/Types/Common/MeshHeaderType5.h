@@ -2,8 +2,7 @@
 
 #include <cstdint>
 #include <DirectXMath.h>
-
-#include "..\..\..\Helpers\ByteStream.h"
+#include "..\..\..\..\Helpers\ByteStream.h"
 #include "IDataStructure.h"
 #include "MeshEnumsConstants.h"
 

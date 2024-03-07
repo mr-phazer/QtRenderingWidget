@@ -31,9 +31,9 @@ rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes,
 	outVertex.weights.y = 1.0f - outVertex.weights.x;
 
 	// TBN
-	outVertex.normal = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.normal);
-	outVertex.tangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.tangent);
-	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.bitangent);
+	outVertex.normal = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.normal);
+	outVertex.tangent = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.tangent);
+	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.bitangent);
 
 	// texture coordinates
 	outVertex.textureCoordinate = FloatConverter::GetFloat2FromHalf2(rawVertex.uv);
@@ -54,9 +54,9 @@ rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes, R
 
 	// -- For VertexFormat = "default", 'bitangent' is stored before 'tangent' and z and X are swapped in all vectors
 	// - get each vector from 4 bytes -> SNORM float4
-	commonVertex.normal = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
-	commonVertex.bitangent = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
-	commonVertex.tangent = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
+	commonVertex.normal = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromUByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
+	commonVertex.bitangent = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromUByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
+	commonVertex.tangent = CAVertexHelpers::SwapZY(FloatConverter::GetSNORMFloat3FromUByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>()));
 
 	// - get "color" from 4 bytes -> 4 UNOMRM float4
 	commonVertex.color = FloatConverter::GetUNORMFloat4FromByte4(bytes.TReadElement<DirectX::PackedVector::XMUBYTE4>());
@@ -73,9 +73,9 @@ rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes,
 
 	outVertex.position = CAVertexHelpers::DoRMV2Version8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
 
-	outVertex.normal = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.normal);
-	outVertex.tangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.tangent);
-	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromByte4(rawVertex.bitangent);
+	outVertex.normal = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.normal);
+	outVertex.tangent = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.tangent);
+	outVertex.bitangent = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.bitangent);
 
 	outVertex.textureCoordinate = FloatConverter::GetFloat2FromHalf2(rawVertex.uv);
 

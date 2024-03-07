@@ -6,9 +6,9 @@
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Creators\MeshHeaderType3Creator.h"
 #include "..\..\Creators\MeshMaterialCreators.h"
-#include "..\..\DataTypes\MaterialBlockCommon.h"
-#include "..\..\DataTypes\MeshEnumsConstants.h"
-#include "..\..\DataTypes\MeshHeaderType5.h"
+#include "..\..\Types\Common\MaterialBlockCommon.h"
+#include "..\..\Types\Common\MeshEnumsConstants.h"
+#include "..\..\Types\Common\MeshHeaderType5.h"
 
 namespace rmv2 {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DataTypes\FileHeader.h"
+#include "..\Types\Common\FileHeader.h"
 
 #include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"

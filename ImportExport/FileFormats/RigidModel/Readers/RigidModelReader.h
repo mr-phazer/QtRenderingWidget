@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DataTypes\RigidModelFile.h"
+#include "..\Types\Common\RigidModelFile.h"
 #include "..\Creators\LodHeaderCreators.h"
 #include "..\Creators\Material\IMaterialCommonCreators.h"
 #include "..\Creators\Vertices\VertexCreators.h"

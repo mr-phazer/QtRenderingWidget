@@ -2,12 +2,12 @@
 
 #include <vector>
 
+#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
 #include "FileHeader.h"
 #include "LodHeader.h"
+#include "MaterialBlockCommon.h"
 #include "MeshHeaderType3.h"
 #include "MeshHeaderType5.h"
-#include "MaterialBlockCommon.h"
-#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
 
 namespace rmv2 {
 
@@ -42,7 +42,7 @@ namespace rmv2 {
 	{
 		FileHeaderCommon fileHeader;
 		std::vector<LODHeaderCommon> lodHeaders;
-		std::vector<ModelBlockCommon> lods;		
+		std::vector<ModelBlockCommon> lods;
 	};
 
 

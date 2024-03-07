@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\DataTypes\LodHeader.h"
+#include "..\Types\Common\LodHeader.h"
 
 namespace rmv2 {	
 	

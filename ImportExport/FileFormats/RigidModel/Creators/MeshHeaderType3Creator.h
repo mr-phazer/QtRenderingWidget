@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\..\Helpers\ByteStream.h"
-#include "..\DataTypes\MeshHeaderType3.h"
+#include "..\Types\Common\MeshHeaderType3.h"
 
 namespace rmv2 {
 

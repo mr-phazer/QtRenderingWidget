@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "..\Constants\Rmv2Constants.h"
+#include "..\..\Constants\Rmv2Constants.h"
 
-enum TextureTypeEnum : uint32_t 
+enum TextureTypeEnum : uint32_t
 {
 	eDiffuse = 0,
 	eNormal = 1,
@@ -45,6 +45,6 @@ namespace rmv2
 
 		TextureTypeEnum textureType = TextureTypeEnum(0);
 		std::string texturePath = "";
-		
+
 	};
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include <DirectXPackedVector.h>
 
-#include "..\DataTypes\MeshEnumsConstants.h"
+#include "..\Types\Common\MeshEnumsConstants.h"
 
 namespace vertices_raw_packed
 {

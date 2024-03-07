@@ -3,9 +3,8 @@
 #include "..\..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Constants\Rmv2Constants.h"
-#include "..\..\DataTypes\MeshEnumsConstants.h"
 #include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
-
+#include "..\..\Types\Common\MeshEnumsConstants.h"
 
 namespace rmv2 {
 

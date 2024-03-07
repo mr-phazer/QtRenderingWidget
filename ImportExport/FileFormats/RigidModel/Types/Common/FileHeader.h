@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
-#include "..\Constants\Rmv2Constants.h"
-#include "..\DataTypes\MeshEnumsConstants.h"
+#include "..\..\..\..\Helpers\ByteStream.h"
+#include "..\..\Constants\Rmv2Constants.h"
+#include "..\..\Types\Common\MeshEnumsConstants.h"
 
 #include "IDataStructure.h"
 

@@ -3,7 +3,7 @@
 #include <assert.h>
 #include "..\DataTypes\DxMeshData.h"
 
-#include "..\..\ImportExport\FileFormats\RigidModel\DataTypes\RigidModelFile.h"
+#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
 
 namespace rldx {
 

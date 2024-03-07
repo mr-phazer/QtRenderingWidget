@@ -2,7 +2,7 @@
 
 #include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
-#include "..\DataTypes\MeshHeaderType5.h"
+#include "..\Types\Common\MeshHeaderType5.h"
 
 namespace rmv2 {
 

@@ -1,5 +1,5 @@
 #include "..\..\..\Helpers\ByteStream.h"
-#include "..\DataTypes\MeshEnumsConstants.h"
+#include "..\Types\Common\MeshEnumsConstants.h"
 #include "LodHeaderCreators.h"
 
 #include "..\RawStructs\RawLodHeaders.h"

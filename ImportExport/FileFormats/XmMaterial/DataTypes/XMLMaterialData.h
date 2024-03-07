@@ -1,7 +1,7 @@
 #pragma once
 
 #include<vector>
-#include "..\..\RigidModel\DataTypes\TextureElement.h"
+#include "..\..\RigidModel\Types\Common\TextureElement.h"
 
 namespace rmv2
 {

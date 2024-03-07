@@ -2,8 +2,8 @@
 
 #include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
-#include "..\DataTypes\FileHeader.h"
-#include "..\DataTypes\LodHeader.h"
+#include "..\Types\Common\FileHeader.h"
+#include "..\Types\Common\LodHeader.h"
 
 namespace rmv2 {
 
