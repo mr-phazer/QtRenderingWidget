@@ -1,47 +1,47 @@
 #pragma once
-#include <string>
-#include <sstream>
-#include <vector>
 #include <iterator>
 #include <map>
+#include <sstream>
+#include <string>
+#include <vector>
 #include <vector>
 
-#include <codecvt>
 #include <cassert>
+#include <codecvt>
 #include <string>
 #include <string.h>
 
 #include <algorithm>
-#include <fstream>
 #include <comdef.h>
+#include <fstream>
 
-#include "tools.h"
 #include "..\Logging\Logging.h"
-	
+#include "tools.h"
 
 
-	static std::wstring getComErrorWide(HRESULT hr)
-	{
-		_com_error err(hr);
-		LPCTSTR errMsg = err.ErrorMessage();
-		return std::wstring(errMsg);
-	}
+// TODO: unused, but ought to be used for COM-errors, to geta meaningful error msg
+static std::wstring getComErrorWide(HRESULT hr)
+{
+	_com_error err(hr);
+	LPCTSTR errMsg = err.ErrorMessage();
+	return std::wstring(errMsg);
+}
 
-	static std::string getComErrorNarrow(HRESULT hr)
-	{
-		_com_error err(hr);
-		LPCTSTR errMsg = err.ErrorMessage();
-		return NarrowStr(std::wstring(errMsg));
-	}
+static std::string getComErrorNarrow(HRESULT hr)
+{
+	_com_error err(hr);
+	LPCTSTR errMsg = err.ErrorMessage();
+	return NarrowStr(std::wstring(errMsg));
+}
 
-static bool comAssert_Box(HRESULT hr,std::string _func = "",std::string _operation = "")
+static bool comAssert_Box(HRESULT hr, std::string _func = "", std::string _operation = "")
 {
 	bool bResult = SUCCEEDED(hr);
 
 	if (!bResult)
 	{
-		auto func =WidenStr(_func);
-		auto op =WidenStr(_operation);
+		auto func = WidenStr(_func);
+		auto op = WidenStr(_operation);
 
 		std::wostringstream ss;
 		ss << std::hex << hr;
@@ -81,14 +81,14 @@ static std::string GetCommErrorNarrow(HRESULT hr)
 }
 
 
-static bool comAssert_LogOnly(HRESULT hr,std::string _func = "",std::string _operation = "")
+static bool comAssert_LogOnly(HRESULT hr, std::string _func = "", std::string _operation = "")
 {
 	bool bResult = SUCCEEDED(hr);
 
 	if (!bResult)
 	{
-		auto func =WidenStr(_func);
-		auto op =WidenStr(_operation);
+		auto func = WidenStr(_func);
+		auto op = WidenStr(_operation);
 
 		std::wostringstream ss;
 		ss << std::hex << hr;
@@ -101,7 +101,7 @@ static bool comAssert_LogOnly(HRESULT hr,std::string _func = "",std::string _ope
 
 		auto msg = getComErrorWide(hr);
 
-		LogActionError(": Direct3d Error " +std::string(result) + ": " + strHex);
+		LogActionError(": Direct3d Error " + std::string(result) + ": " + strHex);
 
 
 		/*	MessageBox(
