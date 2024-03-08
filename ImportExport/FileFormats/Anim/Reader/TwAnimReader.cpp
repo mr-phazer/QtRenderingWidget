@@ -11,10 +11,14 @@
 
 using namespace anim_file;
 
-TwAnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes)
+TwAnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes, TwAnimFile* poBindPose)
 {
+	m_poBindPose = poBindPose;
+
 	ReadHeader(bytes);
 	ReadBoneTable(bytes);
+
+	// TODO: add "for subclipsCount" loop around this, so it matches ANIM v8
 	ReadSubClip(bytes);
 
 	return m_animFile;
@@ -35,7 +39,7 @@ void anim_file::TwAnimFileReader::ReadHeader(ByteStream& bytes)
 			break;
 
 		default:
-			throw std::exception("NOT IMPLEMENT FOR OTHER ANIM File Versions");
+			throw std::exception("ERROR: Not a supported TW ANIM version!");
 	}
 }
 
@@ -50,7 +54,7 @@ void anim_file::TwAnimFileReader::ReadSubClip(ByteStream& bytes)
 	switch (m_animFile.fileHeader.dwVersion)
 	{
 		case AnimVersionEnum::ANIM_VERSION_7:
-			ReadFrames_v7(bytes);
+			ReadClip_v7(bytes);
 			break;
 
 		default:
@@ -59,19 +63,19 @@ void anim_file::TwAnimFileReader::ReadSubClip(ByteStream& bytes)
 
 }
 
-void anim_file::TwAnimFileReader::ReadFrames_v7(ByteStream& bytes)
+void anim_file::TwAnimFileReader::ReadClip_v7(ByteStream& bytes)
 {
 	auto tracksMetaData = ReadTracksMetaTable_v7(bytes, m_animFile.fileHeader.dwBoneCount);
 
 	auto constTrackFrameHeader = ReadConstTrackFrameHeader(bytes);
 	auto constTrackFrame = ReadConstTracksFrame_v7(bytes, constTrackFrameHeader);
 
-	auto subClipHeader = ReadPartHeader(bytes);
+	auto subClipHeader = ReadSubClipHeader(bytes);
 
 	m_animFile.frames.resize(subClipHeader.frameCount);
 	for (auto& itFrame : m_animFile.frames)
 	{
-		itFrame = ReadSingleFrame_v7(bytes, tracksMetaData, subClipHeader, nullptr, nullptr);
+		itFrame = DecodeFrame_V7(bytes, tracksMetaData, subClipHeader, nullptr, nullptr);
 	}
 }
 
@@ -90,58 +94,63 @@ AnimFrameCommon anim_file::TwAnimFileReader::ReadConstTracksFrame_v7(ByteStream&
 	return outFrame;
 }
 
-AnimFrameCommon anim_file::TwAnimFileReader::ReadSingleFrame_v7(
+AnimFrameCommon anim_file::TwAnimFileReader::DecodeFrame_V7(
 	ByteStream& bytes,
 	const BoneTrackMetaData_V7& metaTable,
 	const FrameHeaderCommon& frameHeader,
-	const AnimFrameCommon* constTrackFrame,
-	const AnimFrameCommon* bindPoseFrame)
+	const AnimFrameCommon* pConstTrackFrame,
+	const AnimFrameCommon* pBindPoseFrame)
 {
+	const auto constTrackErrorMessage = "DecodeFrame_V7(): Error: Const Track Expected";
+	const auto bindPoseErroMessage = "DecodeFrame_V7(): Error: BindPose Expected";
+
 	AnimFrameCommon outFrame(frameHeader.translationCount, frameHeader.rotationCount);
 
-	size_t bindPoseTransIndex = 0;
-	for (size_t i = 0; i < frameHeader.translationCount; i++)
+	size_t translationFrameDataIndex = 0;
+	for (size_t iBone = 0; iBone < frameHeader.translationCount; iBone++)
 	{
-		auto& transMeta = metaTable.translationInfo[i];
+		auto& transMeta = metaTable.translationInfo[iBone];
 
 		switch (transMeta.GetTrackSourceState())
 		{
 			case AnimTrackSourceEnum::FrameData:
-				outFrame.translations[i] = bytes.TReadElement<sm::Vector3>();
+				outFrame.translations[translationFrameDataIndex] = bytes.TReadElement<sm::Vector3>();
+				translationFrameDataIndex++;
 				break;
 
 			case AnimTrackSourceEnum::ConstTrack:
-				if (bindPoseFrame == nullptr) throw("ReadSingleFrame_v7(): Error, const track expected");
-				outFrame.translations[i] = constTrackFrame->translations[transMeta.GetConstTrackIndex()];
+				if (pConstTrackFrame == nullptr) throw(constTrackErrorMessage);
+				outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
 				break;
 
 			case AnimTrackSourceEnum::BindPose:
-				if (bindPoseFrame == nullptr) throw("ReadSingleFrame_v7(): Error, bindpose expected");
+				if (pBindPoseFrame == nullptr) throw(bindPoseErroMessage);
 
-				outFrame.translations[i] = bindPoseFrame->translations[bindPoseTransIndex++];
+				outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
 				break;
 		}
 	};
 
-	size_t bindPoseRotationIndex = 0;
-	for (size_t i = 0; i < frameHeader.rotationCount; i++)
+	size_t rotationFrameDataIndex = 0;
+	for (size_t iBone = 0; iBone < frameHeader.rotationCount; iBone++)
 	{
-		switch (metaTable.rotationTrackInfo[i].GetTrackSourceState())
+		switch (metaTable.rotationTrackInfo[iBone].GetTrackSourceState())
 		{
 			case AnimTrackSourceEnum::FrameData:
-				outFrame.rotations[i] = FloatConverter::GetSNormFloat4FromSignedInt4(bytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
+				outFrame.rotations[rotationFrameDataIndex] = FloatConverter::GetSNormFloat4FromSignedInt4(bytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
+				rotationFrameDataIndex++;
 				break;
 
 			case AnimTrackSourceEnum::ConstTrack:
-				if (constTrackFrame == nullptr)	throw std::exception("ReadSingleFrame_v7(): Error, const track expected");
+				if (pConstTrackFrame == nullptr) throw std::exception(constTrackErrorMessage);
 
-				outFrame.rotations[i] = constTrackFrame->rotations[metaTable.rotationTrackInfo[i].GetConstTrackIndex()];
+				outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
 				break;
 
 			case AnimTrackSourceEnum::BindPose:
-				if (constTrackFrame == nullptr)	throw("ReadSingleFrame_v7(): Error, bindpose expected");
+				if (pBindPoseFrame == nullptr) throw(bindPoseErroMessage);
 
-				outFrame.rotations[i] = bindPoseFrame->rotations[bindPoseRotationIndex++];
+				outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
 				break;
 		}
 	}
@@ -159,7 +168,7 @@ FrameHeaderCommon anim_file::TwAnimFileReader::ReadConstTrackFrameHeader(ByteStr
 	return out;
 }
 
-FrameHeaderCommon anim_file::TwAnimFileReader::ReadPartHeader(ByteStream& bytes)
+FrameHeaderCommon anim_file::TwAnimFileReader::ReadSubClipHeader(ByteStream& bytes)
 {
 	FrameHeaderCommon out;
 	out.translationCount = bytes.TReadElement<uint32_t>();
