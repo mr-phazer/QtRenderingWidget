@@ -1,3 +1,5 @@
+- Add COM error messages to direct3d exception hadling, there is a useful func in "COMerrors.h"
+
 - Fix MASK issue in Rome/Atilla shader, so faction coloring can be switched back on
   - probably as mismatch of skin and color mask
   - mask textures seems to be assigned to wrong meshes, almost def, look into this
