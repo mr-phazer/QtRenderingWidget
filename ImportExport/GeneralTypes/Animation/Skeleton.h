@@ -28,8 +28,14 @@ namespace skel_anim
 		int32_t parentIndex;
 	};
 
-	struct SkeletonFrame
+	/// <summary>
+	/// Contains keys for all bones for 1 frame	
+	/// </summary>
+	struct SkeletonKeyFrame
 	{
+		SkeletonKeyFrame() = default;
+		SkeletonKeyFrame(size_t boneCount) : boneKeys(boneCount) {}
+
 		std::vector<BoneKey> boneKeys;
 	};
 
@@ -40,13 +46,13 @@ namespace skel_anim
 	struct Skeleton
 	{
 		std::vector<sm::Matrix> inverseBindPoseMatrices;
-		std::vector<SkeletonBoneNode> bones;
-		SkeletonFrame bindPose;
+		std::vector<SkeletonBoneNode> boneTable;
+		SkeletonKeyFrame bindPose;
 	};
 
 	struct SkeletonAnimationData
 	{
-		std::vector<SkeletonFrame> frames;
+		std::vector<SkeletonKeyFrame> frames;
 	};
 
 	struct SkeletonAnimationClip

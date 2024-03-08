@@ -2,14 +2,17 @@
 
 using namespace skel_anim;
 
-void FrameGenerator::GeneateFramePoseMatrices(const SkeletonFrame& frameLocal, std::vector<sm::Matrix> destPoseMatrices)
+void FrameGenerator::GeneateFramePoseMatrices(const SkeletonKeyFrame& frameLocal, std::vector<sm::Matrix> destPoseMatrices)
 {
-	destPoseMatrices.resize(m_skeleton.bones.size());
-	for (size_t iBone = 0; iBone < m_skeleton.bones.size(); iBone++)
-	{
-		auto& currentBone = m_skeleton.bones[iBone];
+	SkeletonKeyFrame vkag;
+	SkeletonKeyFrame globalKeys(m_skeleton.boneTable.size());
+	destPoseMatrices.resize(m_skeleton.boneTable.size());
 
-		auto& keyGlobal = m_globalKeys.boneKeys[iBone];
+	for (size_t iBone = 0; iBone < m_skeleton.boneTable.size(); iBone++)
+	{
+		auto& currentBone = m_skeleton.boneTable[iBone];
+
+		auto& keyGlobal = globalKeys.boneKeys[iBone];
 		auto& keyLocal = frameLocal.boneKeys[iBone];
 
 		if (currentBone.parentIndex == -1)
@@ -19,7 +22,7 @@ void FrameGenerator::GeneateFramePoseMatrices(const SkeletonFrame& frameLocal, s
 			continue;
 		}
 
-		auto& parentGlobal = m_globalKeys.boneKeys[currentBone.parentIndex];
+		auto& parentGlobal = globalKeys.boneKeys[currentBone.parentIndex];
 
 		keyGlobal.rotation = keyLocal.rotation * parentGlobal.rotation;
 
@@ -33,11 +36,11 @@ void FrameGenerator::GeneateFramePoseMatrices(const SkeletonFrame& frameLocal, s
 	};
 }
 
-SkeletonFrame FrameInterPolator::InterpolateLocalFrames(const SkeletonFrame& frame0, const SkeletonFrame& frame1, float interpolationFactor)
+SkeletonKeyFrame FrameInterPolator::InterpolateLocalFrames(const SkeletonKeyFrame& frame0, const SkeletonKeyFrame& frame1, float interpolationFactor)
 {
 	using namespace DirectX::SimpleMath;
 
-	SkeletonFrame resultFrame;
+	SkeletonKeyFrame resultFrame;
 
 	for (size_t iBoneNode = 0; iBoneNode < frame0.boneKeys.size(); iBoneNode++)
 	{

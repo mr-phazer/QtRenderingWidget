@@ -10,40 +10,48 @@ namespace skel_anim
 		Skeleton m_skeleton;
 
 	public:
-		void Create(const anim_file::TwAnimFile& inputFile);
+		void Create(const anim_file::TwAnimFile& inputFile)
+		{
+			SetBoneTable(inputFile);
+
+			size_t bone = 0;
+			size_t frame = 0;
+			//m_skeleton.bindPose.boneKeys[bone].rotation = inputFile.frames[frame].rotations[bone]
+		}
 
 	private:
-		void SetNodeMetaData(anim_file::BoneTable& boneData)
+		void SetBoneTable(const anim_file::TwAnimFile& inputFile)
 		{
-			m_skeleton.bones.resize(boneData.bones.size());
-
-			for (auto& itBone : boneData.bones)
+			m_skeleton.boneTable.clear();
+			for (const auto& itBone : inputFile.boneTable.bones)
 			{
-				SkeletonBoneNode bone;
-				bone.boneIndex = itBone.id;
-				bone.parentIndex = itBone.parent_id;
+				SkeletonBoneNode node;
+				node.boneIndex = itBone.id;
+				node.parentIndex = itBone.parent_id;
+
+				m_skeleton.boneTable.push_back(node);
 			}
 		}
+
+	private:
+
 	};
 
 
 	class FrameInterPolator
 	{
 	public:
-		static SkeletonFrame InterpolateLocalFrames(const SkeletonFrame& frame0, const SkeletonFrame& frame1, float blendFactor);
+		static SkeletonKeyFrame InterpolateLocalFrames(const SkeletonKeyFrame& frame0, const SkeletonKeyFrame& frame1, float blendFactor);
 	};
 
 
 	class FrameGenerator
 	{
 		Skeleton m_skeleton;
-		SkeletonFrame m_globalKeys;
 
 	public:
-		void GeneateFramePoseMatrices(const SkeletonFrame& frameLocal, std::vector<sm::Matrix> destPoseMatrices);
-
-
-
+		FrameGenerator(Skeleton& skeleton) : m_skeleton(skeleton) {}
+		void GeneateFramePoseMatrices(const SkeletonKeyFrame& frameLocal, std::vector<sm::Matrix> destPoseMatrices);
 	};
 
 }
