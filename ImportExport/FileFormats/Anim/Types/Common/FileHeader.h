@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <string>
 
+
+#include "..\..\ImportExport\GeneralTypes\IDataStructure.h"
+
 namespace anim_file
 {
 	enum AnimVersionEnum : uint32_t
@@ -16,8 +19,25 @@ namespace anim_file
 	/// <summary>
 	/// Structure to contain all possible values of "TW ANIM" (v5), v6, v7, v8
 	/// </summary>
-	struct AnimHeaderCommon
+	struct AnimHeaderCommon : IDataStructure
 	{
+		bool IsContentValid()
+		{
+			if (
+				dwVersion > 8 ||
+				fFrameRate == NAN ||
+				fFrameRate == 0.0f ||
+				skeletonName.empty() ||
+				dwBoneCount == 0
+
+				)
+				return false;
+
+			return true;
+		}
+
+
+
 		std::uint32_t dwVersion = 0;
 		std::uint32_t dwUnknown = 0;
 		float fFrameRate = 0.0f;
