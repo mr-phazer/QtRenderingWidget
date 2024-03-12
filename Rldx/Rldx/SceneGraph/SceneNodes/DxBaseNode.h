@@ -23,10 +23,10 @@ namespace rldx {
 	class DxNodeCreator
 	{
 	public:
-		template<typename CONST_BUF_DATA_TYPE>
-		static std::shared_ptr<CONST_BUF_DATA_TYPE> CreateNode(const std::wstring& name = "")
+		template<typename NODE_TYPE>
+		static std::shared_ptr<NODE_TYPE> CreateNode(const std::wstring& name = "")
 		{
-			auto newInstance = std::make_shared<CONST_BUF_DATA_TYPE>();
+			auto newInstance = std::make_shared<NODE_TYPE>();
 			newInstance->SetName(name);
 			return newInstance;
 		}
