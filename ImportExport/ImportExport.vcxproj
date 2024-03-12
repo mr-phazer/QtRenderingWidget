@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -147,7 +153,7 @@
   <ItemGroup>
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h" />
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h" />
-    <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h" />
+    <ClInclude Include="GeneralTypes\Animation\AnimFrameCommon.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\FileHeader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\BoneTable.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\FrameHeaders.h" />
@@ -156,8 +162,11 @@
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h" />
+    <ClInclude Include="GeneralTypes\Animation\AnimTrackReader.h" />
+    <ClInclude Include="GeneralTypes\Animation\FramePoseGenerator.h" />
     <ClInclude Include="GeneralTypes\Animation\Skeleton.h" />
-    <ClInclude Include="GeneralTypes\Animation\SkeletonAnimator.h" />
+    <ClInclude Include="GeneralTypes\Animation\AnimationManager.h" />
+    <ClInclude Include="GeneralTypes\Animation\SkeletonCreator.h" />
     <ClInclude Include="Helpers\DataConversion.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
     <ClInclude Include="Helpers\TTree.h" />
@@ -172,7 +181,7 @@
     <ClInclude Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\VertexCreators.h" />
     <ClInclude Include="FileFormats\RigidModel\Types\Common\AttachElement.h" />
-    <ClInclude Include="FileFormats\RigidModel\Types\Common\IDataStructure.h" />
+    <ClInclude Include="GeneralTypes\IDataStructure.h" />
     <ClInclude Include="FileFormats\RigidModel\Types\Common\MaterialBlockCommon.h" />
     <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshHeaderType5.h" />
     <ClInclude Include="FileFormats\RigidModel\Types\Common\RigidModelFile.h" />
@@ -200,7 +209,9 @@
     <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp" />
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp" />
-    <ClCompile Include="GeneralTypes\Animation\SkeletonAnimator.cpp" />
+    <ClCompile Include="GeneralTypes\Animation\FramePoseGenerator.cpp" />
+    <ClCompile Include="GeneralTypes\Animation\Skeleton.cpp" />
+    <ClCompile Include="GeneralTypes\Animation\AnimationManager.cpp" />
     <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />

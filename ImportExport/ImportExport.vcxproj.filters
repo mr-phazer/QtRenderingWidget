@@ -111,7 +111,7 @@
     <ClInclude Include="FileFormats\XmMaterial\DataTypes\XMLMaterialData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\RigidModel\Types\Common\IDataStructure.h">
+    <ClInclude Include="GeneralTypes\IDataStructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Helpers\CustomExceptions.h">
@@ -135,7 +135,7 @@
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\SkeletonAnimator.h">
+    <ClInclude Include="GeneralTypes\Animation\AnimationManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h">
@@ -159,7 +159,16 @@
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h">
+    <ClInclude Include="GeneralTypes\Animation\AnimFrameCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralTypes\Animation\AnimTrackReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralTypes\Animation\SkeletonCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralTypes\Animation\FramePoseGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -212,13 +221,19 @@
     <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneralTypes\Animation\SkeletonAnimator.cpp">
+    <ClCompile Include="GeneralTypes\Animation\AnimationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralTypes\Animation\Skeleton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralTypes\Animation\FramePoseGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

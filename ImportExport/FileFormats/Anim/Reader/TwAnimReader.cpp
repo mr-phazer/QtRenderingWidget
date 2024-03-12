@@ -11,7 +11,7 @@
 
 using namespace anim_file;
 
-TwAnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes, TwAnimFile* poBindPose)
+AnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes, AnimFile* poBindPose)
 {
 	m_poBindPose = poBindPose;
 

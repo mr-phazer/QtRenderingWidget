@@ -5,11 +5,14 @@
 #include "..\ImportExport\Helpers\ByteStream.h"
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
+#include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
 
+#include <GeneralTypes\Animation\AnimationManager.h>
 #include "..\ImportExport\FileFormats\Anim\Reader\TwAnimReader.h"
+#include "..\Rldx\Rldx\Managers\DxDeviceManager.h"
 
 /// <summary>
 /// Debugging data struct, made to unclutter the code
@@ -145,13 +148,26 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 void QtMainWindowView::InitRenderView_DEBUG()
 {
 
+
+	//"I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\myfile.spritefont"
 	// TODO: remove debuggin code
 #ifdef _DEBUG
+
+	ByteStream::SetSearchFolder(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\)");
 
 	//ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
 	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\skeletons\humanoid01.anim)");
 	anim_file::TwAnimFileReader animFileReader;
 	auto animFile = animFileReader.Read(bytesForAnim);
+
+	skel_anim::AnimationManager animationManager;
+	animationManager.LoadBindPose(animFile);
+
+
+
+	rldx::DxSkeletonMeshCreator skeletonCreator;
+	skeletonCreator.Create(rldx::DxDeviceManager::Device(), animationManager.GetSkeleton());
+
 
 
 #endif	

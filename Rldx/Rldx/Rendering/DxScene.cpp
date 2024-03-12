@@ -20,7 +20,8 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
 
 	// diable depth buffer, while drawing 2d text
-	// TODO: do NOT create this in the render loop
+	// TODO: do NOT create this in the render 
+
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
 
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->RenderText();

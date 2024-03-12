@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SimpleMath.h>
+#include "..\..\..\GeneralTypes\Animation\AnimFrameCommon.h"
 #include "..\..\..\Helpers\ByteStream.h"
-#include "..\Types\Common\AnimFrameCommon.h"
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\TwAnimFile.h"
 #include "..\Types\Raw\AnimFrameRaw.h"
@@ -15,11 +15,11 @@ namespace anim_file
 	class TwAnimFileReader
 	{
 		// TODO: either make std::unique_ptr, or otherwise make sure it is cleared, if the reader instance it used more than once
-		TwAnimFile m_animFile;
-		TwAnimFile* m_poBindPose = nullptr;
+		AnimFile m_animFile;
+		AnimFile* m_poBindPose = nullptr;
 
 	public:
-		TwAnimFile Read(ByteStream& bytes, TwAnimFile* poBindPose = nullptr);
+		AnimFile Read(ByteStream& bytes, AnimFile* poBindPose = nullptr);
 
 	private:
 		void ReadHeader(ByteStream& bytes);
