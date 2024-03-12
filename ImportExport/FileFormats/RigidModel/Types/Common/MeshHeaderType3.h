@@ -1,8 +1,8 @@
 #pragma once
 
 #include <DirectXMath.h>
+#include <GeneralTypes\IDataStructure.h>
 #include "MeshEnumsConstants.h"
-#include "IDataStructure.h"
 
 namespace rmv2
 {
@@ -14,7 +14,7 @@ namespace rmv2
 		{
 			return
 				(dwVertexCount <= 0xFFFF) &&
-				(RigidMaterialId < 101);				
+				(RigidMaterialId < 101);
 		};
 
 
@@ -30,7 +30,7 @@ namespace rmv2
 		//virtual DirectX::XMFLOAT3& MinBB() = 0;
 		//virtual DirectX::XMFLOAT3& MaxBB() = 0;
 		//virtual char* LightingConstants() = 0;
-				
+
 
 		static constexpr size_t GetHeaderSize()
 		{

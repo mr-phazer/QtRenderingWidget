@@ -4,7 +4,7 @@
 #include "..\..\Constants\Rmv2Constants.h"
 #include "..\..\Types\Common\MeshEnumsConstants.h"
 
-#include "IDataStructure.h"
+#include <GeneralTypes\IDataStructure.h>
 
 namespace rmv2 {
 
