@@ -40,21 +40,22 @@ namespace skel_anim {
 		std::vector<bool> spliceMask;
 	};
 
-	class AnimationManager
+	class AnimationPlayer
 	{
 		Skeleton m_skeleton;
 		SkeletonAnimationClip m_mainClip;
 		std::vector<SpliceAnimation> m_spliceClips;
+		std::vector<sm::Matrix> m_framePoseMatrices;
 
 		FramePoseMatrixGenerator m_framePoseGenerator;
 
 	public:
-		AnimationManager() = default;
+		AnimationPlayer() = default;
 		void LoadBindPose(const anim_file::AnimFile& animFile)
 		{
 			// TODO: put in error checking
 			m_skeleton.SetBoneTable(animFile);
-			auto bindPoseClip = SkeletonAnimationClip::CreateFromCommonAnim(animFile);
+			auto bindPoseClip = SkeletonAnimationClip::CreateFromAnimFile(animFile);
 			m_skeleton.bindPose = bindPoseClip.frames[0]; // TODO: is this field needed
 			m_framePoseGenerator.SetSkeleton(&m_skeleton);
 			m_framePoseGenerator.SetAnimCLip(&bindPoseClip);
@@ -71,18 +72,20 @@ namespace skel_anim {
 			}
 		}
 
-		std::vector<sm::Matrix> GetFramPoseMatrice(float time)
+		void Update(float time)
 		{
-			m_framePoseGenerator.GenerateFramePoseMatrices();
-
+			m_framePoseMatrices = m_framePoseGenerator.GenerateFramePoseMatrices();
 		}
 
+		std::vector<sm::Matrix> GetFramPoseMatrice(float time)
+		{
+			return m_framePoseMatrices;
+		}
 
 		const Skeleton& GetSkeleton()
 		{
 			return m_skeleton;
 		}
-
 	};
 
 

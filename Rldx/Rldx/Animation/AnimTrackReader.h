@@ -1,8 +1,8 @@
 #pragma once
 
+#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <SimpleMath.h>
 #include <vector>
-#include "..\..\FileFormats\Anim\Types\Common\TwAnimFile.h"
 #include "Skeleton.h"
 
 
@@ -11,14 +11,11 @@ namespace skel_anim
 	class AnimTrackReader
 	{
 		const SkeletonAnimationClip* pAnimClip = nullptr;
-		float m_currentTime = 0.0f;
 
 	public:
 		AnimTrackReader() = default;
 
 		void SetAnimClip(const SkeletonAnimationClip* animClip) { pAnimClip = animClip; };
-
-		float SetTime(float time) { m_currentTime = time; }
 
 		sm::Vector3 GetTranslationDiscrete(size_t boneIndex, size_t frmaeIndex) const
 		{
@@ -30,10 +27,10 @@ namespace skel_anim
 			return pAnimClip->frames.at(frmaeIndex).boneKeys.at(boneIndex).rotation;
 		}
 
-		sm::Vector3 GetTranslation(size_t boneIndex) const
+		sm::Vector3 GetTranslation(size_t boneIndex, float time = 0.0f) const
 		{
-			size_t loopCount = static_cast<size_t>(m_currentTime / pAnimClip->clipLength); // number of time that anim could have tun
-			float correctedTime = m_currentTime - loopCount * pAnimClip->clipLength; // correct time, to it in [0; fAnimEnd]
+			size_t loopCount = static_cast<size_t>(time / pAnimClip->clipLength); // number of time that anim could have tun
+			float correctedTime = time - loopCount * pAnimClip->clipLength; // correct time, to it in [0; fAnimEnd]
 
 			size_t frameIndex = static_cast<size_t>(correctedTime * pAnimClip->keysPerSecond); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
 			float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
@@ -45,13 +42,13 @@ namespace skel_anim
 			return sm::Vector3::Lerp(translation0, translation1, delta);
 		}
 
-		sm::Quaternion GetRotation(size_t boneIndex) const
+		sm::Quaternion GetRotation(size_t boneIndex, float time = 0.0f) const
 		{
-			size_t loopCount = static_cast<size_t>(m_currentTime / pAnimClip->clipLength); // number of time that anim could have tun
-			float correctedTime = m_currentTime - loopCount * pAnimClip->clipLength; // correct time, to it in [0; fAnimEnd]
+			size_t loopCount = static_cast<size_t>(time / pAnimClip->clipLength); // number of time that anim could have tun
+			float correctedTime = time - loopCount * pAnimClip->clipLength; // correct time, to it in [0; fAnimEnd]
 
 
-			size_t frameIndex = static_cast<size_t>(m_currentTime * pAnimClip->keysPerSecond); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
+			size_t frameIndex = static_cast<size_t>(time * pAnimClip->keysPerSecond); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
 			float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
 
@@ -68,13 +65,13 @@ namespace skel_anim
 	//class AnimTrackReader_OLD
 	//{
 	//	const anim_file::AnimFile* m_animFile;
-	//	float m_currentTime = 0.0f;
+	//	float time = 0.0f;
 
 	//public:
 	//	AnimTrackReader() = delete;
 	//	AnimTrackReader(const anim_file::AnimFile& animFile) : m_animFile(&animFile) {}
 
-	//	float SetTime(float time) { m_currentTime = time; }
+	//	float SetTime(float time) { time = time; }
 
 	//	sm::Vector3 GetTranslationDiscrete(size_t boneIndex, size_t frmaeIndex) const
 	//	{
@@ -88,8 +85,8 @@ namespace skel_anim
 
 	//	sm::Vector3 GetTranslation(size_t boneIndex) const
 	//	{
-	//		size_t loopCount = static_cast<size_t>(m_currentTime / m_animFile->fileHeader.fEndTime); // number of time that anim could have tun
-	//		float correctedTime = m_currentTime - loopCount * m_animFile->fileHeader.fEndTime; // correct time, to it in [0; fAnimEnd]
+	//		size_t loopCount = static_cast<size_t>(time / m_animFile->fileHeader.fEndTime); // number of time that anim could have tun
+	//		float correctedTime = time - loopCount * m_animFile->fileHeader.fEndTime; // correct time, to it in [0; fAnimEnd]
 
 	//		size_t frameIndex = static_cast<size_t>(correctedTime * m_animFile->fileHeader.fFrameRate); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
 	//		float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
@@ -103,11 +100,11 @@ namespace skel_anim
 
 	//	sm::Quaternion GetRotation(size_t boneIndex) const
 	//	{
-	//		size_t loopCount = static_cast<size_t>(m_currentTime / m_animFile->fileHeader.fEndTime); // number of time that anim could have tun
-	//		float correctedTime = m_currentTime - loopCount * m_animFile->fileHeader.fEndTime; // correct time, to it in [0; fAnimEnd]
+	//		size_t loopCount = static_cast<size_t>(time / m_animFile->fileHeader.fEndTime); // number of time that anim could have tun
+	//		float correctedTime = time - loopCount * m_animFile->fileHeader.fEndTime; // correct time, to it in [0; fAnimEnd]
 
 
-	//		size_t frameIndex = static_cast<size_t>(m_currentTime * m_animFile->fileHeader.fFrameRate); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
+	//		size_t frameIndex = static_cast<size_t>(time * m_animFile->fileHeader.fFrameRate); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
 	//		float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
 

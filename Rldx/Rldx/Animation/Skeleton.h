@@ -1,8 +1,8 @@
 #pragma once
 
+#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <SimpleMath.h>
 #include <vector>
-#include "..\..\FileFormats\Anim\Types\Common\TwAnimFile.h"
 
 namespace skel_anim
 {
@@ -41,7 +41,7 @@ namespace skel_anim
 	/// </summary>
 	struct SkeletonKeyFrame
 	{
-		static SkeletonKeyFrame CreateFromCommonFrame(const AnimFrameCommon& input);
+		static SkeletonKeyFrame CreateFromCommonFrame(const anim_file::AnimFrameCommon& input);
 
 		SkeletonKeyFrame() = default;
 		SkeletonKeyFrame(size_t boneCount) : boneKeys(boneCount) {}
@@ -86,7 +86,7 @@ namespace skel_anim
 
 	struct SkeletonAnimationClip
 	{
-		static SkeletonAnimationClip CreateFromCommonAnim(const anim_file::AnimFile& in)
+		static SkeletonAnimationClip CreateFromAnimFile(const anim_file::AnimFile& in)
 		{
 			SkeletonAnimationClip newClip;
 			newClip.clipLength = in.fileHeader.fEndTime;

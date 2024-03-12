@@ -1,6 +1,6 @@
 #include "Skeleton.h"
 
-#include "..\..\GeneralTypes\Animation\AnimFrameCommon.h"
+namespace anim_file { struct AnimFrameCommon; }
 
 namespace skel_anim
 {
@@ -13,7 +13,7 @@ namespace skel_anim
 		return (rotationMatrix * translationMatrix);
 	}
 
-	SkeletonKeyFrame SkeletonKeyFrame::CreateFromCommonFrame(const AnimFrameCommon& input)
+	SkeletonKeyFrame SkeletonKeyFrame::CreateFromCommonFrame(const anim_file::AnimFrameCommon& input)
 	{
 		SkeletonKeyFrame newFrame;
 		newFrame.boneKeys.resize(input.translations.size());
@@ -21,11 +21,11 @@ namespace skel_anim
 		{
 			newFrame.boneKeys[boneIndex].translation = input.translations[boneIndex];
 			newFrame.boneKeys[boneIndex].rotation = input.rotations[boneIndex];
-
 		}
 
 		return newFrame;
 	}
+
 	/*SkeletonAnimationClip skel_anim::SkeletonAnimationClip::CreateFromTWAnim(const anim_file::TwAnimFile& in)
 	{
 		SkeletonAnimationClip out;
