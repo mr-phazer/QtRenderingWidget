@@ -21,29 +21,10 @@ namespace anim_file
 	/// </summary>
 	struct AnimHeaderCommon : IDataStructure
 	{
-		bool IsContentValid()
-		{
-			if (
-				dwVersion > 8 ||
-				fFrameRate == NAN ||
-				fFrameRate == 0.0f ||
-				skeletonName.empty() ||
-				dwBoneCount == 0
-
-				)
-				return false;
-
-			return true;
-		}
-
-
-
 		std::uint32_t dwVersion = 0;
 		std::uint32_t dwUnknown = 0;
 		float fFrameRate = 0.0f;
-
 		std::string skeletonName = "";
-
 		uint32_t dwBoneCount = 0;
 
 		struct  SubHeaderV7
@@ -61,5 +42,7 @@ namespace anim_file
 			uint32_t dwUnknown2 = 0;
 		}
 		subHeader_v8;
+
+		bool IsContentValid() override
 	};
 }
