@@ -1,10 +1,11 @@
 #pragma once
-#include "IDrawable.h"
 #include "IBindable.h"
+#include "IDrawable.h"
+#include "IUpdateable.h"
 
 namespace rldx {
-	class IRenderQueueItem : public IDrawable, public IBindable 
+	class IRenderQueueItem : public IDrawable, public IBindable, public IUpdateable
 	{
-	
+
 	};
 }

@@ -5,7 +5,7 @@
 namespace rldx {
 
 	using IntId = uint32_t;
-	static const IntId INVALID_ID = ~0;
+	static const IntId INVALID_ID = ~static_cast<IntId>(0);
 
 	class IdentifiableBase
 	{
