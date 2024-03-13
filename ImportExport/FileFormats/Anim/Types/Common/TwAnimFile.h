@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <GeneralTypes\Animation\AnimFrameCommon.h>
+#include "AnimFrameCommon.h"
 #include "BoneTable.h"
 #include "FileHeader.h"
 

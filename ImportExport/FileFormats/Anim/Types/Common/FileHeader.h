@@ -43,6 +43,6 @@ namespace anim_file
 		}
 		subHeader_v8;
 
-		bool IsContentValid() override
+		bool IsContentValid() override;
 	};
 }

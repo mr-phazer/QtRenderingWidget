@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SimpleMath.h>
-#include "..\..\..\GeneralTypes\Animation\AnimFrameCommon.h"
 #include "..\..\..\Helpers\ByteStream.h"
+#include "..\Types\Common\AnimFrameCommon.h"
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\TwAnimFile.h"
 #include "..\Types\Raw\AnimFrameRaw.h"
