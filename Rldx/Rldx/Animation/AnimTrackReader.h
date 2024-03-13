@@ -27,7 +27,7 @@ namespace skel_anim
 			return pAnimClip->frames.at(frmaeIndex).boneKeys.at(boneIndex).rotation;
 		}
 
-		sm::Vector3 GetTranslation(size_t boneIndex, float time = 0.0f) const
+		struct { float loopedTime; size_t frameIndex; float delta; } GetTimeValues(float time) const
 		{
 			size_t loopCount = static_cast<size_t>(time / pAnimClip->clipLength); // number of time that anim could have tun
 			float correctedTime = time - loopCount * pAnimClip->clipLength; // correct time, to it in [0; fAnimEnd]
@@ -35,11 +35,18 @@ namespace skel_anim
 			size_t frameIndex = static_cast<size_t>(correctedTime * pAnimClip->keysPerSecond); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
 			float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
-			const auto& translation0 = GetTranslationDiscrete(boneIndex, frameIndex);
-			const auto& translation1 = (correctedTime >= pAnimClip->clipLength) ?
-				GetTranslationDiscrete(boneIndex, 0) : GetTranslationDiscrete(boneIndex, frameIndex);
+			return { correctedTime, frameIndex, delta };
+		}
 
-			return sm::Vector3::Lerp(translation0, translation1, delta);
+		sm::Vector3 GetTranslation(size_t boneIndex, float time = 0.0f) const
+		{
+			auto timeValues = GetTimeValues(time);
+
+			const auto& translation0 = GetTranslationDiscrete(boneIndex, timeValues.frameIndex);
+			const auto& translation1 = (timeValues.loopedTime >= pAnimClip->clipLength) ?
+				GetTranslationDiscrete(boneIndex, 0) : GetTranslationDiscrete(boneIndex, timeValues.frameIndex);
+
+			return sm::Vector3::Lerp(translation0, translation1, timeValues.delta);
 		}
 
 		sm::Quaternion GetRotation(size_t boneIndex, float time = 0.0f) const
