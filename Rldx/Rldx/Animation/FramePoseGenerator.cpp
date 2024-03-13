@@ -23,8 +23,9 @@ std::vector<sm::Matrix> skel_anim::FramePoseMatrixGenerator::GenerateFramePoseMa
 
 		keyGlobal.rotation = m_trackReader.GetRotation(boneIndex) * parentGlobal.rotation;
 
-		keyGlobal.translation = 
-		parentGlobal.rotation * sm::Vector3::Transform(m_trackReader.GetTranslation(boneIndex), parentGlobal.rotation);
+		keyGlobal.translation =
+			parentGlobal.translation +
+			sm::Vector3::Transform(m_trackReader.GetTranslation(boneIndex), parentGlobal.rotation);
 
 		// calculate global transform matrix
 		auto translationMatrix = sm::Matrix::CreateTranslation(keyGlobal.translation);
