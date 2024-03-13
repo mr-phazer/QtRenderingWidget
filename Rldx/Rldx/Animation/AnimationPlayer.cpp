@@ -1,4 +1,4 @@
-#include "AnimationManager.h"
+#include "AnimationPlayer.h"
 
 namespace skel_anim
 {
@@ -25,13 +25,19 @@ namespace skel_anim
 
 			keyGlobal.rotation = keyLocal.rotation * parentGlobal.rotation;
 
-			keyGlobal.translation = parentGlobal.rotation * sm::Vector3::Transform(keyLocal.translation, parentGlobal.rotation);
+			keyGlobal.translation =
+				parentGlobal.translation +
+				sm::Vector3::Transform(keyLocal.translation, parentGlobal.rotation);
 
+			// TODO: test that it is identical
+			auto debug_GlobalMatrix = keyGlobal.GetTransForm();
 			// calculate global transform matrix
 			auto translationMatrix = sm::Matrix::CreateTranslation(keyGlobal.translation);
 			auto rotationMatrix = sm::Matrix::CreateFromQuaternion(keyGlobal.rotation);
+			auto globalTransform = rotationMatrix * translationMatrix;
+
 			// add matrix to pose
-			destPoseMatrices[iBone] = (rotationMatrix * translationMatrix);
+			destPoseMatrices[iBone] = globalTransform;
 		};
 	}
 

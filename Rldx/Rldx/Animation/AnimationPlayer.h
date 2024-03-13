@@ -51,7 +51,7 @@ namespace skel_anim {
 
 	public:
 		AnimationPlayer() = default;
-		void LoadBindPose(const anim_file::AnimFile& animFile)
+		void CreateBindPose(const anim_file::AnimFile& animFile)
 		{
 			// TODO: put in error checking
 			m_skeleton.SetBoneTable(animFile);
