@@ -1,8 +1,8 @@
-﻿#include "DxCameraOrbital.h"
-#include "..\Managers\DxDeviceManager.h"
+﻿#include "..\Managers\DxDeviceManager.h"
+#include "DxCameraOrbital.h"
 
-#include <Vector>
 #include <cmath>
+#include <Vector>
 //#include "TextOutDebug.h"
 //#include "..\SystemLib\libtools.h"
 ////#include <boost/math/special_functions/relative_difference.hpp>
@@ -32,7 +32,7 @@ void DxCameraOrbital::SetWindow(int width, int height)
 }
 
 void DxCameraOrbital::SetLookAt(const sm::Vector3& pos)
-{	
+{
 	m_geometryData.v3LookAt = pos;
 }
 
@@ -64,7 +64,7 @@ void DxCameraOrbital::CalculateEyePosition_Trigonometric()
 	*/
 
 	auto y = -m_geometryData.fYaw;
-	auto p = -m_geometryData.fPitch;	
+	auto p = -m_geometryData.fPitch;
 	auto r = m_geometryData.fRadius;
 
 	auto& eye = m_geometryData.v3EyePosition; // for zoom/pan
@@ -80,7 +80,7 @@ void DxCameraOrbital::CalculateEyePosition_Trigonometric()
 
 void DxCameraOrbital::SetEyePosition(const sm::Vector3& position)
 {
-	/*---------------------------------------------	
+	/*---------------------------------------------
 	cartesian (x,y,z) to spherical (r, theta, phi):
 
 	r = sqrt(x^2 + y^2 + z^2)
@@ -89,12 +89,12 @@ void DxCameraOrbital::SetEyePosition(const sm::Vector3& position)
 
 	z / radius = cos(p) *sin(y)
 	------------------------------------------------*/
-	auto eye = (position) - m_geometryData.v3LookAt;	
+	auto eye = (position)-m_geometryData.v3LookAt;
 
 	m_geometryData.fRadius = (float)sqrt(eye.x * eye.x + eye.y * eye.y + eye.z * eye.z);
 	m_geometryData.fPitch = -asin(eye.y / m_geometryData.fRadius);
 	m_geometryData.fYaw = -atan2(eye.z, eye.x);
-		
+
 	// update stuff
 	CalculateEyePosition_Trigonometric();
 }
@@ -235,7 +235,7 @@ void rldx::DxCameraOrbital::RotateCamera()
 	rotateCamera_Yaw(m_vRotVelocity.x);
 	rotateCamera_Pitch(m_vRotVelocity.y);
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(m_geometryData.fPitch) + L", " + to_wstring(m_geometryData.fYaw) + L")");
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
 	// TODO: renabel
 	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")");
 }
@@ -251,7 +251,7 @@ void DxCameraOrbital::rotateCamera_Yaw(float angle)
 		m_geometryData.fYaw += angle;
 	}
 
-	
+
 
 	const auto fullCircle = 2.0f * DirectX::XM_PI;
 	m_geometryData.fYaw = fmodf(m_geometryData.fYaw, fullCircle);
@@ -275,7 +275,7 @@ void DxCameraOrbital::rotateCamera_Pitch(float angle)
 
 
 
-	const auto fullCircle = 2.0f * DirectX::XM_PI;	
+	const auto fullCircle = 2.0f * DirectX::XM_PI;
 	m_geometryData.fPitch = fmodf(m_geometryData.fPitch, fullCircle);
 	if (m_geometryData.fPitch < 0.0f) {
 		m_geometryData.fPitch = fullCircle + m_geometryData.fPitch;
@@ -470,7 +470,7 @@ void rldx::DxCameraOrbital::MoveFrame(float fElapsedTime)
 
 void rldx::DxCameraOrbital::MoveLookAt()
 {
-	MoveCameraRight(static_cast<float>(m_vMouseDelta.x) * m_fCameraLookAtMoveSpeed	);// *0.1f * m_zoom * 1.0f);
+	MoveCameraRight(static_cast<float>(m_vMouseDelta.x) * m_fCameraLookAtMoveSpeed);// *0.1f * m_zoom * 1.0f);
 	MoveCameraUp(static_cast<float>(m_vMouseDelta.y) * m_fCameraLookAtMoveSpeed);// *0.1f * m_zoom * 1.0f);		
 	// TODO: reablke
 	//TextOutDebug::AddFadingString("Look-At: (" + std::to_string(m_geometryData.v3LookAt.x) + ", " + std::to_string(m_geometryData.v3LookAt.x) + " )");
@@ -603,8 +603,8 @@ void rldx::DxCameraOrbital::MoveCameraRight(float amount)
 }
 
 void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor, const DirectX::SimpleMath::Vector2& screenDims,
-	DirectX::SimpleMath::Vector3& _ray,
-	DirectX::SimpleMath::Vector3& _origin
+									DirectX::SimpleMath::Vector3& _ray,
+									DirectX::SimpleMath::Vector3& _origin
 )
 {
 	//Normalized device coordinates
@@ -628,10 +628,10 @@ void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor
 	auto mouseNear = DirectX::XMVectorSet((float)ptCursor.x, (float)ptCursor.y, 0.0f, 0.0f);
 	auto mouseFar = DirectX::XMVectorSet((float)ptCursor.x, (float)ptCursor.y, 1.0f, 0.0f);
 	auto unprojectedNear = DirectX::XMVector3Unproject(mouseNear, 0, 0, screenDims.x, screenDims.y, 0.0f, 1.0f,
-		GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
+													   GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
 
 	auto unprojectedFar = DirectX::XMVector3Unproject(mouseFar, 0, 0, screenDims.x, screenDims.y, 0.0f, 1.0f,
-		GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
+													  GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
 
 	DirectX::XMVECTOR result = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(unprojectedFar, unprojectedNear));
 	DirectX::XMFLOAT3 direction;
@@ -659,77 +659,77 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 
 
-	case WM_RBUTTONDOWN:
+		case WM_RBUTTONDOWN:
 
-	case WM_MBUTTONDOWN:
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDBLCLK:
-	case WM_MBUTTONDBLCLK:
-	case WM_LBUTTONDBLCLK:
-	{
-
-		// Capture the mouse, so if the mouse button is
-		// released outside the window, we'll get the WM_LBUTTONUP message
-		SetCapture(hWnd);
-		GetCursorPos(&m_ptLastMousePosition);
-		//return TRUE;
-	}
-	break;
-
-
-	case WM_RBUTTONUP:
-	case WM_MBUTTONUP:
-	case WM_LBUTTONUP:
-	{
-		//// Update member var state
-		//if (uMsg == WM_LBUTTONUP)
-		//{
-		//	m_bMouseLButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
-		//}
-		//if (uMsg == WM_MBUTTONUP)
-		//{
-		//	m_bMouseMButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
-		//}
-		//if (uMsg == WM_RBUTTONUP)
-		//{
-		//	m_bMouseRButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
-		//}
-
-		// Release the capture if no mouse buttons down
-		if (!MOUSE_R_BUTTON_DOWN &&
-			!MOUSE_L_BUTTON_DOWN &&
-			!MOUSE_M_BUTTON_DOWN)
+		case WM_MBUTTONDOWN:
+		case WM_LBUTTONDOWN:
+		case WM_RBUTTONDBLCLK:
+		case WM_MBUTTONDBLCLK:
+		case WM_LBUTTONDBLCLK:
 		{
-			ReleaseCapture();
-			OnEnd();
 
+			// Capture the mouse, so if the mouse button is
+			// released outside the window, we'll get the WM_LBUTTONUP message
+			SetCapture(hWnd);
+			GetCursorPos(&m_ptLastMousePosition);
+			//return TRUE;
 		}
-	}
-
-	case WM_CAPTURECHANGED:
-	case WM_KILLFOCUS:
-	case WM_MOUSELEAVE:
-	{
-	/*	MOUSE_R_BUTTON_DOWN = false;
-		MOUSE_L_BUTTON_DOWN = false;
-		MOUSE_M_BUTTON_DOWN = false;
-		SHIFT_BUTTON_DOWN = false;
-		m_bDrag = false;
-		auto DEBUG_1 = 1;*/
+		break;
 
 
-		// Release the capture if no mouse buttons down
-		if (!MOUSE_R_BUTTON_DOWN &&
-			!MOUSE_L_BUTTON_DOWN &&
-			!MOUSE_M_BUTTON_DOWN)
+		case WM_RBUTTONUP:
+		case WM_MBUTTONUP:
+		case WM_LBUTTONUP:
 		{
-			ReleaseCapture();
-			OnEnd();
+			//// Update member var state
+			//if (uMsg == WM_LBUTTONUP)
+			//{
+			//	m_bMouseLButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
+			//}
+			//if (uMsg == WM_MBUTTONUP)
+			//{
+			//	m_bMouseMButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_MIDDLE_BUTTON;
+			//}
+			//if (uMsg == WM_RBUTTONUP)
+			//{
+			//	m_bMouseRButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_RIGHT_BUTTON;
+			//}
 
+			// Release the capture if no mouse buttons down
+			if (!MOUSE_R_BUTTON_DOWN &&
+				!MOUSE_L_BUTTON_DOWN &&
+				!MOUSE_M_BUTTON_DOWN)
+			{
+				ReleaseCapture();
+				OnEnd();
+
+			}
 		}
-	}
 
-	break;
+		case WM_CAPTURECHANGED:
+		case WM_KILLFOCUS:
+		case WM_MOUSELEAVE:
+		{
+			/*	MOUSE_R_BUTTON_DOWN = false;
+				MOUSE_L_BUTTON_DOWN = false;
+				MOUSE_M_BUTTON_DOWN = false;
+				SHIFT_BUTTON_DOWN = false;
+				m_bDrag = false;
+				auto DEBUG_1 = 1;*/
+
+
+				// Release the capture if no mouse buttons down
+			if (!MOUSE_R_BUTTON_DOWN &&
+				!MOUSE_L_BUTTON_DOWN &&
+				!MOUSE_M_BUTTON_DOWN)
+			{
+				ReleaseCapture();
+				OnEnd();
+
+			}
+		}
+
+		break;
 	}
 
 
@@ -737,8 +737,8 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 	{
 		switch (wParam)
 		{
-		case VK_SHIFT: SHIFT_BUTTON_DOWN = false;
-			break;
+			case VK_SHIFT: SHIFT_BUTTON_DOWN = false;
+				break;
 		}
 	};
 
@@ -760,38 +760,38 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			break;*/
 
 
-		case VK_HOME:
-			//m_v3LookAt = { 0, 0, 0 };
-			SetEyePosition(m_geometryData.v3EyePosition);
-			break;
+			case VK_HOME:
+				//m_v3LookAt = { 0, 0, 0 };
+				SetEyePosition(m_geometryData.v3EyePosition);
+				break;
 
-		case 'W':
-		case VK_PRIOR:
-			MoveCameraForward(m_fCameraMoveSpeed);
-			break;
+			case 'W':
+			case VK_PRIOR:
+				MoveCameraForward(m_fCameraMoveSpeed);
+				break;
 
-		case 'S':
-		case VK_NEXT:
-			MoveCameraForward(-m_fCameraMoveSpeed);
-			break;
+			case 'S':
+			case VK_NEXT:
+				MoveCameraForward(-m_fCameraMoveSpeed);
+				break;
 
-		case VK_SHIFT: SHIFT_BUTTON_DOWN = true;
-			break;
+			case VK_SHIFT: SHIFT_BUTTON_DOWN = true;
+				break;
 
-			//rotate with ARROW KEYS
-		case VK_LEFT:
-			rotateCamera_Yaw(-m_fCameraRotate);
-			break;
-		case VK_RIGHT:
-			rotateCamera_Yaw(m_fCameraRotate);
-			break;
+				//rotate with ARROW KEYS
+			case VK_LEFT:
+				rotateCamera_Yaw(-m_fCameraRotate);
+				break;
+			case VK_RIGHT:
+				rotateCamera_Yaw(m_fCameraRotate);
+				break;
 
-		case VK_UP:
-			rotateCamera_Pitch(-m_fCameraRotate);
-			break;
-		case VK_DOWN:
-			rotateCamera_Pitch(m_fCameraRotate);
-			break;
+			case VK_UP:
+				rotateCamera_Pitch(-m_fCameraRotate);
+				break;
+			case VK_DOWN:
+				rotateCamera_Pitch(m_fCameraRotate);
+				break;
 		}
 	};
 
@@ -873,9 +873,9 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 
 	if (uMsg == WM_KILLFOCUS)
 	{
-		MOUSE_M_BUTTON_DOWN = false;		
+		MOUSE_M_BUTTON_DOWN = false;
 		ReleaseCapture();
-		OnEnd();		
+		OnEnd();
 
 		return TRUE;
 	}

@@ -49,7 +49,7 @@ inline wchar_t wchar_tolower(wchar_t ch)
 inline std::string toUpper(std::string s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-		[](unsigned char c) { return std::toupper(c); } // correct
+				   [](unsigned char c) { return std::toupper(c); } // correct
 	);
 
 	return s;
@@ -58,7 +58,7 @@ inline std::string toUpper(std::string s)
 inline std::wstring toUpper(std::wstring s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-		[](wchar_t c) { return std::towupper(c); } // correct
+				   [](wchar_t c) { return std::towupper(c); } // correct
 	);
 
 	return s;
@@ -67,7 +67,7 @@ inline std::wstring toUpper(std::wstring s)
 inline std::string toLower(std::string s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-		[](unsigned char c) { return char_tolower(c); } // correct
+				   [](unsigned char c) { return char_tolower(c); } // correct
 	);
 
 	return s;
@@ -76,7 +76,7 @@ inline std::string toLower(std::string s)
 inline std::wstring toLower(std::wstring s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-		[](wchar_t c) { return std::towlower(c); } // correct
+				   [](wchar_t c) { return std::towlower(c); } // correct
 	);
 
 	return s;
@@ -221,6 +221,9 @@ static float asin_f(float x)
 
 namespace libtools
 {
+	constexpr float ToDegrees(float radians) { return radians * (180.0f / DirectX::XM_PI); }
+	constexpr float ToRadians(float degrees) { return degrees * (DirectX::XM_PI / 180.0f); }
+
 
 	/// <summary>
 	/// Return true at a certain pronanality
@@ -750,11 +753,11 @@ namespace guard
 
 	template <typename CONST_BUF_DATA_TYPE>
 	static void ThrowIfOutOfBounds(const std::vector<CONST_BUF_DATA_TYPE>& inVector, size_t index,
-		const std::string& strWhat = ""
-		/*const std::string& a_callerFunc = __FUNCTION__,
-		const std::string& a_fileName = __FILE__,
-		const std::string& a_lineNumber = std::to_string(__LINE__)
-		*/
+								   const std::string& strWhat = ""
+								   /*const std::string& a_callerFunc = __FUNCTION__,
+								   const std::string& a_fileName = __FILE__,
+								   const std::string& a_lineNumber = std::to_string(__LINE__)
+								   */
 
 	)
 	{
