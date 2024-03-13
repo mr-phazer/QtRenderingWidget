@@ -1,19 +1,16 @@
 #pragma once
 
-
-
 #include "QtCore/qbytearray.h"
-#include "QtCore/qstring.h"
 #include "QtCore/qlist.h"
-
+#include "QtCore/qstring.h"
 
 /// <summary>
-/// Callback function, for the Rendering Engine to call when it needs to load an asset
+/// Callback function, for asset loading
 /// </summary>
-/// <param name="missingFile"></param>
-/// <param name="suppliedFiles"></param>
-/// <returns>Number of files found and loade, 0 = error/Maybe negative values for error code</returns>
-//typedef int (*AssetFetchCallBack) (void* thisPtr, QVector<QString>* missingFile, QVector<QByteArray>* suppliedFiles);
-
+/// <param name="missingFiles">
+/// List of files, or paths paths formated "somefolder/folder/" with terminating "/" </param>
+/// <param name="outBinFiles">
+/// all the files found, as binary pointers 
+/// </param>
+/// <returns></returns>
 typedef void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
-
