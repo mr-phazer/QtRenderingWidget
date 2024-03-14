@@ -7,7 +7,7 @@
 
 namespace rldx {
 
-	
+
 
 	struct VS_MeshConstantBuffer
 	{
@@ -25,7 +25,7 @@ namespace rldx {
 		DirectX::XMFLOAT4X4 inverse[256] = {  };
 	};
 
-	struct PS_MeshConstantBuffer
+	struct PS_PerMesh_ConstBuffer
 	{
 		float reflectivity = 1.0;
 		float ambientLight = 1.0;
@@ -34,7 +34,7 @@ namespace rldx {
 
 		uint32_t bDoFactionColoring = 1;
 		uint32_t bDoTinting = 1;
-		uint32_t alpha_used = 0;
+		uint32_t alpha_used = 1; // default at ON
 		uint32_t mask_index = 0;
 
 		float decal_u = 1.0;
@@ -62,7 +62,7 @@ namespace rldx {
 	struct VS_PerScene_ConstantBuffer
 	{
 		// TODO: maybe move into camera struct?
-		DirectX::XMFLOAT3 eyePosition = { 0.f ,0.f, 0.f  };
+		DirectX::XMFLOAT3 eyePosition = { 0.f ,0.f, 0.f };
 		uint32_t reserved1 = 0;
 
 		float3 eyeDirection;
