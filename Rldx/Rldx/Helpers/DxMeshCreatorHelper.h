@@ -1,16 +1,18 @@
 #pragma once
 
-#include "..\..\..\ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h"
-#include "..\..\..\ImportExport\GeneralTypes\Animation\AnimationManager.h"
-#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-#include "..\..\ImportExport\GeneralTypes\Animation\Skeleton.h"
-
 #include <vector>
+#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
+#include "..\..\Rldx\Animation\Skeleton.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\DataTypes\DxMeshData.h"
 
+
+
 namespace rldx
 {
+	// TODO: remove?
+		//extern TRawMeshData<DirectX::XMFLOAT3, uint32_t> cubeMeshDat;
+
 	class DxMeshCreatorHelper
 	{
 	public:
@@ -22,29 +24,28 @@ namespace rldx
 	class DxSkeletonMeshCreator
 	{
 	public:
-		DxCommonMeshData Create(ID3D11Device* poDevice, const skel_anim::Skeleton& animFileSkeleton)
+		static DxCommonMeshData Create(ID3D11Device* poDevice, const skel_anim::Skeleton& animFileSkeleton)
 		{
-
-
 			std::vector<uint32_t> indices;
 			std::vector<CommonVertex> vertices;
+
 			FillLineIndices(animFileSkeleton, indices);
 			FillLineVertices(animFileSkeleton, vertices);
 
-
+			FillCubeIndices(animFileSkeleton, indices);
+			FillCubeVertices(animFileSkeleton, vertices);
 
 			auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
-			auto result = meshCreator.CreateDxMeshRenderData(poDevice, vertices, indices);
+			auto newMesh = meshCreator.CreateDxMeshRenderData(poDevice, vertices, indices);
 
-			result.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+			// # set to line-rendering
+			newMesh.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 
-			return result;
-
-			//TODO: remove to set mesh to "line list" (should it be called "mesh" then?, maybe rename to "CommonPrimitive"?)
+			return newMesh;
 		}
 
 	private:
-		void FillLineIndices(const skel_anim::Skeleton& skeleton, std::vector<uint32_t>& indices)
+		static void FillLineIndices(const skel_anim::Skeleton& skeleton, std::vector<uint32_t>& indices)
 		{
 			auto index = 0;
 			for (const auto& itBone : skeleton.boneTable)
@@ -54,35 +55,91 @@ namespace rldx
 				indices.push_back(index++);
 			}
 		}
-
-		void FillLineVertices(const skel_anim::Skeleton& skeleton, std::vector<CommonVertex>& vertices)
+		static void FillLineVertices(const skel_anim::Skeleton& skeleton, std::vector<CommonVertex>& vertices)
 		{
-
 			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
 			{
-				auto childPosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[boneIndex]);
-				sm::Vector3 parentPosition = { 0,0,0 };
+				// transformMatrix
+				auto bonePosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[boneIndex]);
+
+				// TODO: REMOVE: testing if 4d transformMatrix give the same value
+				// TODO: EDIT: It does ONLY, if w = 1.0
+				auto test4d_bonePosition2 = sm::Vector4::Transform({ 0,0,0,1 }, skeleton.bindposeMatrices[boneIndex]);
+
+				sm::Vector3 parentBonePosition = { 0,0,0 };
 
 				CommonVertex parentVertex;
 				parentVertex.boneIndices = { 0, 0,0,0 };
+
 				CommonVertex childVertex;
 
 				if (skeleton.boneTable[boneIndex].parentIndex != -1)
 				{
-					parentPosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[skeleton.boneTable[boneIndex].parentIndex]);
+					parentBonePosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[skeleton.boneTable[boneIndex].parentIndex]);
 					parentVertex.boneIndices = { static_cast<uint32_t>(skeleton.boneTable[boneIndex].parentIndex),0,0,0 };
 				}
 
-				childVertex.position = { childPosition.x, childPosition.y, childPosition.z, 0 };
+				childVertex.position = { bonePosition.x, bonePosition.y, bonePosition.z, 0 };
 				childVertex.weights = { 1,0,0,0 };
 				childVertex.boneIndices = { boneIndex,0,0,0 };
+				childVertex.color = { 1,1,1,1 };
 				vertices.push_back(childVertex);
 
-				parentVertex.position = { childPosition.x, childPosition.y, childPosition.z, 0 };
+				parentVertex.position = { parentBonePosition.x, parentBonePosition.y, parentBonePosition.z, 0 };
 				parentVertex.weights = { 1,0,0,0 };
+				parentVertex.color = { 0.4f,0.4f,0.4f,1 };
 				vertices.push_back(parentVertex);
 
 			};
 		};
+
+		static void FillCubeVertices(const skel_anim::Skeleton& skeleton, std::vector<CommonVertex>& vertices)
+		{
+			float DEBUG_offset = 0.0f;
+
+			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
+			{
+				AddCube(skeleton.bindposeMatrices[boneIndex], vertices);
+			}
+		}
+
+		static void FillCubeIndices(const skel_anim::Skeleton& skeleton, std::vector<uint32_t>& indices)
+		{
+			uint32_t startOffset = static_cast<uint32_t>(indices.size());
+
+			uint32_t vertexOffset = 0;
+
+			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
+			{
+				for (auto& itCubeIndex : sm_cubeMeshData.indices)
+				{
+					indices.push_back(itCubeIndex + startOffset + vertexOffset);
+				}
+
+				vertexOffset += static_cast<uint32_t>(sm_cubeMeshData.vertices.size());
+			}
+		};
+
+		static void AddCube(const sm::Matrix& transformMatrix, std::vector<CommonVertex>& vertices)
+		{
+			const auto cubeScaleFactor = 1 / 70.0f;
+
+			for (auto& itCubeVertex : sm_cubeMeshData.vertices)
+			{
+				CommonVertex newVertex;
+				newVertex.color = { 0.5f,0.5f,1,1 };
+
+				auto position =
+					sm::Vector3::Transform(
+						sm::Vector3(itCubeVertex.x, itCubeVertex.y, itCubeVertex.z) * cubeScaleFactor,
+						transformMatrix);
+
+				newVertex.position = sm::Vector4(position.x, position.y, position.z, 1);
+
+				vertices.push_back(newVertex);
+			}
+		}
+
+		static TRawMeshData<DirectX::XMFLOAT3, uint32_t> sm_cubeMeshData;
 	};
 }
