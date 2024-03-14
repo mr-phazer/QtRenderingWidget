@@ -1451,7 +1451,7 @@ float3 standard_lighting_model_directional_light(in float3 LightColor, in float3
 
 void alpha_test(in const float pixel_alpha)
 {
-    //if (i_alpha_mode == 1)
+    if (alpha_used == 1)
     {
         clip(pixel_alpha - texture_alpha_ref);
     }

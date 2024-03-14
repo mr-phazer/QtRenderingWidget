@@ -1648,17 +1648,16 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
     alpha_test(diffuse_colour.a);
     
     diffuse_colour.rgb = _linear(diffuse_colour.rgb);
-
     
 
-    eye_vector = -normalize(input.eyePos - input.Wpos.xyz);    
+    eye_vector = -normalize(input.viewDirection);    
     light_vector = -normalize(lightData[0].lightDirection);
 
     specular_colour = shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy);
     specular_colour.rgb = _linear(specular_colour.rgb);
 
 	//	This value should be in gamma space...
-    smoothness = (shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).r);
+    smoothness = _linear(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).r);
     smoothness = (smoothness); // added by PHAZER, as smooth is so high that specular highlight are so small they are almost invisible   
     //_gamma(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).a);
 

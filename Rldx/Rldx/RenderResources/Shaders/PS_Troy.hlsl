@@ -69,9 +69,8 @@ float4 main(in PixelInputType input) : SV_TARGET
 
 
     float3 hdr_linear_col = standard_lighting_model_directional_light(
-
         lightData[0].radiance * lightData[0].color.rgb,
-        -light_vector,
+        light_vector,
         eye_vector,
         standard_mat
     );
