@@ -8,6 +8,7 @@
 #include "..\..\Rendering\DxShaderProgram.h"
 #include "DxMeshNode.h"
 
+
 namespace rldx
 {
 	class DxDeformerNode : public DxMeshNode

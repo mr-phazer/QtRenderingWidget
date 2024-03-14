@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DxMeshNode.h"
 #include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
 #include "..\..\ImportExport\FileFormats\WsModel\DataTypes\WsModelData.h"
+#include "DxMeshNode.h"
 
 namespace rldx
 {
@@ -20,7 +20,7 @@ namespace rldx
 		using SharedPtr = std::shared_ptr<DxModelNode>;
 
 	public:
-		void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
+		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
 
 		// TODO add support for (parsed) WSMODEL

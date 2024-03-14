@@ -10,7 +10,7 @@
 namespace rldx {
 
 	// forward decl	
-	class DxMeshRenderData;
+	struct DxMeshRenderData;
 	class DxMeshShaderProgram;
 
 
@@ -31,8 +31,8 @@ namespace rldx {
 
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 
-		SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
-		std::wstring GetTypeString() const override { return L"DxMeshNode"; };
+		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
+		virtual std::wstring GetTypeString() const override { return L"DxMeshNode"; };
 
 	};
 };

@@ -10,92 +10,37 @@
 
 namespace rldx {
 
-	class DxMeshRenderBucket : public IRenderBucket
-	{
-		std::vector<IRenderQueueItem*> m_renderItems;
-
-
-	public:
-		virtual void AddItem(IRenderQueueItem* renderItem) override { m_renderItems.push_back(renderItem); };
-
-		virtual void ClearItems() override { m_renderItems.clear(); };
-
-		void Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram = nullptr)
-		{
-			for (auto& itItem : m_renderItems)
-			{
-				// ready shader program
-				itItem->BindToDC(poDC);
-
-				// draw mesh
-				itItem->Draw(poDC);
-
-				itItem->UnbindFromDC(poDC);
-			};
-
-			// -- clear queue after each full draw
-			ClearItems();
-		}
-	};
-
 	class DxSceneGraph
 	{
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 		DxBaseNode::SharedPtr m_rootNode = DxBaseNode::Create(L"RootNode");
 
+		std::vector<DxBaseNode*> nodeLookUptable;
+
 	public:
-		DxBaseNode* GetRootNode()
-		{
-			return m_rootNode.get();
-		}
+		DxBaseNode* GetRootNode() const;
 
 		/// <summary>
 		/// Get a bounding box that is precisely big enough to contain all the meshes in the in the scene graph
 		/// </summary>
 		/// <returns></returns>
-		DirectX::BoundingBox GetRootBoundBox()
-		{
-			UpdateBoundBoxRecursive(GetRootNode());
+		DirectX::BoundingBox GetRootBoundBox();
 
-			return m_SceneBoundBox;
-		}
+		void UpdateNodes(float timeElapsed);
 
-		void UpdateNodes(DxBaseNode* pRootNode, float timeElapsed)
-		{
-			pRootNode->Update(timeElapsed);
+		/// <summary>
+		/// Fetches all "
+		/// </summary>
+		/// <param name="pDestRenderBucket"></param>
+		void FillRenderBucket(IRenderBucket* pDestRenderBucket);
 
-			for (auto& itChildNode : pRootNode->GetChildren())
-			{
-				UpdateNodes(itChildNode.get(), timeElapsed);
-			};
-		}
-
-		void FillRenderBucket(DxBaseNode* pNode, IRenderBucket* pDestRenderQueue)
-		{
-			pNode->FlushToRenderBucket(pDestRenderQueue);
-
-			for (auto& itChildNode : pNode->GetChildren())
-			{
-				FillRenderBucket(itChildNode.get(), pDestRenderQueue);
-			};
-		}
+		void AddNodeToLinearIndexTable(DxBaseNode* node);
 
 	private:
-		void UpdateBoundBoxRecursive(DxBaseNode* node)
-		{
-
-			for (auto& itChildeNode : node->GetChildren())
-			{
-				UpdateBoundBoxRecursive(itChildeNode.get());
-			}
-
-			// Model's BoundBox has to contain all the mesh bound boxes:
-			DirectX::BoundingBox::CreateMerged(
-				m_SceneBoundBox,
-				m_SceneBoundBox,
-				node->GetNodeBoundingBox());
-		}
+		void FillRenderBucketRecursive(DxBaseNode* pNode, IRenderBucket* pDestRenderQueue);
+		void UpdateNodesRecursive(DxBaseNode* pRootNode, float timeElapsed);
+		void UpdateBoundBoxRecursive(DxBaseNode* node);
 	};
 
 } // namespace rldx
