@@ -1,7 +1,24 @@
+#include "..\Rendering/DxMesh.h"
+#include "..\SceneGraph\SceneNodes\DxDeformerNode.h"
 #include "DxMeshRenderData.h"
 
-#include "..\Rendering/DxMesh.h"
 
+void rldx::DxMeshRenderData::Update(float time)
+{
+	// TODO: 
+	/*
+		if (deformernode)
+		{
+			- get derformer matrices,
+			- send to gpu
+			or if (attach)
+			- set global bone matrix N as world matrix
+
+
+		}
+
+	*/
+}
 
 void rldx::DxMeshRenderData::Draw(ID3D11DeviceContext* pDeviceContext)
 {

@@ -16,6 +16,7 @@
 #include "DxAmbientLightSource.h"
 #include "DxCameraOrbital.h"
 #include "DxConstBuffer.h"
+#include "DxMeshRenderBucket.h"
 #include "DXSwapChain.h"
 #include "DxTextureSamplers.h"
 
@@ -23,6 +24,10 @@
 
 #include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
+// # forward decl
+namespace rldx {
+	class DxMeshRenderBucket;
+}
 namespace rldx {
 
 	enum PS_ConstBufferSlots : UINT
@@ -38,6 +43,8 @@ namespace rldx {
 
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, public IResizable, public IDrawable, public IUpdateable, public IBindable
 	{
+		friend class DxSceneGraph;
+
 	public:
 		friend class IDxSceneBuilder;
 
@@ -59,7 +66,7 @@ namespace rldx {
 		virtual void Update(float timeElapsed) override;
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
 
-		DxBaseNode* GetRootNode();
+		DxBaseNode* GetSceneRootNode() const;
 
 		DirectX::BoundingBox GetRootBoundBox() { return m_sceneGraph.GetRootBoundBox(); }
 
@@ -88,8 +95,13 @@ namespace rldx {
 		}
 
 		DxCameraOrbital& GetCamera() { return m_globalCamera; };
+		DxSceneGraph& GetSceneGraph() { return m_sceneGraph; };
+
+
 
 	private:
+		void StoreNode(DxBaseNode* node);
+
 		void UpdateViewAndPerspective();
 
 		// TODO: remove?
@@ -139,6 +151,4 @@ namespace rldx {
 		bool m_bCtrlDown = false; // TODO: should not be here, a more formal "input handler" is needed
 		bool m_bAltDown = false; // TODO: should not be here, a more formal "input handler" is needed
 	};
-
-
 };

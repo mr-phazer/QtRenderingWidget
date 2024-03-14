@@ -1,11 +1,10 @@
 #include "DxScene.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
-
-#include "..\Managers\DxDeviceManager.h"
-
 #include "..\Creators\DxMeshCreator.h"
+#include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
+#include "DxMeshRenderBucket.h"
 
 using namespace rldx;
 
@@ -34,7 +33,7 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	poDeviceContext->RSSetState(m_upoCommonStates->CullNone());
 
 	//  fetch mesh nodes from scenegraph
-	m_sceneGraph.FillRenderBucket(GetRootNode(), &m_renderQueue);
+	m_sceneGraph.FillRenderBucket(&m_renderQueue);
 
 	// -- update + set scene (per frame) constant buffer	
 	BindToDC(poDeviceContext);
@@ -45,7 +44,7 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 }
 
 
-DxBaseNode* rldx::DxScene::GetRootNode()
+DxBaseNode* rldx::DxScene::GetSceneRootNode() const
 {
 	return m_sceneGraph.GetRootNode();
 }
@@ -53,7 +52,7 @@ DxBaseNode* rldx::DxScene::GetRootNode()
 // TODO: test this
 void rldx::DxScene::DeleteNode(DxBaseNode* node)
 {
-	auto nodeResult = DxBaseNode::FindChild(node, GetRootNode());
+	auto nodeResult = DxBaseNode::FindChild(node, GetSceneRootNode());
 
 	if (!nodeResult) {
 		return;
@@ -113,12 +112,11 @@ LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, 
 void rldx::DxScene::Update(float timeElapsed)
 {
 	UpdateViewAndPerspective();
-	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
 
 	m_globalCamera.MoveFrame(timeElapsed);
 	m_globalDirectionalLight.MoveFrame(timeElapsed);
 
-	m_sceneGraph.UpdateNodes(GetRootNode(), timeElapsed);
+	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
 void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
@@ -158,6 +156,11 @@ void rldx::DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDevice
 {
 	m_spoSwapChain->Resize(poDevice, poDeviceContext, width, height);
 	m_globalCamera.SetWindow(width, height);
+}
+
+void rldx::DxScene::StoreNode(DxBaseNode* node)
+{
+	m_sceneGraph.AddNodeToLinearIndexTable(node);
 }
 
 void rldx::DxScene::UpdateViewAndPerspective()
@@ -248,4 +251,6 @@ inline void rldx::DxScene::DEBUGGING_SetViewAndPerspective()
 		)
 	);
 }
+
+
 

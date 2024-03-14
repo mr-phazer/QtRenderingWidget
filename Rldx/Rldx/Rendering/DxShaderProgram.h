@@ -169,12 +169,12 @@ namespace rldx {
 
 	};
 
-	class DxMeshShaderProgram : public TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>
+	class DxMeshShaderProgram : public TDxShaderProgram<VS_MeshConstantBuffer, PS_PerMesh_ConstBuffer>
 	{
 	public:
 		/*virtual void Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{
-			auto newInstance = TDxShaderProgram<VS_MeshConstantBuffer, PS_MeshConstantBuffer>::Create(poDevice, vertexShaderPath, pixelShaderPath);
+			auto newInstance = TDxShaderProgram<VS_MeshConstantBuffer, PS_PerMesh_ConstBuffer>::Create(poDevice, vertexShaderPath, pixelShaderPath);
 
 			auto result = rldx::DxResourceManager::GetInstance()->GetShaderManager()->AddResource(newInstance, "shader01");
 
