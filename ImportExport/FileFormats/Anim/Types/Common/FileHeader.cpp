@@ -1,6 +1,6 @@
 #include "FileHeader.h"
 
-inline bool anim_file::AnimHeaderCommon::IsContentValid()
+bool anim_file::AnimHeaderCommon::IsContentValid()
 {
 	if (
 		dwVersion > 8 ||
