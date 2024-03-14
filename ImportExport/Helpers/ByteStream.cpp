@@ -18,6 +18,14 @@ ByteStream::ByteStream(const ByteVector& input)
 
 ByteStream::ByteStream(void* pMem, size_t sizeInBytes, const std::wstring fileName)
 {
+	if (sizeInBytes == 0) {
+		throw std::exception("ERROR: ByteStream(): sizeInByte == 0!");
+	}
+
+	if (pMem == nullptr) {
+		throw std::exception("ERROR: ByteStream(): pMem == null!");
+	}
+
 	m_data.resize(sizeInBytes);
 	memcpy(m_data.data(), pMem, sizeInBytes);
 	m_currentFilePath = fileName;
