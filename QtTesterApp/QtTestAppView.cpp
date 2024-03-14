@@ -9,10 +9,13 @@
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
-
-#include <GeneralTypes\Animation\AnimationManager.h>
+#include "..\..\Rldx\Rldx\Animation\AnimationPlayer.h"
 #include "..\ImportExport\FileFormats\Anim\Reader\TwAnimReader.h"
 #include "..\Rldx\Rldx\Managers\DxDeviceManager.h"
+
+#pragma region TestData
+
+
 
 /// <summary>
 /// Debugging data struct, made to unclutter the code
@@ -88,6 +91,13 @@ TestData testData_WH3_Terrain_Made_To_Crash2 =
 	LR"(I:/Modding/WH3/terrain/tiles/battle/dar_river/wh3_main_macro_dar_river_01/tile_12/river_mesh.wsmodel.rigid_model_v2)"
 };
 
+TestData testData_WH2_Knight_VMD =
+{
+	LR"(K:\Modding\WH2\)",
+	game_id_keys::KEY_WARHAMMER_2,
+	LR"(K:\Modding\WH2\variantmeshes\variantmeshdefinitions\brt_knights_of_the_realm.variantmeshdefinition)"
+};
+
 TestData testData_Rome2_Armor =
 {
 	LR"(I:\Modding\Rome2\)",
@@ -129,7 +139,7 @@ TestData testData_WH3__chs_knights___VMD
 	game_id_keys::KEY_WARHAMMER_3,
 	LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\chs_knights.variantmeshdefinition)"
 };
-
+#pragma endregion
 
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
@@ -155,25 +165,11 @@ void QtMainWindowView::InitRenderView_DEBUG()
 
 	ByteStream::SetSearchFolder(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\)");
 
-	//ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\battle\bigcat01\stand\bc1_stand_01.anim)");
-	ByteStream bytesForAnim(LR"(K:\Modding\WH2\animations\skeletons\humanoid01.anim)");
-	anim_file::TwAnimFileReader animFileReader;
-	auto animFile = animFileReader.Read(bytesForAnim);
-
-	skel_anim::AnimationManager animationManager;
-	animationManager.LoadBindPose(animFile);
-
-
-
-	rldx::DxSkeletonMeshCreator skeletonCreator;
-	skeletonCreator.Create(rldx::DxDeviceManager::Device(), animationManager.GetSkeleton());
-
-
 
 #endif	
 
 
-	auto ptestData = &testData_WH3__chs_knights___VMD;
+	auto ptestData = &testData_WH2_Knight_VMD;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdWString(ptestData->gameId);

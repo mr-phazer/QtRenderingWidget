@@ -105,13 +105,13 @@ namespace rldx {
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
 			QList<QByteArray> destBinaries;
 
-			if (libtools::IsDiskFile(fileName))
+			if (libtools::IsDiskFile(fileName)) // fetch from disk
 			{
 				ByteStream diskBytes(fileName);
 				return diskBytes;
 			}
 
-			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries);
+			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
 
 			if (destBinaries.size() != 1)
 			{

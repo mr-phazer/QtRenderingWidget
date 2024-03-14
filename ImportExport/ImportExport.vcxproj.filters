@@ -123,9 +123,6 @@
     <ClInclude Include="Helpers\TTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\Skeleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileFormats\Anim\Types\Common\FileHeader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -133,9 +130,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\AnimationManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h">
@@ -159,16 +153,7 @@
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\AnimFrameCommon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\AnimTrackReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\SkeletonCreator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeneralTypes\Animation\FramePoseGenerator.h">
+    <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -221,19 +206,13 @@
     <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneralTypes\Animation\AnimationManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneralTypes\Animation\Skeleton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneralTypes\Animation\FramePoseGenerator.cpp">
+    <ClCompile Include="FileFormats\Anim\Types\Common\FileHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

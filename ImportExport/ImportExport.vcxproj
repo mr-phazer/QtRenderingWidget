@@ -153,7 +153,7 @@
   <ItemGroup>
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h" />
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h" />
-    <ClInclude Include="GeneralTypes\Animation\AnimFrameCommon.h" />
+    <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\FileHeader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\BoneTable.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\FrameHeaders.h" />
@@ -162,11 +162,6 @@
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h" />
-    <ClInclude Include="GeneralTypes\Animation\AnimTrackReader.h" />
-    <ClInclude Include="GeneralTypes\Animation\FramePoseGenerator.h" />
-    <ClInclude Include="GeneralTypes\Animation\Skeleton.h" />
-    <ClInclude Include="GeneralTypes\Animation\AnimationManager.h" />
-    <ClInclude Include="GeneralTypes\Animation\SkeletonCreator.h" />
     <ClInclude Include="Helpers\DataConversion.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
     <ClInclude Include="Helpers\TTree.h" />
@@ -208,10 +203,8 @@
     <ClCompile Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.cpp" />
     <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp" />
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp" />
+    <ClCompile Include="FileFormats\Anim\Types\Common\FileHeader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp" />
-    <ClCompile Include="GeneralTypes\Animation\FramePoseGenerator.cpp" />
-    <ClCompile Include="GeneralTypes\Animation\Skeleton.cpp" />
-    <ClCompile Include="GeneralTypes\Animation\AnimationManager.cpp" />
     <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />

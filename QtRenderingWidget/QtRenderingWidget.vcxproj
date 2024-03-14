@@ -76,6 +76,8 @@
       <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName>c:\temp\</XMLDocumentationFileName>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -95,6 +97,8 @@
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+      <XMLDocumentationFileName>c:\temp\</XMLDocumentationFileName>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>

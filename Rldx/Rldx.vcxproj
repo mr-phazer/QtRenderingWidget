@@ -19,8 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Animation\AnimationPlayer.cpp" />
+    <ClCompile Include="Rldx\Animation\FramePoseGenerator.cpp" />
+    <ClCompile Include="Rldx\Animation\Skeleton.cpp" />
+    <ClCompile Include="Rldx\Rendering\DxMeshRenderBucket.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
+    <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
+    <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
+    <ClInclude Include="Rldx\Animation\FramePoseGenerator.h" />
+    <ClInclude Include="Rldx\Animation\Skeleton.h" />
+    <ClInclude Include="Rldx\Animation\SkeletonCreator.h" />
+    <ClInclude Include="Rldx\Rendering\DxMeshRenderBucket.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.h" />
     <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
     <ClInclude Include="Rldx\Helpers\DxMeshCreatorHelper.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
