@@ -1,17 +1,12 @@
 #pragma once
 
+#include <Timer\SystemClockChecker.h>
+#include "..\\Rendering\DxConstBuffer.h"
 #include "AnimTrackReader.h"
 #include "FramePoseGenerator.h"
 #include "Skeleton.h"
 
 namespace skel_anim {
-
-	// class AnimationClipManager
-	//{
-	//	anim_file::AnimFile m_animFile;
-	//	FrameGenerator m_framGemmerator
-
-	//};
 
 	class FrameInterPolator
 	{
@@ -34,34 +29,29 @@ namespace skel_anim {
 									  std::vector<sm::Matrix> destPoseMatrices);
 	};
 
-	struct SpliceAnimation
-	{
-		SkeletonAnimationClip m_clip;
-		std::vector<bool> spliceMask;
-	};
-
 	class AnimationPlayer
 	{
+		timer::SystemClockChecker m_timer;
 		Skeleton m_skeleton;
-		SkeletonAnimationClip m_mainClip;
-		std::vector<SpliceAnimation> m_spliceClips;
+		SkeletonAnimation m_animation;
 		std::vector<sm::Matrix> m_framePoseMatrices;
 
-		FramePoseMatrixGenerator m_framePoseGenerator;
+		std::unique_ptr<FramePoseGeneratorAbstract> m_framePoseGenerator = std::make_unique<FramePoseGenerator_PerTrackInterpolation>();
 
 	public:
-		AnimationPlayer() = default;
 		void CreateBindPose(const anim_file::AnimFile& animFile)
 		{
 			// TODO: put in error checking
 			m_skeleton.SetBoneTable(animFile);
-			auto bindPoseClip = SkeletonAnimationClip::CreateFromAnimFile(animFile);
-			m_skeleton.bindPose = bindPoseClip.frames[0]; // TODO: is this field needed
-			m_framePoseGenerator.SetSkeleton(&m_skeleton);
-			m_framePoseGenerator.SetAnimCLip(&bindPoseClip);
+			m_animation = SkeletonAnimation::CreateFromAnimFile(animFile);
+
+			m_skeleton.bindPose = m_animation.frameData.frames[0]; // TODO: is this field needed
+
+			m_framePoseGenerator->SetSkeleton(&m_skeleton);
+			m_framePoseGenerator->SetAnimClip(&m_animation);
 
 			// make bindpose matrices
-			m_skeleton.bindposeMatrices = m_framePoseGenerator.GenerateFramePoseMatrices();
+			m_skeleton.bindposeMatrices = m_framePoseGenerator->GenerateFramePoseMatrices();
 
 			// make inverse bindpose matrices
 			m_skeleton.inverseBindPoseMatrices.resize(m_skeleton.bindposeMatrices.size());
@@ -72,14 +62,31 @@ namespace skel_anim {
 			}
 		}
 
-		void Update(float time)
+		void SetAnimation(const anim_file::AnimFile& animFile)
 		{
-			m_framePoseMatrices = m_framePoseGenerator.GenerateFramePoseMatrices();
+			m_animation = SkeletonAnimation::CreateFromAnimFile(animFile);
+			m_framePoseGenerator->SetAnimClip(&m_animation);
 		}
 
-		std::vector<sm::Matrix> GetFramPoseMatrice(float time)
+		void Update(float time)
+		{
+			if (m_skeleton.bindposeMatrices.empty()) {
+				return;
+			}
+
+			// TODO: use the input time value? Some "global" time management needed ?
+			// TODO: CHANGFE BACK ONCE WORKS
+			m_framePoseMatrices = m_framePoseGenerator->GenerateFramePoseMatrices(time);
+		}
+
+		const std::vector<sm::Matrix>& GetFramPoseMatrices()
 		{
 			return m_framePoseMatrices;
+		}
+
+		const std::vector<sm::Matrix>& GetInverseBindPoseMatrices() const
+		{
+			return m_skeleton.inverseBindPoseMatrices;
 		}
 
 		const Skeleton& GetSkeleton()

@@ -2,14 +2,17 @@
 
 #include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <SimpleMath.h>
+#include <Timer\SystemClockChecker.h>
 #include <vector>
+#include "..\Tools\tools.h"
+
 
 namespace skel_anim
 {
 	using FramePoseMatrices = std::vector<sm::Matrix>;
 
 	/// <summary>
-	/// All the transform info is in the same key, as the TW anim format works that way
+	/// All the boneTransform info is in the same key, as the TW anim format works that way
 	/// </summary>
 	struct SimpleBoneKey
 	{
@@ -29,6 +32,9 @@ namespace skel_anim
 		sm::Matrix GetTransForm() const;
 	};
 
+	/// <summary>
+	/// Used to define the parent-child hierachy of a skeleton
+	/// </summary>
 	struct SkeletonBoneNode
 	{
 		std::string name = "";
@@ -41,12 +47,12 @@ namespace skel_anim
 	/// </summary>
 	struct SkeletonKeyFrame
 	{
+		std::vector<SimpleBoneKey> boneKeys;
+
 		static SkeletonKeyFrame CreateFromCommonFrame(const anim_file::AnimFrameCommon& input);
 
 		SkeletonKeyFrame() = default;
 		SkeletonKeyFrame(size_t boneCount) : boneKeys(boneCount) {}
-
-		std::vector<SimpleBoneKey> boneKeys;
 	};
 
 	/// <summary>
@@ -84,25 +90,46 @@ namespace skel_anim
 	};
 
 
-	struct SkeletonAnimationClip
+	struct SkeletonKeyFrameAnimationData
 	{
-		static SkeletonAnimationClip CreateFromAnimFile(const anim_file::AnimFile& in)
+		std::vector<SkeletonKeyFrame> frames;
+		std::vector<float> boneBlendWeights; // TODO: for later current anim -> next anim "blend in"?
+		std::vector<bool> boneSpliceMask; // TODO: for splicing in other animations, like "hand", "head", "cape", on main "body"-animation
+	};
+
+	/// <summary>
+	/// Contains "relatiave
+	/// </summary>
+	struct SkeletonAnimation
+	{
+		timer::SystemClockChecker timer;
+		SkeletonKeyFrameAnimationData frameData;
+
+		float lastKeyTime = 0.0f;
+		float keyEndTime = 0.0f;
+		float keysPerSecond = 0.0f;
+
+	public:
+		static SkeletonAnimation CreateFromAnimFile(const anim_file::AnimFile& in)
 		{
-			SkeletonAnimationClip newClip;
-			newClip.clipLength = in.fileHeader.fEndTime;
-			newClip.keysPerSecond = in.fileHeader.fFrameRate;
+			SkeletonAnimation newAnim;
+			newAnim.lastKeyTime = in.fileHeader.fLastKeyTime;
+			newAnim.keysPerSecond = in.fileHeader.fFrameRate;
+
 			for (const auto& frame : in.frames)
 			{
-				newClip.frames.push_back(SkeletonKeyFrame::CreateFromCommonFrame(frame));
+				newAnim.frameData.frames.push_back(SkeletonKeyFrame::CreateFromCommonFrame(frame));
+				newAnim.frameData.boneBlendWeights.push_back(1.0f);
+				newAnim.frameData.boneSpliceMask.push_back(true);
 			}
 
-			return newClip;
+			return newAnim;
 		}
 
-		std::vector<SkeletonKeyFrame> frames;
+		const SkeletonKeyFrame& GetInterpolatedLocalFrame() // TODO: should this be here, or in "FramePoseGenerator"??
+		{
 
-		float clipLength = 0.0f;
-		float keysPerSecond = 0.0f;
+		}
 	};
 
 } // namespace skel_anim

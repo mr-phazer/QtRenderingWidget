@@ -6,7 +6,7 @@ namespace skel_anim
 {
 	sm::Matrix SimpleBoneKey::GetTransForm() const
 	{
-		// calculate transform matrix
+		// calculate boneTransform matrix
 		auto translationMatrix = sm::Matrix::CreateTranslation(translation);
 		auto rotationMatrix = sm::Matrix::CreateFromQuaternion(rotation);
 
@@ -26,11 +26,11 @@ namespace skel_anim
 		return newFrame;
 	}
 
-	/*SkeletonAnimationClip skel_anim::SkeletonAnimationClip::CreateFromTWAnim(const anim_file::TwAnimFile& in)
+	/*SkeletonAnimation skel_anim::SkeletonAnimation::CreateFromTWAnim(const anim_file::TwAnimFile& in)
 	{
-		SkeletonAnimationClip out;
+		SkeletonAnimation out;
 
-		out.clipLength = in.fileHeader.fEndTime;
+		out.lastKeyTime = in.fileHeader.fLastKeyTime;
 		out.keysPerSecond = in.fileHeader.fFrameRate;
 
 		out.frames = in.frames;

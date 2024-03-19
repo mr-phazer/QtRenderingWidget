@@ -1,3 +1,4 @@
+
 #include "AnimationPlayer.h"
 
 namespace skel_anim
@@ -31,7 +32,7 @@ namespace skel_anim
 
 			// TODO: test that it is identical
 			auto debug_GlobalMatrix = keyGlobal.GetTransForm();
-			// calculate global transform matrix
+			// calculate global boneTransform matrix
 			auto translationMatrix = sm::Matrix::CreateTranslation(keyGlobal.translation);
 			auto rotationMatrix = sm::Matrix::CreateFromQuaternion(keyGlobal.rotation);
 			auto globalTransform = rotationMatrix * translationMatrix;
