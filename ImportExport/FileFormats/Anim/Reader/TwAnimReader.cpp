@@ -1,7 +1,8 @@
+#include <Quantization\FloatCoverter.h>
+#include <SimpleMath.h>
 #include <SimpleMath.h>
 #include "..\..\..\..\Rldx\Rldx\Logging\Logging.h"
 #include "..\..\..\Helpers\ByteStream.h"
-#include "..\..\..\Helpers\DataConversion.h"
 #include "..\..\RigidModel\Types\Common\MeshEnumsConstants.h"
 #include "..\Creators\AnimFileHeaderCreator.h"
 #include "..\Creators\BoneTableCreator.h"
@@ -11,10 +12,8 @@
 
 using namespace anim_file;
 
-AnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes, AnimFile* poBindPose)
+AnimFile anim_file::TwAnimFileReader::Read(ByteStream& bytes)
 {
-	m_poBindPose = poBindPose;
-
 	ReadHeader(bytes);
 	ReadBoneTable(bytes);
 
@@ -75,7 +74,7 @@ void anim_file::TwAnimFileReader::ReadClip_v7(ByteStream& bytes)
 	m_animFile.frames.resize(subClipHeader.frameCount);
 	for (auto& itFrame : m_animFile.frames)
 	{
-		itFrame = DecodeFrame_V7(bytes, tracksMetaData, subClipHeader, nullptr, nullptr);
+		itFrame = DecodeFrame_V7(bytes, tracksMetaData, subClipHeader, &constTrackFrame, (!m_poBindPose.frames.empty()) ? &m_poBindPose.frames[0] : nullptr);
 	}
 }
 
@@ -101,57 +100,64 @@ AnimFrameCommon anim_file::TwAnimFileReader::DecodeFrame_V7(
 	const AnimFrameCommon* pConstTrackFrame,
 	const AnimFrameCommon* pBindPoseFrame)
 {
-	const auto constTrackErrorMessage = "DecodeFrame_V7(): Error: Const Track Expected";
-	const auto bindPoseErroMessage = "DecodeFrame_V7(): Error: BindPose Expected";
+	const auto constTrackErrorException = std::exception("DecodeFrame_V7(): Error: Const Track Expected");
+	const auto bindPoseErrorException = std::exception("DecodeFrame_V7(): Error: BindPose Expected");
 
-	AnimFrameCommon outFrame(frameHeader.translationCount, frameHeader.rotationCount);
+	AnimFrameCommon outFrame(metaTable.boneCount, metaTable.boneCount);
 
-	size_t translationFrameDataIndex = 0;
-	for (size_t iBone = 0; iBone < frameHeader.translationCount; iBone++)
+	for (size_t iBone = 0; iBone < metaTable.boneCount; iBone++)
 	{
 		auto& transMeta = metaTable.translationInfo[iBone];
 
 		switch (transMeta.GetTrackSourceState())
 		{
 			case AnimTrackSourceEnum::FrameData:
-				outFrame.translations[translationFrameDataIndex] = bytes.TReadElement<sm::Vector3>();
-				translationFrameDataIndex++;
-				break;
+			{
+				outFrame.translations[iBone] = bytes.TReadElement<sm::Vector3>();
+			}
+			break;
 
 			case AnimTrackSourceEnum::ConstTrack:
-				if (pConstTrackFrame == nullptr) throw(constTrackErrorMessage);
+			{
+				if (pConstTrackFrame == nullptr) throw(constTrackErrorException);
 				outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
-				break;
+			}
+			break;
 
 			case AnimTrackSourceEnum::BindPose:
-				if (pBindPoseFrame == nullptr) throw(bindPoseErroMessage);
-
+			{
+				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 				outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
-				break;
+			}
+			break;
 		}
 	};
 
-	size_t rotationFrameDataIndex = 0;
-	for (size_t iBone = 0; iBone < frameHeader.rotationCount; iBone++)
+	for (size_t iBone = 0; iBone < metaTable.boneCount; iBone++)
 	{
 		switch (metaTable.rotationTrackInfo[iBone].GetTrackSourceState())
 		{
 			case AnimTrackSourceEnum::FrameData:
-				outFrame.rotations[rotationFrameDataIndex] = FloatConverter::GetSNormFloat4FromSignedInt4(bytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
-				rotationFrameDataIndex++;
-				break;
+			{
+				outFrame.rotations[iBone] = FloatConverter::GetSNormFloat4FromSignedInt4(bytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
+			}
+			break;
 
 			case AnimTrackSourceEnum::ConstTrack:
-				if (pConstTrackFrame == nullptr) throw std::exception(constTrackErrorMessage);
+			{
+				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
 				outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
-				break;
+			}
+			break;
 
 			case AnimTrackSourceEnum::BindPose:
-				if (pBindPoseFrame == nullptr) throw(bindPoseErroMessage);
+			{
+				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
 				outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
-				break;
+			}
+			break;
 		}
 	}
 

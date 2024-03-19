@@ -16,10 +16,11 @@ namespace anim_file
 	{
 		// TODO: either make std::unique_ptr, or otherwise make sure it is cleared, if the reader instance it used more than once
 		AnimFile m_animFile;
-		AnimFile* m_poBindPose = nullptr;
+		AnimFile m_poBindPose;
 
 	public:
-		AnimFile Read(ByteStream& bytes, AnimFile* poBindPose = nullptr);
+		AnimFile Read(ByteStream& bytes);
+		void SetBindPose(const AnimFile& animFileBindPose) { m_poBindPose = animFileBindPose; }
 
 	private:
 		void ReadHeader(ByteStream& bytes);

@@ -10,7 +10,7 @@ namespace anim_file
 		in.dwUnknown = bytes.TReadElement<uint32_t>();
 		in.fFrameRate = bytes.TReadElement<float>();
 		in.skeletonName = bytes.ReadLengthPrefixed16StringA();
-		in.fEndTime = bytes.TReadElement<float>();
+		in.fLastKeyTime = bytes.TReadElement<float>();
 		in.dwBoneCount = bytes.TReadElement<uint32_t>();
 
 		return in;
@@ -31,7 +31,7 @@ namespace anim_file
 			in.subHeader_V7.strText = bytes.TReadElement<uint32_t>();
 		}
 
-		in.fEndTime = bytes.TReadElement<float>();
+		in.fLastKeyTime = bytes.TReadElement<float>();
 		in.dwBoneCount = bytes.TReadElement<uint32_t>();
 
 		return in;

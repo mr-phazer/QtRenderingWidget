@@ -34,7 +34,7 @@ namespace anim_file
 		}
 		subHeader_V7;
 
-		float fEndTime = -1.0f;
+		float fLastKeyTime = -1.0f;
 
 		struct SubHeaderV8 // DOES this exist?
 		{
