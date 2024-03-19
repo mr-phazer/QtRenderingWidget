@@ -15,7 +15,8 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::InitNewScene(ID3D11Device* poDevice, I
 	m_newScene = std::make_unique<DxScene>(name);
 
 	// TODO: remove this mess? Setting the window size in win32 api?
-	SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
+	//SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
+
 	RECT windowRect;
 	GetWindowRect(m_nativeWindowHandle, &windowRect);
 
@@ -68,6 +69,22 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 			/*libtools::GetExePath() + */LR"(PS_NoTextures.cso)"
 		);
 
+	AddGrid(poDevice, newSimpleShaderProgram);
+
+
+	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
+
+
+
+	// TODO: remove- this code from here, it goes in AddVMD
+
+	SetCameraAutoFit(m_newScene.get());
+
+	return std::move(m_newScene);
+}
+
+void rldx::DxSceneCreator::AddGrid(ID3D11Device* poDevice, rldx::DxMeshShaderProgram* newSimpleShaderProgram)
+{
 	// make grid node, mesh, fill node, set shaders
 	auto meshNodeGrid = rldx::DxMeshNode::Create(L"Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
@@ -75,25 +92,25 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	meshNodeGrid->SetModelData(gridMeshData);
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetSceneRootNode()->AddChild(meshNodeGrid);
-
-	auto skeletonNode = std::make_shared<rldx::DxDeformerNode>();
-	skeletonNode->LoadBindPose(LR"(animations\skeletons\humanoid01.anim)");
-	m_newScene->GetSceneRootNode()->AddChild(skeletonNode);
-
-	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
-
-	return std::move(m_newScene);
+	m_newScene->m_poGridNode = meshNodeGrid.get();
 }
 
-void rldx::DxSceneCreator::TESTCODE_AddVMD(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
+void rldx::DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 {
 	poScene->GetVmdManager().LoadVariantMesh(fileData);
 	poScene->GetVmdManager().AllocateDXBuffers(gameIdString);
 	poScene->GetVmdManager().GenerateVariant();
 
 	// TODO: re-enable these 2 lines when done debuggin skeleteon
-	//poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
-	//SetCameraAutoFit(static_cast<DxModelNode*>(poScene->GetVmdManager().GetNode().get()), poScene);
+	poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
+	auto skeletonNode = DxDeformerNode::Create();
+	skeletonNode->LoadBindPose(LR"(animations\skeletons\humanoid01.anim)");
+	skeletonNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\locomotion\hu1_sws_walk_01.anim)");
+
+	poScene->GetSceneRootNode()->AddChild(skeletonNode);
+	poScene->GetVmdManager().GetNode()->SetDeformerNode(skeletonNode.get());
+
+	SetCameraAutoFit(poScene);
 }
 
 void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
@@ -121,10 +138,10 @@ void rldx::DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, By
 
 	poScene->GetSceneRootNode()->AddChild(modelNodeRmv2);
 
-	SetCameraAutoFit(modelNodeRmv2.get(), poScene);
+	SetCameraAutoFit(poScene);
 }
 
-void rldx::DxSceneCreator::SetCameraAutoFit(DxModelNode* modelNodeRmv2, rldx::DxScene* poScene)
+void rldx::DxSceneCreator::SetCameraAutoFit(rldx::DxScene* poScene)
 {
 	auto boundBox = poScene->GetRootBoundBox();
 	//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's

@@ -4,6 +4,7 @@
 #include <QtCore\qobject.h>
 
 // athour
+#include <Timer\SystemClockChecker.h>
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\Rendering\DxScene.h"
 
@@ -65,7 +66,7 @@ namespace rldx {
 
 	private:
 		DxScene::Uptr m_spoCurrentScene = nullptr;
-		libtools::SystemClock m_systemClock;
+		timer::SystemClockChecker m_systemClock;
 		bool m_bRenderingRunning = false;
 	};
 

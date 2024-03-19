@@ -8,7 +8,7 @@
 
 using namespace rldx;
 
-void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
+void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
 	// -- set target, and clear pixels and depth buffer
 	m_spoSwapChain->GetBackBuffer()->BindAsRenderTargetViewWithDepthBuffer(poDeviceContext);
@@ -44,13 +44,27 @@ void rldx::DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 }
 
 
-DxBaseNode* rldx::DxScene::GetSceneRootNode() const
+DxBaseNode* DxScene::GetSceneRootNode() const
 {
 	return m_sceneGraph.GetRootNode();
 }
 
+void rldx::DxScene::SetGridState(DxBaseNode::DrawStateEnum drawState)
+{
+	if (!m_poGridNode) return;
+
+	m_poGridNode->SetDrawState(drawState);
+}
+
+DxBaseNode::DrawStateEnum rldx::DxScene::GetGridState() const
+{
+	if (!m_poGridNode) throw std::exception(FULL_FUNC_INFO("GridNode == NULL").c_str());
+
+	return m_poGridNode->GetDrawState();
+}
+
 // TODO: test this
-void rldx::DxScene::DeleteNode(DxBaseNode* node)
+void DxScene::DeleteNode(DxBaseNode* node)
 {
 	auto nodeResult = DxBaseNode::FindChild(node, GetSceneRootNode());
 
@@ -65,7 +79,7 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 	nodeResult->GetParent()->RemoveChild(nodeResult);
 }
 
-//void rldx::DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
+//void DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
 //{
 //	SetWindowPos(m_hwndNativeWindowHandle, nullptr,  0, 0, 1024, 1024, SWP_NOOWNERZORDER);
 //	
@@ -79,7 +93,7 @@ void rldx::DxScene::DeleteNode(DxBaseNode* node)
 //	GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_hwndNativeWindowHandle, , width, height);	
 //}
 
-LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT __stdcall DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	if (uMsg == WM_KEYDOWN)
 	{
@@ -109,7 +123,7 @@ LRESULT __stdcall rldx::DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, 
 	return m_globalCamera.HandleMessages(hWnd, uMsg, wParam, lParam);
 }
 
-void rldx::DxScene::Update(float timeElapsed)
+void DxScene::Update(float timeElapsed)
 {
 	UpdateViewAndPerspective();
 
@@ -119,7 +133,7 @@ void rldx::DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
-void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
+void DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 	m_globalDirectionalLight.SetRotationScale(0.005f);
@@ -127,10 +141,10 @@ void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 
 	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
 
-	m_sceneFrameVSConstBuffer.buffer.Create(poDevice);
+	m_sceneFrameVSConstBuffer.Init(poDevice);
 
-	m_sceneFramePSConstBuffer.buffer.Create(poDevice);
-	DXUT_SetDebugName(m_sceneFramePSConstBuffer.buffer.GetBuffer(), "PS_CB:DirectionalLight");
+	m_sceneFramePSConstBuffer.Init(poDevice);
+	DXUT_SetDebugName(m_sceneFramePSConstBuffer.GetBuffer(), "PS_CB:DirectionalLight");
 
 	// TODO: test? Needed?
 	std::wstring cubeMapFolder = L""; // std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
@@ -152,18 +166,18 @@ void rldx::DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_textureSamplers = DxTextureSamplers::Create(*m_upoCommonStates);
 }
 
-void rldx::DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
+void DxScene::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {
 	m_spoSwapChain->Resize(poDevice, poDeviceContext, width, height);
 	m_globalCamera.SetWindow(width, height);
 }
 
-void rldx::DxScene::StoreNode(DxBaseNode* node)
+void DxScene::StoreNode(DxBaseNode* node)
 {
 	m_sceneGraph.AddNodeToLinearIndexTable(node);
 }
 
-void rldx::DxScene::UpdateViewAndPerspective()
+void DxScene::UpdateViewAndPerspective()
 {
 	m_sceneFrameVSConstBuffer.data.view = m_globalCamera.GetViewMatrix().Transpose();
 	m_sceneFrameVSConstBuffer.data.projection = m_globalCamera.GetProjMatrix().Transpose();
@@ -175,7 +189,7 @@ void rldx::DxScene::UpdateViewAndPerspective()
 	m_sceneFramePSConstBuffer.data.lightData[0].radiance = m_globalDirectionalLight.GetRadius();
 }
 
-void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
+void DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 {
 	m_sceneFrameVSConstBuffer.SetStartSlot(0);
 	m_sceneFrameVSConstBuffer.RefreshGPUData(poDeviceContext);
@@ -193,14 +207,14 @@ void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 
 
 	// vertex	//  shader buffer
-	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.buffer.GetBuffer() };
+	ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { m_sceneFrameVSConstBuffer.GetBuffer() };
 	poDeviceContext->VSSetConstantBuffers(0, 1, vertexShaderSceneConstBuffers);
 
 	// TODO: build this into "ConstBuffer"??
 	// pixel shader const buffer
 	//ID3D11Buffer* pPS_AmbientLIghtBuffer[] = 
 	//{ 
-	//	m_ambientLightSource.m_oPSConstBuffer.buffer.GetBuffer(), 		
+	//	m_ambientLightSource.m_oPSConstBuffer.GetBuffer(), 		
 	//};
 	//poDeviceContext->PSSetConstantBuffers(0, 1, pPS_AmbientLIghtBuffer);
 
@@ -208,14 +222,14 @@ void rldx::DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	// vertex shader const buffer
 	ID3D11Buffer* m_pPS_DirectionalLightBuffer[] =
 	{
-		m_sceneFramePSConstBuffer.buffer.GetBuffer(),
+		m_sceneFramePSConstBuffer.GetBuffer(),
 	};
 	poDeviceContext->PSSetConstantBuffers(1, 1, m_pPS_DirectionalLightBuffer);
 
 	m_textureSamplers.BindToDC(poDeviceContext);
 }
 
-inline void rldx::DxScene::DEBUGGING_SetViewAndPerspective()
+inline void DxScene::DEBUGGING_SetViewAndPerspective()
 {
 	// TODO: method full of crap, is it still useful/remove?
 	// Use DirectXMath to create view and perspective matrices, for debuggin purposes

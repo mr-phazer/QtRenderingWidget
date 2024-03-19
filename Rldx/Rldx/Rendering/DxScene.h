@@ -43,10 +43,14 @@ namespace rldx {
 
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, public IResizable, public IDrawable, public IUpdateable, public IBindable
 	{
+
+
+
 		friend class DxSceneGraph;
 
 	public:
 		friend class IDxSceneBuilder;
+		friend class DxSceneCreator;
 
 		using Uptr = std::unique_ptr<DxScene>;
 
@@ -58,29 +62,30 @@ namespace rldx {
 		};
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
-		virtual void InitRenderView(ID3D11Device* poDevice);
+
 
 		std::wstring GetTypeString() const override { return L"DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
+		virtual void InitRenderView(ID3D11Device* poDevice);
 		virtual void Update(float timeElapsed) override;
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
+		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
+		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		DxBaseNode* GetSceneRootNode() const;
-
 		DirectX::BoundingBox GetRootBoundBox() { return m_sceneGraph.GetRootBoundBox(); }
+
+		void SetGridState(DxBaseNode::DrawStateEnum drawState);
+		DxBaseNode::DrawStateEnum GetGridState() const;
 
 		void DeleteNode(DxBaseNode* node);
 
 		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }
 		DxSwapChain::Uptr& GetRefSwapChain() { return m_spoSwapChain; }
 
-		//void MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle);
-		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
-
 		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-		virtual void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		// TODO: remove?
 		void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
@@ -143,8 +148,8 @@ namespace rldx {
 
 		DxAmbientLightSource m_ambientLightSource;
 		DxTextureSamplers m_textureSamplers;
-
 		DxMeshShaderProgram* m_poDefaultShaderProgram = nullptr;
+		DxMeshNode* m_poGridNode = nullptr;
 
 	private:
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);
