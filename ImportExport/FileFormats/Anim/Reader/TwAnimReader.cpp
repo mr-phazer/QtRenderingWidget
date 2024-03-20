@@ -119,7 +119,8 @@ AnimFrameCommon anim_file::TwAnimFileReader::DecodeFrame_V7(
 
 			case AnimTrackSourceEnum::ConstTrack:
 			{
-				if (pConstTrackFrame == nullptr) throw(constTrackErrorException);
+				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
+
 				outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
 			}
 			break;
@@ -127,6 +128,7 @@ AnimFrameCommon anim_file::TwAnimFileReader::DecodeFrame_V7(
 			case AnimTrackSourceEnum::BindPose:
 			{
 				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
+
 				outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
 			}
 			break;
