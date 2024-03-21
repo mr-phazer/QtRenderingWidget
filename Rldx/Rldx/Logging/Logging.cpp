@@ -1,11 +1,14 @@
 
 #include "Logging.h"
 
+#include <Timer\SystemClockChecker.h>
+
 using namespace logging;
 
 
- std::wstring ImplLog::sm_loggingFolder = L"";
- std::wstring ImplLog::sm_logFileName = L"RenderViewLog.txt";
+
+std::wstring ImplLog::sm_loggingFolder = L"";
+std::wstring ImplLog::sm_logFileName = L"RenderViewLog.txt";
 
 std::wstring ImplLog::sm_prefix = L"[QRenderingView Debug:] ";
 
@@ -29,7 +32,7 @@ void ImplLog::LogActionInfo(const std::string& strMsg)
 }
 
 void logging::ImplLog::DoLog(
-	const std::string& strMsg, 
+	const std::string& strMsg,
 	const std::string& strTag,
 	WORD colorFlags,
 	WORD tagColorFlags)
@@ -42,13 +45,13 @@ void logging::ImplLog::DoLog(
 	std::stringstream logString;
 	logString << std::endl << libtools::wstring_to_string(sm_prefix) + "ERROR: " << strMsg;
 	WriteToLogFile(logString.str());
-	
+
 }
 
 void ImplLog::LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags)
 {
-	WinConsole::Print(WidenStr(strMsg), wColorFlags);	
-    WinConsole::Print(L"\r\n");
+	WinConsole::Print(WidenStr(strMsg), wColorFlags);
+	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
 	logString << std::endl << (strMsg).c_str();
@@ -58,7 +61,7 @@ void ImplLog::LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags)
 
 
 void ImplLog::LogAction_success(const std::string& strMsg)
-{	
+{
 	WinConsole::Print(sm_prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg));
@@ -67,19 +70,19 @@ void ImplLog::LogAction_success(const std::string& strMsg)
 
 	std::stringstream logString;
 	logString << std::endl << libtools::wstring_to_string(sm_prefix) << strMsg << ". Success.";
-	
-	WriteToLogFile(logString.str());	
+
+	WriteToLogFile(logString.str());
 }
 
 bool ImplLog::LogActionErrorFalse(const std::string& strMsg)
-{	
+{
 	WinConsole::Print(sm_prefix + L"ERROR:", BG_BLACK | FG_RED);
 	WinConsole::Print(L" ");
 	WinConsole::Print(WidenStr(strMsg));
 	WinConsole::Print(L"\r\n");
 
 	std::stringstream logString;
-	logString << std::endl << wtos(sm_prefix) +  "ERROR: " << strMsg;
+	logString << std::endl << wtos(sm_prefix) + "ERROR: " << strMsg;
 
 	WriteToLogFile(logString.str());
 
@@ -96,7 +99,7 @@ bool ImplLog::LogAction_warning(const std::string& strMsg)
 	std::stringstream logString;
 	logString << std::endl << libtools::wstring_to_string(sm_prefix) + "WARNING:: " << strMsg;
 
-	 WriteToLogFile(logString.str());
+	WriteToLogFile(logString.str());
 
 	return false;
 }
@@ -108,46 +111,46 @@ void ImplLog::LogWrite(const std::string& strMsg)
 
 void ImplLog::WriteToLogFile(const std::string& logString)
 {
-    std::ofstream oOutFile(GetOutLogFilePath(), std::ios::app);
-    oOutFile << logString;
-    oOutFile.close();
+	std::ofstream oOutFile(GetOutLogFilePath(), std::ios::app);
+	oOutFile << logString;
+	oOutFile.close();
 }
 
 void ImplLog::LogActionTimedBegin(const std::string& strMsg)
 {
-    m_globalClock.ResetLocalTime();
-    LogActionInfo(strMsg);
+	m_globalClock.ResetLocalTime();
+	LogActionInfo(strMsg);
 }
 
 void ImplLog::LogActionTimedEnd(const std::string& strMsg)
 {
-    auto timeElapsed = m_globalClock.GetLocalTime();
-    LogActionInfo(strMsg);
-    
-    auto timeMessage = "Time Elapsed: " + std::to_string(timeElapsed) + " seconds.\n";
+	auto timeElapsed = m_globalClock.GetLocalTime();
+	LogActionInfo(strMsg);
 
-    WinConsole::Print(WidenStr(timeMessage), BG_BLACK | FG_GREEN);
+	auto timeMessage = "Time Elapsed: " + std::to_string(timeElapsed) + " seconds.\n";
+
+	WinConsole::Print(WidenStr(timeMessage), BG_BLACK | FG_GREEN);
 }
 
 void WinConsole::Print(const std::wstring& str, WORD wColorFlags)
 {
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    /*
-     * Set the new colorFlags information
-     */
-    SetConsoleTextAttribute(h, wColorFlags);
-    DWORD dwChars = 0;
-    WriteConsole(h, str.data(), (DWORD)str.size(), &dwChars, NULL);
+	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+	/*
+	 * Set the new colorFlags information
+	 */
+	SetConsoleTextAttribute(h, wColorFlags);
+	DWORD dwChars = 0;
+	WriteConsole(h, str.data(), (DWORD)str.size(), &dwChars, NULL);
 
-    /*
-    * Reset to default colorFlags
-    */
-    SetConsoleTextAttribute(h, BG_BLACK | FG_WHITE);
+	/*
+	* Reset to default colorFlags
+	*/
+	SetConsoleTextAttribute(h, BG_BLACK | FG_WHITE);
 }
 
 void WinConsole::PrintLn(const std::wstring& str, WORD color)
 {
-    Print(str + L"\n", color);
+	Print(str + L"\n", color);
 }
 
-libtools::SystemClock ImplLog::m_globalClock;
+timer::SystemClockChecker ImplLog::m_globalClock;

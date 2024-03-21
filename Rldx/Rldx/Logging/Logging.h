@@ -15,6 +15,7 @@
 #include <locale>
 #include <string>
 #include <Windows.h>
+#include "..\..\CommonLibs\Timer\SystemClockChecker.h"
 #include "..\Tools\tools.h"
 
 namespace logging
@@ -25,7 +26,7 @@ namespace logging
 	inline void empty() {  }
 
 
-#if 1
+#if 0
 #define LogActionColor(message) empty()
 #define LogActionError(msg) emptyBool()
 #define LogInfo(msg) empty()
@@ -100,9 +101,9 @@ namespace logging
 		static void Log_Exception(const std::string& strMsg);
 		static void LogActionInfo(const std::string& strMsg);
 		static void DoLog(const std::string& strMsg,
-			const std::string& strTag = "ACTION: ",
-			WORD color = FG_WHITE | BG_BLACK,
-			WORD tagColor = FG_WHITE | BG_BLACK);
+						  const std::string& strTag = "ACTION: ",
+						  WORD color = FG_WHITE | BG_BLACK,
+						  WORD tagColor = FG_WHITE | BG_BLACK);
 		static void LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags = BG_BLACK | FG_WHITE);
 		static void LogAction_success(const std::string& strMsg);
 
@@ -130,7 +131,7 @@ namespace logging
 			}
 		};
 
-		static libtools::SystemClock m_globalClock;
+		static timer::SystemClockChecker m_globalClock;
 
 	private:
 		static std::unique_ptr<ImplLog> m_poInstance;
@@ -169,11 +170,11 @@ namespace logging
 			ImplLog::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);
 		};
 
-		libtools::SystemClock& GetClock() { return m_clock; };
+		timer::SystemClockChecker& GetClock() { return m_clock; };
 		double GetLocalTime() { return m_clock.GetLocalTime(); };
 
 	private:
-		libtools::SystemClock m_clock;
+		timer::SystemClockChecker m_clock;
 		std::string m_message = "";
 	};
 
