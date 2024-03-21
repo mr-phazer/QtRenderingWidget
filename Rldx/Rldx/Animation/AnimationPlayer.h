@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Timer\SystemClockChecker.h>
+#include "../SceneGraph/SceneNodes/DxMeshNode.h"
 #include "..\\Rendering\DxConstBuffer.h"
 #include "AnimTrackReader.h"
 #include "FramePoseGenerator.h"
@@ -67,6 +68,8 @@ namespace skel_anim {
 			m_animation = SkeletonAnimation::CreateFromAnimFile(animFile);
 			m_framePoseGenerator->SetAnimClip(&m_animation);
 		}
+
+
 
 		void Update(float time)
 		{

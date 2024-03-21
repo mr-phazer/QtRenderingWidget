@@ -38,8 +38,8 @@ namespace skel_anim
 	struct SkeletonBoneNode
 	{
 		std::string name = "";
-		int32_t boneIndex;
-		int32_t parentIndex;
+		int32_t boneIndex = -1;
+		int32_t parentIndex = -1;
 	};
 
 	/// <summary>
@@ -80,6 +80,19 @@ namespace skel_anim
 
 				boneTable.push_back(node);
 			}
+		}
+
+		int32_t GetIndexFromBoneName(const std::string& boneName) const
+		{
+			for (int32_t boneIndex = 0; boneIndex < boneTable.size(); boneIndex++)
+			{
+				if (CompareNoCase(boneTable[boneIndex].name, boneName))
+				{
+					return boneIndex;
+				}
+			}
+
+			return -1;
 		}
 
 		FramePoseMatrices inverseBindPoseMatrices;
