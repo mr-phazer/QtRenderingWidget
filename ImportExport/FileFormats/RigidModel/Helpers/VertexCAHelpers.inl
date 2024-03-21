@@ -2,7 +2,7 @@
 
 struct CAVertexHelpers
 {
-	static DirectX::XMFLOAT4 DoRMV2Version8PrecisionOp(const DirectX::XMFLOAT4& position)
+	static DirectX::XMFLOAT4 DoV8PrecisionOp(const DirectX::XMFLOAT4& position)
 	{
 		return {
 			position.x * std::max<float>(1.0f, position.w),

@@ -1,5 +1,5 @@
+#include <Quantization\FloatCoverter.h>
 #include "..\..\..\..\Helpers\ByteStream.h"
-#include "..\..\..\..\Helpers\DataConversion.h"
 #include "..\..\RawStructs\VerticesRaw.h"
 #include "VertexCreators.h"
 
@@ -12,7 +12,7 @@ rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes,
 
 	rldx::CommonVertex outVertex;
 
-	outVertex.position = CAVertexHelpers::DoRMV2Version8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
+	outVertex.position = CAVertexHelpers::DoV8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
 
 	// bone indices
 	outVertex.boneIndices =
@@ -46,7 +46,7 @@ rldx::CommonVertex rmv2::DefaultCommonVertexCreator::Create(ByteStream& bytes, R
 	rldx::CommonVertex commonVertex;
 
 	// half-float to float32 for each vector coord
-	commonVertex.position = CAVertexHelpers::DoRMV2Version8PrecisionOp(FloatConverter::GetFloat4FromHalf4(bytes.TReadElement<DirectX::PackedVector::XMUSHORT4>()));
+	commonVertex.position = CAVertexHelpers::DoV8PrecisionOp(FloatConverter::GetFloat4FromHalf4(bytes.TReadElement<DirectX::PackedVector::XMUSHORT4>()));
 
 	// half-float to float32 for each vector coord
 	commonVertex.textureCoordinate = FloatConverter::GetFloat2FromHalf2(bytes.TReadElement<DirectX::PackedVector::XMUSHORT2>());
@@ -71,7 +71,7 @@ rldx::CommonVertex rmv2::Weighted4CommonVertexCreator::Create(ByteStream& bytes,
 
 	rldx::CommonVertex outVertex;
 
-	outVertex.position = CAVertexHelpers::DoRMV2Version8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
+	outVertex.position = CAVertexHelpers::DoV8PrecisionOp(FloatConverter::GetFloat4FromHalf4(rawVertex.position));
 
 	outVertex.normal = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.normal);
 	outVertex.tangent = FloatConverter::GetSNORMFloat3FromUByte4(rawVertex.tangent);

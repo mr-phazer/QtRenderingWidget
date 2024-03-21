@@ -8,8 +8,8 @@ namespace anim_file
 {
 	struct FrameHeaderCommon
 	{
-		uint32_t translationCount;
-		uint32_t rotationCount;
-		uint32_t frameCount;
+		uint32_t translationCount = 0;
+		uint32_t rotationCount = 0;
+		uint32_t frameCount = 0;
 	};
 }
