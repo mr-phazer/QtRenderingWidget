@@ -18,12 +18,13 @@ ByteStream::ByteStream(const ByteVector& input)
 
 ByteStream::ByteStream(void* pMem, size_t sizeInBytes, const std::wstring fileName)
 {
+	// TODO: is this the best error handling? m_data.size()==0 will make "IsValid()" return false, so maybe?
 	if (sizeInBytes == 0) {
-		throw std::exception("ERROR: ByteStream(): sizeInByte == 0!");
+		m_data.clear();
 	}
 
 	if (pMem == nullptr) {
-		throw std::exception("ERROR: ByteStream(): pMem == null!");
+		m_data.clear();
 	}
 
 	m_data.resize(sizeInBytes);
