@@ -3,12 +3,12 @@
 namespace rldx {
 
 	// -- forward declarations
-	class IRenderQueueItem;
+	struct DxMeshData;
 
 	class IRenderBucket
 	{
 	public:
-		virtual void AddItem(IRenderQueueItem* item) = 0;
+		virtual void AddItem(DxMeshData* item) = 0;
 		virtual void ClearItems() = 0;
 	};
 }
