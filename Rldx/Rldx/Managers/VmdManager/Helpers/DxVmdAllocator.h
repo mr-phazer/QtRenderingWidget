@@ -4,6 +4,8 @@
 
 namespace rldx
 {
+	class DxDeformerNode;
+	//TODO: this does not need to a class with states??
 	class DxVmdNodeAllocator
 	{
 		DxVmdNode* m_sceneVmdNode = nullptr;
@@ -13,10 +15,10 @@ namespace rldx
 		DxVmdNodeAllocator() = delete;
 		DxVmdNodeAllocator(DxVmdNode* in, DxMeshShaderProgram* nodeShaderProgram) : m_sceneVmdNode(in), m_nodeShaderProgram(nodeShaderProgram) {};
 
-		void AllocateDxBuffers();
+		void AllocateDxBuffers(std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap);
 
 	private:
-		void AllocateVariantMesh();
+		void AllocateVariantMesh(std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& pretransformMap);
 	};
 
 	//class DxVmdNodeAllocator

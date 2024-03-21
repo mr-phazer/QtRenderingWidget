@@ -9,7 +9,7 @@
 //DxVmdNode::SharedPtr rldx::VariantMeshNodeCreator::Create(DxVmdNode* root, const pugi::xml_node& xmlNode)
 //{
 //	//auto newNode = std::make_shared<DxVmdNode>();
-//	VMDNodeData& newData = root->VMDTagData();
+//	VMDNodeData& newData = root->vmdNodeData;
 //
 //	newData.tagType = VMDTagEnum::VariantMesh;
 //	newData.varintMeshData.modelPath = xmlNode.attribute_no_case(VMDTagAttributes::Model).value();
@@ -23,7 +23,7 @@
 //DxVmdNode::SharedPtr rldx::SlotNodeCreator::Create(DxVmdNode* root, const pugi::xml_node& xmlNode)
 //{
 //	//auto newNode = std::make_shared<DxVmdNode>();
-//	VMDNodeData& vmdNodeData = root->VMDTagData();
+//	VMDNodeData& vmdNodeData = root->vmdNodeData;
 //	vmdNodeData.tagType = VMDTagEnum::Slot;
 //	vmdNodeData.Name = xmlNode.attribute_no_case(VMDTagAttributes::Name).as_string();
 //	vmdNodeData.slotData.name = vmdNodeData.Name;

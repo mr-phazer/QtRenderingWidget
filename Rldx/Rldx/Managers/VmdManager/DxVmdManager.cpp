@@ -1,112 +1,178 @@
+#include "..\..\SceneGraph\SceneNodes\DxDeformerNode.h"
 #include "DxVmdManager.h"
 
-void rldx::DxVmdManager::LoadVariantMesh(ByteStream& bytes)
+namespace rldx
 {
-	m_vmdhBytes = bytes;
-
-	if (CompareExtension(bytes.GetPath(), rldx::FileExtensions::VariantMeshDef))
+	void DxVmdManager::LoadVariantMesh(DxBaseNode* poSceneNode, ByteStream& bytes, const std::wstring& gameIdString)
 	{
-		LoadFromVmdXML(bytes);
-		return;
+		m_rootNode = DxBaseNode::Create(L"VMD Root Node");
+		poSceneNode->AddChild(m_rootNode);
+
+
+		BuildTreeFromXml(bytes);
+		m_rootNode->AddChild(m_vmdNode);
+
+
+		WStringkeyMap<sm::Matrix> preTransformMap;
+
+		// TODO store this class field?
+		std::string skeletonName;
+
+		AllocateDXBuffers(gameIdString, skeletonName, preTransformMap);
+
+		LoadSkeleton(m_rootNode.get(), skeletonName);
+		SetMeshDeformation(m_rootNode.get());
+
+		SetAttachPoints(m_vmdNode.get());
+		GenerateVariant();
 	}
 
-	if (CompareExtension(bytes.GetPath(), rldx::FileExtensions::RigidModelV2))
+	void DxVmdManager::LoadSkeleton(DxBaseNode* poSceneNode, std::string& skeletonName)
 	{
-		LoadFromRigidModel(bytes);
-		return;
+		m_deformerNode = DxDeformerNode::Create();
+		m_deformerNode->LoadBindPose(LR"(animations\skeletons\)" + libtools::string_to_wstring(skeletonName) + L".anim");
+
+		// TODO: remove TEST CODE
+		m_deformerNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_05.anim)");
+
+		poSceneNode->AddChild(m_deformerNode);
 	}
 
-	if (CompareExtension(bytes.GetPath(), rldx::FileExtensions::WSmodel))
+	void DxVmdManager::BuildTreeFromXml(ByteStream& bytes)
 	{
-		LoadFromWsmodelXML(bytes);
-		return;
-	}
-}
+		if (CompareExtension(bytes.GetPath(), FileExtensions::VariantMeshDef))
+		{
+			LoadFromVmdXML(bytes);
+			return;
+		}
 
-void rldx::DxVmdManager::AllocateDXBuffers(const std::wstring& gameIdString)
-{
-	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
-	if (!newPbrShaderCreator) {
-		throw std::exception("No shader program creator found for game");
-	}
+		if (CompareExtension(bytes.GetPath(), FileExtensions::RigidModelV2))
+		{
+			LoadFromRigidModel(bytes);
+			return;
+		}
 
-	auto newPbrShaderProgram = newPbrShaderCreator->Create(DxDeviceManager::Device());
-	if (!newPbrShaderProgram) {
-		throw std::exception("Error Creating Shader");
-	}
-
-	AllocateNodesRecursive(m_vmdRootNode.get(), newPbrShaderProgram);
-}
-
-void rldx::DxVmdManager::GenerateVariant()
-{
-	VariantGenerator(m_vmdRootNode.get()).GenerateVariant();
-}
-
-rldx::DxVmdNode::SharedPtr rldx::DxVmdManager::GetNode() { return m_vmdRootNode; }
-
-void rldx::DxVmdManager::LoadFromRigidModel(ByteStream& bytes) {
-
-	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
-	if (!gameShaderProgramCreator) {
-		throw std::exception("Error loadeinfGame Shader");
+		if (CompareExtension(bytes.GetPath(), FileExtensions::WSmodel))
+		{
+			LoadFromWsmodelXML(bytes);
+			return;
+		}
 	}
 
-	auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
-	if (!newPbrShaderProgram) {
-		throw std::exception("Error Creating Shader");
-	}
-
-	// TODO: REMOVE?
-	//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
-
-	// TODO remove?
-	//rmv2::RigidModelReader rigidModelFileReader;
-	//auto rmv2File = rigidModelFileReader.Read(bytes);
-	//m_vmdRootNode->SetModelData(DxDeviceManager::Device(), rmv2File);
-	//m_vmdRootNode->LoadMaterialDataFromRmv2(DxDeviceManager::Device(), rmv2File);
-	//m_vmdRootNode->SetShaderProgram(newPbrShaderProgram);
-
-	m_vmdRootNode = std::make_shared<DxVmdNode>();
-	VMDNodeData& nodeTagData = m_vmdRootNode->VMDTagData();
-	nodeTagData.tagType = VMDTagEnum::VariantMesh;
-	nodeTagData.varintMeshData.modelPath = bytes.GetPath();
-	nodeTagData.varintMeshData.imposterModelPath = L"";
-	DxMaterialInfoReader(&nodeTagData).Parse();
-}
-
-void rldx::DxVmdManager::LoadFromWsmodelXML(ByteStream& bytes)
-{
-	m_vmdRootNode = std::make_shared<DxVmdNode>();
-	VMDNodeData& newData = m_vmdRootNode->VMDTagData();
-	newData.tagType = VMDTagEnum::VariantMesh;
-	newData.varintMeshData.modelPath = bytes.GetPath();
-	newData.varintMeshData.imposterModelPath = L"";
-
-	DxMaterialInfoReader(&newData).Parse();
-}
-
-void rldx::DxVmdManager::LoadFromVmdXML(ByteStream& bytes)
-{
-	auto xmlParseResult = m_xmlDoc.load_buffer(bytes.GetBufferPtr(), bytes.GetBufferSize());
-
-	if (!xmlParseResult) {
-		throw std::exception(("Create::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
-	}
-
-	m_vmdRootNode = std::make_shared<rldx::DxVmdNode>();
-	m_vmdRootNode->VMDTagData().tagType = VMDTagEnum::Slot;
-
-	m_treeBuilder.Build(m_vmdRootNode.get(), m_xmlDoc.first_child());
-}
-
-void rldx::DxVmdManager::AllocateNodesRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram)
-{
-	DxVmdNodeAllocator(m_vmdRootNode, shaderProgram).AllocateDxBuffers();
-
-	for (auto& childNode : m_vmdRootNode->GetChildren())
+	void DxVmdManager::AllocateDXBuffers(const std::wstring& gameIdString, std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
 	{
-		AllocateNodesRecursive(static_cast<DxVmdNode*>(childNode.get()), shaderProgram);
-	}
-}
+		auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
+		if (!newPbrShaderCreator) {
+			throw std::exception("No shader program creator found for game");
+		}
 
+		auto newPbrShaderProgram = newPbrShaderCreator->Create(DxDeviceManager::Device());
+		if (!newPbrShaderProgram) {
+			throw std::exception("Error Creating Shader");
+		}
+
+		AllocateNodesRecursive(m_vmdNode.get(), newPbrShaderProgram, destSkeletonName, preTransformMap);
+	}
+
+	void DxVmdManager::GenerateVariant()
+	{
+		VariantGenerator(m_vmdNode.get()).GenerateVariant();
+	}
+
+	DxVmdNode::SharedPtr DxVmdManager::GetNode() { return m_vmdNode; }
+
+	void DxVmdManager::SetMeshDeformation(DxBaseNode* node)
+	{
+		node->SetDeformerNode(m_deformerNode.get(), -1);
+
+		for (auto& childNode : node->GetChildren())
+		{
+			SetMeshDeformation(childNode.get());
+		}
+	}
+
+	void DxVmdManager::SetAttachPoints(DxMeshNode* node)
+	{
+		auto vmdNode = dynamic_cast<DxVmdNode*>(node);
+
+		if (vmdNode)
+		{
+			m_deformerNode->AttachWeapon(vmdNode, vmdNode->vmdNodeData.slotData.attcachPointName);
+		}
+		else
+		{
+			auto DEBUG_BREAK_1 = 1;
+		}
+
+		for (auto& childNode : node->GetChildren())
+		{
+			SetAttachPoints(static_cast<DxMeshNode*>(childNode.get()));
+		}
+	}
+
+	void DxVmdManager::LoadFromRigidModel(ByteStream& bytes) {
+
+		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
+		if (!gameShaderProgramCreator) {
+			throw std::exception("Error loadeinfGame Shader");
+		}
+
+		auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
+		if (!newPbrShaderProgram) {
+			throw std::exception("Error Creating Shader");
+		}
+
+		// TODO: REMOVE?
+		//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
+
+		// TODO remove?
+		//rmv2::RigidModelReader rigidModelFileReader;
+		//auto rmv2File = rigidModelFileReader.Read(bytes);
+		//vmdNode->SetMeshData(DxDeviceManager::Device(), rmv2File);
+		//vmdNode->LoadMaterialDataFromRmv2(DxDeviceManager::Device(), rmv2File);
+		//vmdNode->SetShaderProgram(newPbrShaderProgram);
+
+		m_vmdNode = std::make_shared<DxVmdNode>();
+		VMDNodeData& nodeTagData = m_vmdNode->vmdNodeData;
+		nodeTagData.tagType = VMDTagEnum::VariantMesh;
+		nodeTagData.varintMeshData.modelPath = bytes.GetPath();
+		nodeTagData.varintMeshData.imposterModelPath = L"";
+		DxMaterialInfoReader(&nodeTagData).Parse();
+	}
+
+	void DxVmdManager::LoadFromWsmodelXML(ByteStream& bytes)
+	{
+		m_vmdNode = std::make_shared<DxVmdNode>();
+		VMDNodeData& newData = m_vmdNode->vmdNodeData;
+		newData.tagType = VMDTagEnum::VariantMesh;
+		newData.varintMeshData.modelPath = bytes.GetPath();
+		newData.varintMeshData.imposterModelPath = L"";
+
+		DxMaterialInfoReader(&newData).Parse();
+	}
+
+	void DxVmdManager::LoadFromVmdXML(ByteStream& bytes)
+	{
+		auto xmlParseResult = m_xmlDoc.load_buffer(bytes.GetBufferPtr(), bytes.GetBufferSize());
+
+		if (!xmlParseResult) {
+			throw std::exception(("Create::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
+		}
+
+		m_vmdNode = std::make_shared<DxVmdNode>();
+		m_vmdNode->vmdNodeData.tagType = VMDTagEnum::Slot;
+
+		m_treeBuilder.Build(m_vmdNode.get(), m_xmlDoc.first_child());
+	}
+
+	void DxVmdManager::AllocateNodesRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
+	{
+		DxVmdNodeAllocator(m_vmdRootNode, shaderProgram).AllocateDxBuffers(destSkeletonName, preTransformMap);
+
+		for (auto& childNode : m_vmdRootNode->GetChildren())
+		{
+			AllocateNodesRecursive(static_cast<DxVmdNode*>(childNode.get()), shaderProgram, destSkeletonName, preTransformMap);
+		}
+	}
+
+}

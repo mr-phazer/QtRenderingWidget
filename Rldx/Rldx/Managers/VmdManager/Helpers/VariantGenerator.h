@@ -2,13 +2,18 @@
 
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
 
-// TODO: move impl to .xpp, and forward declare as much as possible
+// TODO: move impl to .cpp, and forward declare as much as possible
 namespace rldx
 {
+	/// <summary>
+	/// Used to generate a "variant", 
+	/// to randomize a full character from parts (header, torso, legs, weapons, etc),
+	/// doing as the games do, following the "VMD RULES"
+	/// </summary>
 	class VariantGenerator
 	{
 		DxVmdNode* m_rootNode = nullptr;
-		libtools::SystemClock m_clock; // used to random seed
+		timer::SystemClockChecker m_clock; // used to random seed
 	public:
 		VariantGenerator(DxVmdNode* rootNode) : m_rootNode(rootNode) {}
 
@@ -36,7 +41,7 @@ namespace rldx
 			for (auto& child : node->GetChildren()) // enable all sibling <SLOT>s inside the <VariantMesh>
 			{
 				auto vmdNode = static_cast<DxVmdNode*>(child.get());
-				if (vmdNode->VMDTagData().tagType == VMDTagEnum::Slot)
+				if (vmdNode->vmdNodeData.tagType == VMDTagEnum::Slot)
 				{
 					EnableSlot(vmdNode);
 				}
@@ -57,19 +62,19 @@ namespace rldx
 
 		void GenerateVariant(DxVmdNode* node)
 		{
-			if (node->VMDTagData().tagType == VMDTagEnum::VariantMesh)
+			if (node->vmdNodeData.tagType == VMDTagEnum::VariantMesh)
 			{
 				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
 				for (auto& child : node->GetChildren()) // enable all sibling <SLOT>s inside the <VariantMesh>
 				{
 					auto vmdNode = static_cast<DxVmdNode*>(child.get());
-					if (vmdNode->VMDTagData().tagType == VMDTagEnum::Slot)
+					if (vmdNode->vmdNodeData.tagType == VMDTagEnum::Slot)
 					{
 						EnableSlot(vmdNode);
 					}
 				}
 			}
-			else if (node->VMDTagData().tagType == VMDTagEnum::Slot)
+			else if (node->vmdNodeData.tagType == VMDTagEnum::Slot)
 			{
 				node->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
 				if (node->GetChildCount() > 0) // enable only 1 <Variantmesh> inside the <SLOT>
@@ -88,12 +93,12 @@ namespace rldx
 
 
 
-		//	if (node->VMDTagData().IsVariantMesh()) // if the node is a <variantmesh>, enable all its child <SLOT>s
+		//	if (node->vmdNodeData.IsVariantMesh()) // if the node is a <variantmesh>, enable all its child <SLOT>s
 		//	{
 		//		EnableSlots(node);
 		//	}
 
-		//	else if (node->VMDTagData().tagType == VMDTagEnum::Slot) // if the node is a <Slot>, enable ONE of its child <VariantMesh>s
+		//	else if (node->vmdNodeData.tagType == VMDTagEnum::Slot) // if the node is a <Slot>, enable ONE of its child <VariantMesh>s
 		//	{
 		//		EnableVariantMesh(node);
 		//	}

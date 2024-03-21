@@ -6,6 +6,8 @@
 
 namespace rldx {
 
+	class DxDeformerNode;
+
 	class DxVmdTreeBuilder
 	{
 		std::vector<std::wstring> m_attachPoints;

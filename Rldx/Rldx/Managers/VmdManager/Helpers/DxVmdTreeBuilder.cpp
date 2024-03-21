@@ -7,26 +7,21 @@ using namespace rmv2;
 
 void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
-	m_attachPoints.clear();
-
 	DxVmdNode::SharedPtr spoNewSceneChild = nullptr;
 
 	if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMesh))
 	{
 		spoNewSceneChild = std::make_shared<DxVMDVariantMeshNode>(xmlNode);
-		DxMaterialInfoReader(&spoNewSceneChild->VMDTagData()).Parse(); // -- Load material info		
+		DxMaterialInfoReader(&spoNewSceneChild->vmdNodeData).Parse(); // -- Load material info			
 		sceneGraphNode->AddChild(spoNewSceneChild);
-
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::Slot))
 	{
-		spoNewSceneChild = std::make_shared<DxVMDSlotNode>(xmlNode, m_attachPoints); //
+		spoNewSceneChild = std::make_shared<DxVMDSlotNode>(xmlNode);
 		sceneGraphNode->AddChild(spoNewSceneChild);
-
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMeshReference))
 	{
-		// -- Dont create a child node, make the current node into a "VariantMesh" node, but with the data from the reference file
 		LoadVariantMeshRerenceNode(sceneGraphNode, xmlNode);
 	}
 	else
@@ -34,10 +29,11 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 		// TODO: maybe create a "universal" node type that can handle any type of data, so the VMD can saved from this tree
 	}
 
-	for (auto& itXmlChild : xmlNode.children()) {
-
-		if (spoNewSceneChild)
+	for (auto& itXmlChild : xmlNode.children())
+	{
+		if (spoNewSceneChild) {
 			Build(spoNewSceneChild.get(), itXmlChild);
+		}
 	}
 }
 
@@ -47,7 +43,7 @@ void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNod
 	auto vmdBytes = DxResourceManager::GetCallBackFile(vmdFilePath);
 
 	if (vmdBytes.GetBufferSize() == 0) {
-		sceneGraphNode->VMDTagData().tagType = VMDTagEnum::INVALID;
+		sceneGraphNode->vmdNodeData.tagType = VMDTagEnum::INVALID;
 		return;
 	}
 
@@ -57,6 +53,8 @@ void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNod
 	if (!xmlParseResult) {
 		throw std::exception(("Create::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
 	}
+
+	sceneGraphNode->SetAttachBoneAsParent();
 
 	DxVmdTreeBuilder().Build(sceneGraphNode, xmlDoc.first_child());
 }
