@@ -65,7 +65,7 @@ namespace rldx
 
 		float4 screenRes;
 
-		float4 colorTable[3] = { {1,0,0,1}, {0,1,0,1}, {0,0,1,1} };
+		//float4 colorTable[3] = { {1,0,1,1}, {0,1,0,1}, {0,0,1,1} };
 	};
 
 	struct PS_AmbientLight_Data_ConstBuffer

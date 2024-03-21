@@ -7,22 +7,16 @@
 
 namespace rldx {
 
-
-
-	struct VS_MeshConstantBuffer
+	struct VS_PerMesh_ConstBuffer
 	{
 		DirectX::XMFLOAT4X4 mWorld = sm::Matrix::Identity;
 		DirectX::XMFLOAT3 pivot = { 0,0,0 };
-		int32_t has_alpha = 0;
+		int32_t bone_index = -1;
 
-		// for animation
-		uint32_t bone_count = 256;
-		float reserved211;
-		float reserved222;
-		float reserved232;
-
-		DirectX::XMFLOAT4X4 tranforms[256] = {  }; // TODO: maybe only fill the skeletons that are to be used
-		DirectX::XMFLOAT4X4 inverse[256] = {  };
+		uint32_t has_alpha = 0;
+		int32_t padding1;
+		int32_t padding2;
+		int32_t padding3;
 	};
 
 	struct PS_PerMesh_ConstBuffer
@@ -46,9 +40,9 @@ namespace rldx {
 
 		sm::Color color_no_tex = { 155., 155., 155., 1. };
 
-		sm::Color mesh_faction_color2 = { 1,1,1,1 };
-		sm::Color mesh_faction_color3 = { 1,1,1,1 };
-		sm::Color mesh_faction_color1 = { 1,1,1,1 };
+		sm::Color mesh_faction_color2 = { 0.71f, 0.16f, 0.17f, 1 };
+		sm::Color mesh_faction_color3 = { 0.31f, 0.12f, 0.92f, 1 };
+		sm::Color mesh_faction_color1 = { 0,0,1,1 };
 
 		sm::Color tint_color1 = { 1,1,1,1 };
 		sm::Color tint_color2 = { 1,1,1,1 };
@@ -74,5 +68,25 @@ namespace rldx {
 
 		//PS_DirectionalLight_ConstBuffer light[1];
 	};
+
+
+
+	/// <summary>
+	/// data for 1 skeleton, used for skinning
+	/// Simplest possiible implementation, static arrays of matrices
+	/// </summary>
+	struct VS_PerMeshConstBuffer_Skeleton
+	{
+		static constexpr size_t MAX_BONES = 256;
+
+		uint32_t boneCount; // Count count, so GPU skinning don't have to run through all the empty matrices?
+		uint32_t pading1; // padding for 16 byte alignment, maybe use this for something later
+		uint32_t pading2; // padding for 16 byte alignment, maybe use this for something later
+		uint32_t pading3; // padding for 16 byte alignment, maybe use this for something later
+
+		sm::Matrix boneTransform[MAX_BONES];
+		sm::Matrix inverseBindPoseMatrices[MAX_BONES];
+	};
+
 
 }; // namespace rldx 
