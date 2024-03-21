@@ -120,9 +120,6 @@
     <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h">
       <Filter>Rldx\DataTypes\ConstBuffers</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\DataTypes\DerformerData.h">
-      <Filter>Rldx\DataTypes</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\DataTypes\DxMeshData.h">
       <Filter>Rldx\DataTypes</Filter>
     </ClInclude>
@@ -274,6 +271,7 @@
     <ClInclude Include="Rldx\Animation\Skeleton.h" />
     <ClInclude Include="Rldx\Animation\SkeletonCreator.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshRenderBucket.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl">
@@ -282,6 +280,18 @@
     <None Include="Rldx\Logging\Inl\WinConsoleColors.inl">
       <Filter>Rldx\Logging\Inl</Filter>
     </None>
+    <None Include=".clang-tidy" />
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Rldx">
@@ -352,5 +362,6 @@
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl" />
     <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl" />
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl" />
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Weighted4.hlsl" />
   </ItemGroup>
 </Project>

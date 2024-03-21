@@ -133,6 +133,8 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
+
+
 void DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
@@ -141,9 +143,9 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 
 	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
 
-	m_sceneFrameVSConstBuffer.Init(poDevice);
+	m_sceneFrameVSConstBuffer.Init(poDevice, "VS_PerFrame_CB");
+	m_sceneFramePSConstBuffer.Init(poDevice, "PS_PerFrame_CB");
 
-	m_sceneFramePSConstBuffer.Init(poDevice);
 	DXUT_SetDebugName(m_sceneFramePSConstBuffer.GetBuffer(), "PS_CB:DirectionalLight");
 
 	// TODO: test? Needed?

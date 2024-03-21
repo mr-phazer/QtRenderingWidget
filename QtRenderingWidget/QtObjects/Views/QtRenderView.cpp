@@ -9,7 +9,7 @@
 using namespace rldx;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
-	: QWidget(parent)
+	: QWidget(parent), m_controller(new QtRenderController(this))
 {
 	setupUi(this);
 
@@ -58,46 +58,46 @@ bool QtRenderWidgetView::event(QEvent* event)
 		// Workaround for https://bugreports.qt.io/browse/QTBUG-42183 to get key strokes.
 		// To make sure that we always have focus on the widget when we enter the rect area.
 
-	case QEvent::Leave:
-	{
-		::ReleaseCapture();
-	}
-	break;
-	case QEvent::MouseButtonPress:
-		emit mouseClicked((QMouseEvent*)event);
-
-	case QEvent::FocusIn:
-	case QEvent::FocusAboutToChange:
-		if (::GetFocus() != reinterpret_cast<HWND>(this->winId()))
+		case QEvent::Leave:
 		{
-			QWidget* nativeParent = this;
-			while (true)
-			{
-				if (nativeParent->isWindow()) break;
-
-				QWidget* parent = nativeParent->nativeParentWidget();
-				if (!parent) break;
-
-				nativeParent = parent;
-			}
-
-			if (nativeParent && nativeParent != this &&
-				::GetFocus() == reinterpret_cast<HWND>(nativeParent->winId()))
-				::SetFocus(reinterpret_cast<HWND>(this->winId()));
+			::ReleaseCapture();
 		}
 		break;
-	case QEvent::KeyPress:
-		emit keyPressed((QKeyEvent*)event);
-		break;
-	case QEvent::MouseMove:
-		emit mouseMoved((QMouseEvent*)event);
-		break;
-		/*case QEvent::MouseButtonPress:
+		case QEvent::MouseButtonPress:
 			emit mouseClicked((QMouseEvent*)event);
-			break;*/
-	case QEvent::MouseButtonRelease:
-		emit mouseReleased((QMouseEvent*)event);
-		break;
+
+		case QEvent::FocusIn:
+		case QEvent::FocusAboutToChange:
+			if (::GetFocus() != reinterpret_cast<HWND>(this->winId()))
+			{
+				QWidget* nativeParent = this;
+				while (true)
+				{
+					if (nativeParent->isWindow()) break;
+
+					QWidget* parent = nativeParent->nativeParentWidget();
+					if (!parent) break;
+
+					nativeParent = parent;
+				}
+
+				if (nativeParent && nativeParent != this &&
+					::GetFocus() == reinterpret_cast<HWND>(nativeParent->winId()))
+					::SetFocus(reinterpret_cast<HWND>(this->winId()));
+			}
+			break;
+		case QEvent::KeyPress:
+			emit keyPressed((QKeyEvent*)event);
+			break;
+		case QEvent::MouseMove:
+			emit mouseMoved((QMouseEvent*)event);
+			break;
+			/*case QEvent::MouseButtonPress:
+				emit mouseClicked((QMouseEvent*)event);
+				break;*/
+		case QEvent::MouseButtonRelease:
+			emit mouseReleased((QMouseEvent*)event);
+			break;
 	}
 
 	return QWidget::event(event);
@@ -161,9 +161,9 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 		m_timer = new QTimer(this);
 
 		connect(m_timer, &QTimer::timeout, [&]()
-			{
-				FrameTimeOutHandler();
-			}
+				{
+					FrameTimeOutHandler();
+				}
 		);
 	}
 
@@ -231,3 +231,31 @@ void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
 {
 	// TODO: set frame to the lower possible, to allow many views being open without lagging
 }
+
+void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
+{
+	switch (keyEvent->key())
+	{
+		case Qt::Key_G:
+		{
+			auto newState =
+				(view->m_upoSceneManager->GetCurrentScene()->GetGridState() == rldx::DxBaseNode::DrawStateEnum::Draw)
+				?
+				rldx::DxBaseNode::DrawStateEnum::DontDraw :
+				rldx::DxBaseNode::DrawStateEnum::Draw;
+			view->m_upoSceneManager->GetCurrentScene()->SetGridState(newState);
+			keyEvent->accept();
+		}
+		break;
+
+		case Qt::Key_S:
+		{
+			// TODO: switch Skeleton on/off
+		}
+	}
+}
+
+QtRenderController::QtRenderController(QtRenderWidgetView* parentAndView) : QObject(parentAndView), view(parentAndView)
+{
+	connect(view, &QtRenderWidgetView::keyPressed, this, &QtRenderController::OnkeyPressed);
+};

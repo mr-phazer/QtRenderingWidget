@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -29,6 +29,7 @@
     <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
     <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
     <ClInclude Include="Rldx\Animation\FramePoseGenerator.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
     <ClInclude Include="Rldx\Animation\Skeleton.h" />
     <ClInclude Include="Rldx\Animation\SkeletonCreator.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshRenderBucket.h" />
@@ -48,7 +49,6 @@
     <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_PS_ConstBuffers.h" />
     <ClInclude Include="Rldx\DataTypes\ConstBuffers\CPU_VS_ConstBuffers.h" />
     <ClInclude Include="Rldx\DataTypes\ConstBuffers\Defs.h" />
-    <ClInclude Include="Rldx\DataTypes\DerformerData.h" />
     <ClInclude Include="Rldx\DataTypes\DxMeshData.h" />
     <ClInclude Include="Rldx\DataTypes\ShaderFiles.h" />
     <ClInclude Include="Rldx\Creators\DxMeshCreator.h" />
@@ -132,8 +132,20 @@
     <ClCompile Include="Rldx\Tools\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-tidy" />
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl" />
     <None Include="Rldx\Logging\Inl\WinConsoleColors.inl" />
+    <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\pbr_lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\PS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\textures.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\tone_mapping.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\troy_lib2.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
+    <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Attila_Weigted.hlsl">
@@ -171,6 +183,12 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Rldx\RenderResources\Shaders\VS_Weighted4.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -226,10 +244,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -265,7 +283,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude);$(SolutionDir)CommonLibs</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -281,7 +299,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude);$(SolutionDir)CommonLibs</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>

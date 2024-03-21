@@ -113,6 +113,8 @@ namespace rldx {
 
 			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
 
+			QList<int> test = { 1,2, 2 };
+
 			if (destBinaries.size() != 1)
 			{
 				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());

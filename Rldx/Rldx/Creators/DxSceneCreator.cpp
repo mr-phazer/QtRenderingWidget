@@ -89,7 +89,7 @@ void rldx::DxSceneCreator::AddGrid(ID3D11Device* poDevice, rldx::DxMeshShaderPro
 	auto meshNodeGrid = rldx::DxMeshNode::Create(L"Grid");
 	auto gridMeshData = rldx::DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
-	meshNodeGrid->SetModelData(gridMeshData);
+	meshNodeGrid->SetMeshData(gridMeshData, L"Grid Mesh");
 	meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 	m_newScene->GetSceneRootNode()->AddChild(meshNodeGrid);
 	m_newScene->m_poGridNode = meshNodeGrid.get();
@@ -97,18 +97,21 @@ void rldx::DxSceneCreator::AddGrid(ID3D11Device* poDevice, rldx::DxMeshShaderPro
 
 void rldx::DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 {
-	poScene->GetVmdManager().LoadVariantMesh(fileData);
-	poScene->GetVmdManager().AllocateDXBuffers(gameIdString);
-	poScene->GetVmdManager().GenerateVariant();
+	// TODO: clean block up !!!
 
-	// TODO: re-enable these 2 lines when done debuggin skeleteon
-	poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
-	auto skeletonNode = DxDeformerNode::Create();
+	poScene->GetVmdManager().LoadVariantMesh(poScene->GetSceneRootNode(), fileData, gameIdString);
+	//poScene->GetVmdManager().GenerateVariant();
+
+	//// TODO: re-enable these 2 lines when done debuggin skeleteon
+	//poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
+	/*auto skeletonNode = DxDeformerNode::Create();
 	skeletonNode->LoadBindPose(LR"(animations\skeletons\humanoid01.anim)");
 	skeletonNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\locomotion\hu1_sws_walk_01.anim)");
 
 	poScene->GetSceneRootNode()->AddChild(skeletonNode);
-	poScene->GetVmdManager().GetNode()->SetDeformerNode(skeletonNode.get());
+	poScene->GetVmdManager().GetNode()->SetDeformerNodeRecursive(skeletonNode.get());*/
+
+	//	poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
 
 	SetCameraAutoFit(poScene);
 }

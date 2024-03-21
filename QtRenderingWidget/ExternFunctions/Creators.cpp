@@ -5,7 +5,7 @@
 #include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
 #include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
-#include "QtObjects\Views\QtRenderView.h"
+#include "..\QtObjects\Views\QtRenderView.h"
 
 #include "..\rldx\rldx\Logging\Logging.h"
 
@@ -93,7 +93,7 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 	try {
 
 		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
-		rldx::DxSceneCreator::TESTCODE_AddVMD(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
+		rldx::DxSceneCreator::AddVariantMesh(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
 	}
 	catch (std::exception& e)
 	{

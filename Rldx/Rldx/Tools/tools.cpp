@@ -417,7 +417,7 @@ string libtools::getLowerAndBackSlash(const std::string& _strInput)
 			it = '\\';
 	}
 
-	//transform(strOut.begin(), strOut.end(), strOut.begin(), tolower);
+	//boneTransform(strOut.begin(), strOut.end(), strOut.begin(), tolower);
 
 	return strOut;
 }

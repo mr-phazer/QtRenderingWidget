@@ -7,15 +7,15 @@ struct ID3D11DeviceContext;
 
 namespace rldx {
 
-	class IRenderQueueItem;
+	struct DxMeshData;
 	class DxMeshShaderProgram;
 
 	class DxMeshRenderBucket : public IRenderBucket
 	{
-		std::vector<IRenderQueueItem*> m_renderItems;
+		std::vector<DxMeshData*> m_renderItems;
 
 	public:
-		virtual void AddItem(IRenderQueueItem* renderItem) override;;
+		virtual void AddItem(DxMeshData* renderItem) override;;
 		virtual void ClearItems() override;;
 		void Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram = nullptr);
 	};

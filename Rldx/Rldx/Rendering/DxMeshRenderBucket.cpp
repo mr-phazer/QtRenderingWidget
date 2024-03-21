@@ -1,9 +1,9 @@
 #include "DxMeshRenderBucket.h"
 
-#include "..\Interfaces\IRenderQueueItem.h"
+#include "..\Rendering\DxMeshRenderData.h"
 #include "DxShaderProgram.h"
 
-void rldx::DxMeshRenderBucket::AddItem(IRenderQueueItem* renderItem)
+void rldx::DxMeshRenderBucket::AddItem(DxMeshData* renderItem)
 {
 	m_renderItems.push_back(renderItem);
 }

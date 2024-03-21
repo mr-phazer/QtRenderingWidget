@@ -14,10 +14,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QtRenderingWidget", "QtRend
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A13DA8FA-6DA3-4046-8AD1-43C17693872A}"
 	ProjectSection(SolutionItems) = preProject
-		New things to add.txt = New things to add.txt
+		.clang-tidy = .clang-tidy
 		SuperShortTerm TODO.txt = SuperShortTerm TODO.txt
+		Ideas.txt = Ideas.txt
 		TODO from FRODO.txt = TODO from FRODO.txt
-		Todo.txt = Todo.txt
+		TODO Features.txt = TODO Features.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImportExport", "ImportExport\ImportExport.vcxproj", "{6E21CCB4-E1D1-4633-AC6D-0CFDC26BE889}"
@@ -39,6 +40,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Rldx", "Rldx\Rldx.vcxproj",
 	ProjectSection(ProjectDependencies) = postProject
 		{6E21CCB4-E1D1-4633-AC6D-0CFDC26BE889} = {6E21CCB4-E1D1-4633-AC6D-0CFDC26BE889}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonLibs", "CommonLibs\CommonLibs.vcxproj", "{BC88523C-F61D-4B10-8A66-D1480C5DA846}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,6 +181,24 @@ Global
 		{81F17F00-4039-48D3-AFBF-6168FFB0A9FB}.Release|x64.Build.0 = Release|x64
 		{81F17F00-4039-48D3-AFBF-6168FFB0A9FB}.Release|x86.ActiveCfg = Release|Win32
 		{81F17F00-4039-48D3-AFBF-6168FFB0A9FB}.Release|x86.Build.0 = Release|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|ARM64.ActiveCfg = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|ARM64.Build.0 = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|x64.ActiveCfg = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|x64.Build.0 = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|x86.ActiveCfg = Debug|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Debug|x86.Build.0 = Debug|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|ARM64.ActiveCfg = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|ARM64.Build.0 = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|x64.ActiveCfg = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|x64.Build.0 = Debug|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|x86.ActiveCfg = Debug|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Profile|x86.Build.0 = Debug|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|ARM64.ActiveCfg = Release|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|ARM64.Build.0 = Release|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|x64.ActiveCfg = Release|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|x64.Build.0 = Release|x64
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|x86.ActiveCfg = Release|Win32
+		{BC88523C-F61D-4B10-8A66-D1480C5DA846}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -97,7 +97,7 @@ inline  bool CompareNoCase(const std::string& str1, const std::string& str2)
 /*inline std::wstring toUpper_WRONG(const std::wstring& _strInput){
 	std::wstring strOut = _strInput;
 
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+	std::boneTransform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
 
 	return strOut;
 }
@@ -106,7 +106,7 @@ inline std::string toUpper(const std::string& _strInput)
 {
 	std::string strOut = _strInput;
 
-	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
+	std::boneTransform(strOut.begin(), strOut.end(), strOut.begin(), ::toupper);
 
 	return strOut;
 }*/
@@ -122,7 +122,7 @@ CONST_BUF_DATA_TYPE Sign(CONST_BUF_DATA_TYPE in)
 //{
 //	std::string strOut = _strInput;
 //
-//	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+//	std::boneTransform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
 //
 //	return strOut;
 //}
@@ -131,7 +131,7 @@ CONST_BUF_DATA_TYPE Sign(CONST_BUF_DATA_TYPE in)
 //{
 //	std::wstring strOut = _strInput;
 //
-//	std::transform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
+//	std::boneTransform(strOut.begin(), strOut.end(), strOut.begin(), ::tolower);
 //
 //	return strOut;
 //}
@@ -236,53 +236,6 @@ namespace libtools
 
 	bool DoesFileExist(const std::wstring& name);
 
-	/// <summary>
-	/// Uses the CPUs high resolution clock, to count time intervals
-	/// </summary>
-	class SystemClock
-	{
-		typedef std::chrono::high_resolution_clock Time;
-
-	public:
-		SystemClock()
-		{
-			ResetLocalTime();
-		}
-
-		/// <summary>
-		/// Resets the local timer to "now"
-		/// </summary>
-		void ResetLocalTime()
-		{
-			m_startTime = std::chrono::high_resolution_clock::now();
-		}
-
-		/// <summary>
-		///  Get "local" time, 
-		/// </summary>
-		/// <returns>"state time" - "now" </returns>
-		double GetLocalTime() const
-		{
-			auto timeElapsed = std::chrono::high_resolution_clock::now();
-
-			auto value = std::chrono::duration<float, std::chrono::seconds::period>(timeElapsed - m_startTime);
-
-			float retValue = value.count();
-
-			return retValue;
-		}
-
-		/// <summary>
-		/// Rerturn the CPU "ticks"
-		/// </summary>		
-		long long GetSystemTick() const
-		{
-			return std::chrono::high_resolution_clock::now().time_since_epoch().count();
-		}
-
-	private:
-		std::chrono::steady_clock::time_point m_startTime;
-	};
 
 	static bool IsDiskFile(const std::string& _str)
 	{

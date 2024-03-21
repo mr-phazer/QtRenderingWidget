@@ -29,7 +29,6 @@ namespace rldx {
 
 		void SetMeshData(const DxCommonMeshData& meshData);
 
-
 		void BindToDC(ID3D11DeviceContext* poDC)
 		{
 			UINT stride = sizeof(CommonVertex);

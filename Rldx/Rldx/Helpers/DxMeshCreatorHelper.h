@@ -99,7 +99,7 @@ namespace rldx
 
 			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
 			{
-				AddCube(skeleton.bindposeMatrices[boneIndex], vertices);
+				AddCube(skeleton.bindposeMatrices[boneIndex], vertices, boneIndex);
 			}
 		}
 
@@ -120,7 +120,7 @@ namespace rldx
 			}
 		};
 
-		static void AddCube(const sm::Matrix& transformMatrix, std::vector<CommonVertex>& vertices)
+		static void AddCube(const sm::Matrix& transformMatrix, std::vector<CommonVertex>& vertices, uint32_t boneINdex)
 		{
 			const auto cubeScaleFactor = 1 / 70.0f;
 
@@ -135,6 +135,8 @@ namespace rldx
 						transformMatrix);
 
 				newVertex.position = sm::Vector4(position.x, position.y, position.z, 1);
+				newVertex.weights = { 1,0,0,0 };
+				newVertex.boneIndices = { boneINdex,0,0,0 };
 
 				vertices.push_back(newVertex);
 			}

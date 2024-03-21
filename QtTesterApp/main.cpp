@@ -1,7 +1,4 @@
-#include <QtWidgets/QApplication>
 #include "QtTestAppView.h"
-
-#include "..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
 int main(int argc, char* argv[])
 {

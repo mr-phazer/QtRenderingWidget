@@ -169,7 +169,7 @@ namespace rldx {
 
 	};
 
-	class DxMeshShaderProgram : public TDxShaderProgram<VS_MeshConstantBuffer, PS_PerMesh_ConstBuffer>
+	class DxMeshShaderProgram : public TDxShaderProgram<VS_PerMesh_ConstBuffer, PS_PerMesh_ConstBuffer>
 	{
 	public:
 		/*virtual void Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)

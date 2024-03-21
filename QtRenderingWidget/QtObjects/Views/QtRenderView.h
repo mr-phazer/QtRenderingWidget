@@ -1,5 +1,4 @@
 #pragma once
-
 #include <mouse.h>
 #include <qevent.h>
 #include <qmessagebox.h>
@@ -12,17 +11,37 @@
 
 #include "ui_QtRenderView.h"
 
-#include "..\rldx\rldx\Creators\DxSceneCreator.h"
-#include "..\rldx\rldx\Managers\DxDeviceManager.h"
-#include "..\rldx\rldx\Managers\DxSceneManager.h"
-#include "..\rldx\rldx\SceneGraph\SceneNodes\DxMeshNode.h"
+
+#include <Rldx\Creators\DxSceneCreator.h>
+#include <Rldx\Managers\DxDeviceManager.h>
+#include <Rldx\Managers\DxSceneManager.h>
+#include <Rldx\SceneGraph\SceneNodes\DxMeshNode.h>
 
 #include "..\rldx\rldx\DataTypes\DxMeshData.h"
 #include "..\rldx\rldx\Rendering\DxShaderProgram.h"
 
+class QtRenderWidgetView;
+
+class QtRenderController : public QObject
+{
+	Q_OBJECT
+
+		QtRenderWidgetView* view;
+
+public:
+	QtRenderController(QtRenderWidgetView* parentAndView);
+
+public slots:
+	void OnkeyPressed(QKeyEvent* keyEvent);
+};
+
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
+private:
+	QtRenderController* m_controller = nullptr;
+
+	friend class QtRenderController;
 
 private:
 	// overriden methods
@@ -36,6 +55,11 @@ private:
 
 public:
 	QtRenderWidgetView(QWidget* parent, const QString& gameidString);
+
+	void SetGrideDrawState(rldx::DxBaseNode::DrawStateEnum state)
+	{
+		m_upoSceneManager->GetCurrentScene()->SetGridState(state);
+	}
 
 	bool InitRenderView();
 
@@ -56,9 +80,9 @@ public:
 		auto sceneBuilder = std::make_shared<rldx::DxSceneCreator>();
 		auto scene =
 			sceneBuilder->Create((HWND)winId(),
-				rldx::DxDeviceManager::GetInstance().GetDevice(),
-				rldx::DxDeviceManager::GetInstance().GetDeviceContext(),
-				GetGameIdString().toStdWString());
+								 rldx::DxDeviceManager::GetInstance().GetDevice(),
+								 rldx::DxDeviceManager::GetInstance().GetDeviceContext(),
+								 GetGameIdString().toStdWString());
 
 		m_upoSceneManager->SetScene(scene);
 	}
@@ -77,7 +101,6 @@ private:
 protected:
 	virtual void focusInEvent(QFocusEvent* event) override;
 	virtual void focusOutEvent(QFocusEvent* event) override;
-
 
 signals:
 	void resizeEventHappend(QResizeEvent* event);
