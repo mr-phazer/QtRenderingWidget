@@ -3,73 +3,63 @@
 // TODO: make as many forward declarations as possible
 #include <FileFormats\Anim\Reader\TwAnimReader.h>
 #include "..\..\Animation\AnimationPlayer.h"
+#include "..\..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\..\Helpers\DxMeshCreatorHelper.h"
 #include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxShaderProgram.h"
 #include "DxMeshNode.h"
-
 
 namespace rldx
 {
 	class DxDeformerNode : public DxMeshNode
 	{
 		skel_anim::AnimationPlayer m_animationPlayer;
+		anim_file::TwAnimFileReader m_animFileReader;
 
 	public:
-		//std::shared_ptr<DxDeformerNode> Create(const std::wstring& name)
-		//{
-		//	auto newDeformerNode = std::make_shared<DxDeformerNode>();
-		//	newDeformerNode->SetName(name);
-		//	return newDeformerNode;
-		//}
-
-		void LoadBindPose(std::wstring animFilePath)
+		static std::shared_ptr<DxDeformerNode> Create(const std::wstring& name = L"")
 		{
-			auto animBytes = DxResourceManager::GetCallBackFile(animFilePath);
-			auto animFile = anim_file::TwAnimFileReader().Read(animBytes);
+			auto newMeshNode = std::make_shared<DxDeformerNode>();
+			newMeshNode->SetName(name);
+			newMeshNode->m_meshData.CreateConstBuffers(DxDeviceManager::Device());
+			newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
 
-			m_animationPlayer.CreateBindPose(animFile);
-
-			auto skeletonMesh = DxSkeletonMeshCreator::Create(
-				DxDeviceManager::Device(),
-				m_animationPlayer.GetSkeleton()
-			);
-
-			SetModelData(skeletonMesh);
-
-			auto simpleShaderProgram =
-				rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-					DxDeviceManager::Device(),
-					LR"(VS_Simple.cso)",
-					LR"(PS_Simple.cso)"
-				);
-
-			SetShaderProgram(simpleShaderProgram);
+			return newMeshNode;
 		}
 
-
+		void LoadBindPose(std::wstring animFilePath);
 		void LoadAnimClip(std::wstring animFile);
 
-		std::vector<sm::Matrix> GetFramePoseMatrices();
-
-		virtual void Update(float time) override
+		void AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName)
 		{
+			auto index = m_animationPlayer.GetSkeleton().GetIndexFromBoneName(libtools::wstring_to_string(boneName));
 
+			if (index != -1)
+			{
+				nodeWeapon->SetDeformerNodeRecursive(this, index); // recursive, all childres are attached, too
+			}
 		}
 
+		const VS_PerMeshConstBuffer_Skeleton* GetDeformerData() const;
+		virtual void Update(float time) override;
+
+	private:
+		void CopyMatrices();
+		// TODO: this mesh should not get get the data directly this like
 		/*
-		TODO: add the AnimationManager here
+			rather, renderquque should be sorted
 
-		void CreateBindPose(file)
-		{
-			- load file int AnimationManager
-			- generate skeleton stick-figure
-			- set shader and mesh data as for the GRID
-		}
-		void LoadAnimationClip(file)
+			skeleton 1
+			mesh, deformer = 1
+			mesh, deformer = 1
 
+			skeleton 2
+			mesh, deformer = 2
+			mesh, deformer = 2
+
+			S_PerMeshConstBuffer_Skeleton m_constBufferDerformerData_VS; ->const buffer
 		*/
 
-
+		VS_PerMeshConstBuffer_Skeleton m_constBufferDerformerData_VS;
 	};
 }

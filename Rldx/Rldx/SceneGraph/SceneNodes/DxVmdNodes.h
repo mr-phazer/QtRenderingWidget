@@ -73,30 +73,28 @@ namespace rldx {
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			std::wstring attcachPointName;
-			float probality = 1.0f;
+			float probability = 1.0f;
 
 		} slotData;
 	};
 
 	class DxVmdNode : public DxModelNode
 	{
-		VMDNodeData m_vmdNodeData;
+	public:
+		VMDNodeData vmdNodeData;
 
 	public:
 		using SharedPtr = std::shared_ptr<DxVmdNode>;
 	public:
 
-		// TODO: remove?
-		//SharedPtr Create(DxVmdNode* parent, const pugi::xml_node&);
-		// TODO: should this just be a public member?
-		VMDNodeData& VMDTagData() { return m_vmdNodeData; }
-		const VMDNodeData& VMDTagData() const { return m_vmdNodeData; }
+
+
 	};
 
 	class DxVMDSlotNode : public DxVmdNode
 	{
 	public:
-		DxVMDSlotNode(const pugi::xml_node& xmlNode, std::vector<std::wstring>& destAttachPointNames);
+		DxVMDSlotNode(const pugi::xml_node& xmlNode);
 	};
 
 	class DxVMDVariantMeshNode : public DxVmdNode

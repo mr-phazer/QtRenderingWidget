@@ -17,21 +17,9 @@ namespace rldx {
 
 	void DxModelNode::SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
 	{
-		// TODO: loading only LOD 0, load all?
-		//size_t iLod = 0;
-
-		// TODO: lod all LODs?
-		//m_lods.resize(rmv2File.fileHeader.wLodCount);
-
 		m_lods.resize(rmv2File.fileHeader.wLodCount);
-
-		// TODO: this for loading all LODs
-		//for (size_t iLod = 0; iLod < m_lods.size(); iLod++)
-
-
 		for (size_t iLod = 0; iLod < rmv2File.fileHeader.wLodCount; iLod++)
 		{
-
 			m_lods[iLod].resize(rmv2File.lodHeaders[iLod].dwMeshCount);
 			for (size_t iMesh = 0; iMesh < m_lods[iLod].size(); iMesh++)
 			{
@@ -47,12 +35,51 @@ namespace rldx {
 		}
 	}
 
+	void DxModelNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
+	{
+		DxMeshNode::SetDeformerNode(poDeformerNode, boneIndex); // sets the derformer using base class
+
+		for (auto& itLod : m_lods)
+		{
+			for (auto& itMeshNode : itLod)
+			{
+				itMeshNode->SetDeformerNode(poDeformerNode, boneIndex); // recursive
+			};
+		};
+	}
+
+	void DxModelNode::SetAttachBone(int32_t boneIndex)
+	{
+		DxMeshNode::SetAttachBone(boneIndex);
+
+		for (auto& itLod : m_lods)
+		{
+			for (auto& itMeshNode : itLod)
+			{
+				itMeshNode->SetAttachBone(boneIndex);
+			};
+		};
+	}
+
+	void DxModelNode::SetAttachBoneAsParent()
+	{
+		DxMeshNode::SetAttachBoneAsParent();
+
+		for (auto& itLod : m_lods)
+		{
+			for (auto& itMeshNode : itLod)
+			{
+				DxMeshNode::SetAttachBoneAsParent();
+			};
+		};
+	}
+
 	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_t iMesh, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
 	{
-
 		m_lods[iLod][iMesh] = DxMeshNode::Create(libtools::string_to_wstring(materialHeader.szMeshName));
 		auto rm2MeshData = DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
-		m_lods[iLod][iMesh]->SetModelData(rm2MeshData);
+		m_lods[iLod][iMesh]->SetMeshData(rm2MeshData, libtools::string_to_wstring(materialHeader.szMeshName));
+		m_lods[iLod][iMesh]->SetMeshPivot(materialHeader.transforms.vPivot);
 
 		// Iinit the bound from RigidModelV2 header
 		m_lods[iLod][iMesh]->SetBoundingBox(
@@ -66,7 +93,6 @@ namespace rldx {
 			this->GetNodeBoundingBox(),
 			m_lods[iLod][iMesh]->GetNodeBoundingBox());
 	}
-
 
 	void DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
 	{
@@ -107,6 +133,7 @@ namespace rldx {
 			return;
 		}
 
+		// TODO: make so all the "meshData" is the these mesh nodes, have the "DxModelNode" transforms, and pivot, and etc
 		for (auto& itMeshNode : m_lods[m_activeLod])
 		{
 			itMeshNode->FlushToRenderBucket(pRenderQueue);

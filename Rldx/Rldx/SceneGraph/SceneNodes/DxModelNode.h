@@ -9,7 +9,7 @@ namespace rldx
 	class IRenderBucket;
 
 	/// <summary>
-	/// Holds multiple meshes make up a complete model.
+	/// Holds multiple meshes to make up a complete model.	
 	/// </summary>
 	class DxModelNode : public DxMeshNode
 	{
@@ -20,9 +20,19 @@ namespace rldx
 		using SharedPtr = std::shared_ptr<DxModelNode>;
 
 	public:
-		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
 
+		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
+		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex) override;
+
+		/// <summary>
+		/// Set the deformer for this node and all its children recursively
+		/// </summary>
+		/// <param name="poDeformerNode"></param>
+
+
+		virtual void SetAttachBone(int32_t boneIndex) override;
+		virtual void SetAttachBoneAsParent() override;
 		// TODO add support for (parsed) WSMODEL
 		void LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
 

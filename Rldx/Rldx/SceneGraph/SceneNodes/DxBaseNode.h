@@ -8,6 +8,7 @@
 
 #include "..\NodeTransform\NodeTransform.h"
 
+
 namespace rldx {
 
 	enum class SceneNodeTypeEnum : uint32_t
@@ -19,6 +20,7 @@ namespace rldx {
 	};
 
 	class IRenderBucket;
+	class DxDeformerNode; // forward decl, as DxDeformerNode is derived DxBaseNode
 
 	class DxNodeCreator
 	{
@@ -43,10 +45,21 @@ namespace rldx {
 		enum class DrawStateEnum : bool { DontDraw = false, Draw = true };
 
 	public:
+		// TODO: make constructor, to force derived classes to set NodeType Enum / Type Description String
+		// TODO: make: "DxBaseNode(SceneNodeTypeEnum type, std::wstring Name)
 		DxBaseNode() = default;
 		virtual ~DxBaseNode() = default;
 
 		virtual DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
+
+		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
+		{
+			auto debug_break_1 = 1;;
+		};
+
+		virtual void SetDeformerNodeRecursive(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex);
+
+		virtual void SetAttachBone(int32_t boneIndex) {};
 
 		static SharedPtr Create(const std::wstring& name = L"")
 		{
@@ -206,8 +219,10 @@ namespace rldx {
 			return m_tempGlobalTransForm;
 		}
 
-		void Update(float timeElapsed) override;
+		virtual void Update(float timeElapsed) override;
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
+
+
 
 		void SetDrawState(DrawStateEnum state) { m_drawState = state; }
 		DrawStateEnum GetDrawState() const { return m_drawState; }
