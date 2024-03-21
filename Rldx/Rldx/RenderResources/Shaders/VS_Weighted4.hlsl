@@ -1,5 +1,5 @@
-#include "layout.hlsli"
-#include "VS_ConstBuffers.hlsli"
+#include "include/layout.hlsli"
+#include "include/VS_ConstBuffers.hlsli"
 
 
 void doSkinnning_New(
@@ -10,14 +10,14 @@ void doSkinnning_New(
 	out float3 tangent,
 	out float3 bitangent)
 {
-	float4x4 skinningMatrix = 0;
+    float4x4 skinningMatrix = 0;
 		
     [unroll]
-	for (int i = 0; i < weights_per_vertex; i++)
+    for (int i = 0; i < weights_per_vertex; i++)
     {
-        skinningMatrix += tranforms[input.BoneIndices[i]] * input.Weights[i];            	
+        skinningMatrix += tranforms[input.BoneIndices[i]] * input.Weights[i];
 
-        position.xyz = mul(position, skinningMatrix);
+        position.xyz = mul(position, skinningMatrix).xyz;
         normal = mul(normal, (float3x3) skinningMatrix);
         tangent = mul(normal, (float3x3) skinningMatrix);
         bitangent = mul(normal, (float3x3) skinningMatrix);
@@ -33,95 +33,105 @@ void DoSkinning(
 	out float3 tangent,
 	out float3 binormal)
 {
-	float4x4 FramePoseMatrices[4];
-	FramePoseMatrices[0] = tranforms[input.BoneIndices.x];
-	FramePoseMatrices[1] = tranforms[input.BoneIndices.y];
-	FramePoseMatrices[2] = tranforms[input.BoneIndices.z];
-	FramePoseMatrices[3] = tranforms[input.BoneIndices.w];
+    // the matrices used for this vertex' transformation
+    float4x4 FramePoseMatrices[4];
+    FramePoseMatrices[0] = tranforms[input.BoneIndices.x];
+    FramePoseMatrices[1] = tranforms[input.BoneIndices.y];
+    FramePoseMatrices[2] = tranforms[input.BoneIndices.z];
+    FramePoseMatrices[3] = tranforms[input.BoneIndices.w];
 
-	position = 0;
-	normal = 0;
-	tangent = 0;
-	binormal = 0;
+    position = 0;
+    normal = 0;
+    tangent = 0;
+    binormal = 0;
 	
 	[unroll]
-	for (int i = 0; i < weights_per_vertex; i++)
-	{
+    for (int i = 0; i < weights_per_vertex; i++)
+    {
 		// transform vertex position
-		position +=
+        position +=
 			input.Weights[i] * mul(float4(input.position.xyz, 1), FramePoseMatrices[i]);
 
 		// tranform lighting vectors, only use rotation part (3x3) of matrices 
-		normal.xyz +=
+        normal.xyz +=
 			input.Weights[i] * mul(input.normal.xyz, (float3x3) FramePoseMatrices[i]);
-		tangent.xyz +=
+        tangent.xyz +=
 			input.Weights[i] * mul(input.tangent.xyz, (float3x3) FramePoseMatrices[i]);
-		binormal.xyz +=
+        binormal.xyz +=
 			input.Weights[i] * mul(input.binormal.xyz, (float3x3) FramePoseMatrices[i]);
 
-	}
+    }
 }
 
 
 PixelInputType main(in VertexInputType input)
 {
-	PixelInputType output;
+    PixelInputType output;
 
-    
+#if 1     
     DoSkinning(input,
 	output.position,
 	output.normal,
 	output.tangent,
 	output.binormal
 	);
-
+#else
 	//#define DEBUG_NO_SKINING	
-	#ifdef DEBUG_NO_SKINING 
-	output.position.xyz = input.position.xyz;
-	output.normal.xyz = input.normal.xyz;
-	output.tangent.xyz = input.tangent.xyz;
-	output.binormal.xyz = input.binormal.xyz;
-	#endif	
-		
-	float4x4 mWorldMultipled = mul(mPerMesh_World, mPerFrameWorld);    	
 	
-	output.position = mul(float4(output.position.xyz, 1), mWorldMultipled);
+    output.position.xyz = input.position.xyz;
+    output.normal.xyz = input.normal.xyz;
+    output.tangent.xyz = input.tangent.xyz;
+    output.binormal.xyz = input.binormal.xyz;
+#endif	
+		
+    float4x4 mWorldMultipled = mul(meshWorld, mWorld);
+	
+    output.position = mul(float4(output.position.xyz + pivot, 1), meshWorld);
 	
 	// -- save world space position later calculations	
-	output.Wpos = output.position;	
+    output.Wpos = output.position;
 	
 
 	// ---- tranform normal, tangent, bitagent  (only world for normal and tangents, as they are not drawn) -----
-	output.normal.xyz = mul(output.normal.xyz, (float3x3) mWorldMultipled);
-	output.normal.xyz = normalize(output.normal.xyz);
+    output.normal.xyz = mul(output.normal.xyz, (float3x3) mWorldMultipled);
+    output.normal.xyz = normalize(output.normal.xyz);
 
-	output.tangent.xyz = mul(output.tangent.xyz, (float3x3) mWorldMultipled);
-	output.tangent.xyz = normalize(output.tangent.xyz);
+    output.tangent.xyz = mul(output.tangent.xyz, (float3x3) mWorldMultipled);
+    output.tangent.xyz = normalize(output.tangent.xyz);
 
-	output.binormal.xyz = mul(output.binormal.xyz, (float3x3) mWorldMultipled);
-	output.binormal.xyz = normalize(output.binormal.xyz);
+    output.binormal.xyz = mul(output.binormal.xyz, (float3x3) mWorldMultipled);
+    output.binormal.xyz = normalize(output.binormal.xyz);
 	
-	output.position = mul(float4(output.position.xyz, 1), mView);
-	output.position = mul(float4(output.position.xyz, 1), mProjection);
+    output.position = mul(float4(output.position.xyz, 1), mView);
+    output.position = mul(float4(output.position.xyz, 1), mProjection);
 
 	// save screen position for screen-space stuff
     output.screenPos = output.position;
 	
 	// UVs
-	output.tex1 = input.tex1;
-	output.tex2 = input.tex2;
+    output.tex1 = input.tex1;
+    output.tex2 = input.tex2;
 	
-	output.viewDirection.xyz = normalize(
+    
+    output.viewDirection.xyz = normalize(
 	eyePosition - output.Wpos.xyz);
 
-	output.eyePos = mViewInverse[3];
-    output.Wpos = float4(output.Wpos.xyz, 1);;
-	output.mViewI = mViewInverse;
+    //output.eyePos = (float3) mViewInverse[3];
+    output.eyePos = eyePosition;
+    
+    output.viewDirection.xyz = normalize(
+	eyePosition - output.Wpos.xyz);
+
+    
+// TODO : remove?                                  
+    //output.eyePos = mViewInverse[3];
+    //output.Wpos = float4(output.Wpos.xyz, 1);;
+    //output.mViewI = mViewInverse;
 
 	// vertex color
-	output.color = input.color;
+    output.color = input.color;
 
-	return output;
+    return output;
 }
 
 //#include "layout.hlsli"

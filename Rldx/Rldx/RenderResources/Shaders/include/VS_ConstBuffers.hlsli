@@ -24,6 +24,34 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 };
 
 
+cbuffer VS_PerMesh_ConstantBuffer : register(b1)
+{
+    float4x4 meshWorld;
+    float3 pivot;
+    int boneIndex;
+    
+    uint hasAlpha;
+    float padding1;
+    float padding2;
+    float padding3;
+}
+
+
+cbuffer VS_PerMesh_SkeletonConstantBuffer : register(b2)
+{
+    uint bone_count;
+    float reserved21;
+    float reserved22;
+    float reserved23;
+    
+    float4x4 tranforms[256];
+    float4x4 inverse[256];
+};
+
+
+
+
+
 //cbuffer VS_PerMesh_ConstantBuffer : register(b0)
 //{
 //    float4x4 mPerMesh_World;
@@ -41,6 +69,28 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 //    uint is_diffuse_gamma;
 //    uint is_specular_gamma;
 //    uint has_alpha;
+//};
+
+
+
+//cbuffer VS_PerMesh_ConstantBuffer : register(b0)
+//{
+//    float4x4 mPerMesh_World;
+//    float4 color;
+
+//    float4x4 rot_x;
+//    float4x4 rot_y;
+//    float4x4 rot_z;
+//    float4x4 mPivot;
+
+//    float3 pivot;
+//    int _reserved;
+
+//    uint show_reflections;
+//    uint is_diffuse_gamma;
+//    uint is_specular_gamma;
+//    uint has_alpha;
+//};
     
 //    LightStruct light;
     
@@ -89,16 +139,6 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 //}
 
 
-//cbuffer VS_PerMesh_SkeletonConstantBuffer : register(b2)
-//{                      
-//    uint bone_count;
-//    float reserved21;
-//    float reserved22;
-//    float reserved23;
-    
-//    float4x4 tranforms[256];
-//    float4x4 inverse[256];
-//};
 
 
 ////cbuffer PerIndiVidualModelConstantBuffer : register(b0)

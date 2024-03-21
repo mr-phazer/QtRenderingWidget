@@ -103,10 +103,10 @@ float4 main(in PixelInputType input) : SV_Target0
     
         if (bDoFactionColoring)
         {
-            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[0].rgb)), mask_p1);
-            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[1].rgb)), mask_p2);
-            diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(colorTable[2].rgb)), mask_p3);
-        }
+        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(mesh_faction_color1.rgb)), mask_p1);
+        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(mesh_faction_color2.rgb)), mask_p2);
+        diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * get_adjusted_faction_colour(_linear(mesh_faction_color3.rgb)), mask_p3);
+    }
         else
         {
             diffuse_colour.rgb = lerp(diffuse_colour.rgb, diffuse_colour.rgb * _linear(tint_color1.rgb), mask_p1);

@@ -64,7 +64,7 @@ cbuffer PS_DirectionalLight_ConstBuffer : register(b1)
 
     float4 screenRes;
 
-    float4 colorTable[3];
+    //float4 colorTable[3];
 };
 
 ////cbuffer PS_PerFrame_ConstBuffer : register(b0)
@@ -103,7 +103,7 @@ cbuffer PS_PerMesh_ConstBuffer : register(b2)
     float v_div;
 	//float reserved5;	
 
-    float4 decal_uv_rect;
+    float4 decal_uv_rect;    
 
     float4 color_no_tex;
 
@@ -119,6 +119,41 @@ cbuffer PS_PerMesh_ConstBuffer : register(b2)
 
     uint PisTextureSRGB[64];
 };
+
+//cbuffer PS_ConstBuffer_PerIndivual_Mesh : register(b2)
+//{
+//    float reserved1;
+//    float reflectivity;
+//    float ambientlight;
+
+//    uint bDoFactionColoring;
+
+//    uint alpha_used;
+//    uint mask_index;
+//    float decal_u;
+//    float decal_v;
+
+//    float u_div;
+//    float v_div;
+//    float reserved5;
+//    float reserved6;
+
+//    float4 decal_uv_rect; // TODO: is this value for statics only?
+
+//    float4 color_no_tex;
+//    float4 color1;
+//    float4 color2;
+//    float4 color3;
+
+//    float4 tint_color1;
+//    float4 tint_color2;
+//    float4 tint_color3;
+
+//    uint4 puiMaskIndices;
+
+//    uint PisTextureSRGB[64];
+
+//};
 
 //cbuffer PS_ConstBuffer_PerIndivual_Mesh : register(b2)
 //{

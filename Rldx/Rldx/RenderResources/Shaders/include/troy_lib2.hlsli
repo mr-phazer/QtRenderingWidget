@@ -1358,7 +1358,7 @@ float3 sample_environment_specular(in float roughness_in, in float3 reflected_vi
     const float env_map_lod_smoothness = adjust_linear_smoothness(1 - roughness_in);
     const float roughness = 1.0f - pow(env_map_lod_smoothness, env_lod_pow);
 
-    float texture_num_lods = 6.0f;
+    float texture_num_lods = 10.0f;
     float env_map_lod = roughness * (texture_num_lods - 1);
     float3 environment_colour = get_environment_colour(reflected_view_vec, env_map_lod);
 #else
@@ -1591,10 +1591,10 @@ void apply_faction_colours(inout float3 diffuse_colour_rgb, in const float2 tex_
         float mask_p3 = shaderTextures[t_Mask].Sample(SamplerLinear, tex_coord).b;
 
 	    //faction colours
-        diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /*_linear*/(colorTable[0].rgb), mask_p1);
-		diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /* _linear*/(colorTable[1].rgb), mask_p2);
-		diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /* _linear*/(colorTable[2].rgb), mask_p3);
-	}
+        diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /*_linear*/(mesh_faction_color1.rgb), mask_p1);
+        diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /* _linear*/(mesh_faction_color2.rgb), mask_p2);
+        diffuse_colour_rgb = lerp(diffuse_colour_rgb, diffuse_colour_rgb * /* _linear*/(mesh_faction_color1.rgb), mask_p3);
+    }
 }
 
 void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out float4 diffuse_colour, out float4 specular_colour, out float smoothness, out float3x3 normal_basis, out float3 texture_normal, in const PixelInputType input, in const bool faction_colours)
