@@ -5,11 +5,13 @@
 
 #include <D3d11.h>
 
-#include <SpriteFont.h>
-#include <SpriteBatch.h>
 #include <SimpleMath.h>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 
 #include "..\..\Rldx\Rldx\Tools\tools.h"
+
+#include "..\..\CommonLibs\Timer\SystemClockChecker.h"
 
 namespace rldx {
 
@@ -17,7 +19,7 @@ namespace rldx {
 	{
 		std::wstring m_string = L"";
 		sm::Color m_color = { 1,1,1,1 };
-		libtools::SystemClock m_clock;
+		timer::SystemClockChecker m_clock;
 		float m_clock_timeOut = 0;
 		float m_ratioOfTimeOut = 1.0f;
 
@@ -30,7 +32,7 @@ namespace rldx {
 
 		bool IsDone() const
 		{
-			auto localTime = (float)m_clock.GetLocalTime();
+			auto localTime = m_clock.GetLocalTime();
 			return localTime > m_clock_timeOut;
 		}
 
@@ -43,7 +45,7 @@ namespace rldx {
 		void Update()
 		{
 			auto localTime = (float)m_clock.GetLocalTime();
-			m_ratioOfTimeOut = 1.0f -std::min<float>(1.0f,  localTime / m_clock_timeOut);
+			m_ratioOfTimeOut = 1.0f - std::min<float>(1.0f, localTime / m_clock_timeOut);
 		}
 
 		DirectX::FXMVECTOR GetColor()
@@ -65,11 +67,11 @@ namespace rldx {
 		static std::unique_ptr<DxDebugTextWriter> Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext);
 
 		void AddString(const std::wstring& _string, DirectX::XMFLOAT4 color = { 1,1,1,1 }, float timeOut = 5.0f);
-				
+
 		void RenderText();
 
 	private:
-		
+
 		void RemoveStrings();
 
 		std::unique_ptr<DirectX::SpriteBatch> m_upoSpriteBatch;

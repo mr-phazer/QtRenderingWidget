@@ -1,9 +1,9 @@
 #include <string>
 
-#include "DxDebugTextWriter.h"
-#include "..\Tools\tools.h"
+#include <Timer\SystemClockChecker.h>
 #include "..\..\ImportExport\Helpers\ByteStream.h"
-
+#include "..\Tools\tools.h"
+#include "DxDebugTextWriter.h"
 using namespace rldx;
 
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
@@ -73,7 +73,7 @@ void DxDebugTextWriter::RenderText()
 
 void DxDebugTextWriter::RemoveStrings()
 {
-	for (int iString = (int)m_stringExtQueue.size() - 1; iString >= 0; --iString) 
+	for (int iString = (int)m_stringExtQueue.size() - 1; iString >= 0; --iString)
 	{
 		if (m_stringExtQueue[iString].IsDone())
 		{
