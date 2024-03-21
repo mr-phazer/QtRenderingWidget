@@ -1,2 +1,13 @@
-- Make ANIM v7 loading work
-- Draw a simple stick + cube skeleton
+FIX
+- Rigging/deformer bug related to "Generate Variant", only some models seem to be rigged properly, some
+	if "GenerateVariant()" is called before LoadSkeleton/SetDeformation, it semi-work, if after, not at all.
+	almost af if rigging/deformer is only applied to the ENABLED meshes??
+
+FIX
+- weird exception "UIAutomation" on exit research that			
+
+FIX
+- add in weapon wielding
+
+FIX
+- Clean up the deformation in general, it is too messy
