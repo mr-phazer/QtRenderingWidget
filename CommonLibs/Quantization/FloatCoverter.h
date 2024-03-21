@@ -10,12 +10,12 @@ struct FloatConverter {
 	template <typename UINT_TYPE>
 	static inline constexpr float GetUNormFloatFromUINT(UINT_TYPE integerfixedPoint)
 	{
-		//for all support types	
+		// check for supported types at compile-time
 		static_assert(
 			(std::is_same<UINT_TYPE, uint8_t>() ||
 			 std::is_same<UINT_TYPE, uint16_t>() ||
 			 std::is_same<UINT_TYPE, uint32_t>() ||
-			 std::is_same<UINT_TYPE, uint64_t>()), "Not a supported Integer");
+			 std::is_same<UINT_TYPE, uint64_t>()), "Not a supported unsigned integer");
 
 		size_t divider =
 			(
@@ -30,6 +30,7 @@ struct FloatConverter {
 		return retUnormFloat;
 	}
 
+	// TODO: remove? Clean up!
 	//template <typename UINT_TYPE>
 	//static inline constexpr float TGetUNormFloatFromUInt(UINT_TYPE integerfixedPoint)
 	//{
