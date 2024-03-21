@@ -1,11 +1,12 @@
 #pragma once
 
-#include "..\DataTypes\DerformerData.h"
+#include <memory>
+#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\Interfaces\IRenderQueueItem.h"
 #include "DxConstBuffer.h"
 
-namespace rldx {
-
+namespace rldx
+{
 	class DxMeshNode;
 	class DxBaseNode;
 	class DxMesh;
@@ -13,28 +14,31 @@ namespace rldx {
 	class DxMeshShaderProgram;
 	class DxDeformerNode;
 
-	typedef TDxVSShaderConstBuffer<DxDeformerData> DxDeformerDataConstBuffer;
-
-	struct DxMeshRenderData : public IRenderQueueItem
+	struct DxMeshData : public IRenderQueueItem
 	{
-		DxMesh* m_poMesh = nullptr;
-		DxMaterial* m_poMaterial = nullptr;
-		DxMeshShaderProgram* m_poShaderProgram = nullptr;
-		DxDeformerData m_deformerDataBuffer; // only used if node is a a skeleton/defomer node		
+		std::wstring meshName;
+		DxMesh* poMesh = nullptr;
+		DxMaterial* poMaterial = nullptr;
+		DxMeshShaderProgram* poShaderProgram = nullptr;
+		const DxDeformerNode* poDeformerNode = nullptr;
+		sm::Vector3 pivot;
 
-		// TODO: use this to move attached meshes (weapons/shields in VMDs)
-		sm::Matrix m_mWorldMatrix = sm::Matrix::Identity;;
-		sm::Matrix m_mModelSpaceMatrix = sm::Matrix::Identity;
-		sm::Vector3 m_pivotPoint = { 0,0,0 };
+		struct AttachPoint
+		{
+			int32_t boneIndex = -1;
+			sm::Matrix mWorldPreMultiply;
+		}
+		attachPoint;
 
-		DxDeformerNode* m_pDeformerNode = nullptr;
-		int attachIndex = -1; // the skeleton bone that will move THIS node
+		TDxVSShaderConstBuffer<VS_PerMesh_ConstBuffer> perMesh_VS_CB;
+		TDxVSShaderConstBuffer<VS_PerMeshConstBuffer_Skeleton> perMeshDerformer_VS_CB;
 
+		TDxPSShaderConstBuffer<PS_PerMesh_ConstBuffer> perMesh_PS_CB;
+
+		void CreateConstBuffers(ID3D11Device* poDevice);
 
 		virtual void Update(float time) override; // TODO: update deforming stuff
 		virtual void Draw(ID3D11DeviceContext* pDeviceContext) override;
 		virtual void BindToDC(ID3D11DeviceContext* pDeviceContext) override;
 	};
-
-};
-
+} // namespace rldx
