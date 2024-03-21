@@ -72,9 +72,6 @@
     <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\VertexCreators.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helpers\DataConversion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileFormats\RigidModel\RawStructs\VerticesRaw.h">
       <Filter>Header Files</Filter>
     </ClInclude>

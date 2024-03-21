@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)ImportExport;$(IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -162,7 +162,6 @@
     <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h" />
-    <ClInclude Include="Helpers\DataConversion.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
     <ClInclude Include="Helpers\TTree.h" />
     <ClInclude Include="Libs\PugiXML\pugiconfig.hpp" />
