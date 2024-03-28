@@ -21,16 +21,21 @@ namespace rldx
 		DxBaseNode::SharedPtr m_rootNode;
 		DxVmdNode::SharedPtr m_vmdNode;
 		std::shared_ptr<DxDeformerNode> m_deformerNode; // the skeleton animating this VMD
+
+		// TODO: these are stored ONLY for later saving? With no saving they could just be instantiated locally
 		DxVmdTreeBuilder m_treeBuilder;
 		pugi::xml_document m_xmlDoc;
+
+		// TODO: does this need to be a state?
 		std::vector<std::wstring> m_attachPointNames;
 
 	public:
 		void LoadVariantMesh(DxBaseNode* poSceneNode, ByteStream& bytes, const std::wstring& gameIdString);
 
 
-
+		// TODO: implement this, for simple use cases, before the fancy animation manager is done
 		void LoadAnimation(const std::wstring& animPath);
+
 		void GenerateVariant();
 
 		// TODO: implement

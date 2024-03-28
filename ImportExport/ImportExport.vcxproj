@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FileFormats\Anim\Helpers\DecodeHelper.h" />
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h" />
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h" />
@@ -159,7 +160,6 @@
     <ClInclude Include="FileFormats\Anim\Types\Common\FrameHeaders.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\QuantMetaTables.h" />
     <ClInclude Include="FileFormats\Anim\Types\Common\TwAnimFile.h" />
-    <ClInclude Include="FileFormats\Anim\Helpers\helpers.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
@@ -199,8 +199,8 @@
     <ClInclude Include="FileFormats\XmMaterial\Readers\XmMaterialReader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FileFormats\Anim\Helpers\DecodeHelper.cpp" />
     <ClCompile Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.cpp" />
-    <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp" />
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\FileHeader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp" />

@@ -64,19 +64,27 @@ namespace rldx
 		};
 	};
 
+
+
+	enum class ShaderTypeEnum
+	{
+		TroyWeighted, TroyDefault,
+		Wh3Weighted, Wh3Default,
+		AttilaWeighted, AtillaDefault,
+	};
+
+	enum class VertexShaderType
+	{
+		Weighted, NonWeighted
+	};
+
+
 	// TODO: change this to use the "ShaderTypeEnum" ENUMs instead
 	class GameShaderProgramCreatorFactory : public templates::TFactoryWStringKey<IShaderProgramCreator>
 	{
 	public:
-		enum class ShaderTypeEnum
-		{
-			TroyWeighted, TroyDefault,
-			Wh3Weighted, Wh3Default,
-			AttilaWeighted, AtillaDefault,
-		};
-
 		// TODO: use game_id_string and weighted true/false, to return the correct enum
-		ShaderTypeEnum GetTypeFromId(std::wstring gameIdString, bool weightedVs);
+		ShaderTypeEnum GetTypeId(std::wstring gameIdString, bool weightedVs);
 
 	public:
 

@@ -8,8 +8,8 @@ std::vector<sm::Matrix> skel_anim::FramePoseGenerator_PerTrackInterpolation::Gen
 
 	for (size_t boneIndex = 0; boneIndex < m_pSkeleton->boneTable.size(); boneIndex++)
 	{
-		auto& currentBone = m_pSkeleton->boneTable[boneIndex];
 		auto& keyGlobal = globalKeys.boneKeys[boneIndex];
+		auto& currentBone = m_pSkeleton->boneTable[boneIndex];
 
 		if (currentBone.parentIndex == -1)
 		{

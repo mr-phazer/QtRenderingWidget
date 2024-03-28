@@ -27,13 +27,23 @@ namespace rldx
 		GenerateVariant();
 	}
 
+	std::wstring GetPathFromSkeletonName(std::string& skeletonName)
+	{
+		// TODO: maybe make string literals consts in a proper place, like the resource manager?
+		return LR"(animations\skeletons\)" + libtools::string_to_wstring(skeletonName) + L".anim";
+	}
+
 	void DxVmdManager::LoadSkeleton(DxBaseNode* poSceneNode, std::string& skeletonName)
 	{
 		m_deformerNode = DxDeformerNode::Create();
-		m_deformerNode->LoadBindPose(LR"(animations\skeletons\)" + libtools::string_to_wstring(skeletonName) + L".anim");
+		m_deformerNode->LoadBindPose(GetPathFromSkeletonName(skeletonName));
 
 		// TODO: remove TEST CODE
-		m_deformerNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_05.anim)");
+		//m_deformerNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_05.anim)");
+
+		// TODO: remove TEST CODE: trying to load an ANIM v8 into the loaded VMD
+		m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_pistol\locomotion\hu1_swp_combat_walk_01.anim)");
+		//m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_shield\deaths\hu1_sws_death_01.anim)");
 
 		poSceneNode->AddChild(m_deformerNode);
 	}

@@ -1,17 +1,23 @@
 #include "QtTestAppView.h"
 
+#include <QDirIterator>
+#include <QFileInfo>
 #include <qlayout.h>
+
 
 #include "..\ImportExport\Helpers\ByteStream.h"
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
+
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
-#include "..\..\Rldx\Rldx\Animation\AnimationPlayer.h"
+#include "..\ImportExport\FileFormats\Anim\Creators\AnimFileHeaderCreator.h"
 #include "..\ImportExport\FileFormats\Anim\Reader\TwAnimReader.h"
 #include "..\Rldx\Rldx\Managers\DxDeviceManager.h"
+
+#include "..\ImportExport\FileFormats\Anim\Reader\TwAnimReader.h"
 
 namespace test_app_data
 {
@@ -181,8 +187,34 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	ByteStream::SetSearchFolder(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\)");
 
 
+
+
+
 #endif	
 
+#ifdef DO_TEST_CODE
+	QFileInfoList list;
+	QStringList listPaths;
+	QDirIterator dirIt("I:/Modding/WH3/animations/", QDirIterator::Subdirectories);
+	while (dirIt.hasNext()) {
+		dirIt.next();
+		if (QFileInfo(dirIt.filePath()).isFile())
+			if (QFileInfo(dirIt.filePath()).suffix() == "anim")
+			{
+				list.append(QFileInfo(dirIt.filePath()));
+				listPaths.push_back(QFileInfo(dirIt.filePath()).absoluteFilePath());
+
+			}
+	};
+
+	for (auto& diskPath : listPaths)
+	{
+		ByteStream bytes(diskPath.toStdWString());
+		auto parsedAnimFile = anim_file::TwAnimFileReader::Read(bytes);
+	}
+
+
+#endif
 
 	auto ptestData = &test_app_data::testData_WH2_brt_grail_guardians_VMD;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);

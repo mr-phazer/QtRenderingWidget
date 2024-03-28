@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Quantization\FloatCoverter.h">
+    <ClInclude Include="Quantization\QuantTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Timer\SystemClockChecker.h">
@@ -23,7 +23,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Quantization\FloatCoverter.cpp">
+    <ClCompile Include="Quantization\QuantTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Timer\SystemClockChecker.cpp">

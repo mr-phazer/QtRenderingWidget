@@ -19,11 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Quantization\FloatCoverter.h" />
+    <ClInclude Include="Quantization\QuantTools.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Quantization\FloatCoverter.cpp" />
+    <ClCompile Include="Quantization\QuantTools.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

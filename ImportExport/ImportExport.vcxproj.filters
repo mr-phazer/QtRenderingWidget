@@ -126,9 +126,6 @@
     <ClInclude Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileFormats\Anim\Helpers\helpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileFormats\Anim\Creators\BoneTableCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -151,6 +148,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileFormats\Anim\Types\Common\AnimFrameCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileFormats\Anim\Helpers\DecodeHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -200,9 +200,6 @@
     <ClCompile Include="FileFormats\Anim\Creators\AnimFileHeaderCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileFormats\Anim\Helpers\helpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,6 +207,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileFormats\Anim\Types\Common\FileHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileFormats\Anim\Helpers\DecodeHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
