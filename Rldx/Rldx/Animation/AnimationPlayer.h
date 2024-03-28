@@ -1,9 +1,6 @@
 #pragma once
 
 #include <Timer\SystemClockChecker.h>
-#include "../SceneGraph/SceneNodes/DxMeshNode.h"
-#include "..\\Rendering\DxConstBuffer.h"
-#include "AnimTrackReader.h"
 #include "FramePoseGenerator.h"
 #include "Skeleton.h"
 

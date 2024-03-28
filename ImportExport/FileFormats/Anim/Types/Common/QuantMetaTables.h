@@ -1,11 +1,36 @@
 #pragma once
 
-#include <cstdint>
 #include <SimpleMath.h>
 #include <vector>
+#include "..\..\Types\Common\AnimFrameCommon.h"
 
 namespace anim_file
 {
+	enum  class TranslationEncodeTypeEnum : int8_t
+	{
+		BindPose_Trans = 0,
+
+		Data_Byte3_Trans = 3,
+		Const_Byte3_Trans = -3,
+
+		Data_Float3_Trans = 12,
+		Const_Float3_Trans = -12,
+	};
+
+	enum class RotationEncodeTypeEnum : int8_t
+	{
+		Quat_BindPose = 0,
+
+		Data_Byte4_Quat = 4,
+		Const_Byte4_Quat = -4,
+
+		Data_Short4_Quat = 8,
+		Const_Word4_Quat = -8,
+
+		Data_Float4_Quat = 16,
+		Const_Float4_Quat = -16,
+	};
+
 	enum AnimTrackSourceEnum
 	{
 		BindPose, ConstTrack, FrameData
@@ -21,32 +46,61 @@ namespace anim_file
 		uint32_t GetConstTrackIndex() const;
 	};
 
-	struct TranslationRange
+	struct TranslationRangeElement
 	{
-		sm::Vector3 min = { 0,0,0 };
-		sm::Vector3 max = { 0,0,0 };
+		sm::Vector3 factor = { 0,0,0 };
+		sm::Vector3 base = { 0,0,0 };
 	};
 
-	struct QuanterionRange
+	struct QuanterionRangeElement
 	{
-		sm::Quaternion min = { 0,0,0,0 };
-		sm::Quaternion max = { 0,0,0,0 };
+		sm::Vector4 factor = { 0,0,0,0 };
+		sm::Vector4 base = { 0,0,0,0 };
 	};
 
-	struct BoneTrackMetaData_V8
+	// TODO: maybe use this inte
+	struct TranslationMetaDataElement_V8
 	{
-		uint32_t boneCount;
+		TranslationEncodeTypeEnum type;
 
-		std::vector<int8_t> translationTrackInfo;
-		std::vector<int8_t> rotationTrackInfo;
-
-		std::vector<TranslationRange> translationRange;
-		std::vector<QuanterionRange> quaternionRange;
+		constexpr bool IsConstTrackData() const
+		{
+			return (static_cast<int8_t>(type) < 0);
+		}
 	};
 
-	struct BoneTrackMetaData_V7
+	struct QuaternionMetaDataElement_V8
 	{
-		BoneTrackMetaData_V7(uint32_t boneCountValue)
+		RotationEncodeTypeEnum type;
+
+		constexpr bool IsConstTrackData() const
+		{
+			return (static_cast<int8_t>(type) < 0);
+		}
+	};
+
+	struct CompressionMetaData_V8
+	{
+		std::vector<TranslationMetaDataElement_V8> translationEncodeIds;
+		std::vector<QuaternionMetaDataElement_V8> rotationEncodeIds;
+
+		struct DeQuantRangeTables
+		{
+			uint32_t translationRangeTableLength = 0;
+			uint32_t quaterionRangeTableLength = 0;
+
+			std::vector<TranslationRangeElement> translationRanges;
+			std::vector<QuanterionRangeElement> quaternionRanges;
+		}
+		ranges;
+
+		AnimFrameCommon constTrackFrame;
+		AnimFrameCommon* poSkeletonBindPoseFrame = nullptr;
+	};
+
+	struct CompressionMetaData_V5_V7
+	{
+		CompressionMetaData_V5_V7(uint32_t boneCountValue)
 			:
 			boneCount(boneCountValue),
 			rotationTrackInfo(boneCount),

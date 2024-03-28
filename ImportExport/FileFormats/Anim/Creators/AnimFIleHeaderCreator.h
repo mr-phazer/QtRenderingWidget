@@ -19,4 +19,10 @@ namespace anim_file
 	public:
 		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
 	};
+
+	class Anim_V8_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
+	{
+	public:
+		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+	};
 }

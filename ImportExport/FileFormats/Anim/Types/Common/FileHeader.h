@@ -16,6 +16,12 @@ namespace anim_file
 		ANIM_VERSION_8 = 8
 	};
 
+	struct SubClipHeaderV8 // DOES this exist?
+	{
+		uint32_t dwUnknown1 = 0;
+		uint32_t subClipCounts = 1; // standard for every format, except anim v8
+	};
+
 	/// <summary>
 	/// Structure to contain all possible values of "TW ANIM" (v5), v6, v7, v8
 	/// </summary>
@@ -36,13 +42,7 @@ namespace anim_file
 
 		float fLastKeyTime = -1.0f;
 
-		struct SubHeaderV8 // DOES this exist?
-		{
-			uint32_t dwUnknown1 = 0;
-			uint32_t dwUnknown2 = 0;
-		}
-		subHeader_v8;
-
 		bool IsContentValid() override;
 	};
+
 }
