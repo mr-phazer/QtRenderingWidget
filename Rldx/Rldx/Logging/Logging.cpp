@@ -59,7 +59,7 @@ void ImplLog::LogSimpleWithColor(const std::string& strMsg, WORD wColorFlags)
 	WriteToLogFile(logString.str());
 }
 
-
+// TODO: Change to wstring, change whole impl, to the neater thing Frogo suggested
 void ImplLog::LogAction_success(const std::string& strMsg)
 {
 	WinConsole::Print(sm_prefix + L"SUCCESS:", BG_BLACK | FG_GREEN);

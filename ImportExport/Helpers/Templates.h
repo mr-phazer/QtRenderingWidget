@@ -16,6 +16,9 @@ namespace templates
 
 	//////////////////////////////////////////////////////////////////////////
 
+
+
+	// TODO: make b template + template a create class,  so one doesn't have to implement creators manually
 	template <typename BASE_TYPE, typename KEY_TYPE>
 	class TAbstractFactory
 	{
