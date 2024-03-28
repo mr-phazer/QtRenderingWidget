@@ -5,7 +5,7 @@
 #include <SimpleMath.h>
 #include <type_traits>
 
-struct FloatConverter {
+struct quant_tools {
 
 	template <typename UINT_TYPE>
 	static inline constexpr float GetUNormFloatFromUINT(UINT_TYPE integerfixedPoint)
@@ -94,10 +94,9 @@ struct FloatConverter {
 		return (static_cast<float>(fixedPoint) / 128.0f);
 	}
 
-	inline static constexpr float GetSNormFloatFromInt16(int16_t fixedPoint)
+	inline static constexpr float GetSNormFloatFromSignedInt16(int16_t fixedPoint)
 	{
 		return (static_cast<float>(fixedPoint) / (32767.0f));
-
 	}
 
 	inline static DirectX::XMFLOAT4 GetSNormFloat4FromByte4(DirectX::PackedVector::XMUBYTE4 vIn)
@@ -121,7 +120,7 @@ struct FloatConverter {
 		};
 	};
 
-	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromSINT84(DirectX::PackedVector::XMUBYTE4 vIn)
+	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromSINT84(DirectX::PackedVector::XMBYTE4 vIn)
 	{
 		return
 		{
@@ -131,26 +130,42 @@ struct FloatConverter {
 		};
 	};
 
-	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedInt4(DirectX::PackedVector::XMBYTE4 vIn)
+	inline static DirectX::XMFLOAT3 GetSNORMFloat3FromSINT84(int8_t* p)
+	{
+		return GetSNORMFloat3FromSINT84(DirectX::PackedVector::XMBYTE4(p[0], p[1], p[2], 0));
+	}
+
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedByte4(DirectX::PackedVector::XMBYTE4 vIn)
 	{
 		return
 		{
-			GetSNormFloatFromByte(vIn.x),
-			GetSNormFloatFromByte(vIn.y),
-			GetSNormFloatFromByte(vIn.z),
-			GetSNormFloatFromByte(vIn.w)
+			GetSNormFloatFromSINT8(vIn.x),
+			GetSNormFloatFromSINT8(vIn.y),
+			GetSNormFloatFromSINT8(vIn.z),
+			GetSNormFloatFromSINT8(vIn.w)
 		};
 	};
 
-	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedInt4(DirectX::PackedVector::XMSHORT4 vIn)
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedByte4(int8_t* p)
+	{
+		return GetSNormFloat4FromSignedByte4(DirectX::PackedVector::XMBYTE4(p[0], p[1], p[2], p[3]));
+	};
+
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedWord4(DirectX::PackedVector::XMSHORT4 vIn)
 	{
 		return	{
-			GetSNormFloatFromInt16(vIn.x),
-			GetSNormFloatFromInt16(vIn.y),
-			GetSNormFloatFromInt16(vIn.z),
-			GetSNormFloatFromInt16(vIn.w),
+			GetSNormFloatFromSignedInt16(vIn.x),
+			GetSNormFloatFromSignedInt16(vIn.y),
+			GetSNormFloatFromSignedInt16(vIn.z),
+			GetSNormFloatFromSignedInt16(vIn.w),
 		};
 	};
+
+	inline static DirectX::XMFLOAT4 GetSNormFloat4FromSignedWord4(int16_t* p)
+	{
+		return GetSNormFloat4FromSignedWord4(DirectX::PackedVector::XMSHORT4(p[0], p[1], p[2], p[3]));
+	};
+
 
 	inline static DirectX::XMFLOAT4 GetUNORMFloat4FromUnsigned4(DirectX::PackedVector::XMBYTE4 vIn)
 	{
@@ -174,8 +189,8 @@ struct FloatConverter {
 		};
 	};
 
-	template <typename CONST_BUF_DATA_TYPE>
-	inline static DirectX::XMFLOAT4 GetFloat4FromHalf4(const CONST_BUF_DATA_TYPE& in)
+
+	inline static DirectX::XMFLOAT4 GetFloat4FromHalf4(const DirectX::PackedVector::XMUSHORT4& in)
 	{
 		return {
 			DirectX::PackedVector::XMConvertHalfToFloat(in.x),
@@ -185,9 +200,7 @@ struct FloatConverter {
 		};
 	}
 
-
-	template <typename CONST_BUF_DATA_TYPE>
-	inline static DirectX::XMFLOAT2 GetFloat2FromHalf2(const CONST_BUF_DATA_TYPE& in)
+	inline static DirectX::XMFLOAT2 GetFloat2FromHalf2(const DirectX::PackedVector::XMUSHORT2& in)
 	{
 		return {
 			DirectX::PackedVector::XMConvertHalfToFloat(in.x),
