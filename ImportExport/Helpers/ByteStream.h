@@ -25,6 +25,9 @@ public:
 
 	static void SetSearchFolder(const std::wstring& path);
 
+	template <typename T>
+	std::vector<T> GetChunk(size_t bytes);
+
 	ByteVector GetAll() const;
 	ByteVector GetRawChunk(size_t bytes) const;
 	ByteVector GetRawChunk(size_t bytes, long long offset)	const;
@@ -67,6 +70,14 @@ public:
 };
 
 
+template<typename T>
+inline std::vector<T> ByteStream::GetChunk(size_t elements)
+{
+	std::vector<T> out(elements);
+	Read(out.data(), elements * sizeof(T));
+	return out;
+}
+
 template<typename CONST_BUF_DATA_TYPE>
 inline void ByteStream::TRead(CONST_BUF_DATA_TYPE* pDest)
 {
@@ -82,7 +93,7 @@ inline void ByteStream::TRead(CONST_BUF_DATA_TYPE* pDest)
 template<typename DATA_TYPE>
 inline DATA_TYPE ByteStream::TReadElement()
 {
-	DATA_TYPE element;
+	DATA_TYPE element = DATA_TYPE();
 	Read(&element, sizeof(DATA_TYPE));
 	return element;
 }
