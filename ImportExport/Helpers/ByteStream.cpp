@@ -21,10 +21,12 @@ ByteStream::ByteStream(void* pMem, size_t sizeInBytes, const std::wstring fileNa
 	// TODO: is this the best error handling? m_data.size()==0 will make "IsValid()" return false, so maybe?
 	if (sizeInBytes == 0) {
 		m_data.clear();
+		return;
 	}
 
 	if (pMem == nullptr) {
 		m_data.clear();
+		return;
 	}
 
 	m_data.resize(sizeInBytes);
@@ -51,7 +53,7 @@ ByteStream::ByteStream(const std::wstring& fileName, bool doThrow)
 		if (doThrow)
 			throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) + "', file does not exist.").c_str());
 		else
-			m_data.clear();  // TODO: redundant
+			m_data.clear();  // TODO: redundant?
 		return;
 	}
 }
