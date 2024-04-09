@@ -1,4 +1,3 @@
-// TODO: DirecInput not used (or is it?), find out, if is included by you or an MS header, maybe it can be avoided
 #define DIRECTINPUT_HEADER_VERSION  0x0800 
 
 #include "TwAnimReader.h"
@@ -21,6 +20,8 @@ namespace anim_file
 
 	AnimFile TwAnimFileReader::Read(ByteStream& inBytes)
 	{
+		m_animFile.metaData.path = inBytes.GetPath();
+
 		ReadFileHeader(inBytes);
 		ReadBoneTable(inBytes);
 
@@ -186,13 +187,13 @@ namespace anim_file
 
 			switch (transMeta.GetTrackSourceState())
 			{
-				case AnimTrackSourceEnum::FrameData:
+				case BoneTrackDataSourceEnum_v5_v7::FrameData:
 				{
 					outFrame.translations[iBone] = inBytes.TReadElement<sm::Vector3>();
 				}
 				break;
 
-				case AnimTrackSourceEnum::ConstTrack:
+				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
 				{
 					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
@@ -200,7 +201,7 @@ namespace anim_file
 				}
 				break;
 
-				case AnimTrackSourceEnum::BindPose:
+				case BoneTrackDataSourceEnum_v5_v7::BindPose:
 				{
 					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
@@ -214,13 +215,13 @@ namespace anim_file
 		{
 			switch (metaTable.rotationTrackInfo[iBone].GetTrackSourceState())
 			{
-				case AnimTrackSourceEnum::FrameData:
+				case BoneTrackDataSourceEnum_v5_v7::FrameData:
 				{
 					outFrame.rotations[iBone] = quant_tools::GetSNormFloat4FromSignedWord4(inBytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
 				}
 				break;
 
-				case AnimTrackSourceEnum::ConstTrack:
+				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
 				{
 					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
@@ -228,7 +229,7 @@ namespace anim_file
 				}
 				break;
 
-				case AnimTrackSourceEnum::BindPose:
+				case BoneTrackDataSourceEnum_v5_v7::BindPose:
 				{
 					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+// TODO: Forward declare anything possible
 #include <SimpleMath.h>
 #include "..\..\..\Helpers\ByteStream.h"
 #include "..\Types\Common\AnimFrameCommon.h"
