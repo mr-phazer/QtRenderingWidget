@@ -84,10 +84,14 @@ PixelInputType main(in VertexInputType input)
     output.binormal.xyz = input.binormal.xyz;
 #endif	
 		
-    float4x4 mWorldMultipled = mul(meshWorld, mWorld);
+    
 	
-    output.position = mul(float4(output.position.xyz + pivot, 1), meshWorld);
+    output.position = mul(float4(output.position.xyz + pivot, 1), weaponWorld);
 	
+    
+    float4x4 mWorldMultipled = nodeWorld;    
+    output.position = mul(float4(output.position.xyz, 1), mWorldMultipled);
+    
 	// -- save world space position later calculations	
     output.Wpos = output.position;
 	

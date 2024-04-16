@@ -6,8 +6,9 @@
 float3 doFakeSSR(in float3 env_specular, in float3 specular_color, in float smoothness);
 
 float4 main(in PixelInputType input) : SV_TARGET
-{
+{  
     
+  
     //float4 diffuse_colour_DEBUG = shaderTextures[t_Diffuse].Sample(SamplerLinear, input.tex1.xy);
     //return float4(diffuse_colour_DEBUG.rgb, 1.0f);
 

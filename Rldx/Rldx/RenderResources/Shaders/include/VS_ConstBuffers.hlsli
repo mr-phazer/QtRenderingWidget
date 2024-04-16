@@ -26,7 +26,8 @@ cbuffer VS_PerScene_ConstantBuffer : register(b0)
 
 cbuffer VS_PerMesh_ConstantBuffer : register(b1)
 {
-    float4x4 meshWorld;
+    float4x4 weaponWorld;
+    float4x4 nodeWorld;
     float3 pivot;
     int boneIndex;
     
