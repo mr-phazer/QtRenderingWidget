@@ -9,7 +9,6 @@ namespace anim_file
 	size_t DEBUG_translations = 0;
 	size_t DEBUG_rotations = 0;
 
-
 	sm::Vector3 TranslationTrackDecoder::DecodeConstTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
 		auto& transRange = meta.ranges.translationRanges[boneIndex];
@@ -31,7 +30,7 @@ namespace anim_file
 			break;
 		};
 
-		throw std::exception((" QuaternionTrackDecoder::DecodeConstTrack: Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(transMetaId.type))).c_str());
+		throw std::exception(("QuaternionTrackDecoder::DecodeConstTrack: Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(transMetaId.type))).c_str());
 
 		return sm::Vector3::Zero; // TODO: throw exception here, when stuff works
 	}
@@ -45,10 +44,25 @@ namespace anim_file
 		{
 			case TranslationEncodeTypeEnum::Const_Byte3_Trans:
 			case TranslationEncodeTypeEnum::Const_Float3_Trans:
+			{
+				if (m_constTrackIndex >= meta.constTrackFrame.translations.size())
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Const track index out of bounds!");
+
 				return meta.constTrackFrame.translations[m_constTrackIndex++];
+			}
+			break;
 
 			case TranslationEncodeTypeEnum::BindPose_Trans:
+			{
+				if (meta.poSkeletonBindPoseFrame == nullptr) // TODO: maybe not use a pointer, just have param = a reference to a copied object?
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
+
+				if (boneIndex >= meta.poSkeletonBindPoseFrame->translations.size())
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
+
 				return meta.poSkeletonBindPoseFrame->translations[boneIndex];
+			}
+			break;
 
 			case TranslationEncodeTypeEnum::Data_Byte3_Trans:
 			{
@@ -123,6 +137,7 @@ namespace anim_file
 
 	sm::Quaternion QuaternionTrackDecoder::DecodeDynamicTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
+		// TODO: add exceptions to check ranges?
 		auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
 		auto& rotationMetaId = meta.rotationEncodeIds[boneIndex];
 
@@ -140,8 +155,16 @@ namespace anim_file
 			break;
 
 			case RotationEncodeTypeEnum::Quat_BindPose:
+			{
+				if (meta.poSkeletonBindPoseFrame == nullptr)  // TODO: maybe not use a pointer, just have param = a reference to a copied object?
+					throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
+
+				if (boneIndex >= meta.poSkeletonBindPoseFrame->rotations.size())
+					throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
+
 				return meta.poSkeletonBindPoseFrame->rotations[boneIndex];
-				break;
+			}
+			break;
 
 			case RotationEncodeTypeEnum::Data_Byte4_Quat:
 			{
@@ -175,32 +198,17 @@ namespace anim_file
 
 		throw std::exception(("QuaternionTrackDecoder(): Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(rotationMetaId.type))).c_str());
 
-		return sm::Quaternion::Identity; // TODO: throw exception here, when stuff works
+		return sm::Quaternion::Identity; // TODO: Remove? Ideally this should never be reached, but maybe compiler will complaing about "not all paths return value..."
 	}
 
 	sm::Vector3 TranslationTrackDecoder::CorrectTranslationRange(sm::Vector3 inputSNormTranslation, const TranslationRangeElement& range)
 	{
 		return inputSNormTranslation * range.factor + range.base;
-
-		// TODO: remove if above works
-	/*	return sm::Vector3(
-			range.base.x + inputSNormTranslation.x * range.factor.x,
-			range.base.y + inputSNormTranslation.y * range.factor.y,
-			range.base.z + inputSNormTranslation.z * range.factor.z
-		);*/
 	};
 
 	sm::Quaternion QuaternionTrackDecoder::CorrectQuaterionRange(sm::Vector4 inputSnormQuanterion, const QuanterionRangeElement& range)
 	{
 		return inputSnormQuanterion * range.factor + range.base;
-
-		// TODO: remove if above works
-		//return sm::Vector4(
-		//	range.base.x + inputSnormQuanterion.x * range.factor.x,
-		//	range.base.y + inputSnormQuanterion.y * range.factor.y,
-		//	range.base.z + inputSnormQuanterion.z * range.factor.z,
-		//	range.base.w + inputSnormQuanterion.w * range.factor.w
-		//);
 	};
 
 } // namespace anim_file
