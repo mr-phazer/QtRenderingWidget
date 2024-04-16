@@ -44,6 +44,7 @@ namespace rmv2 {
 			Register < RigidMaterialEnum::weighted_skin_dirtmap, DefaultMaterialCreator>();
 
 			Register < RigidMaterialEnum::decal_dirtmap, DefaultMaterialCreator>();
+			Register < RigidMaterialEnum::tiled_dirtmap, DefaultMaterialCreator>();
 		}
 
 		void HandleKeyNotFound(RigidMaterialEnum keyValue) override
