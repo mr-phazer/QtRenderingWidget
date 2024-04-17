@@ -3,7 +3,7 @@
 #include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <SimpleMath.h>
 #include <vector>
-#include "Skeleton.h"
+#include "DataTypes\SkeletonAnimation.h"
 
 
 namespace skel_anim
@@ -65,7 +65,7 @@ namespace skel_anim
 
 
 			//size_t frameIndex = static_cast<size_t>(correctedTime * pAnimClip->keysPerSecond); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
-			//float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
+			//float interpolationFactor = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
 			//// if the time is beyond the last key?
 			//auto testTime = pAnimClip->lastKeyTime - frameIndex * (1.0f / pAnimClip->keysPerSecond);
@@ -108,13 +108,13 @@ namespace skel_anim
 	//		float correctedTime = time - loopCount * m_animFile->fileHeader.fLastKeyTime; // correct time, to it in [0; fAnimEnd]
 
 	//		size_t frameIndex = static_cast<size_t>(correctedTime * m_animFile->fileHeader.fFrameRate); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
-	//		float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
+	//		float interpolationFactor = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
 	//		const auto& translation0 = GetTranslationDiscrete(boneIndex, frameIndex);
 	//		const auto& translation1 = (correctedTime >= m_animFile->fileHeader.fLastKeyTime) ?
 	//			GetTranslationDiscrete(0, frameIndex) : GetTranslationDiscrete(0, frameIndex);
 
-	//		return sm::Vector3::Lerp(translation1, translation1, delta);
+	//		return sm::Vector3::Lerp(translation1, translation1, interpolationFactor);
 	//	}
 
 	//	sm::Quaternion GetRotation(size_t boneIndex) const
@@ -124,14 +124,14 @@ namespace skel_anim
 
 
 	//		size_t frameIndex = static_cast<size_t>(time * m_animFile->fileHeader.fFrameRate); // Frame index from  FPS*Time, UNITs:   [second] * [frames]/[second] = [frames]
-	//		float delta = correctedTime - static_cast<float>(frameIndex); // distance to next frame
+	//		float interpolationFactor = correctedTime - static_cast<float>(frameIndex); // distance to next frame
 
 
 	//		const auto& rotation0 = GetRotationDiscrete(boneIndex, frameIndex);
 	//		const auto& rotation1 = (correctedTime >= m_animFile->fileHeader.fLastKeyTime) ? GetRotationDiscrete(frameIndex, frameIndex) : GetRotationDiscrete(0, frameIndex);
 
 
-	//		return sm::Quaternion::Slerp(rotation0, rotation1, delta);
+	//		return sm::Quaternion::Slerp(rotation0, rotation1, interpolationFactor);
 	//	}
 	//};
 

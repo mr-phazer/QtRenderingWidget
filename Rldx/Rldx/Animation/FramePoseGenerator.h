@@ -2,7 +2,31 @@
 
 #include "AnimTrackReader.h"
 
+
 namespace skel_anim {
+
+	class Skeleton;
+	struct SkeletonAnimation;
+
+	class FramePoseGenerator
+	{
+		Skeleton m_skeleton;
+
+	public:
+		FramePoseGenerator() = default;
+		FramePoseGenerator(const Skeleton& skeleton)
+			: m_skeleton(skeleton)
+		{
+		}
+		void GenerateMatrices(const SkeletonKeyFrame& frameLocal,
+							  std::vector<sm::Matrix>& destPoseMatrices);
+
+
+		static void GenerateMatrices(const Skeleton& skeleton, const SkeletonKeyFrame& frameLocal,
+									 std::vector<sm::Matrix>& destPoseMatrices);
+
+	};
+
 
 	class FramePoseGeneratorAbstract
 	{

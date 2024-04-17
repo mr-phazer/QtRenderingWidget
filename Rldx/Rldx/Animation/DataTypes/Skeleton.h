@@ -22,27 +22,35 @@ namespace skel_anim
 	};
 
 	/// <summary>
-	/// Skeleton strucut
-	/// Can be used to frame data
+	/// Skeleton struct
+	/// Used for skeleton animation
+	/// Only the minimum is stored here, for flexibility
 	/// </summary>
-	struct Skeleton
+	class Skeleton
 	{
-		const static int32_t NO_PARENT = -1;
+		static const int32_t NO_PARENT = -1; // the ANIM file format uses -1 to indicate no parent
+
+		FramePoseMatrices m_inverseBindPoseMatrices; // used to transform vertices from model space to bone space
+		FramePoseMatrices m_bindposeMatrices; // used to make the bind pose of the skeleton "stick figure", and others
+
+		std::vector<SkeletonBoneNode> boneTable; // linear array of bones, used in the animation system
+
+	public:
 		Skeleton() = default;
-		Skeleton& operator=(Skeleton& inputFile);
+		Skeleton(const anim_file::AnimFile& inputFile); // constructor, calls SetBoneTable
 
-		Skeleton(const anim_file::AnimFile& inputFile);
+		//Skeleton& operator=(const Skeleton& copyFrom); // copy constructor		
+		const std::vector<SkeletonBoneNode>& GetBoneTable() const; // used to get the boneTable
 
-		void SetBoneTable(const anim_file::AnimFile& inputFile);
+		int32_t GetIndexFromBoneName(const std::string& boneName) const; // used to get the index of a bone from its name
 
-		int32_t GetIndexFromBoneName(const std::string& boneName) const;
+		const FramePoseMatrices& GetInverseBindPoseMatrices() const; // used to get the inverse bind pose matrices
+		const FramePoseMatrices& GetBindPoseMatrices() const; // used to get the inverse bind pose matrices
 
-		FramePoseMatrices inverseBindPoseMatrices;
-		FramePoseMatrices bindposeMatrices;
-
-		std::vector<SkeletonBoneNode> boneTable;
-		SkeletonKeyFrame bindPose;
+	private:
+		void SetBoneTable(const anim_file::AnimFile& inputFile); // used to fill the boneTable field
+		void AddChildren(); // used to fill the "children" field of of each bone
+		void FillBoneTable(const anim_file::AnimFile& inputFile); // used to fill the boneTable field
 	};
-
 
 } // namespace skel_anim

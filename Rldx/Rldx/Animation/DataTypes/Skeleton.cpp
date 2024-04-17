@@ -1,36 +1,44 @@
+#include <CustomExceptions\CustomExceptions.h>
+#include <Rldx\Animation\AnimationPlayer.h>
 #include "Skeleton.h"
 
 namespace skel_anim
 {
-	Skeleton& Skeleton::operator=(Skeleton& inputFile)
-	{
-		boneTable = inputFile.boneTable;
-		inverseBindPoseMatrices = inputFile.inverseBindPoseMatrices;
-		bindposeMatrices = inputFile.bindposeMatrices;
-		bindPose = inputFile.bindPose;
-
-		return *this;
-	}
-
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
+		auto animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+
 		SetBoneTable(inputFile);
+		FramePoseGenerator(*this).GenerateMatrices(animation->frameData.frames[0], m_bindposeMatrices);
+
+		for (auto& m : m_bindposeMatrices) {
+			m_inverseBindPoseMatrices.push_back(m.Invert());
+		}
+	}
+
+	/*Skeleton& Skeleton::operator=(const Skeleton& inputFile)
+	{
+		boneTable = inputFile.boneTable;
+		m_inverseBindPoseMatrices = inputFile.m_inverseBindPoseMatrices;
+		m_bindposeMatrices = inputFile.m_bindposeMatrices;
+
+		return *this;
+	}*/
+
+	const std::vector<SkeletonBoneNode>& Skeleton::GetBoneTable() const
+	{
+		return boneTable;
 	}
 
 	void Skeleton::SetBoneTable(const anim_file::AnimFile& inputFile)
 	{
-		boneTable.clear();
-		for (const auto& itBone : inputFile.boneTable.bones)
-		{
-			SkeletonBoneNode node;
+		FillBoneTable(inputFile);
 
-			node.name = itBone.strName;
-			node.boneIndex = itBone.id;
-			node.parentIndex = itBone.parent_id;
+		AddChildren();
+	}
 
-			boneTable.push_back(node);
-		}
-
+	void Skeleton::AddChildren()
+	{
 		for (int32_t iChildBone = 0; iChildBone < boneTable.size(); iChildBone++)
 		{
 			auto& parentBone = boneTable[iChildBone].parentIndex;
@@ -47,6 +55,21 @@ namespace skel_anim
 		}
 	}
 
+	void Skeleton::FillBoneTable(const anim_file::AnimFile& inputFile)
+	{
+		boneTable.clear();
+		for (const auto& itBone : inputFile.boneTable.bones)
+		{
+			SkeletonBoneNode node;
+
+			node.name = itBone.strName;
+			node.boneIndex = itBone.id;
+			node.parentIndex = itBone.parent_id;
+
+			boneTable.push_back(node);
+		}
+	}
+
 	int32_t Skeleton::GetIndexFromBoneName(const std::string& boneName) const
 	{
 		for (int32_t boneIndex = 0; boneIndex < boneTable.size(); boneIndex++)
@@ -58,5 +81,15 @@ namespace skel_anim
 		}
 
 		return -1;
+	}
+
+	const FramePoseMatrices& Skeleton::GetInverseBindPoseMatrices() const
+	{
+		return m_inverseBindPoseMatrices;
+	}
+
+	const FramePoseMatrices& Skeleton::GetBindPoseMatrices() const
+	{
+		return m_bindposeMatrices;
 	}
 }

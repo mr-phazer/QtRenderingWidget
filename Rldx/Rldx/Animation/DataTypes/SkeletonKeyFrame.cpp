@@ -1,6 +1,6 @@
-#include "Skeleton.h"
+#include "SkeletonKeyFrame.h"
 
-namespace anim_file { struct AnimFrameCommon; }
+#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 
 namespace skel_anim
 {
@@ -38,3 +38,4 @@ namespace skel_anim
 		return out;
 	}*/
 }
+
