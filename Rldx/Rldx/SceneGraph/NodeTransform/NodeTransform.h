@@ -25,7 +25,7 @@ namespace rldx {
 		/// <param name="_m"></param>
 		/// <returns></returns>
 		sm::Matrix GetGlobalTransform(const sm::Matrix& _m);		
-		sm::Matrix GetLocalTransform() const;		
+		sm::Matrix LocalTransform() const;		
 
 		void SetTransformFromMatrix(const sm::Matrix& _mIn);
 		

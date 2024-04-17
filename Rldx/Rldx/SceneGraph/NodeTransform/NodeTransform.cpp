@@ -3,7 +3,7 @@
 using namespace rldx;
 using namespace DirectX;
 
-sm::Matrix NodeTransform::GetLocalTransform() const
+sm::Matrix NodeTransform::LocalTransform() const
 {
 	auto mLocalTransformMatrix =
 		sm::Matrix::CreateTranslation(local.translation) *
@@ -13,15 +13,15 @@ sm::Matrix NodeTransform::GetLocalTransform() const
 	return mLocalTransformMatrix;
 }
 
-void NodeTransform::SetTransformFromMatrix(const sm::Matrix& _mIn) 
+void NodeTransform::SetTransformFromMatrix(const sm::Matrix& _mIn)
 {
 	sm::Matrix tempMatrix = _mIn;
-    tempMatrix.Decompose(local.scale, local.rotation, local.translation);	
+	tempMatrix.Decompose(local.scale, local.rotation, local.translation);
 }
 
 sm::Matrix NodeTransform::GetGlobalTransform(const sm::Matrix& _parent)
 {
-	return _parent * GetLocalTransform();
+	return _parent * LocalTransform();
 }
 
 void NodeTransform::SetRotation(const sm::Quaternion& q)
@@ -50,12 +50,12 @@ void NodeTransform::SetTranslation(float x, float y, float z)
 
 void NodeTransform::SetScale(const sm::Vector3& scale)
 {
-	local.scale = scale;	
+	local.scale = scale;
 }
 
 void NodeTransform::SetScale(float scale)
 {
-	local.scale = { scale, scale, scale };	
+	local.scale = { scale, scale, scale };
 }
 
 sm::Vector3 NodeTransform::GetScale()
@@ -70,5 +70,5 @@ sm::Vector3 NodeTransform::GetTranslation()
 
 sm::Quaternion NodeTransform::GetRotation()
 {
-	return local.rotation;	
+	return local.rotation;
 }
