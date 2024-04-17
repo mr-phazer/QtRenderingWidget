@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CustomExceptions\CustomExceptions.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomExceptions\CustomExceptions.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />
   </ItemGroup>
@@ -56,7 +58,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -139,6 +141,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
     <Link>
       <SubSystem>

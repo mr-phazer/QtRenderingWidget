@@ -21,12 +21,18 @@
     <ClInclude Include="Timer\SystemClockChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CustomExceptions\CustomExceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Quantization\QuantTools.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Timer\SystemClockChecker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomExceptions\CustomExceptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
