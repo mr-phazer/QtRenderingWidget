@@ -1,6 +1,6 @@
-#include "ShaderLoadingHelpers.h"
-#include "..\Tools\tools.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "..\Tools\tools.h"
+#include "ShaderLoadingHelpers.h"
 
 #include <exception>
 
@@ -9,7 +9,7 @@
 
 std::vector<uint8_t> rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
 {
-	ByteStream shaderBytes(shaderPath);
+	ByteStream shaderBytes(SHADER_PATH + shaderPath);
 	auto shaderCodeRaw = shaderBytes.GetAll();
 
 	return shaderCodeRaw;
@@ -37,7 +37,7 @@ ID3D11InputLayout* rldx::VertexShaderLoader::CreateInputLayoutDescFromVertexShad
 		pVertexShaderReflection->GetInputParameterDesc(i, &paramDesc);
 
 		// fill out input element desc
-		D3D11_INPUT_ELEMENT_DESC elementDesc;
+		D3D11_INPUT_ELEMENT_DESC elementDesc{};
 		elementDesc.SemanticName = paramDesc.SemanticName;
 		elementDesc.SemanticIndex = paramDesc.SemanticIndex;
 		elementDesc.InputSlot = 0;

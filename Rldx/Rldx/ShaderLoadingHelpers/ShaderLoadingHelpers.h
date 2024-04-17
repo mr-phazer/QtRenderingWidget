@@ -13,6 +13,8 @@
 
 namespace rldx {
 
+	const auto SHADER_PATH = L"/ShaderBin/";
+
 	class ShaderLoaderHelper
 	{
 	public:
@@ -64,9 +66,9 @@ namespace rldx {
 			);
 
 			// -- make input layout from vertex signature in shader code
- 			auto poInputLayout = CreateInputLayoutDescFromVertexShaderSignature(poDevice, shaderCodeRaw.data(), shaderCodeRaw.size());
+			auto poInputLayout = CreateInputLayoutDescFromVertexShaderSignature(poDevice, shaderCodeRaw.data(), shaderCodeRaw.size());
 
-			return (poInputLayout) ? VertexShaderFile(pDestShader, poInputLayout) : VertexShaderFile(pDestShader);			
+			return (poInputLayout) ? VertexShaderFile(pDestShader, poInputLayout) : VertexShaderFile(pDestShader);
 		};
 
 		static VertexShaderFile CreateVertexShaderFromMemory(ID3D11Device* poDevice, uint8_t* pSource, size_t sizeInBytes)
