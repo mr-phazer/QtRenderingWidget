@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include "..\..\DirectXTK\Inc\BufferHelpers.h"
 #include "..\..\DXUT\Core\DXUT.h"
 #include "..\Interfaces\IBindable.h"
@@ -17,30 +18,29 @@ namespace rldx {
 	template<typename CONST_BUF_DATA_TYPE>
 	class TConstBuffer
 	{
-
 		/// <summary>
 		/// Wraps GPU data buffer (MS DirectXTK class
 		/// </summary>
-		DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE> buffer;
+		std::shared_ptr<DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE>> buffer;
 
 	public:
-		/// <summary>
-		/// data, typically a struct, to be copied to the GPU
-		/// Stored on and editable from the CPU
-		/// </summary>
+		// TOD: make this pointer?
+			/// <summary>
+			/// data, typically a struct, to be copied to the GPU
+			/// Stored on and editable from the CPU
+			/// </summary>		/
 		CONST_BUF_DATA_TYPE data;
-
-
 
 	public:
 		void Init(ID3D11Device* poDevice, std::string debugName)
 		{
-			buffer.Create(poDevice);
-			DXUT_SetDebugName(buffer.GetBuffer(), debugName.c_str());
+			buffer = std::make_shared<DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE>>();
+			buffer->Create(poDevice);
+			DXUT_SetDebugName(buffer->GetBuffer(), debugName.c_str());
 		}
 
 		// Looks up the underlying D3D constant buffer.
-		ID3D11Buffer* GetBuffer() const noexcept { return buffer.GetBuffer(); }
+		ID3D11Buffer* GetBuffer() const noexcept { return buffer->GetBuffer(); }
 
 		/// <summary>
 		/// Copiesw the internal data to the CPU
@@ -48,12 +48,12 @@ namespace rldx {
 		/// <param name="poDeviceContext"></param>
 		virtual void RefreshGPUData(ID3D11DeviceContext* poDeviceContext)
 		{
-			buffer.SetData(poDeviceContext, data);
+			buffer->SetData(poDeviceContext, data);
 		}
 
 		virtual void RefreshGPUData(ID3D11DeviceContext* poDeviceContext, const CONST_BUF_DATA_TYPE& value)
 		{
-			buffer.SetData(poDeviceContext, value);
+			buffer->SetData(poDeviceContext, value);
 		}
 
 	};
@@ -85,7 +85,7 @@ namespace rldx {
 		void CopyAndBindToDC(ID3D11DeviceContext* poDeviceContext, const DATA_TYPE& inData)
 		{
 			TConstBuffer<DATA_TYPE>::RefreshGPUData(poDeviceContext, inData);
-			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { TConstBuffer<DATA_TYPE>::buffer.GetBuffer() };
+			ID3D11Buffer* vertexShaderSceneConstBuffers[1] = { TConstBuffer<DATA_TYPE>::GetBuffer() };
 			poDeviceContext->VSSetConstantBuffers(m_startSlot, 1, vertexShaderSceneConstBuffers);
 		}
 	};

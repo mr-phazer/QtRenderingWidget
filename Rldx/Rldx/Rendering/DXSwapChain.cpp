@@ -33,7 +33,7 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 		D3D11_BIND_DEPTH_STENCIL
 	);
 
-	// TODO: "REMEMBER TO MAKE THIS WOKR;FFS"
+	// TODO: Does thist work?
 
 	poDevice->CreateTexture2D(
 		&depthStencilDesc,
@@ -49,16 +49,13 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 		&m_BackBufferTexture.GetComPtrDepthStencilView()
 	);
 
-
 	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_BackBufferTexture.GetDescriptionRef().Height;
 	m_viewPort.Width = (float)m_BackBufferTexture.GetDescriptionRef().Width;
 	m_viewPort.MinDepth = 0;
 	m_viewPort.MaxDepth = 1;
 
-	poPC->RSSetViewports(
-		1,
-		&m_viewPort
+	poPC->RSSetViewports(1, &m_viewPort
 	);
 
 	DirectX::ThrowIfFailed(hr);
@@ -68,20 +65,25 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 {
 	auto poNew = std::make_unique<DxSwapChain>();
 
+	// TODO: put this in a helper function: 
+	// make a helper function: IDXGIFactory2* FetchFactory2(ID3D11Device* poDevice)
+
+
+
 	//----------------- get Factory2 interface ---------------
 	IDXGIDevice2* pDXGIDevice = nullptr;
-	HRESULT hr = poDevice->QueryInterface(__uuidof(IDXGIDevice2), (void**)&pDXGIDevice);
+	HRESULT hResult = poDevice->QueryInterface(__uuidof(IDXGIDevice2), (void**)&pDXGIDevice);
 	assert(SUCCEEDED(hr));
 
 	IDXGIAdapter* pDXGIAdapter = nullptr;;
-	hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pDXGIAdapter);
+	hResult = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pDXGIAdapter);
 	assert(SUCCEEDED(hr));
 
 	IDXGIFactory2* pIDXGIFactory = nullptr;;
 	pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&pIDXGIFactory);
 
+	// TODO: Put in helper/private function: MakeWindowSwapChain(width, height)
 	//--------- create swap chain ------------------
-
 	poNew->m_SwapChainDescription = DXGI_SWAP_CHAIN_DESC1{};
 	poNew->m_SwapChainDescription.Width = width;
 	poNew->m_SwapChainDescription.Height = height;
@@ -97,11 +99,12 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	poNew->m_SwapChainDescription.Flags = 0;
 
 	IDXGISwapChain1** p = &poNew->m_cpoSwapChain1;
-	hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
+	HRESULT hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
 	assert(SUCCEEDED(hr));
 	logging::LogActionSuccess("Created Swap Chain.");
 
-	// Get swap chain's back buffer, create its renderQuad target view and set that view as renderQuad target
+	// Get swap chain's back buffer, Store it in texture class
+	// TODO: create its renderQuad target view and set that view as renderQuad target (in the texture class)
 	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture2D()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
 	assert(SUCCEEDED(hr));
 
@@ -171,7 +174,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	//hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
 	//	(void**)&pBuffer);
 	hr = m_cpoSwapChain1->GetBuffer(0, __uuidof(ID3D11Texture2D),
-		(void**)&m_BackBufferTexture.GetComPtrTexture());
+									(void**)&m_BackBufferTexture.GetComPtrTexture());
 	// Perform error handling here!
 
 
@@ -180,7 +183,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	//hr = g_pd3dDevice->CreateRenderTargetView(pBuffer, NULL,
 	//	&g_pRenderTargetView);
 	hr = device->CreateRenderTargetView(m_BackBufferTexture.GetComPtrTexture().Get(), NULL,
-		&m_BackBufferTexture.GetComPtrRenderTargetView());
+										&m_BackBufferTexture.GetComPtrRenderTargetView());
 	// Perform error handling here!
 
 	//pBuffer->Release();
@@ -222,3 +225,4 @@ void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* 
 
 	_pDeviceContext->RSSetViewports(1, &m_viewPort);
 }
+

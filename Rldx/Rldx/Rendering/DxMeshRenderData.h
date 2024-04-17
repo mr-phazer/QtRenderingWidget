@@ -16,11 +16,13 @@ namespace rldx
 
 	struct DxMeshData : public IRenderQueueItem
 	{
+		DxMeshData() = default;
+
 		std::wstring meshName;
 		DxMesh* poMesh = nullptr;
 		DxMaterial* poMaterial = nullptr;
 		DxMeshShaderProgram* poShaderProgram = nullptr;
-		const DxDeformerNode* poDeformerNode = nullptr;
+		const DxDeformerNode* poDeformerSourceNode = nullptr;
 		sm::Vector3 pivot;
 
 		struct AttachPoint
@@ -29,6 +31,8 @@ namespace rldx
 			sm::Matrix mWorldPreMultiply;
 		}
 		attachPoint;
+
+		float visibilityDistance = 0.0f;
 
 		TDxVSShaderConstBuffer<VS_PerMesh_ConstBuffer> perMesh_VS_CB;
 		TDxVSShaderConstBuffer<VS_PerMeshConstBuffer_Skeleton> perMeshDerformer_VS_CB;

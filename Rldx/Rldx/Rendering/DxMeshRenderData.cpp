@@ -60,16 +60,16 @@ namespace rldx {
 
 		// TODO: MOVE TO "Update()"!!!
 		perMeshDerformer_VS_CB.SetStartSlot(2);
-		if (poDeformerNode)
+		if (poDeformerSourceNode)
 		{
-			auto skeletonVSConstBufferData = poDeformerNode->GetDeformerData();
+			auto skeletonVSConstBufferData = poDeformerSourceNode->GetDeformerData();
 			perMeshDerformer_VS_CB.data = *skeletonVSConstBufferData;
 
 			if (attachPoint.boneIndex != -1)
 			{
 
 				auto correctMatrix = sm::Matrix::CreateFromYawPitchRoll(DirectX::XM_PI, -DirectX::XM_PIDIV2, 0);
-				perMesh_VS_CB.data.mWorld = skeletonVSConstBufferData->boneTransform[attachPoint.boneIndex] * correctMatrix; //  TODO: MAYBE bounds checking??
+				perMesh_VS_CB.data.mWeaponWorld = skeletonVSConstBufferData->boneTransform[attachPoint.boneIndex] * correctMatrix; //  TODO: MAYBE bounds checking??
 				perMesh_VS_CB.data.pivot = pivot;
 			}
 		}
@@ -81,7 +81,7 @@ namespace rldx {
 			/*
 			ALGO:
 			if attachpoint != -1
-				vscbPerMesh.mWorld = poDeformerNode->GetDeformerData()[attachPoint.boneIndex] * this->mWorld;
+				vscbPerMesh.mWorld = poDeformerSourceNode->GetDeformerData()[attachPoint.boneIndex] * this->mWorld;
 
 
 			*/

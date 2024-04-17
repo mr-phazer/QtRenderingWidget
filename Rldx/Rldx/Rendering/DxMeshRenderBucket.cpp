@@ -12,6 +12,16 @@ void rldx::DxMeshRenderBucket::ClearItems() {
 	m_renderItems.clear();
 }
 
+void rldx::DxMeshRenderBucket::CopyItemsTo(IRenderBucket* pOtherBucket)
+{
+	for (auto& itItem : m_renderItems)
+	{
+		pOtherBucket->AddItem(itItem);
+	};
+
+	ClearItems();
+}
+
 void rldx::DxMeshRenderBucket::Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram)
 {
 	for (auto& itItem : m_renderItems)

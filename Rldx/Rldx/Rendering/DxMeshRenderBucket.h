@@ -17,6 +17,12 @@ namespace rldx {
 	public:
 		virtual void AddItem(DxMeshData* renderItem) override;;
 		virtual void ClearItems() override;;
+
+		const std::vector<DxMeshData*>& GetItems() { return m_renderItems; }
+
+		void CopyItemsTo(IRenderBucket* pOtherBucket);
+
+
 		void Draw(ID3D11DeviceContext* poDC, DxMeshShaderProgram* defaultShaderProgram = nullptr);
 	};
 }

@@ -323,9 +323,9 @@ void DxCameraOrbital::OnWheel(float delta)
 {
 	/*sm::Vector3 dir = m_v3LookAt - m_v3EyePosition;
 
-	m_v3EyePosition += dir * delta / 100.f;
+	m_v3EyePosition += dir * interpolationFactor / 100.f;
 
-	TextOutDebug::drawString("( " + std::to_string(delta) + ", " +
+	TextOutDebug::drawString("( " + std::to_string(interpolationFactor) + ", " +
 		std::to_string(m_v3EyePosition.x) + " ," +
 		std::to_string(m_v3EyePosition.y) + " ," +
 		std::to_string(m_v3EyePosition.z) + " ,"
@@ -555,7 +555,7 @@ void DxCameraOrbital::UpdateMouseDelta()
 		//XMVector v3ZoomDirection = xmEye - xmMouseWorld;
 
 		////DirectX::SimpleMathVector4(v3ZoomDirection);
-		//// Transform the position delta by the camera's rotation
+		//// Transform the position interpolationFactor by the camera's rotation
 		//XMVector vPosDeltaWorld = XMVector3TransformCoord(vPosDelta, mCameraRot);
 
 		//// Move the lookAt position

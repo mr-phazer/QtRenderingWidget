@@ -133,8 +133,6 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
-
-
 void DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
@@ -149,7 +147,7 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 	DXUT_SetDebugName(m_sceneFramePSConstBuffer.GetBuffer(), "PS_CB:DirectionalLight");
 
 	// TODO: test? Needed?
-	std::wstring cubeMapFolder = L""; // std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
+	std::wstring cubeMapFolder = L"Textures/CubeMaps/"; // std::wstring(DxResourceManager::GetDefaultAssetFolder());// +LR"(\Textures\CubeMaps\)";
 
 	// TODO: Put into DxAmbientLightSource::CreateFromFiles()
 	ByteStream iblDiffuseMapBinary(cubeMapFolder + L"LandscapeCubeMapIBLDiffuse.dds");

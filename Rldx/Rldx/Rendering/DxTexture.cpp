@@ -1,6 +1,7 @@
 
 
 
+#include <CustomExceptions\CustomExceptions.h>
 #include "..\..\DirectXTK\Inc\DirectXHelpers.h"
 #include "..\..\DXUT\Core\DXUT.h"
 #include "..\Logging\Logging.h"
@@ -15,16 +16,16 @@
 
 #include <DirectXHelpers.h>
 
-#include "..\Managers\ResourceManager\DxResourceManager.h"
+//#include "..\Managers\ResourceManager\DxResourceManager.h"
 
-/*inline void rldx::DxTexture::SetToActiveTargetView(ID3D11Deviceentext* deviceContext)
+/*void rldx::DxTexture::SetToActiveTargetView(ID3D11Deviceentext* deviceContext)
 {
 	auto pRTV = GetRenderTargetView();
 	ID3D11RenderTargetView* const ppRTV[] = { pRTV };
 	deviceContext->OMSetRenderTargets(1, ppRTV, NULL);
 }
 
-inline void rldx::DxTexture::clearPixels(ID3D11DeviceContext* pDeviceContext, sm::Color vColor)
+void rldx::DxTexture::clearPixels(ID3D11DeviceContext* pDeviceContext, sm::Color vColor)
 {
 	pDeviceContext->ClearRenderTargetView(m_cpoRenderTargetView.Get(), vColor);
 }*/
@@ -169,7 +170,7 @@ bool rldx::DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT 
 	return true;
 }
 
-inline HRESULT rldx::DxTexture::Create2dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount)
+HRESULT rldx::DxTexture::Create2dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount)
 {
 	ZeroMemory(&m_textureDesc, sizeof(m_textureDesc));
 	ZeroMemory(&m_shaderResourceViewDesc, sizeof(m_shaderResourceViewDesc));
@@ -199,7 +200,7 @@ inline HRESULT rldx::DxTexture::Create2dTextureBuffer(ID3D11Device* poD3DDevice,
 	return hr;
 }
 
-inline HRESULT rldx::DxTexture::CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice)
+HRESULT rldx::DxTexture::CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice)
 {
 	m_shaderResourceViewDesc.Format = m_textureDesc.Format;
 	m_shaderResourceViewDesc.ViewDimension =
@@ -215,7 +216,7 @@ inline HRESULT rldx::DxTexture::CreateShaderResourceViewBuffer(ID3D11Device* poD
 	return hr;
 }
 
-inline HRESULT rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice)
+HRESULT rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice)
 {
 	renderTargetViewDesc.Format = m_textureDesc.Format;
 	renderTargetViewDesc.ViewDimension =

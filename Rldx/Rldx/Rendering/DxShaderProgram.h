@@ -186,9 +186,9 @@ namespace rldx {
 
 		virtual void BindToDC(ID3D11DeviceContext* deviceContext) override
 		{
-			// TODO: should any const buffer data be sent from here?
-			auto& vsCB = GetCSEditableVS();
-			vsCB.mWorld = sm::Matrix::Identity;
+			//// TODO: should any const buffer data be sent from here?
+			//auto& vsCB = GetCSEditableVS();
+			//vsCB.mWorld = sm::Matrix::Identity;
 
 			deviceContext->PSSetShader(GetPixelShader(), nullptr, 0);
 			deviceContext->VSSetShader(GetVertexShader(), nullptr, 0);

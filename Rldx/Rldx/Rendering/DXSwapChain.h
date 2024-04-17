@@ -12,9 +12,9 @@
 
 // Standard lib headers
 #include <assert.h>
-#include <stdexcept>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <stdexcept>
 #include <vector>
 
 
@@ -92,6 +92,7 @@ namespace rldx
 
 		static Uptr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, bool useSRGB, UINT width = 1024, UINT height = 1024);
 
+		const rldx::DxSwapChain::Uptr& GetExtendedFactory();
 		void Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };

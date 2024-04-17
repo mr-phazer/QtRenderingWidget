@@ -20,7 +20,7 @@ inline void rldx::DxLightSource::SetLightPosition(DirectX::SimpleMath::Vector3 p
 	if (m_bControlByCamera)
 		m_lightSourceController->SetEyePosition(position);
 	else
-		m_lightConstBuffer.data.lightData[0].position = { position.x, position.y, position.z};
+		m_lightConstBuffer.data.lightData[0].position = { position.x, position.y, position.z };
 }
 
 inline void rldx::DxLightSource::SetLightDirection(DirectX::SimpleMath::Vector3 direction)
@@ -28,7 +28,7 @@ inline void rldx::DxLightSource::SetLightDirection(DirectX::SimpleMath::Vector3 
 	if (m_bControlByCamera)
 		m_lightSourceController->SetLookAt(direction);
 	else
-		m_lightConstBuffer.data.lightData[0].direction = { direction.x, direction.y, direction.z};
+		m_lightConstBuffer.data.lightData[0].direction = { direction.x, direction.y, direction.z };
 }
 
 inline void rldx::DxLightSource::SetLightRadiance(float radiance)
