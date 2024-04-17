@@ -1,50 +1,45 @@
 #pragma once
 
+#include <string>
+
 // TODO: make as many forward declarations as possible
 #include <FileFormats\Anim\Reader\TwAnimReader.h>
-#include "..\..\Animation\AnimationPlayer.h"
+#include <Rldx\Animation\DataTypes\Skeleton.h>
+#include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h>
+
 #include "..\..\DataTypes\ConstBuffers\CPUConstBuffers.h"
-#include "..\..\Helpers\DxMeshCreatorHelper.h"
-#include "..\..\Managers\DxDeviceManager.h"
-#include "..\..\Rendering\DxShaderProgram.h"
 #include "DxMeshNode.h"
 
 namespace rldx
 {
-	class DxDeformerNode : public DxMeshNode
+	// TODO: Refector: make is to there is only ONE deformer node (no derived classes, unless strictly neededed) 
+	// TODO: make class as simple as possible
+	class DxDeformerNode
+		: public DxMeshNode // TODO: mesh node for "skeleton stick figure" should be member/base/class/wholly separete?
 	{
-		skel_anim::AnimationPlayer m_animationPlayer;
-		anim_file::TwAnimFileReader m_animFileReader;
+		// TODO: remove: make private
+	protected:
+		skel_anim::Skeleton  m_skeleton;
+		skel_anim::AnimQueue m_animQueue;
+		anim_file::TwAnimFileReader m_animFileReader; // TODO: Refactor: should this really be stored here?
+
+		std::vector<sm::Matrix> m_framePoseMatrices;
 
 	public:
-		static std::shared_ptr<DxDeformerNode> Create(const std::wstring& name = L"")
-		{
-			auto newMeshNode = std::make_shared<DxDeformerNode>();
-			newMeshNode->SetName(name);
-			newMeshNode->m_meshData.CreateConstBuffers(DxDeviceManager::Device());
-			newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
+		static std::shared_ptr<DxDeformerNode> Create(const std::wstring& name = L"");
 
-			return newMeshNode;
-		}
+		virtual void LoadBindPose(std::wstring animFilePath);
+		virtual void LoadAnimClip(std::wstring animFile);
 
-		void LoadBindPose(std::wstring animFilePath);
-		void LoadAnimClip(std::wstring animFile);
-
-		void AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName)
-		{
-			auto index = m_animationPlayer.GetSkeleton().GetIndexFromBoneName(libtools::wstring_to_string(boneName));
-
-			if (index != -1)
-			{
-				nodeWeapon->SetDeformerNodeRecursive(this, index); // recursive, all childres are attached, too
-			}
-		}
+		virtual void AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName);
 
 		const VS_PerMeshConstBuffer_Skeleton* GetDeformerData() const;
 		virtual void Update(float time) override;
 
 	private:
-		void CopyMatrices();
+		virtual void CopyMatrices();
+
+
 		// TODO: this mesh should not get get the data directly this like
 		/*
 			rather, renderquque should be sorted
@@ -59,7 +54,7 @@ namespace rldx
 
 			S_PerMeshConstBuffer_Skeleton m_constBufferDerformerData_VS; ->const buffer
 		*/
-
+	protected:
 		VS_PerMeshConstBuffer_Skeleton m_constBufferDerformerData_VS;
 	};
 }

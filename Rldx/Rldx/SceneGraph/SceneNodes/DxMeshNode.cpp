@@ -21,6 +21,26 @@ namespace rldx
 		return newMeshNode;
 	}
 
+	void DxMeshNode::Clone(DxMeshData& clone) const {
+		//DxMeshData clone;
+
+		clone.meshName = m_meshData.meshName;
+		clone.poMesh = m_meshData.poMesh;
+		clone.poMaterial = m_meshData.poMaterial;
+		clone.poShaderProgram = m_meshData.poShaderProgram;
+		clone.poDeformerSourceNode = m_meshData.poDeformerSourceNode;
+		clone.pivot = m_meshData.pivot;
+
+		clone.attachPoint = m_meshData.attachPoint;
+
+		clone.CreateConstBuffers(DxDeviceManager::Device());
+
+		clone.perMesh_VS_CB.data = m_meshData.perMesh_VS_CB.data;
+		clone.perMesh_PS_CB.data = m_meshData.perMesh_PS_CB.data;
+		clone.perMeshDerformer_VS_CB.data = m_meshData.perMeshDerformer_VS_CB.data;
+
+	}
+
 	void DxMeshNode::SetMeshData(const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
 	{
 		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
@@ -31,7 +51,7 @@ namespace rldx
 
 	void DxMeshNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
 	{
-		m_meshData.poDeformerNode = poDeformerNode;
+		m_meshData.poDeformerSourceNode = poDeformerNode;
 		m_meshData.attachPoint.boneIndex = boneIndex;
 	}
 
@@ -65,9 +85,6 @@ namespace rldx
 			return;
 		}
 
-		// copy node geomtry to VS const buffer
-		m_meshData.perMesh_VS_CB.data.mWorld = GetCurrentGlobalTransForm();
-		m_meshData.perMesh_VS_CB.data.pivot = { 0.0f, 0.0f, 0.0f }; // TODO: actually set pivot point from the node, not just 0,0,0
 
 		pRenderQueue->AddItem(&m_meshData);
 	}
@@ -76,5 +93,8 @@ namespace rldx
 	{
 		DxBaseNode::Update(time);
 
+		UpdateGlobalTransform();
+		auto mParentWorld = GetCurrentGlobalTransForm().Transpose();
+		SetNodeWorldTransForm(mParentWorld);
 	}
 }

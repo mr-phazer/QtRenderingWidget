@@ -27,6 +27,7 @@ namespace rldx {
 					poDevice,
 					iLod,
 					iMesh,
+					rmv2File.lodHeaders[iLod],
 					rmv2File.lods[iLod].meshBlocks[iMesh].meshHeader,
 					rmv2File.lods[iLod].meshBlocks[iMesh].materialBlock.materialHeader,
 					rmv2File.lods[iLod].meshBlocks[iMesh]
@@ -74,12 +75,13 @@ namespace rldx {
 		};
 	}
 
-	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_t iMesh, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
+	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_t iMesh, const rmv2::LODHeaderCommon& lodHeader, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
 	{
 		m_lods[iLod][iMesh] = DxMeshNode::Create(libtools::string_to_wstring(materialHeader.szMeshName));
 		auto rm2MeshData = DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
 		m_lods[iLod][iMesh]->SetMeshData(rm2MeshData, libtools::string_to_wstring(materialHeader.szMeshName));
 		m_lods[iLod][iMesh]->SetMeshPivot(materialHeader.transforms.vPivot);
+		m_lods[iLod][iMesh]->SetMeshVisbilityDistance(lodHeader.fVisibilityDistance);
 
 		// Iinit the bound from RigidModelV2 header
 		m_lods[iLod][iMesh]->SetBoundingBox(
@@ -107,7 +109,6 @@ namespace rldx {
 		}
 	}
 
-
 	void DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData)
 	{
 		if (wsModelData.xmlMateriData.empty()) {
@@ -133,7 +134,6 @@ namespace rldx {
 			return;
 		}
 
-		// TODO: make so all the "meshData" is the these mesh nodes, have the "DxModelNode" transforms, and pivot, and etc
 		for (auto& itMeshNode : m_lods[m_activeLod])
 		{
 			itMeshNode->FlushToRenderBucket(pRenderQueue);

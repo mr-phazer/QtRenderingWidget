@@ -24,6 +24,11 @@ namespace rldx
 		UpdateNodesRecursive(m_rootNode.get(), timeElapsed);
 	}
 
+	void DxSceneGraph::UpdateNodes(DxBaseNode* pNode, float timeElapsed)
+	{
+		UpdateNodesRecursive(pNode, timeElapsed);
+	}
+
 	void DxSceneGraph::FillRenderBucket(IRenderBucket* pDestRenderBucket)
 	{
 		FillRenderBucketRecursive(m_rootNode.get(), pDestRenderBucket);

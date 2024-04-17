@@ -20,9 +20,11 @@ void rldx::DxBaseNode::SetDeformerNodeRecursive(const rldx::DxDeformerNode* poDe
 	}
 }
 
+
+
 void rldx::DxBaseNode::Update(float timeElapsed)
 {
-	UppdateGlobalTransform(timeElapsed);
+	UpdateGlobalTransform(timeElapsed);
 }
 
 void rldx::DxBaseNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)

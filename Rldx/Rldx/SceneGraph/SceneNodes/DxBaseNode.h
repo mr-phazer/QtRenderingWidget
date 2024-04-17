@@ -1,7 +1,6 @@
 #pragma once
 
-#pragma once
-
+#include <stack>
 #include "..\..\Interfaces\IFlushable.h"
 #include "..\..\Interfaces\IUpdateable.h"
 #include "..\..\Interfaces\TIdentifiable.h"
@@ -36,21 +35,36 @@ namespace rldx {
 
 	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
-		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
-		DirectX::BoundingBox m_BoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
-	public:
-		using SharedPtr = std::shared_ptr<DxBaseNode>;
-
 	public:
 		enum class DrawStateEnum : bool { DontDraw = false, Draw = true };
+		using SharedPtr = std::shared_ptr<DxBaseNode>;
+
+	private:
+		// Tree structure 
+		std::vector<SharedPtr> m_children;
+		DxBaseNode* m_wpoParent = nullptr;
+
+		// Node geomtry
+		NodeTransform m_nodeTransform;
+		sm::Matrix m_tempGlobalTransForm = sm::Matrix::Identity;
+
+		// TODO: check up on the init requiremnt
+		// init to very small extend, but not zero, as it will/might cause problems with bounding box
+		DirectX::BoundingBox m_BoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+
+		DrawStateEnum m_drawState = DrawStateEnum::DontDraw;
+
+	public:
+		DxBaseNode() = default;
+		DxBaseNode(const std::wstring& name) : TIdentifiable<SceneNodeTypeEnum>(name) {}
+		virtual ~DxBaseNode() = default;
+
 
 	public:
 		// TODO: make constructor, to force derived classes to set NodeType Enum / Type Description String
 		// TODO: make: "DxBaseNode(SceneNodeTypeEnum type, std::wstring Name)
-		DxBaseNode() = default;
-		virtual ~DxBaseNode() = default;
 
-		virtual DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
+		DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
 
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
 		{
@@ -73,7 +87,17 @@ namespace rldx {
 			m_name = this->GetTypeString() + L" # " + name + L" # " + std::to_wstring(GetId());
 		}
 
+		std::wstring GetName() const
+		{
+			return m_name;
+		}
+
 		DxBaseNode* GetParent()
+		{
+			return m_wpoParent;
+		}
+
+		const DxBaseNode* GetParent() const
 		{
 			return m_wpoParent;
 		}
@@ -196,22 +220,41 @@ namespace rldx {
 			}
 		}
 
+		// TODO: MAKE WORK
+		template <typename NODE_TYPE, typename WORK_TYPE>
+		static void DoTreeWOrk(NODE_TYPE* node, const WORK_TYPE&& work);
+
+
+
 		void RemoveChildren()
 		{
 			m_children.clear();
 		}
 
-		NodeTransform& GetTransform() { return m_nodeTransform; };
-		const NodeTransform& GetTransform() const { return m_nodeTransform; };
+		NodeTransform& Transform() { return m_nodeTransform; };
+		const NodeTransform& Transform() const { return m_nodeTransform; };
 
-		void UppdateGlobalTransform(float elapsetTime = 0.0f)
+		void UpdateBoundBoxesRecursive(DxBaseNode* node, DxBaseNode* rootNode)
+		{
+			DirectX::BoundingBox::CreateMerged(
+				rootNode->GetNodeBoundingBox(),
+				rootNode->GetNodeBoundingBox(),
+				node->GetNodeBoundingBox());
+
+			for (auto& itChild : node->GetChildren())
+			{
+				UpdateBoundBoxesRecursive(itChild.get(), rootNode);
+			}
+		}
+
+		void UpdateGlobalTransform(float elapsetTime = 0.0f)
 		{
 			auto parent = GetParent();
 
 			m_tempGlobalTransForm = parent ?
 				m_nodeTransform.GetGlobalTransform(parent->GetCurrentGlobalTransForm())
 				:
-				m_nodeTransform.GetLocalTransform();
+				m_nodeTransform.LocalTransform();
 		}
 
 		sm::Matrix GetCurrentGlobalTransForm() const
@@ -222,9 +265,7 @@ namespace rldx {
 		virtual void Update(float timeElapsed) override;
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue)/* override*/;
 
-
-
-		void SetDrawState(DrawStateEnum state) { m_drawState = state; }
+		virtual void SetDrawState(DrawStateEnum state) { m_drawState = state; }
 		DrawStateEnum GetDrawState() const { return m_drawState; }
 
 	private:
@@ -234,23 +275,30 @@ namespace rldx {
 		}
 
 	private:
-		// -- tree structure
-		std::vector<SharedPtr> m_children;
-		DxBaseNode* m_wpoParent = nullptr;
-		// -- node geomtry
-		NodeTransform m_nodeTransform;
-		sm::Matrix m_tempGlobalTransForm = sm::Matrix::Identity;
-
-		DrawStateEnum m_drawState = DrawStateEnum::Draw;
-
-		// TODO: DxNodeCube (DxDrawableMesh) HERE, so a little cube can be drawn
-
-		// Inherited via TIdentifiable
 		std::wstring GetTypeString() const override;
-
 		SceneNodeTypeEnum GetType() const override;
-
 	};
+
+	template<typename NODE_TYPE, typename WORK_TYPE>
+	inline void DxBaseNode::DoTreeWOrk(NODE_TYPE* rootNode, const WORK_TYPE&& WorkFunc)
+	{
+		//std::vector<NODE_TYPE*> nodeStack;
+		//nodeStack.push_back(rootNode);
+
+		//while (nodeStack.size() > 0)
+		//{
+		//	NODE_TYPE* node = nodeStack.back(); // get copy of last element (raw pointers)
+		//	nodeStack.pop_back(); // remove that last element from "stack
+
+		//	WorkFunc(node);
+
+		//	for (auto& itSpNode : node->GetChildren()) {
+		//		nodeStack.push_back(itSpNode.get());
+		//	}
+		//}
+	}
+
+
 }; // namespace rldx
 
 /// <summary>
@@ -271,3 +319,4 @@ namespace rldx {
 //	/// </summary>
 //	void ForEachNode(std::vector<INodeWorker*> nodeWorkes);
 //};
+

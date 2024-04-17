@@ -28,6 +28,7 @@ namespace rldx {
 		DirectX::BoundingBox GetRootBoundBox();
 
 		void UpdateNodes(float timeElapsed);
+		static void UpdateNodes(DxBaseNode* pNode, float timeElapsed);
 
 		/// <summary>
 		/// Fetches all "
@@ -39,7 +40,7 @@ namespace rldx {
 
 	private:
 		void FillRenderBucketRecursive(DxBaseNode* pNode, IRenderBucket* pDestRenderQueue);
-		void UpdateNodesRecursive(DxBaseNode* pRootNode, float timeElapsed);
+		static void UpdateNodesRecursive(DxBaseNode* pRootNode, float timeElapsed);
 		void UpdateBoundBoxRecursive(DxBaseNode* node);
 	};
 
