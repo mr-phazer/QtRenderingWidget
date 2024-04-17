@@ -9,7 +9,8 @@ namespace rldx {
 
 	struct VS_PerMesh_ConstBuffer
 	{
-		DirectX::XMFLOAT4X4 mWorld = sm::Matrix::Identity;
+		DirectX::XMFLOAT4X4 mWeaponWorld = sm::Matrix::Identity;
+		DirectX::XMFLOAT4X4 mNodeWorld = sm::Matrix::Identity;
 		DirectX::XMFLOAT3 pivot = { 0,0,0 };
 		int32_t bone_index = -1;
 
@@ -23,8 +24,8 @@ namespace rldx {
 	{
 		float reflectivity = 1.0;
 		float ambientLight = 1.0;
-		float reserved1;
-		float reserved2;
+		float reserved1 = 0.0f;
+		float reserved2 = 0.0f;
 
 		uint32_t bDoFactionColoring = 1;
 		uint32_t bDoTinting = 1;
@@ -50,7 +51,7 @@ namespace rldx {
 
 		DirectX::XMUINT4 puiMaskIndices = { 0,1,2,3 };
 
-		uint32_t PisTextureSRGB[64];
+		uint32_t PisTextureSRGB[64] = { 0 };
 	};
 
 	struct VS_PerScene_ConstantBuffer

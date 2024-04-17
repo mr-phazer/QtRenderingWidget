@@ -20,28 +20,42 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rldx\Animation\AnimationPlayer.cpp" />
+    <ClCompile Include="Rldx\Animation\AnimPlayList.cpp" />
     <ClCompile Include="Rldx\Animation\FramePoseGenerator.cpp" />
-    <ClCompile Include="Rldx\Animation\Skeleton.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\Skeleton.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\PathHelper.cpp" />
+    <ClCompile Include="Rldx\Animation\KeyFrameInterpolator.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
+    <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
+    <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
+    <ClCompile Include="Rldx\Animation\SkeletonKeyFrameSampler.cpp" />
+    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMeshRenderBucket.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\SkeletonAnimation.cpp" />
     <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
+    <ClInclude Include="Rldx\Animation\AnimPlayList.h" />
     <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
     <ClInclude Include="Rldx\Animation\FramePoseGenerator.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\Skeleton.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\PathHelper.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
-    <ClInclude Include="Rldx\Animation\Skeleton.h" />
-    <ClInclude Include="Rldx\Animation\SkeletonCreator.h" />
+    <ClInclude Include="Rldx\Animation\KeyFrameInterpolator.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
+    <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
+    <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
+    <ClInclude Include="Rldx\Animation\SkeletonKeyFrameSampler.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshRenderBucket.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.h" />
-    <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
     <ClInclude Include="Rldx\Helpers\DxMeshCreatorHelper.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.h" />
-    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.h" />
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h" />
     <ClInclude Include="Rldx\Creators\DxVmdNodeCreator.h" />
     <ClInclude Include="Rldx\DataTypes\CommonVertex.h" />
@@ -82,8 +96,7 @@
     <ClInclude Include="Rldx\Rendering\DxScene.h" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
-    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.cpp" />
     <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp" />
     <ClInclude Include="Rldx\Rendering\DxShaderProgram.h" />
     <ClInclude Include="Rldx\Rendering\DXSwapChain.h" />
@@ -100,6 +113,8 @@
     <ClInclude Include="Rldx\Tools\COMerrors.h" />
     <ClInclude Include="Rldx\Tools\tools.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\SkeletonAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
@@ -135,6 +150,7 @@
     <None Include=".clang-tidy" />
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl" />
     <None Include="Rldx\Logging\Inl\WinConsoleColors.inl" />
+    <None Include="Rldx\RenderResources\Font\Consolas18.spritefont" />
     <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\math_constants.hlsli" />
@@ -153,42 +169,56 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\VS_Simple.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\VS_Weighted4.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -196,7 +226,6 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{81f17f00-4039-48d3-afbf-6168ffb0a9fb}</ProjectGuid>
     <RootNamespace>Rldx</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -290,17 +319,23 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies);D3DCompiler.lib;dxguid.lib;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude);$(SolutionDir)CommonLibs</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <BrowseInformation>false</BrowseInformation>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -308,6 +343,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies);D3DCompiler.lib;dxguid.lib;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

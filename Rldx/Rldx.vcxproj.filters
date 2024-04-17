@@ -85,18 +85,27 @@
     <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp">
       <Filter>Rldx\Creators</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
-    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.cpp" />
     <ClCompile Include="Rldx\Animation\AnimationPlayer.cpp" />
     <ClCompile Include="Rldx\Animation\FramePoseGenerator.cpp" />
-    <ClCompile Include="Rldx\Animation\Skeleton.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\Skeleton.cpp" />
     <ClCompile Include="Rldx\Rendering\DxMeshRenderBucket.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.cpp" />
+    <ClCompile Include="Rldx\Animation\DataTypes\SkeletonAnimation.cpp" />
+    <ClCompile Include="Rldx\Animation\SkeletonKeyFrameSampler.cpp" />
+    <ClCompile Include="Rldx\Animation\KeyFrameInterpolator.cpp" />
+    <ClCompile Include="Rldx\Animation\AnimPlayList.cpp" />
+    <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.cpp" />
+    <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
+    <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\PathHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -255,11 +264,9 @@
     <ClInclude Include="Rldx\Tools\tools.h">
       <Filter>Rldx\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshhNode.h" />
-    <ClInclude Include="Rldx\Creators\VariantMeshh\VariantMeshCreator.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
-    <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VmdNodeCreators.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.h" />
@@ -268,9 +275,17 @@
     <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
     <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
     <ClInclude Include="Rldx\Animation\FramePoseGenerator.h" />
-    <ClInclude Include="Rldx\Animation\Skeleton.h" />
-    <ClInclude Include="Rldx\Animation\SkeletonCreator.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\Skeleton.h" />
     <ClInclude Include="Rldx\Rendering\DxMeshRenderBucket.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.h" />
+    <ClInclude Include="Rldx\Animation\DataTypes\SkeletonAnimation.h" />
+    <ClInclude Include="Rldx\Animation\SkeletonKeyFrameSampler.h" />
+    <ClInclude Include="Rldx\Animation\KeyFrameInterpolator.h" />
+    <ClInclude Include="Rldx\Animation\AnimPlayList.h" />
+    <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
+    <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\PathHelper.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +307,7 @@
     <None Include="Rldx\RenderResources\Shaders\include\TW3K_Lib.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
+    <None Include="Rldx\RenderResources\Font\Consolas18.spritefont" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Rldx">

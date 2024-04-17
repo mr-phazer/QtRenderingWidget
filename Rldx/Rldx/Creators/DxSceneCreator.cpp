@@ -1,3 +1,4 @@
+#include <DirectXCollision.h>
 #include "DxSceneCreator.h"
 
 #include "..\Helpers\DxMeshCreatorHelper.h"
@@ -56,8 +57,8 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	auto newSimpleShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
-			/*libtools::GetExePath() + */LR"(PS_Simple.cso)"
+			LR"(VS_Simple.cso)",
+			LR"(PS_Simple.cso)"
 		);
 
 	// TODO: I don't think this is ever used, it is needed, when there are are default matrerial? Maybe it IS needed as a fallback?
@@ -65,8 +66,8 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 	auto noTextures_ShaderProgram =
 		rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
 			poDevice,
-			/*libtools::GetExePath() + */LR"(VS_Simple.cso)",
-			/*libtools::GetExePath() + */LR"(PS_NoTextures.cso)"
+			LR"(VS_Simple.cso)",
+			LR"(PS_NoTextures.cso)"
 		);
 
 	AddGrid(poDevice, newSimpleShaderProgram);
@@ -100,7 +101,35 @@ void rldx::DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poSce
 	// TODO: clean block up !!!
 
 	poScene->GetVmdManager().LoadVariantMesh(poScene->GetSceneRootNode(), fileData, gameIdString);
-	//poScene->GetVmdManager().GenerateVariant();
+
+	for (size_t M = 0; M < 10; M++)
+	{
+		for (size_t N = 0; N < 12; N++)
+		{
+			// TODO: clean all this up, so the BB stuff is done when nodes are added to the scene, internally
+			// TODO: clean up
+			auto newVariant = poScene->GetVmdManager().GenerateVariant();
+
+			DirectX::BoundingBox DEBUG_BB = poScene->GetVmdManager().GetNode()->GetNodeBoundingBox();
+
+			newVariant->Transform().SetTranslation((N + 1) * DEBUG_BB.Extents.y * 1.2, 0, (M + 1) * DEBUG_BB.Extents.x * 1.6);
+			poScene->GetSceneRootNode()->AddChild(newVariant);
+
+			auto transform = newVariant->Transform().LocalTransform();
+			DEBUG_BB.Transform(DEBUG_BB, DirectX::XMLoadFloat4x4(&transform));
+
+
+			// grow the bounding box to contain the child node bounding box
+			DirectX::BoundingBox::CreateMerged(
+				poScene->GetSceneRootNode()->GetNodeBoundingBox(),
+				poScene->GetSceneRootNode()->GetNodeBoundingBox(),
+				DEBUG_BB);
+		}
+	}
+
+	auto baseNode = poScene->GetSceneRootNode();
+	DxBaseNode::DoTreeWOrk<DxBaseNode>(baseNode, [](DxBaseNode* node) {node->SetName(L"Blah"); });
+
 
 	//// TODO: re-enable these 2 lines when done debuggin skeleteon
 	//poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
