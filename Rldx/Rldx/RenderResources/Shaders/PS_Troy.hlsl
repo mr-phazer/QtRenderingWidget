@@ -69,14 +69,14 @@ float4 main(in PixelInputType input) : SV_TARGET
 
 
     float3 hdr_linear_col = standard_lighting_model_directional_light(
-        lightData[0].radiance * lightData[0].color.rgb,
+        lightData[0].radiance * lightData[0].color.rgb*2,
         light_vector,
         eye_vector,
         standard_mat
     );
 
 	//  Tone-map the pixel...
-    float3 ldr_linear_col = (saturate(Uncharted2ToneMapping(1.3  * hdr_linear_col)));
+    float3 ldr_linear_col = (saturate(tone_map_linear_hdr_pixel_value(1.3 * hdr_linear_col)));
     //float3 ldr_linear_col = saturate(tone_map_linear_hdr_pixel_value(hdr_linear_col));
 //----------------------------------------------------------
 

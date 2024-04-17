@@ -141,10 +141,10 @@ static const float real_approx_zero = 0.001f;
 //> = { 0.5, 0.2, 0.1, 1.0 };
 
 ////	Tone mapping values...
-//const float Tone_Map_Black = 0.001;
-//const float Tone_Map_White = 6.8f;
-//const float low_tones_scurve_bias = 0.33f;
-//const float high_tones_scurve_bias = 0.66f;
+static const float Tone_Map_Black = 0.001;
+static const float Tone_Map_White = 6.8f;
+static const float low_tones_scurve_bias = 0.33f;
+static const float high_tones_scurve_bias = 0.66f;
 
 ////	Misc...
 //const float env_lod_pow = 1.8f;
@@ -628,7 +628,7 @@ float3 get_environment_colour(in float3 direction, in float lod)
     tex_cube_specular.SampleLevel(
     s_anisotropic,
     ( /*texcoordEnvSwizzle*/(direction)),
-    lod).rgb * env_color.rgb * env_radiance;
+    lod).rgb * env_color.rgb * env_radiance*2;
 }
 
 //	Ambient diffuse
@@ -637,7 +637,7 @@ float3 cube_ambient(in float3 N)
     return
     tex_cube_diffuse.Sample(
     s_anisotropic,
-    /*texcoordEnvSwizzle*/(N)).rgb * env_color.rgb * env_radiance;
+    /*texcoordEnvSwizzle*/(N)).rgb * env_color.rgb * env_radiance*4;
 }
 
 // Diffuse
@@ -1609,7 +1609,7 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
  //   light_vector = normalize(light_position0.xyz - input.Wpos);
 
  //   specular_colour = t_specular_colour.Sample(MMMLWWWSampler, input.TexCoord.xy);
- //   specular_colour.rgb = _linear(specular_colour.rgb);
+    //specular_colour.rgb = _linear(specular_colour.rgb);
 
 	////	This value should be in gamma space...
  //   smoothness = ((t_smoothness.Sample(MMMLWWWSampler, input.TexCoord.xy).rgb)).x;
@@ -1643,21 +1643,19 @@ void ps30_get_shared_inputs(out float3 eye_vector, out float3 light_vector, out 
         0, 0, 0,
         0, 0, 0
     );
+    
+    eye_vector = -normalize(input.viewDirection);
+    light_vector = -normalize(lightData[0].lightDirection);
 
     diffuse_colour = shaderTextures[t_Diffuse].Sample(SamplerLinear, input.tex1.xy);
-    alpha_test(diffuse_colour.a);
-    
     diffuse_colour.rgb = _linear(diffuse_colour.rgb);
-    
-
-    eye_vector = -normalize(input.viewDirection);    
-    light_vector = -normalize(lightData[0].lightDirection);
+    alpha_test(diffuse_colour.a);      
 
     specular_colour = shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy);
     specular_colour.rgb = _linear(specular_colour.rgb);
 
 	//	This value should be in gamma space...
-    smoothness = _linear(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).r);
+    smoothness = /*_linear*/(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).r);
     smoothness = (smoothness); // added by PHAZER, as smooth is so high that specular highlight are so small they are almost invisible   
     //_gamma(shaderTextures[t_Specular].Sample(SamplerLinear, input.tex1.xy).a);
 
@@ -2043,145 +2041,145 @@ void ps30_get_shared_inputs_WH(out float3 eye_vector, out float3 light_vector, o
 //  TONE MAPPER     /////////////////////////////////////////
 /////////////////////////////////////////////////////////////
 
-//float3 tone_map_linear_hdr_pixel_value(in float3 linear_hdr_pixel_val)
-//{
-//	//	Determine the HDR CIE Log(Y)xy colour of this pixel in the input_val image...
-//    float4 hdr_CIE_LogYxy_pixel = HDR_RGB_To_HDR_CIE_Log_Y_xy(linear_hdr_pixel_val);
+float3 tone_map_linear_hdr_pixel_value(in float3 linear_hdr_pixel_val)
+{
+	//	Determine the HDR CIE Log(Y)xy colour of this pixel in the input_val image...
+    float4 hdr_CIE_LogYxy_pixel = HDR_RGB_To_HDR_CIE_Log_Y_xy(linear_hdr_pixel_val);
 
-//    //  Tone map this pixel and convert to LDR CIE Yxy value...
-//    float4 tone_mapped_ldr_CIE_Yxy_pixel = tone_map_HDR_CIE_Log_Y_xy_To_LDR_CIE_Yxy(hdr_CIE_LogYxy_pixel);
+    //  Tone map this pixel and convert to LDR CIE Yxy value...
+    float4 tone_mapped_ldr_CIE_Yxy_pixel = tone_map_HDR_CIE_Log_Y_xy_To_LDR_CIE_Yxy(hdr_CIE_LogYxy_pixel);
 
-//    //  Convert this LDR CIE Yxy value to linear RGB...
-//    float4 tone_mapped_ldr_linear_rgb = LDR_CIE_Yxy_To_Linear_LDR_RGB(tone_mapped_ldr_CIE_Yxy_pixel);
+    //  Convert this LDR CIE Yxy value to linear RGB...
+    float4 tone_mapped_ldr_linear_rgb = LDR_CIE_Yxy_To_Linear_LDR_RGB(tone_mapped_ldr_CIE_Yxy_pixel);
 
-//    //  Return tone mapped pixel...
-//    return tone_mapped_ldr_linear_rgb.rgb;
-//}
-
-////-----------------------------------------------------------------------------------------
-////-----------------------------------------------------------------------------------------
-//float4 HDR_RGB_To_HDR_CIE_Log_Y_xy(in float3 linear_colour_val)
-//{
-//	//	First convert to CIE XYZ...(I NEED TO VERIFY THESE NUMBERS FROM ANOTHER UNRELATED SOURCE!)
-//    float3x3 cie_transform_mat =
-//    {
-//        0.4124f, 0.3576f, 0.1805f,
-//										0.2126f, 0.7152f, 0.0722f,
-//										0.0193f, 0.1192f, 0.9505f
-//    };
-
-//    float3 cie_XYZ = mul(cie_transform_mat, linear_colour_val);
-
-//	//	Now transform this into CIE Yxy...
-//    float denominator = cie_XYZ.x + cie_XYZ.y + cie_XYZ.z;
-
-//    float x = cie_XYZ.x / max(denominator, real_approx_zero);
-//    float y = cie_XYZ.y / max(denominator, real_approx_zero);
-
-//	//	Return CIE Log(Y)xy...
-//    return float4(log10(max(cie_XYZ.y, real_approx_zero)), x, y, cie_XYZ.y);
-//}
+    //  Return tone mapped pixel...
+    return tone_mapped_ldr_linear_rgb.rgb;
+}
 
 ////-----------------------------------------------------------------------------------------
-////	Bias HDR CIE Log(Y)xy with an s-curve, then convert it to LDR CIE Yxy.  This
-////	function guarantees that Y >= 0.0f *but* Y can still be over-bright i.e. go above 1.0f.
-////	Any pixels with Y above 1.0f will contribute to bloom later in the pipeline.
 ////-----------------------------------------------------------------------------------------
-//float4 tone_map_HDR_CIE_Log_Y_xy_To_LDR_CIE_Yxy(in float4 hdr_LogYxy)
-//{
-//    //  Store these values in user-friendly variables.  These will be needed later in the tone-mapping process...
-//    float black_point = Tone_Map_Black;
-//    float white_point = Tone_Map_White;
-//    float log_Y_black_point = log10(Tone_Map_Black);
-//    float log_Y_white_point = log10(Tone_Map_White);
+float4 HDR_RGB_To_HDR_CIE_Log_Y_xy(in float3 linear_colour_val)
+{
+	//	First convert to CIE XYZ...(I NEED TO VERIFY THESE NUMBERS FROM ANOTHER UNRELATED SOURCE!)
+    float3x3 cie_transform_mat =
+    {
+        0.4124f, 0.3576f, 0.1805f,
+										0.2126f, 0.7152f, 0.0722f,
+										0.0193f, 0.1192f, 0.9505f
+    };
 
-//    //  Ensure that the brightness of the pixel is at least as bright as our black point...
-//    hdr_LogYxy.x = max(hdr_LogYxy.x, log_Y_black_point);
+    float3 cie_XYZ = mul(cie_transform_mat, linear_colour_val);
 
-//	//	Determine the Log(Y) value in terms of black and white points.  If the original value
-//	//	is within the black and white points then this value will be between zero and one
-//	//	otherwise it will be out of this range...
-//    float log_y_display_range = log_Y_white_point - log_Y_black_point;
+	//	Now transform this into CIE Yxy...
+    float denominator = cie_XYZ.x + cie_XYZ.y + cie_XYZ.z;
 
-//    //  Determine the log_y value in the space of the display range...
-//    float log_y_in_white_black = (hdr_LogYxy.x - log_Y_black_point) / log_y_display_range;
+    float x = cie_XYZ.x / max(denominator, real_approx_zero);
+    float y = cie_XYZ.y / max(denominator, real_approx_zero);
 
-//	//	Now bias this value by the s-curve...
-//    float log_y_in_white_black_scurve_biased = get_scurve_y_pos(log_y_in_white_black);
+	//	Return CIE Log(Y)xy...
+    return float4(log10(max(cie_XYZ.y, real_approx_zero)), x, y, cie_XYZ.y);
+}
 
-//    //  Convert back to real Log(Y)...
-//    float biased_log_y = log_Y_black_point + (log_y_in_white_black_scurve_biased * log_y_display_range);
+//-----------------------------------------------------------------------------------------
+//	Bias HDR CIE Log(Y)xy with an s-curve, then convert it to LDR CIE Yxy.  This
+//	function guarantees that Y >= 0.0f *but* Y can still be over-bright i.e. go above 1.0f.
+//	Any pixels with Y above 1.0f will contribute to bloom later in the pipeline.
+//-----------------------------------------------------------------------------------------
+float4 tone_map_HDR_CIE_Log_Y_xy_To_LDR_CIE_Yxy(in float4 hdr_LogYxy)
+{
+    //  Store these values in user-friendly variables.  These will be needed later in the tone-mapping process...
+    float black_point = Tone_Map_Black;
+    float white_point = Tone_Map_White;
+    float log_Y_black_point = log10(Tone_Map_Black);
+    float log_Y_white_point = log10(Tone_Map_White);
 
-//    //  Now convert this value from Log(Y) to just Y...
-//    float biased_y = pow(10.0f, biased_log_y);
+    //  Ensure that the brightness of the pixel is at least as bright as our black point...
+    hdr_LogYxy.x = max(hdr_LogYxy.x, log_Y_black_point);
 
-//    //  Determine where this is within the linear luminance range in units of this range...
-//    float ldr_y = (biased_y - black_point) / (white_point - black_point);
+	//	Determine the Log(Y) value in terms of black and white points.  If the original value
+	//	is within the black and white points then this value will be between zero and one
+	//	otherwise it will be out of this range...
+    float log_y_display_range = log_Y_white_point - log_Y_black_point;
 
-//    //  Return the LDR adjusted LDR CIE Yxy colour...
-//    return float4(ldr_y, hdr_LogYxy.yzw);
-//}
+    //  Determine the log_y value in the space of the display range...
+    float log_y_in_white_black = (hdr_LogYxy.x - log_Y_black_point) / log_y_display_range;
 
-////-----------------------------------------------------------------------------------------
-////	Convert LDR CIE Yxy pixel to linear LDR RGB.  Luminance values above 1.0f are clamped
-////  to 1.0f.  It might be that a better method is to convert to RGB with unclamped
-////  luminance and then clamp the RGB colour, but my hunch at this time is that clamping the
-////  luminance is the correct thing to do.  THIS NEEDS TO BE EVALUATED!!!
-////  See http://wiki.gamedev.net/index.php/D3DBook:High-Dynamic_Range_Rendering for more
-////  details.
-////-----------------------------------------------------------------------------------------
-//float4 LDR_CIE_Yxy_To_Linear_LDR_RGB(in float4 ldr_cie_Yxy)
-//{
-//    float Y = ldr_cie_Yxy[0];
-//    float x = ldr_cie_Yxy[1];
-//    float y = ldr_cie_Yxy[2];
+	//	Now bias this value by the s-curve...
+    float log_y_in_white_black_scurve_biased = get_scurve_y_pos(log_y_in_white_black);
 
-//    float safe_denominator = max(y, real_approx_zero);
+    //  Convert back to real Log(Y)...
+    float biased_log_y = log_Y_black_point + (log_y_in_white_black_scurve_biased * log_y_display_range);
 
-//    //  First get back the CIE XYZ values...
-//    float cie_Y = Y;
+    //  Now convert this value from Log(Y) to just Y...
+    float biased_y = pow(10.0f, biased_log_y);
 
-//    float3 cie_XYZ = { x * cie_Y / safe_denominator, cie_Y, (1 - x - y) * cie_Y / safe_denominator };
+    //  Determine where this is within the linear luminance range in units of this range...
+    float ldr_y = (biased_y - black_point) / (white_point - black_point);
 
-//    //  Now convert this back to RGB...(I NEED TO VERIFY THESE NUMBERS FROM ANOTHER UNRELATED SOURCE! THESE ARE CORRECTLY THE INVERSE OF THE
-//    //  OTHER VALUE FROM NEAR TOP OF PAGE. SO IT'S THOSE ABOVE VALUES THAT NEED TO BE VERIFIED.)
-//    float3x3 cie_XYZ_toRGB_transform_mat =
-//    {
-//        +3.2405f, -1.5372f, -0.4985f,
-//										            -0.9693f, +1.8760f, +0.0416f,
-//										            +0.0556f, -0.2040f, +1.0572f
-//    };
+    //  Return the LDR adjusted LDR CIE Yxy colour...
+    return float4(ldr_y, hdr_LogYxy.yzw);
+}
 
-//    float3 rgb = mul(cie_XYZ_toRGB_transform_mat, cie_XYZ);
+//-----------------------------------------------------------------------------------------
+//	Convert LDR CIE Yxy pixel to linear LDR RGB.  Luminance values above 1.0f are clamped
+//  to 1.0f.  It might be that a better method is to convert to RGB with unclamped
+//  luminance and then clamp the RGB colour, but my hunch at this time is that clamping the
+//  luminance is the correct thing to do.  THIS NEEDS TO BE EVALUATED!!!
+//  See http://wiki.gamedev.net/index.php/D3DBook:High-Dynamic_Range_Rendering for more
+//  details.
+//-----------------------------------------------------------------------------------------
+float4 LDR_CIE_Yxy_To_Linear_LDR_RGB(in float4 ldr_cie_Yxy)
+{
+    float Y = ldr_cie_Yxy[0];
+    float x = ldr_cie_Yxy[1];
+    float y = ldr_cie_Yxy[2];
 
-//    rgb.xyz = max(float3(0, 0, 0), rgb);
+    float safe_denominator = max(y, real_approx_zero);
 
-//    return float4(rgb.xyz, 1.0f);
-//}
+    //  First get back the CIE XYZ values...
+    float cie_Y = Y;
 
-//float get_scurve_y_pos(const float x_coord)
-//{
-//    float point0_y = 0.0f;
-//    float point1_y = low_tones_scurve_bias;
-//    float point2_y = high_tones_scurve_bias;
-//    float point3_y = 1.0f;
+    float3 cie_XYZ = { x * cie_Y / safe_denominator, cie_Y, (1 - x - y) * cie_Y / safe_denominator };
 
-//    float4 t = { x_coord * x_coord * x_coord, x_coord * x_coord, x_coord, 1.0f };
+    //  Now convert this back to RGB...(I NEED TO VERIFY THESE NUMBERS FROM ANOTHER UNRELATED SOURCE! THESE ARE CORRECTLY THE INVERSE OF THE
+    //  OTHER VALUE FROM NEAR TOP OF PAGE. SO IT'S THOSE ABOVE VALUES THAT NEED TO BE VERIFIED.)
+    float3x3 cie_XYZ_toRGB_transform_mat =
+    {
+        +3.2405f, -1.5372f, -0.4985f,
+										            -0.9693f, +1.8760f, +0.0416f,
+										            +0.0556f, -0.2040f, +1.0572f
+    };
 
-//    float4x4 BASIS =
-//    {
-//        -1.0f, +3.0f, -3.0f, +1.0f,
-//        			    +3.0f, -6.0f, +3.0f, +0.0f,
-//        			    -3.0f, +3.0f, +0.0f, +0.0f,
-//                        +1.0f, +0.0f, +0.0f, +0.0f
-//    };
+    float3 rgb = mul(cie_XYZ_toRGB_transform_mat, cie_XYZ);
 
-//    float4 g = mul(t, BASIS); //  Hope this is round the right way!!!!!!!!!!!!!!!!!
+    rgb.xyz = max(float3(0, 0, 0), rgb);
 
-//    //  Because the points are laid out with equal spaces between the x coords, then
-//    //  t and x are the same thing...
-//    return (point0_y * g.x) + (point1_y * g.y) + (point2_y * g.z) + (point3_y * g.w);
-//}
+    return float4(rgb.xyz, 1.0f);
+}
+
+float get_scurve_y_pos(const float x_coord)
+{
+    float point0_y = 0.0f;
+    float point1_y = low_tones_scurve_bias;
+    float point2_y = high_tones_scurve_bias;
+    float point3_y = 1.0f;
+
+    float4 t = { x_coord * x_coord * x_coord, x_coord * x_coord, x_coord, 1.0f };
+
+    float4x4 BASIS =
+    {
+        -1.0f, +3.0f, -3.0f, +1.0f,
+        			    +3.0f, -6.0f, +3.0f, +0.0f,
+        			    -3.0f, +3.0f, +0.0f, +0.0f,
+                        +1.0f, +0.0f, +0.0f, +0.0f
+    };
+
+    float4 g = mul(t, BASIS); //  Hope this is round the right way!!!!!!!!!!!!!!!!!
+
+    //  Because the points are laid out with equal spaces between the x coords, then
+    //  t and x are the same thing...
+    return (point0_y * g.x) + (point1_y * g.y) + (point2_y * g.z) + (point3_y * g.w);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////	technique11 pixel shaders
