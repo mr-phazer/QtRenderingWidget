@@ -1,28 +1,35 @@
 #pragma once
+
+#ifndef DIRECTINPUT_VERSION
+#define DIRECTINPUT_VERSION  0x0800
+#endif // !DIRECTINPUT_VERSION
+
 #include <d3d11.h>
 #include <functional>
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 // author heade
 #include "..\..\Helpers\StringKeyMap.h"
 #include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "IDxResource.h"
 
-
-
-#include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
+namespace skel_anim {
+	struct SkeletonAnimation;
+}
 
 namespace rldx {
 
 	// forward declarations
+
 	class DxMesh;
 	class DxTexture;
 	class DxMaterial;
 	class IDxShaderProgram;
 	class DxMeshShaderProgram;
+
 
 	class ResourceHandle
 	{
@@ -174,6 +181,7 @@ namespace rldx {
 		TResourceHandle<DxTexture> AllocTexture(const std::wstring& strId = L"");
 		TResourceHandle<DxMaterial> AllocMaterial(const std::wstring& strId = L"");;
 		TResourceHandle<DxMesh> AllocMesh(const std::wstring& strId = L"");
+		TResourceHandle<skel_anim::SkeletonAnimation> AllocAnim(const std::wstring& strId = L"");
 
 		/// <summary>
 		/// Get texture resource handle is it exists, or {INVALID_HANDLE, nullptr} if it does not

@@ -11,12 +11,9 @@ namespace rldx {
 		ShaderProgram,
 		Texture,
 		Material,
-		BytesStream
-
+		BytesStream,
+		Animation
 	};
 
-	class IDxResource : public TIdentifiable<ResourceTypeEnum>
-	{
-	
-	};
+	class IDxResource : public TIdentifiable<ResourceTypeEnum> {};
 }; // namespce rldx

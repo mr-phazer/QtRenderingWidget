@@ -1,11 +1,14 @@
 #include "DxResourceManager.h"
 
-
 // impl of the forward declared resources
-#include "..\..\Rendering\DxMesh.h"
+#include <Rldx\Animation\DataTypes\SkeletonAnimation.h>
 #include "..\..\Rendering\DxMaterial.h"
-#include "..\..\Rendering\DxTexture.h"
+#include "..\..\Rendering\DxMesh.h"
 #include "..\..\Rendering\DxShaderProgram.h"
+#include "..\..\Rendering\DxTexture.h"
+
+
+//#include "..\..\Animation\DataTypes\SkeletonAnimation.h"
 
 
 using namespace rldx;
@@ -39,7 +42,7 @@ DxResourceManager* rldx::DxResourceManager::Instance()
 {
 	if (!sm_spoInstance) {
 		sm_spoInstance = std::unique_ptr<DxResourceManager>(new DxResourceManager);
-			}
+	}
 
 	return sm_spoInstance.get();
 }
@@ -59,8 +62,13 @@ TResourceHandle<DxMesh> rldx::DxResourceManager::AllocMesh(const std::wstring& s
 	return AllocEmpty<DxMesh>(strId);
 }
 
+TResourceHandle<skel_anim::SkeletonAnimation> rldx::DxResourceManager::AllocAnim(const std::wstring& strId)
+{
+	return AllocEmpty<skel_anim::SkeletonAnimation>(strId);
+}
+
 TResourceHandle<DxTexture> rldx::DxResourceManager::GetTexture(const std::wstring& strId)
-{	
+{
 	auto it = m_umapResourcePtrByString.find(strId);
 
 	if (it != m_umapResourcePtrByString.end()) {

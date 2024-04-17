@@ -1,5 +1,9 @@
 #pragma once
 
+//#ifndef DIRECTINPUT_VERSION
+//#define DIRECTINPUT_VERSION  0x0800 // to avoid compiler warnings about DirecIput version not set
+//#endif // !DIRECTINPUT_VERSION
+
 // Standard lib headers
 #include <memory>
 
@@ -19,10 +23,15 @@ namespace rldx
 	/// </summary>
 	class DxDeviceManager
 	{
+
+
 		DxDeviceManager() {};
 		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
 	public:
 		using PUnique = std::unique_ptr<DxDeviceManager>;
+
+		struct DxD3dInterFaces { ID3D11Device* poDevice = nullptr; ID3D11DeviceContext* poDeviceContext = nullptr; };
+
 
 		~DxDeviceManager() {
 			auto DEBUG_1 = 1;
@@ -35,8 +44,21 @@ namespace rldx
 			return GetInstance().GetDeviceContext();
 		}
 
+		static DxD3dInterFaces Devices() {
+			return
+			{
+				GetInstance().GetDevice(),
+				GetInstance().GetDeviceContext()
+			};
+		}
+
 		static ID3D11Device* Device() {
 			return GetInstance().GetDevice();
+		}
+
+		static 	DxDebugTextWriter* DebugTextWriter()
+		{
+			return GetInstance().GetDebugTextWriter();
 		}
 
 		DxDebugTextWriter* GetDebugTextWriter()

@@ -1,10 +1,10 @@
 
-#include "DxSceneManager.h"
-#include "..\Rendering\DXSwapChain.h"
-#include "DxDeviceManager.h"
+#include <windows.h>
+#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 #include "..\Logging\Logging.h"
 #include "..\Tools\tools.h"
-#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
+#include "DxDeviceManager.h"
+
 
 
 using namespace rldx;
@@ -19,13 +19,16 @@ DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 	logging::LogAction("Calling InitDirectd3d11..");
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
-	if (!SUCCEEDED(hr))	{
+	if (!SUCCEEDED(hr)) {
+		logging::LogActionError("Init d3d 11 failed!");
 		throw DirectX::com_exception(hr);
 	}
 
 	logging::LogAction("Create State Object..");
 	// Create state objects.
 	poNewInstance->m_stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
+
+	logging::LogAction("Create Debug Text Writer..");
 	poNewInstance->m_upoDebugTextWriter = DxDebugTextWriter::Create(poNewInstance->GetDevice(), poNewInstance->GetDeviceContext());
 
 	return poNewInstance;
@@ -41,13 +44,13 @@ DxDeviceManager& rldx::DxDeviceManager::GetInstance()
 
 HRESULT rldx::DxDeviceManager::InitDirect3d11()
 {
-	logging::LogAction("Attempting to create Direct3d 11 Device...");	
-	
-	D3D_FEATURE_LEVEL featureLevels[] = {		
+	logging::LogAction("Attempting to create Direct3d 11 Device...");
+
+	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_11_1,
 		// TODO: check that this will work with the shader model 5.0
 		D3D_FEATURE_LEVEL_11_0, // fallback for older gpu's.
-		
+
 		//D3D_FEATURE_LEVEL_10_1,
 		//D3D_FEATURE_LEVEL_10_0,
 		//D3D_FEATURE_LEVEL_9_3,
@@ -73,17 +76,17 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 			&m_cpoDeviceContext
 		);
 #else
-	HRESULT hr = D3D11CreateDevice(
-		NULL,
-		D3D_DRIVER_TYPE_HARDWARE,
-		NULL,
-		0,
-		featureLevels,
-		_countof(featureLevels),
-		D3D11_SDK_VERSION,
-		&m_cpoDevice,
-		NULL,
-		&m_cpoDeviceContext);	
+		HRESULT hr = D3D11CreateDevice(
+			NULL,
+			D3D_DRIVER_TYPE_HARDWARE,
+			NULL,
+			0,
+			featureLevels,
+			_countof(featureLevels),
+			D3D11_SDK_VERSION,
+			&m_cpoDevice,
+			NULL,
+			&m_cpoDeviceContext);
 #endif
 	}
 	catch (libtools::COMException& comException)
@@ -92,7 +95,7 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 		LPCTSTR errMsg = err.ErrorMessage();
 		string strErrorMessage = libtools::wstring_to_string(errMsg);
 		logging::LogActionError("Direct3d 11 Device failed! HRESULT code: " + to_string(hr) + ": " + strErrorMessage);
-		
+
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
 	}
 
