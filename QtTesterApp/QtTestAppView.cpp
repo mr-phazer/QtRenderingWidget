@@ -119,6 +119,13 @@ namespace test_app_data
 		LR"(K:\Modding\WH2\variantmeshes\variantmeshdefinitions\brt_grail_guardians.variantmeshdefinition)"
 	};
 
+	TestData WH2_battlePilgrims_VMD =
+	{
+		LR"(K:\Modding\WH2\)",
+		game_id_keys::KEY_WARHAMMER_2,
+		LR"(K:\Modding\WH2\variantmeshes\variantmeshdefinitions\brt_battle_pilgrims.variantmeshdefinition)"
+	};
+
 	TestData testData_Rome2_Armor =
 	{
 		LR"(I:\Modding\Rome2\)",
@@ -154,17 +161,26 @@ namespace test_app_data
 		LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\wef_wildwood_rangers_ror.variantmeshdefinition)"
 	};
 
-	TestData testData_WH3__chs_knights___VMD
+	TestData testData_Attila__Tiled__VicTest
 	{
-		LR"(I:\Modding\WH3\)",
-		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\variantmeshdefinitions\chs_knights.variantmeshdefinition)"
+		LR"(I:\Modding\Attila\)",
+		game_id_keys::KEY_ATTILA,
+		LR"(C:\Users\45311\Documents\sassanid_fort_straight_piece01_destruct01.rigid_model_v2)"
+	};
+
+	TestData testData_Attila__ShipAmbient__VicTest
+	{
+		LR"(I:\Modding\Attila\)",
+		game_id_keys::KEY_ATTILA,
+		LR"(C:\Users\45311\Documents\sassanid_fort_straight_piece01_destruct01.rigid_model_v2)"
 	};
 }
 
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
 {
+
+	logging::LogActionSuccess("Starting the program.");
 	setupUi(this);
 
 	// TODO: maybe not have this constructor !!!! even for test program
@@ -179,18 +195,16 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 void QtMainWindowView::InitRenderView_DEBUG()
 {
 
+	// TODO: remove debuggin code
 
 	//"I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\myfile.spritefont"
-	// TODO: remove debuggin code
-#ifdef _DEBUG
+
+
 
 	ByteStream::SetSearchFolder(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\Textures\CubeMaps\)");
 
 
 
-
-
-#endif	
 
 #ifdef DO_TEST_CODE
 	QFileInfoList list;
@@ -216,12 +230,19 @@ void QtMainWindowView::InitRenderView_DEBUG()
 
 #endif
 
-	auto ptestData = &test_app_data::testData_WH2_brt_grail_guardians_VMD;
+	auto ptestData = &test_app_data::testData_Attila_VMD_legion_comi;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdWString(ptestData->gameId);
 
-	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Debug)");
+	// TODO: remove from release?
+	//#if _DEBUG
+	//	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Debug)");
+	//#else
+	//	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Release)");
+	//#endif
+
+	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources)");
 	SetAssetFolder(&globalAssetFolder);
 
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");

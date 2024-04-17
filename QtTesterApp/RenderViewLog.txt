@@ -1,0 +1,83 @@
+
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
+[QRenderingView Debug:] ERROR: main: Line: 6: main(): Entry Point
+[QRenderingView Debug:] Starting the program.. Success.
