@@ -1,3 +1,5 @@
+- For VIC, add proper rendering of "default vertex" meshes, that uses UV channel 2
+
 - Add COM error messages to direct3d exception hadling, there is a useful func in "COMerrors.h"
 
 - Fix MASK issue in Rome/Atilla shader, so faction coloring can be switched back on

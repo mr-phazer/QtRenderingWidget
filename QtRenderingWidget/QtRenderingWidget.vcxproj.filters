@@ -53,7 +53,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="myfile.spritefont" />
     <None Include="Logging\Inl\WinConsoleColors.inl">
       <Filter>Form Files\Header Files</Filter>
     </None>

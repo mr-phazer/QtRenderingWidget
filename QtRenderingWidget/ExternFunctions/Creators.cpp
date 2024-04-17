@@ -15,6 +15,7 @@ void SetLogPath(const QString& path)
 	//throw std::exception("The method or operation is not implemented.");
 }
 
+// TODO: clean up this, maybe throw it out and write a proper app
 /// <summary>
 /// Demostration/test of using callback to set resources
 /// </summary>
@@ -25,9 +26,12 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 	// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
 #ifdef _DEBUG
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
-#else
+#else	
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
 #endif	
+
+	// TODO: disable this for release
+	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 

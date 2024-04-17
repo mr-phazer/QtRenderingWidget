@@ -81,7 +81,7 @@
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies);D3DCompiler.lib;dxguid.lib;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);D3DCompiler.lib;dxguid.lib;$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,10 +99,13 @@
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
       <XMLDocumentationFileName>c:\temp\</XMLDocumentationFileName>
+      <BrowseInformation>false</BrowseInformation>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -111,7 +114,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>$(Qt_RUNTIME_)</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,8 +125,8 @@
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <Optimization>MaxSpeed</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -146,7 +149,6 @@
     <None Include="cpp.hint" />
     <None Include="Logging\Inl\ConsoleColors.inl" />
     <None Include="Logging\Inl\WinConsoleColors.inl" />
-    <None Include="myfile.spritefont" />
     <None Include="NOT.editorconfig" />
     <None Include="packages.config" />
   </ItemGroup>

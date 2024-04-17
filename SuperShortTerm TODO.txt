@@ -1,13 +1,27 @@
 FIX
-- Rigging/deformer bug related to "Generate Variant", only some models seem to be rigged properly, some
-	if "GenerateVariant()" is called before LoadSkeleton/SetDeformation, it semi-work, if after, not at all.
-	almost af if rigging/deformer is only applied to the ENABLED meshes??
+- Clean up the DxVariantMeshNode class. It inherits from DxDeformerNode, 
+ and overrides its almost all its methods, maybe make just ONE DxDeformerNode class
 
-FIX
-- weird exception "UIAutomation" on exit research that			
+- Make VMD work for all games
+ - including the Rome2/Atilla decalling system
 
-FIX
-- add in weapon wielding
+- Make Git Push ready. Stash the small changes in an order, that will each commit compilable
 
-FIX
+- Add/check exception handling in the VMD code and animation code, be really defensive
+  - Add "IsValid()" checks to relevant classes, 
+
+- Client Creators calls: Clean up the code called by the CLIENT,it is a mess
+ - DxSceneCreator: find a way make it less messy
+
+ - Make ""DxVmdManager::Refresh():" realoads the the whole VMD, but don't change its transform
+  - ?Maybe it "refresh textures only" or "refresh meshes only"?
+
+- (Is this important) Playlist blend-in is messed up, playes fine without blend in
+ - draw the problem out on paper, check debug values
+  
 - Clean up the deformation in general, it is too messy
+
+- Clean up "VariantMeshNode VmdManager::GenerateVariant()"
+  - Clean up the clones (copy construction) of MeshData
+
+- LONG TERM? Clean up The Testapp, into a viable standalone app
