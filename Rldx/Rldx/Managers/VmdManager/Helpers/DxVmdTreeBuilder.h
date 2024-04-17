@@ -1,8 +1,6 @@
 #pragma once
 
-#include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
-#include "VmdNodeCreators.h"
 
 namespace rldx {
 

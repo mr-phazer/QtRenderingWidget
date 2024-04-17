@@ -1,13 +1,27 @@
-#include <functional>
 #include "DxMaterialInfoReader.h"
 #include "DxVmdTreeBuilder.h"
 
 using namespace rldx;
 using namespace rmv2;
 
+void SetAttachPointName(DxVmdNode* node)
+{
+	if (!node) return;
+	if (!node->GetParent()) return;
+
+	auto parentNode = dynamic_cast<const DxVmdNode*>(node->GetParent());
+	if (!parentNode) return;
+
+	if (node->vmdNodeData.slotData.attcachPointName.empty())
+	{
+		node->vmdNodeData.slotData.attcachPointName
+			= parentNode->vmdNodeData.slotData.attcachPointName; // get the parent's attach point name
+	}
+}
+
 void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
-	DxVmdNode::SharedPtr spoNewSceneChild = nullptr;
+	DxVmdNode::SharedPtr spoNewSceneChild;
 
 	if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMesh))
 	{
@@ -28,6 +42,8 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 	{
 		// TODO: maybe create a "universal" node type that can handle any type of data, so the VMD can saved from this tree
 	}
+
+	SetAttachPointName(spoNewSceneChild.get());
 
 	for (auto& itXmlChild : xmlNode.children())
 	{

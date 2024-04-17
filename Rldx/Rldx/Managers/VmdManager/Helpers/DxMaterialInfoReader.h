@@ -3,7 +3,7 @@
 #include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
 #include "..\..\Rldx\Rldx\Tools\tools.h"
-#include "VmdNodeCreators.h"
+//#include "VmdNodeCreators.h"
 
 
 // TODO: move this class to ImportExport

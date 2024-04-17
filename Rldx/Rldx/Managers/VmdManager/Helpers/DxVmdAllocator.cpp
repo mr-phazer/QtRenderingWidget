@@ -53,7 +53,7 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers(std::string& destSkeletonName, 
 		case VMDTagEnum::Slot:
 		{
 			// TODO: anything?
-				//poDeformer->AttachWeapon(m_sceneVmdNode, m_sceneVmdNode->vmdNodeData.slotData.attcachPointName);
+			//Deformer->AttachWeapon(m_sceneVmdNode, m_sceneVmdNode->vmdNodeData.slotData.attcachPointName);
 		}
 	}
 }

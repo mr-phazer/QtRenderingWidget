@@ -1,3 +1,9 @@
+#include <Rldx\Animation\Helpers\PathHelper.h>
+#include "..\..\Creators\DxGameShaderCreators.h"
+#include "..\..\Managers\DxDeviceManager.h"
+#include "..\..\Managers\VmdManager\Helpers\DxMaterialInfoReader.h"
+#include "..\..\Managers\VmdManager\Helpers\DxVmdAllocator.h"
+#include "..\..\Managers\VmdManager\Helpers\VariantGenerator.h"
 #include "..\..\SceneGraph\SceneNodes\DxDeformerNode.h"
 #include "DxVmdManager.h"
 
@@ -6,7 +12,7 @@ namespace rldx
 	void DxVmdManager::LoadVariantMesh(DxBaseNode* poSceneNode, ByteStream& bytes, const std::wstring& gameIdString)
 	{
 		m_rootNode = DxBaseNode::Create(L"VMD Root Node");
-		poSceneNode->AddChild(m_rootNode);
+		//poSceneNode->AddChild(m_rootNode);
 
 
 		BuildTreeFromXml(bytes);
@@ -15,37 +21,43 @@ namespace rldx
 
 		WStringkeyMap<sm::Matrix> preTransformMap;
 
-		// TODO store this class field?
-		std::string skeletonName;
 
-		AllocateDXBuffers(gameIdString, skeletonName, preTransformMap);
+		AllocateDXBuffers(gameIdString, preTransformMap);
 
-		LoadSkeleton(m_rootNode.get(), skeletonName);
-		SetMeshDeformation(m_rootNode.get());
+		InitAttachPoints();
 
-		SetAttachPoints(m_vmdNode.get());
-		GenerateVariant();
+		/*if (!m_skeletonName.empty())
+		{
+			LoadBindPose();
+			SetMeshDeformation(m_rootNode.get());
+			SetAttachPointsRecursive(m_vmdNode.get());
+		}*/
+
+		//m_rootNode->Transform().SetTranslation({ 3.5f,0.0f,0.0f });
+
+		//DxSceneGraph::UpdateNodes(m_rootNode.get(), 0.0f);
+
+		//GenerateVariant();
 	}
 
-	std::wstring GetPathFromSkeletonName(std::string& skeletonName)
+	std::shared_ptr<DxVariantMeshNode> DxVmdManager::GenerateVariant()
 	{
-		// TODO: maybe make string literals consts in a proper place, like the resource manager?
-		return LR"(animations\skeletons\)" + libtools::string_to_wstring(skeletonName) + L".anim";
+		auto newVariantNode = std::make_shared<DxVariantMeshNode>(m_skeletonName);
+
+		VariantGenerator(m_vmdNode.get(), newVariantNode.get()).GenerateVariant();
+
+		newVariantNode->Init();
+
+		return newVariantNode;
 	}
 
-	void DxVmdManager::LoadSkeleton(DxBaseNode* poSceneNode, std::string& skeletonName)
+	void DxVmdManager::InitAttachPoints()
 	{
 		m_deformerNode = DxDeformerNode::Create();
-		m_deformerNode->LoadBindPose(GetPathFromSkeletonName(skeletonName));
+		m_deformerNode->LoadBindPose(path_helper::GetPathFromSkeletonName(m_skeletonName));
 
-		// TODO: remove TEST CODE
-		//m_deformerNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_05.anim)");
-
-		// TODO: remove TEST CODE: trying to load an ANIM v8 into the loaded VMD
-		m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_pistol\locomotion\hu1_swp_combat_walk_01.anim)");
-		//m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_shield\deaths\hu1_sws_death_01.anim)");
-
-		poSceneNode->AddChild(m_deformerNode);
+		SetMeshDeformation(m_rootNode.get());
+		SetAttachPointsRecursive(m_vmdNode.get());
 	}
 
 	void DxVmdManager::BuildTreeFromXml(ByteStream& bytes)
@@ -69,7 +81,27 @@ namespace rldx
 		}
 	}
 
-	void DxVmdManager::AllocateDXBuffers(const std::wstring& gameIdString, std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
+	/// <summary>
+	/// Set the attach point name for all childre of an attach node
+	/// </summary>
+	/// <param name="node">Node to process</param>
+	void SetAttachPointName(DxVmdNode* node)
+	{
+		if (!node) return;
+		if (!node->GetParent()) return;
+
+		auto parentNode = dynamic_cast<const DxVmdNode*>(node->GetParent());
+		if (!parentNode) return;
+
+		// TODO: use the ternary conditional operator, after testing
+		if (node->vmdNodeData.slotData.attcachPointName.empty())
+		{
+			node->vmdNodeData.slotData.attcachPointName =
+				parentNode->vmdNodeData.slotData.attcachPointName; // get the parent's attach point name
+		}
+	}
+
+	void DxVmdManager::AllocateDXBuffers(const std::wstring& gameIdString, WStringkeyMap<sm::Matrix>& preTransformMap)
 	{
 		auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
 		if (!newPbrShaderCreator) {
@@ -81,12 +113,7 @@ namespace rldx
 			throw std::exception("Error Creating Shader");
 		}
 
-		AllocateNodesRecursive(m_vmdNode.get(), newPbrShaderProgram, destSkeletonName, preTransformMap);
-	}
-
-	void DxVmdManager::GenerateVariant()
-	{
-		VariantGenerator(m_vmdNode.get()).GenerateVariant();
+		AllocateNodesRecursive(m_vmdNode.get(), newPbrShaderProgram, preTransformMap);
 	}
 
 	DxVmdNode::SharedPtr DxVmdManager::GetNode() { return m_vmdNode; }
@@ -101,22 +128,18 @@ namespace rldx
 		}
 	}
 
-	void DxVmdManager::SetAttachPoints(DxMeshNode* node)
+	void DxVmdManager::SetAttachPointsRecursive(DxMeshNode* node)
 	{
 		auto vmdNode = dynamic_cast<DxVmdNode*>(node);
 
-		if (vmdNode)
+		if (vmdNode && m_deformerNode)
 		{
 			m_deformerNode->AttachWeapon(vmdNode, vmdNode->vmdNodeData.slotData.attcachPointName);
-		}
-		else
-		{
-			auto DEBUG_BREAK_1 = 1;
 		}
 
 		for (auto& childNode : node->GetChildren())
 		{
-			SetAttachPoints(static_cast<DxMeshNode*>(childNode.get()));
+			SetAttachPointsRecursive(static_cast<DxMeshNode*>(childNode.get()));
 		}
 	}
 
@@ -132,19 +155,9 @@ namespace rldx
 			throw std::exception("Error Creating Shader");
 		}
 
-		// TODO: REMOVE?
-		//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
-
-		// TODO remove?
-		//rmv2::RigidModelReader rigidModelFileReader;
-		//auto rmv2File = rigidModelFileReader.Read(bytes);
-		//vmdNode->SetMeshData(DxDeviceManager::Device(), rmv2File);
-		//vmdNode->LoadMaterialDataFromRmv2(DxDeviceManager::Device(), rmv2File);
-		//vmdNode->SetShaderProgram(newPbrShaderProgram);
-
 		m_vmdNode = std::make_shared<DxVmdNode>();
 		VMDNodeData& nodeTagData = m_vmdNode->vmdNodeData;
-		nodeTagData.tagType = VMDTagEnum::VariantMesh;
+		nodeTagData.tagType = VMDTagEnum::VariantMesh; // add the RMV2 as
 		nodeTagData.varintMeshData.modelPath = bytes.GetPath();
 		nodeTagData.varintMeshData.imposterModelPath = L"";
 		DxMaterialInfoReader(&nodeTagData).Parse();
@@ -152,7 +165,7 @@ namespace rldx
 
 	void DxVmdManager::LoadFromWsmodelXML(ByteStream& bytes)
 	{
-		m_vmdNode = std::make_shared<DxVmdNode>();
+		m_vmdNode = std::make_shared<DxVmdNode>(L"DxVmdNode");
 		VMDNodeData& newData = m_vmdNode->vmdNodeData;
 		newData.tagType = VMDTagEnum::VariantMesh;
 		newData.varintMeshData.modelPath = bytes.GetPath();
@@ -169,20 +182,28 @@ namespace rldx
 			throw std::exception(("Create::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
 		}
 
-		m_vmdNode = std::make_shared<DxVmdNode>();
+		m_vmdNode = std::make_shared<DxVmdNode>(L"VmdNode");
 		m_vmdNode->vmdNodeData.tagType = VMDTagEnum::Slot;
 
 		m_treeBuilder.Build(m_vmdNode.get(), m_xmlDoc.first_child());
 	}
 
-	void DxVmdManager::AllocateNodesRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, std::string& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
+	void DxVmdManager::AllocateNodesRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap)
 	{
-		DxVmdNodeAllocator(m_vmdRootNode, shaderProgram).AllocateDxBuffers(destSkeletonName, preTransformMap);
+		DxVmdNodeAllocator(m_vmdRootNode, shaderProgram).AllocateDxBuffers(m_skeletonName, preTransformMap);
 
 		for (auto& childNode : m_vmdRootNode->GetChildren())
 		{
-			AllocateNodesRecursive(static_cast<DxVmdNode*>(childNode.get()), shaderProgram, destSkeletonName, preTransformMap);
+			AllocateNodesRecursive(static_cast<DxVmdNode*>(childNode.get()), shaderProgram, preTransformMap);
+
+			// grow the bounding box to contain the child node bounding box
+			DirectX::BoundingBox::CreateMerged(
+				m_vmdRootNode->GetNodeBoundingBox(),
+				m_vmdRootNode->GetNodeBoundingBox(),
+				childNode.get()->GetNodeBoundingBox());
 		}
+
+		auto& DEBUG_BOUNDING_BOX = m_vmdRootNode->GetNodeBoundingBox();
 	}
 
 }
