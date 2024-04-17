@@ -31,7 +31,7 @@ namespace anim_file
 		Const_Float4_Quat = -16,
 	};
 
-	enum AnimTrackSourceEnum
+	enum BoneTrackDataSourceEnum_v5_v7
 	{
 		BindPose, ConstTrack, FrameData
 	};
@@ -41,7 +41,7 @@ namespace anim_file
 		int32_t m_metaValue;
 
 	public:
-		AnimTrackSourceEnum GetTrackSourceState() const;
+		BoneTrackDataSourceEnum_v5_v7 GetTrackSourceState() const;
 
 		uint32_t GetConstTrackIndex() const;
 	};

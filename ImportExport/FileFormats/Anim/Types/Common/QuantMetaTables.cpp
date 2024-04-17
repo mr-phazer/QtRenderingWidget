@@ -5,11 +5,11 @@
 
 namespace anim_file
 {
-	AnimTrackSourceEnum MetaElement_v7::GetTrackSourceState() const
+	BoneTrackDataSourceEnum_v5_v7 MetaElement_v7::GetTrackSourceState() const
 	{
-		if (m_metaValue >= 10000) return AnimTrackSourceEnum::ConstTrack;
-		if (m_metaValue == -1) return AnimTrackSourceEnum::BindPose;
-		return AnimTrackSourceEnum::FrameData;
+		if (m_metaValue >= 10000) return BoneTrackDataSourceEnum_v5_v7::ConstTrack;
+		if (m_metaValue == -1) return BoneTrackDataSourceEnum_v5_v7::BindPose;
+		return BoneTrackDataSourceEnum_v5_v7::FrameData;
 	}
 
 	uint32_t MetaElement_v7::GetConstTrackIndex() const

@@ -20,8 +20,6 @@ namespace anim_file
 
 	AnimFile TwAnimFileReader::Read(ByteStream& inBytes)
 	{
-		m_animFile.metaData.path = inBytes.GetPath();
-
 		ReadFileHeader(inBytes);
 		ReadBoneTable(inBytes);
 
