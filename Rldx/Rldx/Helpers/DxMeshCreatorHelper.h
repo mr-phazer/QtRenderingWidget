@@ -1,12 +1,12 @@
 #pragma once
 
+
 #include <vector>
 #include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-#include "..\..\Rldx\Animation\Skeleton.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\DataTypes\DxMeshData.h"
 
-
+#include "..\Rldx\Rldx\Animation\DataTypes\Skeleton.h"
 
 namespace rldx
 {
@@ -48,7 +48,7 @@ namespace rldx
 		static void FillLineIndices(const skel_anim::Skeleton& skeleton, std::vector<uint32_t>& indices)
 		{
 			auto index = 0;
-			for (const auto& itBone : skeleton.boneTable)
+			for (const auto& itBone : skeleton.GetBoneTable())
 			{
 				// line from parent to child
 				indices.push_back(index++);
@@ -57,14 +57,17 @@ namespace rldx
 		}
 		static void FillLineVertices(const skel_anim::Skeleton& skeleton, std::vector<CommonVertex>& vertices)
 		{
-			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
+			for (uint32_t boneIndex = 0; boneIndex < skeleton.GetBoneTable().size(); boneIndex++)
 			{
+
+				auto& m_bindposeMatrices = skeleton.GetBindPoseMatrices();
+
 				// transformMatrix
-				auto bonePosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[boneIndex]);
+				auto bonePosition = sm::Vector3::Transform({ 0,0,0 }, m_bindposeMatrices[boneIndex]);
 
 				// TODO: REMOVE: testing if 4d transformMatrix give the same value
 				// TODO: EDIT: It does ONLY, if w = 1.0
-				auto test4d_bonePosition2 = sm::Vector4::Transform({ 0,0,0,1 }, skeleton.bindposeMatrices[boneIndex]);
+				auto test4d_bonePosition2 = sm::Vector4::Transform({ 0,0,0,1 }, m_bindposeMatrices[boneIndex]);
 
 				sm::Vector3 parentBonePosition = { 0,0,0 };
 
@@ -73,10 +76,13 @@ namespace rldx
 
 				CommonVertex childVertex;
 
-				if (skeleton.boneTable[boneIndex].parentIndex != -1)
+				auto& bindposeMatrices = skeleton.GetBindPoseMatrices();
+				auto& boneTable = skeleton.GetBoneTable();
+
+				if (boneTable[boneIndex].parentIndex != -1)
 				{
-					parentBonePosition = sm::Vector3::Transform({ 0,0,0 }, skeleton.bindposeMatrices[skeleton.boneTable[boneIndex].parentIndex]);
-					parentVertex.boneIndices = { static_cast<uint32_t>(skeleton.boneTable[boneIndex].parentIndex),0,0,0 };
+					parentBonePosition = sm::Vector3::Transform({ 0,0,0 }, bindposeMatrices[boneTable[boneIndex].parentIndex]);
+					parentVertex.boneIndices = { static_cast<uint32_t>(boneTable[boneIndex].parentIndex),0,0,0 };
 				}
 
 				childVertex.position = { bonePosition.x, bonePosition.y, bonePosition.z, 0 };
@@ -97,9 +103,9 @@ namespace rldx
 		{
 			float DEBUG_offset = 0.0f;
 
-			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
+			for (uint32_t boneIndex = 0; boneIndex < skeleton.GetBoneTable().size(); boneIndex++)
 			{
-				AddCube(skeleton.bindposeMatrices[boneIndex], vertices, boneIndex);
+				AddCube(skeleton.GetBindPoseMatrices()[boneIndex], vertices, boneIndex);
 			}
 		}
 
@@ -109,7 +115,7 @@ namespace rldx
 
 			uint32_t vertexOffset = 0;
 
-			for (uint32_t boneIndex = 0; boneIndex < skeleton.boneTable.size(); boneIndex++)
+			for (uint32_t boneIndex = 0; boneIndex < skeleton.GetBoneTable().size(); boneIndex++)
 			{
 				for (auto& itCubeIndex : sm_cubeMeshData.indices)
 				{
