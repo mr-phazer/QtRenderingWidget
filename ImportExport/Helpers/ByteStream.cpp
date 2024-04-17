@@ -39,12 +39,12 @@ ByteStream::ByteStream(const std::wstring& fileName, bool doThrow)
 	if (file_helpers::DoesFileExist(fileName))
 	{
 		m_currentFilePath = fileName;
-		m_data = file_helpers::ReadFileToVector(m_currentFilePath);
+		file_helpers::ReadFileToVector(m_currentFilePath, m_data);
 	}
 	else if (file_helpers::DoesFileExist(sm_searchFolder + fileName))
 	{
 		m_currentFilePath = sm_searchFolder + fileName;
-		m_data = file_helpers::ReadFileToVector(m_currentFilePath);
+		file_helpers::ReadFileToVector(m_currentFilePath, m_data);
 	}
 	else
 	{

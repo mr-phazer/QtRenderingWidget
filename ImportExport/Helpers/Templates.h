@@ -136,6 +136,29 @@ namespace templates
 
 	};
 
+	// TODO: fix,(genertic iterative tree parser from "better c++" maybe it can be useful
+	template <typename NODE_TYPE, typename WORK>
+	void DoTreeDoWorkIterative(const NODE_TYPE* poNode, const WORK& WorkFunc)
+	{
+		{
+			std::vector<NODE_TYPE*> nodes;
+			nodes.push_back(this);
+
+			while (nodes.size() > 0)
+			{
+				auto node = nodes.pop_back();
+
+				WorkFunc(node);
+
+				for (auto& itChild : node->GetChildren())
+				{
+					nodes.push_back(&itChild);
+				}
+			}
+		};
+
+	}
+
 
 } // namespace templates
 
