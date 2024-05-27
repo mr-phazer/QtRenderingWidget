@@ -108,6 +108,9 @@
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp">
       <Filter>Rldx\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\SkeletonChanger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -291,6 +294,9 @@
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h">
       <Filter>Rldx\Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationRemapper.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationCreator.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\SkeletonChanger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Rldx\Logging\Inl\ConsoleColors.inl">

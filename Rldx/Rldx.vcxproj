@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
     <ClCompile Include="Rldx\Animation\AnimationPlayer.cpp" />
     <ClCompile Include="Rldx\Animation\AnimPlayList.cpp" />
     <ClCompile Include="Rldx\Animation\FramePoseGenerator.cpp" />
@@ -36,6 +38,9 @@
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClCompile Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.cpp" />
     <ClCompile Include="Rldx\Animation\DataTypes\SkeletonAnimation.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\SkeletonChanger.cpp" />
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationCreator.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationRemapper.h" />
     <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
     <ClInclude Include="Rldx\Animation\AnimPlayList.h" />
     <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
@@ -115,6 +120,7 @@
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonAnimation.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\SkeletonChanger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
@@ -273,10 +279,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
