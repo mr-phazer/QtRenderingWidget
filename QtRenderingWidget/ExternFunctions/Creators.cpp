@@ -7,7 +7,7 @@
 
 #include "..\QtObjects\Views\QtRenderView.h"
 
-#include "..\rldx\rldx\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 void SetLogPath(const QString& path)
 {
