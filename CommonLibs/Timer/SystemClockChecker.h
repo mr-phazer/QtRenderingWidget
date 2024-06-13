@@ -2,54 +2,36 @@
 
 #include <chrono>
 
-namespace timer
-{
+namespace timer {
 
 	/// <summary>
-		/// Uses the CPUs high resolution clock, to count time intervals
-		/// </summary>
+	/// Uses the CPUs high resolution clock, to count time intervals
+	/// </summary>
 	class SystemClockChecker
 	{
 		typedef std::chrono::high_resolution_clock Time;
 
 	public:
-		SystemClockChecker()
-		{
-			ResetLocalTime();
-		}
+
+		SystemClockChecker();
 
 		/// <summary>
 		/// Resets the local timer to "now"
 		/// </summary>
-		void ResetLocalTime()
-		{
-			m_startTime = std::chrono::high_resolution_clock::now();
-		}
+		void ResetLocalTime();
 
 		/// <summary>
 		///  Get "local" time, 
 		/// </summary>
 		/// <returns>"state time" - "now" </returns>
-		float GetLocalTime() const
-		{
-			auto timeElapsed = std::chrono::high_resolution_clock::now();
-
-			auto value = std::chrono::duration<float, std::chrono::seconds::period>(timeElapsed - m_startTime);
-
-			float retValue = value.count();
-
-			return retValue;
-		}
+		double GetLocalTime() const;
 
 		/// <summary>
 		/// Rerturn the CPU "ticks"
 		/// </summary>		
-		long long GetSystemTick() const
-		{
-			return ::std::chrono::high_resolution_clock::now().time_since_epoch().count();
-		}
+		long long GetSystemTick() const;
 
 	private:
-		::std::chrono::steady_clock::time_point m_startTime;
+		std::chrono::steady_clock::time_point m_startTime;
 	};
 }
