@@ -101,7 +101,7 @@ namespace rldx {
 		/// <summary>
 		/// For debugging
 		/// </summary>		
-		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
+		static std::wstring GetDefaultAssetFolder() { return GetExePath(); }
 
 
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }

@@ -245,15 +245,6 @@ namespace libtools
 		return (_str[1] == ':');
 	};
 
-	static bool IsDiskFile(const std::wstring& _str)
-	{
-		if (_str.size() < 2)
-			return false;
-
-
-		return (_str[1] == L':');
-	};
-
 	/// <summary>
 	///  Implemation of 'Polynomial rolling hash function'
 	/// from
