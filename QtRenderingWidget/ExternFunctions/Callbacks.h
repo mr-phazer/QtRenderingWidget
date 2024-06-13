@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QtCore/QByteArray>
-#include <QtCore/QList>
-#include <QtCore/QString>
+#include <QByteArray>
+#include <QList>
+#include <QString>
 
 /// <summary>
 /// Callback function, for asset loading
