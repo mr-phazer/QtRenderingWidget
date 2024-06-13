@@ -46,4 +46,13 @@ namespace utils {
 		binaryFile.read((char*)destBuffer.data(), destBuffer.size());
 		binaryFile.close();
 	}
+
+	static bool IsDiskFile(const std::wstring& _str)
+	{
+		if (_str.size() < 2)
+			return false;
+
+
+		return (_str[1] == L':');
+	};
 }

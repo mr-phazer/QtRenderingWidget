@@ -16,6 +16,7 @@
 #include "IDxResource.h"
 #include <Logger/Logger.h>
 #include "Utils\ByteStream.h"
+#include "Utils\IOUtils.h"
 
 namespace skel_anim {
 	struct SkeletonAnimation;
@@ -114,7 +115,7 @@ namespace rldx {
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
 			QList<QByteArray> destBinaries;
 
-			if (libtools::IsDiskFile(fileName)) // fetch from disk
+			if (IsDiskFile(fileName)) // fetch from disk
 			{
 				ByteStream diskBytes(fileName);
 				return diskBytes;
@@ -195,7 +196,7 @@ namespace rldx {
 		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
-				throw exception("No asset callback function set");
+				throw std::exception("No asset callback function set");
 			}
 
 			m_assetCallBack(&qstrMissingFiles, &destBinaries);
