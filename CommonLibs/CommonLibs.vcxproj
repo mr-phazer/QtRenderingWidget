@@ -20,12 +20,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomExceptions\CustomExceptions.h" />
+    <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
+    <ClInclude Include="Utils\IOUtils.h" />
+    <ClInclude Include="Utils\StrUtils.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CustomExceptions\CustomExceptions.cpp" />
+    <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />
+    <ClCompile Include="Utils\IOUtils.cpp" />
+    <ClCompile Include="Utils\StrUtils.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,10 +1,11 @@
 #include "CustomExceptions.h"
 
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "..\Logger\Logger.h"
 
-ConLogException::ConLogException(const std::string& message) : m_message(message)
+using namespace logger;
+ConLogException::ConLogException(const std::wstring& message)
 {
-	logging::LogActionError("Exception: " + message);
+	Logger::LogActionError(L"Exception: " + message);
 }
 
 const char* ConLogException::what() const throw()
