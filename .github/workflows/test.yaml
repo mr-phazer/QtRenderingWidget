@@ -18,7 +18,15 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+          install-deps: 'true'
           modules: 'qtcore qtwidgets qtgui'
+          cached: 'false'
+          setup-python: 'true'
+          tools-only: 'false'
 
       - name: Build the lib in release mode
         shell: pwsh
