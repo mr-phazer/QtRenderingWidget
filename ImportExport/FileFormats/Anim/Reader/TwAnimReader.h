@@ -2,13 +2,15 @@
 
 // TODO: Forward declare anything possible
 #include <SimpleMath.h>
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\Types\Common\AnimFrameCommon.h"
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\TwAnimFile.h"
 
 namespace anim_file
 {
+	using namespace utils;
+
 	struct CompressionMetaData_V5_V7;
 	struct CompressionMetaData_V8;
 

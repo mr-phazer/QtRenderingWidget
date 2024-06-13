@@ -2,12 +2,14 @@
 
 #include <map>
 #include <memory>
-#include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\Rldx\Rldx\Helpers\StringKeyMap.h"
+using namespace utils;
 
 //////////////////////////////////////////////////////////////////////////
 namespace templates
 {
+
 	template <typename DATA_TYPE>
 	class TCreator
 	{

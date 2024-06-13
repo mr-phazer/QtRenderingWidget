@@ -172,7 +172,6 @@
     <ClInclude Include="FileFormats\RigidModel\Constants\Rmv2Constants.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\GameShaders\GameShaderCreators.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.h" />
-    <ClInclude Include="Helpers\FileHelpers.h" />
     <ClInclude Include="Helpers\Templates.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.h" />
@@ -193,7 +192,6 @@
     <ClInclude Include="FileFormats\RigidModel\Types\Common\LodHeader.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\FileHeaderCreators.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\LodHeaderCreators.h" />
-    <ClInclude Include="Helpers\ByteStream.h" />
     <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshHeaderType3.h" />
     <ClInclude Include="FileFormats\RigidModel\Creators\Vertices\WeightedVertexCreator.h" />
     <ClInclude Include="FileFormats\XmMaterial\DataTypes\XMLMaterialData.h" />
@@ -207,10 +205,8 @@
     <ClCompile Include="FileFormats\Anim\Reader\TwAnimReader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\FileHeader.cpp" />
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp" />
-    <ClCompile Include="Helpers\ByteStream.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
-    <ClCompile Include="Helpers\FileHelpers.cpp" />
     <ClCompile Include="Helpers\ImportExport.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.cpp" />

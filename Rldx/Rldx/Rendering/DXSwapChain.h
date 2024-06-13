@@ -24,7 +24,7 @@
 #include <DirectXMath.h>
 
 // author headers:
-#include "..\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 // TODO: use new or old?
 //#include "DxTextureView.h"

@@ -1,9 +1,10 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\Types\Common\MeshHeaderType3.h"
 
 namespace rmv2 {
+	using namespace utils;
 
 	class IMeshHeaderType3Creator
 	{

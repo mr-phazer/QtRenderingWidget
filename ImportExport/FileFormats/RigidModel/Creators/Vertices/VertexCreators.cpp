@@ -1,5 +1,5 @@
 #include <Quantization\QuantTools.h>
-#include "..\..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\RawStructs\VerticesRaw.h"
 #include "VertexCreators.h"
 

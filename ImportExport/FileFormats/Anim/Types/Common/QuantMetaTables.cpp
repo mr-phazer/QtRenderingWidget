@@ -1,4 +1,4 @@
-#include <Helpers\ByteStream.h>
+#include "Utils\ByteStream.h"
 #include <Quantization\QuantTools.h>
 #include "..\Common\AnimFrameCommon.h"
 #include "QuantMetaTables.h"

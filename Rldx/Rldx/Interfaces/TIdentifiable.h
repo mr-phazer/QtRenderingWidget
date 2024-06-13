@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "..\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 namespace rldx {
 

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "..\..\..\FileFormats\XmMaterial\DataTypes\XMLMaterialData.h"
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 namespace rmv2 {
 

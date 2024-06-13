@@ -24,6 +24,7 @@
     <ClInclude Include="Quantization\QuantTools.h" />
     <ClInclude Include="Utils\IOUtils.h" />
     <ClInclude Include="Utils\StrUtils.h" />
+    <ClInclude Include="Utils\ByteStream.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ClCompile Include="Quantization\QuantTools.cpp" />
     <ClCompile Include="Utils\IOUtils.cpp" />
     <ClCompile Include="Utils\StrUtils.cpp" />
+    <ClCompile Include="Utils\ByteStream.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

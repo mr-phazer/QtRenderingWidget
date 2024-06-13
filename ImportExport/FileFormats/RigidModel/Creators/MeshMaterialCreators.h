@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 #include "..\Types\Common\MeshHeaderType5.h"
 

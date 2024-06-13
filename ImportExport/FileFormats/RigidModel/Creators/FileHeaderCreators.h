@@ -2,7 +2,7 @@
 
 #include "..\Types\Common\FileHeader.h"
 
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 
 

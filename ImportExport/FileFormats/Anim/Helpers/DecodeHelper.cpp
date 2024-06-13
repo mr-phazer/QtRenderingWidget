@@ -1,10 +1,12 @@
-#include <Helpers\ByteStream.h>
+#include <Utils\ByteStream.h>
 #include <Quantization\QuantTools.h>
 #include "..\Types\Common\QuantMetaTables.h"
 #include "DecodeHelper.h"
 
 namespace anim_file
 {
+	using namespace utils;
+
 	// TODO: REMOVE THIS ONCE WORKS
 	size_t DEBUG_translations = 0;
 	size_t DEBUG_rotations = 0;
@@ -16,18 +18,18 @@ namespace anim_file
 
 		switch (transMetaId.type)
 		{
-			case TranslationEncodeTypeEnum::Const_Byte3_Trans:
-			{
-				auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
-				return CorrectTranslationRange(translationSNORM, transRange);
-			}
-			break;
+		case TranslationEncodeTypeEnum::Const_Byte3_Trans:
+		{
+			auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
+			return CorrectTranslationRange(translationSNORM, transRange);
+		}
+		break;
 
-			case TranslationEncodeTypeEnum::Const_Float3_Trans:
-			{
-				return  bytes.TReadElement<DirectX::XMFLOAT3>();
-			}
-			break;
+		case TranslationEncodeTypeEnum::Const_Float3_Trans:
+		{
+			return  bytes.TReadElement<DirectX::XMFLOAT3>();
+		}
+		break;
 		};
 
 		throw std::exception(("QuaternionTrackDecoder::DecodeConstTrack: Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(transMetaId.type))).c_str());
@@ -42,52 +44,52 @@ namespace anim_file
 
 		switch (encodeId.type)
 		{
-			case TranslationEncodeTypeEnum::Const_Byte3_Trans:
-			case TranslationEncodeTypeEnum::Const_Float3_Trans:
-			{
-				if (m_constTrackIndex >= meta.constTrackFrame.translations.size())
-					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Const track index out of bounds!");
+		case TranslationEncodeTypeEnum::Const_Byte3_Trans:
+		case TranslationEncodeTypeEnum::Const_Float3_Trans:
+		{
+			if (m_constTrackIndex >= meta.constTrackFrame.translations.size())
+				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Const track index out of bounds!");
 
-				return meta.constTrackFrame.translations[m_constTrackIndex++];
-			}
-			break;
+			return meta.constTrackFrame.translations[m_constTrackIndex++];
+		}
+		break;
 
-			case TranslationEncodeTypeEnum::BindPose_Trans:
-			{
-				if (meta.poSkeletonBindPoseFrame == nullptr) // TODO: maybe not use a pointer, just have param = a reference to a copied object?
-					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
+		case TranslationEncodeTypeEnum::BindPose_Trans:
+		{
+			if (meta.poSkeletonBindPoseFrame == nullptr) // TODO: maybe not use a pointer, just have param = a reference to a copied object?
+				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
 
-				if (boneIndex >= meta.poSkeletonBindPoseFrame->translations.size())
-					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
+			if (boneIndex >= meta.poSkeletonBindPoseFrame->translations.size())
+				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
 
-				return meta.poSkeletonBindPoseFrame->translations[boneIndex];
-			}
-			break;
+			return meta.poSkeletonBindPoseFrame->translations[boneIndex];
+		}
+		break;
 
-			case TranslationEncodeTypeEnum::Data_Byte3_Trans:
-			{
-				auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
+		case TranslationEncodeTypeEnum::Data_Byte3_Trans:
+		{
+			auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
 
-				// TODO: REMOVE debugging code
-				DEBUG_translations++;
+			// TODO: REMOVE debugging code
+			DEBUG_translations++;
 
-				return CorrectTranslationRange(translationSNORM, transRange);
-			}
-			break;
+			return CorrectTranslationRange(translationSNORM, transRange);
+		}
+		break;
 
-			case TranslationEncodeTypeEnum::Data_Float3_Trans:
-			{
-				sm::Vector3 translation;
-				bytes.Read(&translation, sizeof(sm::Vector3));
+		case TranslationEncodeTypeEnum::Data_Float3_Trans:
+		{
+			sm::Vector3 translation;
+			bytes.Read(&translation, sizeof(sm::Vector3));
 
-				//translation = bytes.TReadElement<DirectX::XMFLOAT3>();
+			//translation = bytes.TReadElement<DirectX::XMFLOAT3>();
 
-				// TODO: remove debugging code
-				DEBUG_translations++;
+			// TODO: remove debugging code
+			DEBUG_translations++;
 
-				return translation;
-			}
-			break;
+			return translation;
+		}
+		break;
 		}
 
 		throw std::exception(("TranslationTrackDecoder::DecodeConstTrack(): Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(encodeId.type))).c_str());
@@ -100,34 +102,34 @@ namespace anim_file
 
 		switch (rotationMetaId.type)
 		{
-			case RotationEncodeTypeEnum::Const_Byte4_Quat:
-			{
-				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
-				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Const_Byte4_Quat:
+		{
+			auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
+			auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Const_Word4_Quat:
-			{
-				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
-				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Const_Word4_Quat:
+		{
+			auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
+			auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Const_Float4_Quat:
-			{
-				sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Const_Float4_Quat:
+		{
+			sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 		}
 
 		throw std::exception((" QuaternionTrackDecoder::DecodeConstTrack: Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(rotationMetaId.type))).c_str());
@@ -143,57 +145,57 @@ namespace anim_file
 
 		switch (rotationMetaId.type)
 		{
-			case RotationEncodeTypeEnum::Const_Byte4_Quat:
-			case RotationEncodeTypeEnum::Const_Word4_Quat:
-			case RotationEncodeTypeEnum::Const_Float4_Quat:
-			{
-				auto& constRotation = meta.constTrackFrame.rotations[m_constTrackIndex];
-				m_constTrackIndex++;
+		case RotationEncodeTypeEnum::Const_Byte4_Quat:
+		case RotationEncodeTypeEnum::Const_Word4_Quat:
+		case RotationEncodeTypeEnum::Const_Float4_Quat:
+		{
+			auto& constRotation = meta.constTrackFrame.rotations[m_constTrackIndex];
+			m_constTrackIndex++;
 
-				return constRotation;
-			}
-			break;
+			return constRotation;
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Quat_BindPose:
-			{
-				if (meta.poSkeletonBindPoseFrame == nullptr)  // TODO: maybe not use a pointer, just have param = a reference to a copied object?
-					throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
+		case RotationEncodeTypeEnum::Quat_BindPose:
+		{
+			if (meta.poSkeletonBindPoseFrame == nullptr)  // TODO: maybe not use a pointer, just have param = a reference to a copied object?
+				throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
 
-				if (boneIndex >= meta.poSkeletonBindPoseFrame->rotations.size())
-					throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
+			if (boneIndex >= meta.poSkeletonBindPoseFrame->rotations.size())
+				throw std::exception("QuaternionTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
 
-				return meta.poSkeletonBindPoseFrame->rotations[boneIndex];
-			}
-			break;
+			return meta.poSkeletonBindPoseFrame->rotations[boneIndex];
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Data_Byte4_Quat:
-			{
-				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
-				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Data_Byte4_Quat:
+		{
+			auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
+			auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Data_Short4_Quat:
-			{
-				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
-				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Data_Short4_Quat:
+		{
+			auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
+			auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 
-			case RotationEncodeTypeEnum::Data_Float4_Quat:
-			{
-				sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
-				decodedQuaternion.Normalize();
+		case RotationEncodeTypeEnum::Data_Float4_Quat:
+		{
+			sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
+			decodedQuaternion.Normalize();
 
-				return decodedQuaternion;
-			}
-			break;
+			return decodedQuaternion;
+		}
+		break;
 		}
 
 		throw std::exception(("QuaternionTrackDecoder(): Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(rotationMetaId.type))).c_str());

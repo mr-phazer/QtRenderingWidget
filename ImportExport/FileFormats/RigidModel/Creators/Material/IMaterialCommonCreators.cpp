@@ -1,11 +1,12 @@
 #include "IMaterialCommonCreators.h"
 
 using namespace rmv2;
+using namespace utils;
 
 MaterialCommon DefaultMaterialCreator::Create(ByteStream& bytes)
 {
- 	MaterialCommon matBlock;
-	
+	MaterialCommon matBlock;
+
 	// TODO: maybe solved this, so IsContentValid() is called from withing factory itself
 	matBlock.materialHeader = MaterielHeaderType5Creator().Create(bytes);
 	if (!matBlock.materialHeader.IsContentValid()) {
@@ -43,11 +44,11 @@ void rmv2::DefaultMaterialCreator::ReadTextures(ByteStream& bytes, rmv2::Materia
 	matBlock.textureElements.resize(header.dwTextureCount);
 	for (auto& textureElement : matBlock.textureElements)
 	{
-		bytes.Read(&textureElement.textureType, 4);		
+		bytes.Read(&textureElement.textureType, 4);
 
 		textureElement.texturePath.resize(TextureElement::GetPathLength());
 		bytes.Read((void*)textureElement.texturePath.data(), TextureElement::GetPathLength());
-		
+
 		// Get rid of trailing /0 from the null-padded string
 		textureElement.texturePath = textureElement.texturePath.c_str();
 	}

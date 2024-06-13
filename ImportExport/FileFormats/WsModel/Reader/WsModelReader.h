@@ -1,11 +1,13 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\..\Libs\PugiXML\pugixml.hpp"
 #include "..\DataTypes\WsModelData.h"
 
 namespace rmv2
 {
+	using namespace utils;
+
 	class WsModelReader
 	{
 		pugi::xml_document m_xmlFile;

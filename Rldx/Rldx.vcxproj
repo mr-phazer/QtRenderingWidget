@@ -77,7 +77,6 @@
     <ClInclude Include="Rldx\Interfaces\IResizable.h" />
     <ClInclude Include="Rldx\Interfaces\IUpdateable.h" />
     <ClInclude Include="Rldx\Interfaces\TIdentifiable.h" />
-    <ClInclude Include="Rldx\Logging\Logging.h" />
     <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h" />
     <ClInclude Include="Rldx\Managers\DxDeviceManager.h" />
     <ClInclude Include="Rldx\Managers\DxSceneManager.h" />
@@ -120,7 +119,6 @@
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
     <ClCompile Include="Rldx\Creators\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
-    <ClCompile Include="Rldx\Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
     <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp" />
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
@@ -148,8 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-tidy" />
-    <None Include="Rldx\Logging\Inl\ConsoleColors.inl" />
-    <None Include="Rldx\Logging\Inl\WinConsoleColors.inl" />
     <None Include="Rldx\RenderResources\Font\Consolas18.spritefont" />
     <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />

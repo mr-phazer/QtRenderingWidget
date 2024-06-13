@@ -5,7 +5,7 @@
 #include "DxConstBuffer.h"
 
 #include <d3d11.h>
-#include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 
 #include <string>
 

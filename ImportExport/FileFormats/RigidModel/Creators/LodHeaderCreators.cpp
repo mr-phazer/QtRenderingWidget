@@ -1,4 +1,4 @@
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\Types\Common\MeshEnumsConstants.h"
 #include "LodHeaderCreators.h"
 

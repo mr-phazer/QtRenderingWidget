@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Constants\Rmv2Constants.h"
 #include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"

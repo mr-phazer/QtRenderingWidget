@@ -16,7 +16,7 @@
 #include "..\Managers\ResourceManager\IDxResource.h"
 #include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
 
-#include "..\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 #include "..\Interfaces\IBindable.h"
 

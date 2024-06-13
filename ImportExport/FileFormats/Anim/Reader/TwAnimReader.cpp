@@ -4,8 +4,8 @@
 
 #include <Quantization\QuantTools.h>
 #include <SimpleMath.h>
-#include "..\..\..\..\Rldx\Rldx\Logging\Logging.h"
-#include "..\..\..\Helpers\ByteStream.h"
+#include "Logger\Logger.h"
+#include "Utils\ByteStream.h"
 #include "..\..\RigidModel\Types\Common\MeshEnumsConstants.h"
 #include "..\Creators\AnimFileHeaderCreator.h"
 #include "..\Creators\BoneTableCreator.h"
@@ -17,6 +17,7 @@
 
 namespace anim_file
 {
+	using namespace utils;
 
 	AnimFile TwAnimFileReader::Read(ByteStream& inBytes)
 	{
@@ -54,20 +55,20 @@ namespace anim_file
 
 		switch (version)
 		{
-			case ANIM_VERSION_5:
-				m_animFile.fileHeader = Anim_V6_HeaderFileCommonCreator().Create(inBytes);
-				break;
+		case ANIM_VERSION_5:
+			m_animFile.fileHeader = Anim_V6_HeaderFileCommonCreator().Create(inBytes);
+			break;
 
-			case ANIM_VERSION_7:
-				m_animFile.fileHeader = Anim_V7_HeaderFileCommonCreator().Create(inBytes);
-				break;
+		case ANIM_VERSION_7:
+			m_animFile.fileHeader = Anim_V7_HeaderFileCommonCreator().Create(inBytes);
+			break;
 
-			case ANIM_VERSION_8:
-				m_animFile.fileHeader = Anim_V8_HeaderFileCommonCreator().Create(inBytes);
-				break;
+		case ANIM_VERSION_8:
+			m_animFile.fileHeader = Anim_V8_HeaderFileCommonCreator().Create(inBytes);
+			break;
 
-			default:
-				throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", to_string(version)).c_str());
+		default:
+			throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", std::to_string(version)).c_str());
 		}
 	}
 
@@ -90,17 +91,17 @@ namespace anim_file
 	{
 		switch (m_animFile.fileHeader.dwVersion)
 		{
-			case AnimVersionEnum::ANIM_VERSION_5:
-			case AnimVersionEnum::ANIM_VERSION_7:
-				ReadClip_v7(inBytes);
-				break;
+		case AnimVersionEnum::ANIM_VERSION_5:
+		case AnimVersionEnum::ANIM_VERSION_7:
+			ReadClip_v7(inBytes);
+			break;
 
-			case AnimVersionEnum::ANIM_VERSION_8:
-				ReadClip_v8(inBytes);
-				break;
+		case AnimVersionEnum::ANIM_VERSION_8:
+			ReadClip_v8(inBytes);
+			break;
 
-			default:
-				throw std::exception(FULL_FUNC_INFO("Unsuported ANIM version.").c_str());
+		default:
+			throw std::exception(FULL_FUNC_INFO("Unsuported ANIM version.").c_str());
 		};
 
 	};
@@ -185,27 +186,27 @@ namespace anim_file
 
 			switch (transMeta.GetTrackSourceState())
 			{
-				case BoneTrackDataSourceEnum_v5_v7::FrameData:
-				{
-					outFrame.translations[iBone] = inBytes.TReadElement<sm::Vector3>();
-				}
-				break;
+			case BoneTrackDataSourceEnum_v5_v7::FrameData:
+			{
+				outFrame.translations[iBone] = inBytes.TReadElement<sm::Vector3>();
+			}
+			break;
 
-				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
-				{
-					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
+			case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
+			{
+				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
-					outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
-				}
-				break;
+				outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
+			}
+			break;
 
-				case BoneTrackDataSourceEnum_v5_v7::BindPose:
-				{
-					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
+			case BoneTrackDataSourceEnum_v5_v7::BindPose:
+			{
+				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
-					outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
-				}
-				break;
+				outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
+			}
+			break;
 			};
 		};
 
@@ -213,27 +214,27 @@ namespace anim_file
 		{
 			switch (metaTable.rotationTrackInfo[iBone].GetTrackSourceState())
 			{
-				case BoneTrackDataSourceEnum_v5_v7::FrameData:
-				{
-					outFrame.rotations[iBone] = quant_tools::GetSNormFloat4FromSignedWord4(inBytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
-				}
-				break;
+			case BoneTrackDataSourceEnum_v5_v7::FrameData:
+			{
+				outFrame.rotations[iBone] = quant_tools::GetSNormFloat4FromSignedWord4(inBytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
+			}
+			break;
 
-				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
-				{
-					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
+			case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
+			{
+				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
-					outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
-				}
-				break;
+				outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
+			}
+			break;
 
-				case BoneTrackDataSourceEnum_v5_v7::BindPose:
-				{
-					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
+			case BoneTrackDataSourceEnum_v5_v7::BindPose:
+			{
+				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
-					outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
-				}
-				break;
+				outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
+			}
+			break;
 			};
 		};
 

@@ -12,15 +12,17 @@
 
 // author heade
 #include "..\..\Helpers\StringKeyMap.h"
-#include "..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "IDxResource.h"
+#include <Logger/Logger.h>
+#include "Utils\ByteStream.h"
 
 namespace skel_anim {
 	struct SkeletonAnimation;
 }
 
 namespace rldx {
+	using namespace logger;
 
 	// forward declarations
 
@@ -124,7 +126,7 @@ namespace rldx {
 
 			if (destBinaries.size() != 1)
 			{
-				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+				throw std::exception(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)").c_str());
 			}
 
 			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);

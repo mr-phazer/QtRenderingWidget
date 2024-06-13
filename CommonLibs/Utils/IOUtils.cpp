@@ -1,22 +1,49 @@
 #include "IOUtils.h"
+#include <fstream>
+#include "ByteStream.h"
+#include "..\Logger\Logger.h"
 
 namespace utils {
 
-	//---------------------------------------------------------------------//
-	// Functions for file detection
-	//---------------------------------------------------------------------//
+	using namespace logger;
 
-	bool FileExist(const std::wstring& name)
+	bool DoesFileExist(const std::wstring& filePath)
 	{
-		struct _stat buffer {};
-		return (_wstat(name.c_str(), &buffer) == 0);
-	};
+		std::ifstream file(filePath);
+		auto result = file.good();
+		file.close();
+		return result;
+	}
 
-	static bool IsDiskFile(const std::wstring& _str)
+	std::streamoff GetFileSize(const std::wstring& filePath)
 	{
-		if (_str.size() < 2)
-			return false;
+		std::streampos beginPos, endPos;
+		std::ifstream binaryFile(filePath, std::ios::binary);
 
-		return (_str[1] == L':');
-	};
+		beginPos = binaryFile.tellg();
+		binaryFile.seekg(0, std::ios::end);
+		endPos = binaryFile.tellg();
+
+		auto fileSize = endPos - beginPos;
+
+		binaryFile.close();
+
+		return fileSize;
+	}
+
+	void ReadFileToVector(const std::wstring& filePath, std::vector<uint8_t>& destBuffer)
+	{
+		LogAction(FULL_FUNC_INFO_W(L""));
+
+		auto fileSize = GetFileSize(filePath);
+
+		destBuffer.resize(fileSize);
+
+		std::ifstream binaryFile;
+		binaryFile.open(filePath, std::ios::binary);
+		bool DEBUG_FILE_OPEN = binaryFile.is_open();
+
+		binaryFile.read((char*)destBuffer.data(), destBuffer.size());
+		binaryFile.close();
+	}
 }

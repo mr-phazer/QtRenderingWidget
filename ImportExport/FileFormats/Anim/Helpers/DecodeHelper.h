@@ -1,11 +1,12 @@
 #pragma once
 
 #include <SimpleMath.h>
-
-class ByteStream;
+#include "Utils\ByteStream.h"
 
 namespace anim_file
 {
+	using namespace utils;
+
 	struct CompressionMetaData_V8;
 	struct TranslationRangeElement;
 	struct QuanterionRangeElement;

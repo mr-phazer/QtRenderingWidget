@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\..\Interfaces\TIdentifiable.h"
-#include "..\..\Logging\Logging.h"
+#include "Logger\Logger.h"
 
 namespace rldx {
 
