@@ -92,7 +92,7 @@
     <ClCompile />
     <ClCompile />
     <ClCompile>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(QT_ROOT_DIR);$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
