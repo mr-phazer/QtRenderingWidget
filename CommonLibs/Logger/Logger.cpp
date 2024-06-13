@@ -1,15 +1,12 @@
 #include "Logger.h"
 #include <fstream>
 #include <sstream>
-#include "..\Utils\StrUtils.h"
 
 //---------------------------------------------------------------------//
 // Logger implementation
 //---------------------------------------------------------------------//
 
 namespace logger {
-
-	using namespace utils;
 
 	Logger& Logger::GetInstance() {
 		if (!m_poInstance)

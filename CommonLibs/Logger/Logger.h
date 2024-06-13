@@ -15,10 +15,12 @@
 #include <memory>
 
 #include "..\Timer\SystemClockChecker.h"
+#include "..\Utils\StrUtils.h"
 
 namespace logger {
 
 	using namespace timer;
+	using namespace utils;
 
 	enum ConsoleColorFG
 	{
@@ -60,7 +62,12 @@ namespace logger {
 		BG_WHITE = BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE,
 	};
 
-#define FULL_FUNC_INFO(message) std::string(__func__) +  std::string(", line ") + std::to_string(__LINE__) + ": " + message
+#define FULL_FUNC_INFO(message) std::string(__func__) +  std::string(", line ") + std::to_string(__LINE__) + ": " + message;
+#define FULL_FUNC_INFO_W(message) ToWString(__func__) +  std::wstring(L": Line: ") + ToWString(__LINE__) + L": " + message;
+#define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message;
+#define LogInfo(msg) LogActionInfo( FULL_FUNC_INFO(msg) );
+#define LogAction(message)  LogActionInfo(std::string(__func__) +  std::string(": Line: ") + std::to_string(__LINE__) + ": " + message);
+#define LogActionColor(message)  LogSimpleWithColor(std::string(__func__) +  std::string(": Line: ") + std::to_string(__LINE__) + ": " + message);
 
 	class WinConsole
 	{
