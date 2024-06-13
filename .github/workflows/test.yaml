@@ -17,6 +17,8 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
+        with:
+          modules: 'qtcore qtwidgets qtgui'
 
       - name: Build the lib in release mode
         shell: pwsh
