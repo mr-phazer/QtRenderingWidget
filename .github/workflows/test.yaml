@@ -23,7 +23,6 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           install-deps: 'true'
-          modules: 'qtcore qtwidgets qtgui'
           cached: 'false'
           setup-python: 'true'
           tools-only: 'false'
