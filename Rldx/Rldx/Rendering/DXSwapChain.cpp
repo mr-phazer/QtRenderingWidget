@@ -3,6 +3,7 @@
 
 
 using namespace rldx;
+using namespace logger;
 
 void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11DeviceContext* poPC)
 {
@@ -101,14 +102,14 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	IDXGISwapChain1** p = &poNew->m_cpoSwapChain1;
 	HRESULT hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
 	assert(SUCCEEDED(hr));
-	logging::LogActionSuccess("Created Swap Chain.");
+	Logger::LogActionSuccess(L"Created Swap Chain.");
 
 	// Get swap chain's back buffer, Store it in texture class
 	// TODO: create its renderQuad target view and set that view as renderQuad target (in the texture class)
 	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture2D()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
 	assert(SUCCEEDED(hr));
 
-	logging::LogActionSuccess("m_pSwapChain1->GetBuffer().");
+	Logger::LogActionSuccess(L"m_pSwapChain1->GetBuffer().");
 
 	//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
 	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture2D(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
@@ -120,10 +121,10 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	textureDescriptor.Width = poNew->m_SwapChainDescription.Width;
 	textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
 
-	logging::LogActionSuccess("CreateRenderTargetView().");
+	Logger::LogActionSuccess(L"CreateRenderTargetView().");
 
 	//m_oSwapChainData.m_cpoBackBuffer->Release();
-	logging::LogActionSuccess("m_oSwapChainData.m_pBackBuffer->Release().");
+	Logger::LogActionSuccess(L"m_oSwapChainData.m_pBackBuffer->Release().");
 
 
 	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
@@ -174,7 +175,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	//hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
 	//	(void**)&pBuffer);
 	hr = m_cpoSwapChain1->GetBuffer(0, __uuidof(ID3D11Texture2D),
-									(void**)&m_BackBufferTexture.GetComPtrTexture());
+		(void**)&m_BackBufferTexture.GetComPtrTexture());
 	// Perform error handling here!
 
 
@@ -183,7 +184,7 @@ void DxSwapChain::Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	//hr = g_pd3dDevice->CreateRenderTargetView(pBuffer, NULL,
 	//	&g_pRenderTargetView);
 	hr = device->CreateRenderTargetView(m_BackBufferTexture.GetComPtrTexture().Get(), NULL,
-										&m_BackBufferTexture.GetComPtrRenderTargetView());
+		&m_BackBufferTexture.GetComPtrRenderTargetView());
 	// Perform error handling here!
 
 	//pBuffer->Release();

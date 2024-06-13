@@ -114,7 +114,7 @@ namespace rldx {
 		template <typename SHADER_TYPE>
 		static SHADER_TYPE* Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{
-			logging::LogAction("Creating Shaders...");
+			Logger::LogAction("Creating Shaders...");
 
 			auto result = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>(L"shader01");
 			SHADER_TYPE* newInstance = static_cast<SHADER_TYPE*>(result.GetPtr());
@@ -125,17 +125,17 @@ namespace rldx {
 
 			if (!vertexShaderPath.empty())
 			{
-				logging::LogAction(std::string("Loading vertex shader: ") + libtools::wstring_to_string(vertexShaderPath));
+				Logger::LogAction(std::string("Loading vertex shader: ") + libtools::wstring_to_string(vertexShaderPath));
 				newInstance->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, vertexShaderPath);
 			}
 
 			if (!pixelShaderPath.empty())
 			{
-				logging::LogAction("Loading pixel shader: " + libtools::wstring_to_string(pixelShaderPath));
+				Logger::LogAction("Loading pixel shader: " + libtools::wstring_to_string(pixelShaderPath));
 				newInstance->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
 			}
 
-			logging::LogAction("D3D Call: Create Shader(s): ");
+			Logger::LogAction("D3D Call: Create Shader(s): ");
 			newInstance->m_pixelShaderConstBuffer.Create(poDevice);
 			newInstance->m_vertexShaderConstBuffer.Create(poDevice);
 

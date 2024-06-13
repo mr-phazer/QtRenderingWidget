@@ -49,7 +49,7 @@ inline wchar_t wchar_tolower(wchar_t ch)
 inline std::string toUpper(std::string s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-				   [](unsigned char c) { return std::toupper(c); } // correct
+		[](unsigned char c) { return std::toupper(c); } // correct
 	);
 
 	return s;
@@ -58,7 +58,7 @@ inline std::string toUpper(std::string s)
 inline std::wstring toUpper(std::wstring s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-				   [](wchar_t c) { return std::towupper(c); } // correct
+		[](wchar_t c) { return std::towupper(c); } // correct
 	);
 
 	return s;
@@ -67,7 +67,7 @@ inline std::wstring toUpper(std::wstring s)
 inline std::string toLower(std::string s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-				   [](unsigned char c) { return char_tolower(c); } // correct
+		[](unsigned char c) { return char_tolower(c); } // correct
 	);
 
 	return s;
@@ -76,20 +76,10 @@ inline std::string toLower(std::string s)
 inline std::wstring toLower(std::wstring s)
 {
 	std::transform(s.begin(), s.end(), s.begin(),
-				   [](wchar_t c) { return std::towlower(c); } // correct
+		[](wchar_t c) { return std::towlower(c); } // correct
 	);
 
 	return s;
-}
-
-inline  bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
-{
-	return toLower(str1) == toLower(str2);
-}
-
-inline  bool CompareNoCase(const std::string& str1, const std::string& str2)
-{
-	return toLower(str1) == toLower(str2);
 }
 
 
@@ -697,11 +687,11 @@ namespace guard
 
 	template <typename CONST_BUF_DATA_TYPE>
 	static void ThrowIfOutOfBounds(const std::vector<CONST_BUF_DATA_TYPE>& inVector, size_t index,
-								   const std::string& strWhat = ""
-								   /*const std::string& a_callerFunc = __FUNCTION__,
-								   const std::string& a_fileName = __FILE__,
-								   const std::string& a_lineNumber = std::to_string(__LINE__)
-								   */
+		const std::string& strWhat = ""
+		/*const std::string& a_callerFunc = __FUNCTION__,
+		const std::string& a_fileName = __FILE__,
+		const std::string& a_lineNumber = std::to_string(__LINE__)
+		*/
 
 	)
 	{
@@ -711,17 +701,6 @@ namespace guard
 			throw out_of_range(strWhat.c_str());
 		};
 	}
-}
-
-
-inline  bool CompareExtension(const std::string& str1, const std::string& str2)
-{
-	return CompareNoCase(libtools::GetFileExtension(str1), libtools::GetFileExtension(str2));
-}
-
-inline  bool CompareExtension(const std::wstring& str1, const std::wstring& str2)
-{
-	return CompareNoCase(libtools::GetFileExtension(str1), libtools::GetFileExtension(str2));
 }
 
 

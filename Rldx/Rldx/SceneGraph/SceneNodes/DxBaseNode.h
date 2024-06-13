@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stack>
+#include <vector>
+
 #include "..\..\Interfaces\IFlushable.h"
 #include "..\..\Interfaces\IUpdateable.h"
 #include "..\..\Interfaces\TIdentifiable.h"
 
 #include "..\NodeTransform\NodeTransform.h"
-
 
 namespace rldx {
 

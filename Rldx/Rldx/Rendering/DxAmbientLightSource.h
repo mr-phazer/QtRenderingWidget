@@ -12,6 +12,8 @@
 namespace rldx
 {
 
+	using namespace utils;
+
 	// make this base class of all buffers
 	class IBuffer : public IBindable
 	{
@@ -62,21 +64,21 @@ namespace rldx
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
-										   const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
-										   UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
+			const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
+			UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, DxTexture* diffuseCubemap, DxTexture* specularCubemap,
-										   DxTexture* lut = nullptr, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
+			DxTexture* lut = nullptr, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, ByteStream& pathDiffuseMap, ByteStream& pathSpecularMap,
-										   ByteStream& pathLUT, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
+			ByteStream& pathLUT, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
 	private:
 		void SetTexturesFromFiles(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
-								  const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
-								  UINT startSlotSRV = 0);
+			const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
+			UINT startSlotSRV = 0);
 
 		void SetTexturesFromMemory(ID3D11Device* poDevice, ByteStream& pathDiffuseMap, ByteStream& pathSpecularMap,
-								   ByteStream& pathLUT, UINT startSlotSRV = 0);
+			ByteStream& pathLUT, UINT startSlotSRV = 0);
 	};
 }; // namespace rldx

@@ -72,20 +72,20 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 
 	textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
 
-	logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
+	Logger::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + path);
 
 	auto bytes = DxResourceManager::GetCallBackFile(path);
 
 	if (!bytes.IsValid()) // texture file is missing or empty
 	{
-		logging::LogActionError("Loading From CALLBACK failed, missing or empty file, " + libtools::wstring_to_string(path));
+		Logger::LogActionError(L"Loading From CALLBACK failed, missing or empty file, " + path);
 
 		return;
 	}
 
 	textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
 
-	logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
+	Logger::LogActionSuccess(L"Loaded From CALLBACK: " + path);
 
 	m_textures[TextureTypeEnum(slot)] = { textPtr };
 }
@@ -99,7 +99,7 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 	}
 	catch (std::out_of_range& e) {
 		auto debug_1 = e.what(); // TODO: REMOVE!!
-		logging::LogActionError("Failed to load default texture: key enum id: " + to_string(slot) + ", message: " + e.what());
+		Logger::LogActionError(L"Failed to load default texture: key enum id: " + ToWString(to_string(slot)) + L", message: " + ToWString(e.what()));
 		return nullptr;
 	}
 

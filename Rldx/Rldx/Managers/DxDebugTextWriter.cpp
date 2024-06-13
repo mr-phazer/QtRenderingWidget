@@ -1,12 +1,14 @@
 #include <string>
 
 #include <Timer\SystemClockChecker.h>
-#include "..\..\ImportExport\Helpers\ByteStream.h"
-#include "..\Logging\Logging.h"
+#include "Utils\ByteStream.h"
+#include "Logger\Logger.h"
 #include "..\Tools\tools.h"
 #include "DxDebugTextWriter.h"
 
 using namespace rldx;
+using namespace utils;
+using namespace logger;
 
 // TODO: keep or use create()?
 //rldx::DxDebugTextWriter::DxDebugTextWriter(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
@@ -33,7 +35,7 @@ using namespace rldx;
 
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
 {
-	logging::LogAction("DxDebugTextWriter::Create");
+	Logger::LogAction("DxDebugTextWriter::Create");
 
 	auto newInstance = std::make_unique<DxDebugTextWriter>();
 	ByteStream fontData(SPRITEFONT_PATH);
@@ -41,16 +43,16 @@ std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDev
 	// TODO: handle exception where?		
 	if (!(newInstance->m_upoFont = std::make_unique<DirectX::SpriteFont>(poDevice, fontData.GetBufferPtr(), fontData.GetBufferSize())))
 	{
-		logging::LogActionError("Error Loading Font.");
+		Logger::LogActionError(L"Error Loading Font.");
 		throw std::exception("Error Loading Font.");
 	}
 
 	if (!(newInstance->m_upoSpriteBatch = std::make_unique<DirectX::SpriteBatch>(poDeviceContext))) {
-		logging::LogActionError("Error Loading Font.");
+		Logger::LogActionError(L"Error Loading Font.");
 		throw std::exception("Error Creating SpriteBatch.");
 	}
 
-	logging::LogActionSuccess("");
+	Logger::LogActionSuccess(L"");
 	return newInstance;
 }
 

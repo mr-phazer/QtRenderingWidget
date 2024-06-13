@@ -4,7 +4,7 @@
 #include <CustomExceptions\CustomExceptions.h>
 #include "..\..\DirectXTK\Inc\DirectXHelpers.h"
 #include "..\..\DXUT\Core\DXUT.h"
-#include "..\Logging\Logging.h"
+#include "Logger\Logger.h"
 #include "d3d11.h"
 
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
@@ -50,7 +50,8 @@ bool rldx::DxTexture::LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wst
 
 	if (FAILED(hrTextureCreateResult))
 	{
-		logging::LogActionWarning("Failed to load texture file: " + wtos(fileName));
+		using namespace logger;
+		Logger::LogActionWarning(L"Failed to load texture file: " + fileName);
 		return false;
 	}
 

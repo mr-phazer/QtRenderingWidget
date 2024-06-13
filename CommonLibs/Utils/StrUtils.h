@@ -5,8 +5,8 @@
 //---------------------------------------------------------------------//
 // Functions for String manipulation
 // 
-// There's only an implementation for std::string. String of type
-// wstring can be converted with ToString and back with ToWString.
+// There's only an implementation for std::wstring. String of type
+// string can be converted with ToWString and back with ToString.
 //---------------------------------------------------------------------//
 
 namespace utils {
@@ -21,6 +21,7 @@ namespace utils {
 	inline std::wstring ToUpper(std::wstring s);
 
 	inline bool CompareNoCase(const std::wstring& str1, const std::wstring& str2);
+	inline bool CompareExtension(const std::wstring& str1, const std::wstring& str2);
 
 	static std::wstring ToForwardSlash(const std::wstring& _strInput);
 }

@@ -4,6 +4,8 @@
 
 namespace skel_anim
 {
+	using namespace utils;
+
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
 		auto animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
@@ -74,7 +76,7 @@ namespace skel_anim
 	{
 		for (int32_t boneIndex = 0; boneIndex < boneTable.size(); boneIndex++)
 		{
-			if (CompareNoCase(boneTable[boneIndex].name, boneName))
+			if (CompareNoCase(ToWString(boneTable[boneIndex].name), ToWString(boneName)))
 			{
 				return boneIndex;
 			}

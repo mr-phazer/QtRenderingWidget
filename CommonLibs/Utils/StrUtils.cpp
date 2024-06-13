@@ -1,5 +1,5 @@
 #include "StrUtils.h"
-
+#include "IOUtils.h"
 #include <algorithm>
 #include <codecvt>
 #include <cwctype>
@@ -75,6 +75,11 @@ namespace utils {
 	inline bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
 	{
 		return ToLower(str1) == ToLower(str2);
+	}
+
+	inline bool CompareExtension(const std::wstring& str1, const std::wstring& str2)
+	{
+		return CompareNoCase(GetFileExtension(str1), GetFileExtension(str2));
 	}
 
 	//---------------------------------------------------------------------//

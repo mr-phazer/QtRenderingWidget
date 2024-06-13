@@ -105,11 +105,11 @@ namespace rldx {
 
 			newMaterial->InitWithDefaulTextures();
 
-			string hash = "";
+			std::string hash = "";
 			for (auto& tex : m_data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check
-				auto diskPath = libtools::string_to_wstring(tex.texturePath);
+				auto diskPath = ToWString(tex.texturePath);
 				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
 				newMaterial->PathHash() += std::string(tex.texturePath);
 			};
