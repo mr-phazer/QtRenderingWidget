@@ -1,0 +1,24 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master, develop, CleanupAndReorganizationTwoDotO ]
+  pull_request:
+    branches: [ master, develop, CleanupAndReorganizationTwoDotO ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+
+      - name: Build the lib in release mode
+        shell: pwsh
+        run: |
+          MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Release -p:Platform=x64
