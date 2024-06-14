@@ -24,13 +24,6 @@ namespace utils {
 		return (abs(in) / in);
 	}
 
-	/// <summary>
-	///  Implemation of 'Polynomial rolling hash function'
-	/// from
-	/// https://cp-algorithms.com/string/string-hashing.html#calculation-of-the-hash-of-a-string 		
-	/// </summary>
-	/// <param name="s">string to be hased</param>
-	/// <returns>64 bit hash</returns>
 	static int64_t compute_string_hash(const std::wstring& s) {
 
 		const int p = 31;
