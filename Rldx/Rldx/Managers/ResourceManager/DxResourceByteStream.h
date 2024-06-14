@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\ImportExport\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "IDxResource.h"
 
 namespace rldx

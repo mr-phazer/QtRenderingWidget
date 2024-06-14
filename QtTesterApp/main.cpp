@@ -1,10 +1,11 @@
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "Logger\Logger.h"
 #include "QtTestAppView.h"
 
 int main(int argc, char* argv[])
 {
 
-	logging::LogAction("main(): Entry Point");
+	using namespace logging;
+	Logger::LogAction("main(): Entry Point");
 	QApplication a(argc, argv);
 
 	QtMainWindowView w;

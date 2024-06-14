@@ -45,13 +45,13 @@ namespace libtools
 			MessageBox(
 				NULL,
 				(
-					std::wstring(L"Operation:") + op + L"\n\r" +
-					L"Function: " +
-					std::wstring(func) + L"\n\r" +
-					std::wstring(L"Error Code: ") + L"\n\r" +
-					std::wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
-					to_wstring(hr) + L" :" + L"\n\r" +
-					std::wstring(L"Error std::string: " + msg)).c_str(),
+					L"Operation:" + op + L"\n\r" +
+					L"Function: " + func + L"\n\r" +
+					L"Error Code: \n\r" +
+					L"Hex: 0x" + strHex + L"\n\r" +
+					to_wstring(hr) + L" :\n\r" +
+					L"Error std::string: " + msg
+				).c_str(),
 				L"Critical Direct3d Error!",
 				MB_OK | MB_ICONERROR
 			);

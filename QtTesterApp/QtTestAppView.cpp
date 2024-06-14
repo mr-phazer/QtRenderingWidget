@@ -5,7 +5,7 @@
 #include <qlayout.h>
 
 
-#include "..\ImportExport\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
@@ -179,8 +179,8 @@ namespace test_app_data
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
 {
-
-	logging::LogActionSuccess("Starting the program.");
+	using namespace logging;
+	Logger::LogActionSuccess(L"Starting the program.");
 	setupUi(this);
 
 	// TODO: maybe not have this constructor !!!! even for test program
@@ -248,7 +248,7 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
 	SetLogFolder(&globalLogFolder);
 
-	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
+	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 
 	if (!renderWidget)
 		return;
