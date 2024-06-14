@@ -4,11 +4,11 @@
 
 namespace utils {
 
-	constexpr float ToDegrees(float radians) {
+	float ToDegrees(float radians) {
 		return radians * (180.0f / DirectX::XM_PI);
 	}
 
-	constexpr float ToRadians(float degrees) {
+	float ToRadians(float degrees) {
 		return degrees * (DirectX::XM_PI / 180.0f);
 	}
 

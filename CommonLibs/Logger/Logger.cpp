@@ -171,4 +171,11 @@ namespace logger {
 	{
 		Print(str + L"\n", color);
 	}
+
+	// static member variable defines
+	std::wstring Logger::sm_loggingFolder;
+	std::wstring Logger::sm_logFileName;
+	std::wstring Logger::sm_prefix;
+	SystemClockChecker Logger::m_globalClock;
+	std::unique_ptr<Logger> Logger::m_poInstance;
 }

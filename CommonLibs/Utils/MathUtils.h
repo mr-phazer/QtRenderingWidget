@@ -4,8 +4,8 @@
 
 namespace utils {
 
-	constexpr float ToDegrees(float radians);
-	constexpr float ToRadians(float degrees);
+	float ToDegrees(float radians);
+	float ToRadians(float degrees);
 
 	/// <summary>
 	/// Return true at a certain pronanality

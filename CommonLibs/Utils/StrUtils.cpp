@@ -27,7 +27,7 @@ namespace utils {
 		return converterX.from_bytes(str);
 	}
 
-	static std::wstring ToWString(DirectX::XMFLOAT3 _v3)
+	std::wstring ToWString(DirectX::XMFLOAT3 _v3)
 	{
 		return
 			L"(" +
@@ -36,7 +36,7 @@ namespace utils {
 			std::to_wstring(_v3.z) + L" ) ";
 	}
 
-	static std::wstring ToWString(DirectX::XMFLOAT4 _v4)
+	std::wstring ToWString(DirectX::XMFLOAT4 _v4)
 	{
 		return
 			L"(" +
@@ -46,7 +46,7 @@ namespace utils {
 			std::to_wstring(_v4.w) + L" ) ";
 	}
 
-	static std::wstring decToHexW(int dec)
+	std::wstring decToHexW(int dec)
 	{
 		std::wostringstream ss;
 		ss << std::hex << dec;
@@ -58,13 +58,13 @@ namespace utils {
 	// Functions for character manipulation
 	//---------------------------------------------------------------------//
 
-	inline wchar_t ToLower(wchar_t ch)
+	wchar_t ToLower(wchar_t ch)
 	{
 		using namespace std;
 		return static_cast<wchar_t>(std::towlower(static_cast<unsigned short>(ch)));
 	}
 
-	inline wchar_t ToUpper(wchar_t ch)
+	wchar_t ToUpper(wchar_t ch)
 	{
 		using namespace std;
 		return static_cast<wchar_t>(std::towupper(static_cast<unsigned short>(ch)));
@@ -74,7 +74,7 @@ namespace utils {
 	// Functions for string manipulation
 	//---------------------------------------------------------------------//
 
-	inline std::wstring ToLower(std::wstring s)
+	std::wstring ToLower(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
 			[](wchar_t c) {
@@ -85,7 +85,7 @@ namespace utils {
 		return s;
 	}
 
-	inline std::wstring ToUpper(std::wstring s)
+	std::wstring ToUpper(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
 			[](wchar_t c) {
@@ -96,7 +96,7 @@ namespace utils {
 		return s;
 	}
 
-	inline std::string ToUpper(std::string s)
+	std::string ToUpper(std::string s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
 			[](unsigned char c) { return std::toupper(c); } // correct
@@ -106,7 +106,7 @@ namespace utils {
 	}
 
 	template<typename T_it>
-	static inline void SequenceToLower(T_it begin, T_it end)
+	void SequenceToLower(T_it begin, T_it end)
 	{
 		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
 		// inverted bit std::string (~).
@@ -115,7 +115,7 @@ namespace utils {
 	}
 
 	template<typename T_it>
-	static inline void SequenceToUpper(T_it begin, T_it end)
+	void SequenceToUpper(T_it begin, T_it end)
 	{
 		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
 		// inverted bit std::string (~).
@@ -123,7 +123,7 @@ namespace utils {
 			*it &= ~0x20;
 	}
 
-	static std::vector<std::wstring> DissolveStringBytDelimitersFast(const std::wstring& _strInput, const wchar_t chDelimiterChar = L' ')
+	std::vector<std::wstring> DissolveStringBytDelimitersFast(const std::wstring& _strInput, const wchar_t chDelimiterChar = L' ')
 	{
 		std::wistringstream ss(_strInput);
 		std::wstring strTempDest;
@@ -137,7 +137,7 @@ namespace utils {
 		return vecStringOut;
 	}
 
-	static std::vector<std::wstring> DissolveStringBytDelimiters(const std::wstring& _path, const std::wstring& delimiters)
+	std::vector<std::wstring> DissolveStringBytDelimiters(const std::wstring& _path, const std::wstring& delimiters)
 	{
 		// lamda for checking if any of chars
 		auto isDelimiter = [&](wchar_t ch) -> bool
@@ -177,7 +177,7 @@ namespace utils {
 		}
 	}
 
-	static std::vector<std::wstring> split(const std::wstring& s, wchar_t delim) {
+	std::vector<std::wstring> split(const std::wstring& s, wchar_t delim) {
 		std::vector<std::wstring> elems;
 		split(s, delim, std::back_inserter(elems));
 		return elems;
@@ -187,12 +187,12 @@ namespace utils {
 	// Functions for comparison
 	//---------------------------------------------------------------------//
 
-	inline bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
+	bool CompareNoCase(const std::wstring& str1, const std::wstring& str2)
 	{
 		return ToLower(str1) == ToLower(str2);
 	}
 
-	inline bool CompareExtension(const std::wstring& str1, const std::wstring& str2)
+	bool CompareExtension(const std::wstring& str1, const std::wstring& str2)
 	{
 		return CompareNoCase(GetFileExtension(str1), GetFileExtension(str2));
 	}
@@ -201,7 +201,7 @@ namespace utils {
 	// Functions for path (string) manipulation
 	//---------------------------------------------------------------------//
 
-	static std::wstring ToForwardSlash(const std::wstring& _strInput)
+	std::wstring ToForwardSlash(const std::wstring& _strInput)
 	{
 		std::wstring tempString = _strInput;
 		for (auto& ch : tempString)
@@ -215,7 +215,7 @@ namespace utils {
 		return tempString;
 	}
 
-	static std::wstring ToLowerAndBackSlash(const std::wstring& _strInput)
+	std::wstring ToLowerAndBackSlash(const std::wstring& _strInput)
 	{
 		std::wstring strOut = _strInput;
 
