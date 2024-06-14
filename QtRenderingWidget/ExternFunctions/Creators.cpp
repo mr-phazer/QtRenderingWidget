@@ -38,9 +38,6 @@ QWidget* CreateQRenderingWidget(
 	rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 #endif	
 
-	// TODO: disable this for release
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
-
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
 	try {
