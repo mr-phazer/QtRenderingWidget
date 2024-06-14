@@ -81,7 +81,10 @@ namespace logging {
 	class Logger
 	{
 	public:
-		static Logger& GetInstance();
+
+		// This methos is never called, and it shouldn't be, as this class is not a singletong
+		// I meant to make it a singleton, but stopped halfway-thru.
+		//static Logger& GetInstance();
 
 		// TODO clean this up with better encapsulation, setters/getters
 		static void SetLogFolder(const std::wstring& path);

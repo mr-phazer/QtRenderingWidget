@@ -8,18 +8,19 @@
 
 namespace logging {
 
-	Logger& Logger::GetInstance() {
-		if (!m_poInstance)
-		{
-			m_poInstance = std::make_unique<Logger>();
-			sm_logFileName = L"RenderViewLog.txt";
-			sm_prefix = L"[QRenderingView Debug:] ";
-		}
-		else
-		{
-			return *m_poInstance;
-		}
-	}
+
+	// // Logger& Logger::GetInstance() {
+		// // if (!m_poInstance)
+		// // {
+			// // m_poInstance = std::make_unique<Logger>();
+			// // sm_logFileName = L"RenderViewLog.txt";
+			// // sm_prefix = L"[QRenderingView Debug:] ";
+		// // }
+		// // else
+		// // {
+			// // return *m_poInstance;
+		// // }
+	// // }
 
 	void Logger::SetLogFolder(const std::wstring& path)
 	{
@@ -172,10 +173,10 @@ namespace logging {
 		Print(str + L"\n", color);
 	}
 
-	// static member variable defines
+	// static member variale defines
 	std::wstring Logger::sm_loggingFolder;
-	std::wstring Logger::sm_logFileName;
-	std::wstring Logger::sm_prefix;
+	std::wstring Logger::sm_logFileName = L"RenderViewLog.txt";
+	std::wstring Logger::sm_prefix = L"[QRenderingView Debug:] ";
 	SystemClockChecker Logger::m_globalClock;
 	std::unique_ptr<Logger> Logger::m_poInstance;
 }
