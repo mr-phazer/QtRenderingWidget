@@ -34,7 +34,7 @@ void rldx::DxMaterial::SetTextures(ID3D11Device* poDevice, const std::vector<rmv
 {
 	for (auto& itText : inTex)
 	{
-		AddTexture(poDevice, itText.textureType, libtools::string_to_wstring(itText.texturePath));
+		AddTexture(poDevice, itText.textureType, ToWString(itText.texturePath));
 	}
 }
 
@@ -62,7 +62,7 @@ inline bool IsDDSTextureFile(char* bin)
 inline bool IsTextureCriticalForMaterial(const wstring& filePath)
 {
 	return !(
-		(toLower(filePath).find(L"mask") != std::wstring::npos)
+		(ToLower(filePath).find(L"mask") != std::wstring::npos)
 		);
 }
 

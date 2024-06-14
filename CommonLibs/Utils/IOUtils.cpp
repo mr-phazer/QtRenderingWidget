@@ -5,7 +5,16 @@
 
 namespace utils {
 
+	using namespace std;
 	using namespace logger;
+
+	bool IsDiskFile(const std::wstring& _str)
+	{
+		if (_str.size() < 2)
+			return false;
+
+		return (_str[1] == L':');
+	};
 
 	bool DoesFileExist(const std::wstring& filePath)
 	{
@@ -15,6 +24,7 @@ namespace utils {
 		return result;
 	}
 
+	/*
 	std::streamoff GetFileSize(const std::wstring& filePath)
 	{
 		std::streampos beginPos, endPos;
@@ -29,7 +39,71 @@ namespace utils {
 		binaryFile.close();
 
 		return fileSize;
+	}*/
+
+	size_t GetFileSize(const std::wstring& strFileName)
+	{
+		struct _stat stat_buf {};
+		int rc = _wstat(strFileName.c_str(), &stat_buf);
+		return rc == 0 ? stat_buf.st_size : 0;
 	}
+
+	static inline size_t GetInputFileSize(std::ifstream& is)
+	{
+		is.seekg(0, std::ios_base::end);
+		std::size_t size = is.tellg();
+		is.seekg(0, std::ios_base::beg);
+		return size;
+	}
+
+	/*
+
+	size_t GetFileSize(const std::string& strFileName)
+	{
+		struct _stat stat_buf {};
+		int rc = _stat(strFileName.c_str(), &stat_buf);
+		return rc == 0 ? stat_buf.st_size : 0;
+
+		std::ifstream in(strFileName, std::ifstream::ate | std::ifstream::binary);
+		return in.tellg();
+
+		streampos begin, end;
+		ifstream ifsFile(strFileName, ios::in | ios::binary);
+		/* if ( ifsFile.fail() ) {
+			 this->m_error_code = predefined_error_codes::FILE_NOT_FOUND;
+			 if (window::getMainWindow())
+				 window::getOKErrorBox(window::getMainWindow(), "Error!", "File not opened.");
+			 else
+				 window::getOKErrorBox(NULL, "Error!", "File not opened.");
+
+			 writeDebugMessage("rmv2_file::_getFileSize: File not opened");
+
+			 return false;
+		}///
+
+		begin = ifsFile.tellg();
+		ifsFile.seekg(0, ios::end);
+		end = ifsFile.tellg();
+		ifsFile.close();
+
+		size_t rEnd = end;
+		size_t rBegin = begin;
+
+		//if (rEnd - rBegin >= 0) {
+		//	this->m_error_code = predefined_error_codes::FILE_SIZE_ZERO;
+		//	if (window::getMainWindow())
+		//		window::getOKErrorBox(window::getMainWindow(), "Error!", "File size = 0!");
+		//	else
+		//		window::getOKErrorBox(NULL, "Error!", "File size = 0!");
+
+		//	writeDebugMessage("rmv2_file::_getFileSize: File size = 0!");
+
+		//	return false;
+		//}
+
+		return (rEnd - rBegin);
+	}
+	*/
 
 	void ReadFileToVector(const std::wstring& filePath, std::vector<uint8_t>& destBuffer)
 	{
@@ -168,4 +242,46 @@ namespace utils {
 		return &_csz[index + 1];
 	}
 
+
+	int fileOffsetToLineNumber(const std::wstring& _strFile, uint64_t _offset)
+	{
+		std::ifstream in(_strFile, ios::binary);
+		if (!in.is_open())
+			return 0;
+
+		char ch = 0;
+		uint64_t offset = 0;
+		int line_number = 1;
+
+		while (!in.eof() && offset++ < _offset)
+		{
+			in.read(&ch, 1);
+
+			//if (/*ch == '\r' || */ch == '\n')
+			if (ch == 13 && offset < _offset)
+				line_number++;
+		}
+
+		return line_number;
+	}
+
+	int fileOffsetToLineNumberMem(const char* _pBuffer, size_t _size, size_t _file_offset)
+	{
+		char ch = 0;
+		uint64_t offset = 0;
+		int line_number = 1;
+
+		while (offset < _size && offset < _file_offset)
+		{
+			ch = _pBuffer[offset];
+
+			if (ch == '\r' || ch == '\n') {
+				line_number++;
+			}
+
+			offset++;
+		}
+
+		return line_number;
+	}
 }

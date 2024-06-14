@@ -77,9 +77,9 @@ namespace rldx {
 
 	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, size_t iLod, size_t iMesh, const rmv2::LODHeaderCommon& lodHeader, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
 	{
-		m_lods[iLod][iMesh] = DxMeshNode::Create(libtools::string_to_wstring(materialHeader.szMeshName));
+		m_lods[iLod][iMesh] = DxMeshNode::Create(ToWString(materialHeader.szMeshName));
 		auto rm2MeshData = DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
-		m_lods[iLod][iMesh]->SetMeshData(rm2MeshData, libtools::string_to_wstring(materialHeader.szMeshName));
+		m_lods[iLod][iMesh]->SetMeshData(rm2MeshData, ToWString(materialHeader.szMeshName));
 		m_lods[iLod][iMesh]->SetMeshPivot(materialHeader.transforms.vPivot);
 		m_lods[iLod][iMesh]->SetMeshVisbilityDistance(lodHeader.fVisibilityDistance);
 

@@ -2,11 +2,14 @@
 
 #include <qdir>
 
+#include "Logger\Logger.h"
+
 //#include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
 
 //#include "..\RenderLib\Direct3d11Device.h"
 
 using namespace rldx;
+using namespace logger;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
 	: QWidget(parent), m_controller(new QtRenderController(this))
@@ -131,15 +134,15 @@ bool QtRenderWidgetView::InitRenderView()
 {
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 
-	logging::LogAction("");
-	logging::LogAction("Make new Device Manager");
+	LogAction("");
+	LogAction("Make new Device Manager");
 
 	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
-	logging::LogAction("Retriving Default Textures from .exe");
+	LogAction("Retriving Default Textures from .exe");
 
 
-	logging::LogAction("Create New Scene");
+	LogAction("Create New Scene");
 
 	LoadExeResources(poDevice);
 

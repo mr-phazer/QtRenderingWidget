@@ -9,6 +9,8 @@
 
 #include "Logger\Logger.h"
 
+using namespace logger;
+
 void SetLogPath(const QString& path)
 {
 	// TODO: implement
@@ -47,7 +49,7 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 		MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
 
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		delete poNewRenderingWidget;
 		return nullptr;
@@ -80,7 +82,7 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 #endif
 
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		return false;
 	}
@@ -106,7 +108,7 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 #endif
 
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(std::string("Error: Excpetion: ") + e.what());
 
 		return false;
 	}
@@ -121,7 +123,7 @@ void SetAssetFolder(QString* folder)
 
 void SetLogFolder(QString* folder)
 {
-	logging::ImplLog::SetLogFolder(folder->toStdWString());
+	Logger::SetLogFolder(folder->toStdWString());
 }
 
 void PauseRendering(QWidget* pQRenderWiget)

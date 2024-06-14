@@ -11,6 +11,7 @@
 ////#include <DirectXMath.h>
 //
 
+#include "Utils\MathUtils.h"
 
 using namespace rldx;
 
@@ -235,7 +236,7 @@ void rldx::DxCameraOrbital::RotateCamera()
 	rotateCamera_Yaw(m_vRotVelocity.x);
 	rotateCamera_Pitch(m_vRotVelocity.y);
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(ToDegrees(m_geometryData.fYaw)) + L")");
 	// TODO: renabel
 	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")");
 }

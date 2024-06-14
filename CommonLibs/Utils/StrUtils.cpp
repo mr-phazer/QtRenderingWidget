@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <codecvt>
 #include <cwctype>
+#include <sstream>
 
 namespace utils {
 
@@ -24,6 +25,33 @@ namespace utils {
 		std::wstring_convert<convert_typeX, wchar_t> converterX;
 
 		return converterX.from_bytes(str);
+	}
+
+	static std::wstring ToWString(DirectX::XMFLOAT3 _v3)
+	{
+		return
+			L"(" +
+			std::to_wstring(_v3.x) + L", " +
+			std::to_wstring(_v3.y) + L", " +
+			std::to_wstring(_v3.z) + L" ) ";
+	}
+
+	static std::wstring ToWString(DirectX::XMFLOAT4 _v4)
+	{
+		return
+			L"(" +
+			std::to_wstring(_v4.x) + L", " +
+			std::to_wstring(_v4.y) + L", " +
+			std::to_wstring(_v4.z) + L", " +
+			std::to_wstring(_v4.w) + L" ) ";
+	}
+
+	static std::wstring decToHexW(int dec)
+	{
+		std::wostringstream ss;
+		ss << std::hex << dec;
+
+		return ss.str();
 	}
 
 	//---------------------------------------------------------------------//
@@ -68,6 +96,93 @@ namespace utils {
 		return s;
 	}
 
+	inline std::string ToUpper(std::string s)
+	{
+		std::transform(s.begin(), s.end(), s.begin(),
+			[](unsigned char c) { return std::toupper(c); } // correct
+		);
+
+		return s;
+	}
+
+	template<typename T_it>
+	static inline void SequenceToLower(T_it begin, T_it end)
+	{
+		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
+		// inverted bit std::string (~).
+		for (auto it = begin; it != end; ++it)
+			*it |= 0x20;
+	}
+
+	template<typename T_it>
+	static inline void SequenceToUpper(T_it begin, T_it end)
+	{
+		// Convert to upper: clear the '32' bit, 0x20 in hex. And with the
+		// inverted bit std::string (~).
+		for (auto it = begin; it != end; ++it)
+			*it &= ~0x20;
+	}
+
+	static std::vector<std::wstring> DissolveStringBytDelimitersFast(const std::wstring& _strInput, const wchar_t chDelimiterChar = L' ')
+	{
+		std::wistringstream ss(_strInput);
+		std::wstring strTempDest;
+
+		std::vector<std::wstring> vecStringOut;
+		while (std::getline(ss, strTempDest, chDelimiterChar))
+		{
+			vecStringOut.push_back(strTempDest);
+		}
+
+		return vecStringOut;
+	}
+
+	static std::vector<std::wstring> DissolveStringBytDelimiters(const std::wstring& _path, const std::wstring& delimiters)
+	{
+		// lamda for checking if any of chars
+		auto isDelimiter = [&](wchar_t ch) -> bool
+			{
+				for (const auto& itCh : delimiters)
+				{
+					if (tolower(itCh) == ch)
+						return true;
+				}
+
+				return false;
+			};
+
+		std::vector<std::wstring> vecDissolvedPath;
+		size_t str_index = 0;
+		while (str_index < _path.size())
+		{
+			std::wstring strTemp = L"";
+			while (!isDelimiter(_path[str_index]) && str_index < _path.size())
+			{
+				strTemp += _path[str_index];
+				str_index++;
+			}
+			vecDissolvedPath.push_back(strTemp);
+			str_index++;
+		}
+
+		return vecDissolvedPath;
+	}
+
+	template <typename Out>
+	void split(const std::wstring& s, wchar_t delim, Out result) {
+		std::wistringstream iss(s);
+		std::wstring item;
+		while (std::getline(iss, item, delim)) {
+			*result++ = item;
+		}
+	}
+
+	static std::vector<std::wstring> split(const std::wstring& s, wchar_t delim) {
+		std::vector<std::wstring> elems;
+		split(s, delim, std::back_inserter(elems));
+		return elems;
+	}
+
 	//---------------------------------------------------------------------//
 	// Functions for comparison
 	//---------------------------------------------------------------------//
@@ -98,5 +213,32 @@ namespace utils {
 		}
 
 		return tempString;
+	}
+
+	static std::wstring ToLowerAndBackSlash(const std::wstring& _strInput)
+	{
+		std::wstring strOut = _strInput;
+
+		for (auto& it : strOut)
+		{
+			it = ToLower(it);
+			if (it == '/')
+				it = '\\';
+		}
+
+		return strOut;
+	}
+
+	std::wstring GetComError(HRESULT hrResult)
+	{
+		_com_error err(hrResult);
+		std::wstring errorMesssage = err.ErrorMessage();
+
+		return errorMesssage;
+	}
+
+	std::string GetComErrorNarrow(HRESULT hrResult)
+	{
+		return ToString(GetComError(hrResult));
 	}
 }

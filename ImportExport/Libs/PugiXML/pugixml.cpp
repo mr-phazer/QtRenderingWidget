@@ -23,7 +23,7 @@
 #include <limits.h>
 
 // phazer added
-#include "..\..\..\Rldx\Rldx\Tools\tools.h"
+#include "Utils\StrUtils.h"
 
 
 #ifdef PUGIXML_WCHAR_MODE
@@ -5671,12 +5671,12 @@ namespace pugi
 	PUGI_IMPL_FN xml_node xml_node::child_no_case(const char_t* name_) const
 	{
 		if (!_root) return xml_node();
-
+		using namespace utils;
 		for (xml_node_struct* i = _root->first_child; i; i = i->next_sibling)
 		{
 			const char_t* iname = i->name;
 			//if (iname && impl::strequal(name_, iname))
-			if (iname &&  toUpper(name_) == toUpper(iname))			
+			if (iname && ToUpper(name_) == ToUpper(iname))			
 				return xml_node(i);
 		}
 
@@ -5701,12 +5701,12 @@ namespace pugi
 	PUGI_IMPL_FN xml_attribute xml_node::attribute_no_case(const char_t* name_) const
 	{
 		if (!_root) return xml_attribute();
-
+		using namespace utils;
 		for (xml_attribute_struct* i = _root->first_attribute; i; i = i->next_attribute)
 		{
 			const char_t* iname = i->name;
 			//if (iname && impl::strequal(name_, iname))
-			if (iname && toUpper(name_) == toUpper(iname))
+			if (iname && ToUpper(name_) == ToUpper(iname))
 				return xml_attribute(i);
 		}
 

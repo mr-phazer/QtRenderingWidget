@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -23,6 +23,7 @@
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
     <ClInclude Include="Utils\IOUtils.h" />
+    <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\StrUtils.h" />
     <ClInclude Include="Utils\ByteStream.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />
     <ClCompile Include="Utils\IOUtils.cpp" />
+    <ClCompile Include="Utils\MathUtils.cpp" />
     <ClCompile Include="Utils\StrUtils.cpp" />
     <ClCompile Include="Utils\ByteStream.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />

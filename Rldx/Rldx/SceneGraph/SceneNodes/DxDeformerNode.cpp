@@ -68,7 +68,7 @@ namespace rldx
 
 	void DxDeformerNode::AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName)
 	{
-		auto index = m_skeleton.GetIndexFromBoneName(libtools::wstring_to_string(boneName));
+		auto index = m_skeleton.GetIndexFromBoneName(ToString(boneName));
 
 		if (index != -1)
 		{
