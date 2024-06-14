@@ -50,7 +50,7 @@ bool rldx::DxTexture::LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wst
 
 	if (FAILED(hrTextureCreateResult))
 	{
-		using namespace logger;
+		using namespace logging;
 		Logger::LogActionWarning(L"Failed to load texture file: " + fileName);
 		return false;
 	}

@@ -6,7 +6,7 @@
 namespace utils {
 
 	using namespace std;
-	using namespace logger;
+	using namespace logging;
 
 	bool IsDiskFile(const std::wstring& _str)
 	{

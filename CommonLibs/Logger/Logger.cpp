@@ -6,7 +6,7 @@
 // Logger implementation
 //---------------------------------------------------------------------//
 
-namespace logger {
+namespace logging {
 
 	Logger& Logger::GetInstance() {
 		if (!m_poInstance)

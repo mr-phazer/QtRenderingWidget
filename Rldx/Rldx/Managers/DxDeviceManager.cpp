@@ -8,7 +8,7 @@
 
 
 using namespace rldx;
-using namespace logger;
+using namespace logging;
 
 std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 

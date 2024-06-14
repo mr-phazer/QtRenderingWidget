@@ -8,7 +8,7 @@
 
 using namespace rldx;
 using namespace utils;
-using namespace logger;
+using namespace logging;
 
 // TODO: keep or use create()?
 //rldx::DxDebugTextWriter::DxDebugTextWriter(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)

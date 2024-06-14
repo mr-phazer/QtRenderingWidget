@@ -9,7 +9,7 @@
 //#include "..\RenderLib\Direct3d11Device.h"
 
 using namespace rldx;
-using namespace logger;
+using namespace logging;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
 	: QWidget(parent), m_controller(new QtRenderController(this))

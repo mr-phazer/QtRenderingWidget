@@ -17,7 +17,7 @@
 #include "..\Timer\SystemClockChecker.h"
 #include "..\Utils\StrUtils.h"
 
-namespace logger {
+namespace logging {
 
 	using namespace timer;
 	using namespace utils;

@@ -9,7 +9,7 @@
 
 #include "Logger\Logger.h"
 
-using namespace logger;
+using namespace logging;
 
 void SetLogPath(const QString& path)
 {

@@ -6,7 +6,7 @@
 #include "..\Logger\Logger.h"
 
 namespace utils {
-	using namespace logger;
+	using namespace logging;
 
 	std::wstring ByteStream::sm_searchFolder = L"";
 

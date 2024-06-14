@@ -2,7 +2,7 @@
 
 #include "..\Logger\Logger.h"
 
-using namespace logger;
+using namespace logging;
 ConLogException::ConLogException(const std::wstring& message)
 {
 	Logger::LogActionError(L"Exception: " + message);

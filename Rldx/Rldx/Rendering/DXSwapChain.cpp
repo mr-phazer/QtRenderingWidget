@@ -3,7 +3,7 @@
 
 
 using namespace rldx;
-using namespace logger;
+using namespace logging;
 
 void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11DeviceContext* poPC)
 {
