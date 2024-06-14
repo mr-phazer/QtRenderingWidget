@@ -14,3 +14,5 @@
 /// </param>
 /// <returns></returns>
 typedef void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+
+typedef void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out);

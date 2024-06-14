@@ -16,7 +16,9 @@ class Vector;
 extern "C" QWidget * CreateQRenderingWidget(
 	QWidget * parent, 
 	QString* gameIdString, 
-	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles));
+	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles),
+	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
+);
 
 // TODO: remove?
 //extern "C" QWidget * CreateQRenderingWidget(

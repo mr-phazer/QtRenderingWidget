@@ -107,6 +107,7 @@ namespace rldx {
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
 		std::wstring GetGameIdSting() { return m_gameIdString; }
 
+		static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
 
 		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
@@ -228,7 +229,7 @@ namespace rldx {
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;
 		std::wstring m_rooPathAssetPath = LR"(c:/temp/)";
 		std::function<void(QList<QString>*, QList<QByteArray>*)> m_assetCallBack;
-
+		std::function<void(QString*, QList<QString>*)> m_animPathsBySkeletonCallBack;
 		QVector<QString> m_qstrMissingFiles;
 	};
 

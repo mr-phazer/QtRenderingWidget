@@ -23,13 +23,19 @@ void SetLogPath(const QString& path)
 /// </summary>
 static void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
 
-QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
+QWidget* CreateQRenderingWidget(
+	QWidget* parent, 
+	QString* gameIdString, 
+	void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles),
+	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
+)
 {
 	// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
 #ifdef _DEBUG
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 #else	
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
+	rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 #endif	
 
 	// TODO: disable this for release
