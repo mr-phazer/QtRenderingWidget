@@ -12,6 +12,7 @@ namespace rldx {
 		Texture,
 		Material,
 		BytesStream,
+		Skeleton,
 		Animation
 	};
 

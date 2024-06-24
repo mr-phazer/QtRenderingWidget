@@ -86,17 +86,17 @@ namespace rldx {
 
 	public:
 		/// <summary>
-		/// For debugging
+		/// TODO: move this to ByteStream?
 		/// </summary>		
 		static void SetGameAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
 
 		/// <summary>
-		/// For debugging
+		/// TODO: move this to ByteStream?
 		/// </summary>		
 		static std::wstring GetGameAssetFolder() { return Instance()->m_rooPathAssetPath; }
 
 		/// <summary>
-		/// For debugging
+		/// TODO: move this to ByteStream?
 		/// </summary>		
 		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
 
@@ -112,20 +112,20 @@ namespace rldx {
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
 			QList<QByteArray> destBinaries;
 
-			if (libtools::IsDiskFile(fileName)) // fetch from disk
-			{
-				ByteStream diskBytes(fileName);
-				return diskBytes;
-			}
 
 			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
-
-			QList<int> test = { 1,2, 2 };
 
 			if (destBinaries.size() != 1)
 			{
 				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 			}
+
+			if (destBinaries[0].isEmpty())
+			{
+				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
+				return ByteStream();
+			}
+
 
 			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
 		}
@@ -150,22 +150,27 @@ namespace rldx {
 
 		static DxResourceManager* Instance();
 
-		template<typename TYPE_DERIVED>
-		TResourceHandle<TYPE_DERIVED> AllocEmpty(const std::wstring& stringId = L"");
+		template<typename Derived_t>
+		TResourceHandle<Derived_t> Create(const std::wstring& stringId = L"");
 
 
-		template <typename TYPE_DERIVED>
-		TYPE_DERIVED* GetResourceByString(const std::wstring& strId) const;
 
-		template <typename TYPE_DERIVED>
-		TYPE_DERIVED* GetResourceById(uint32_t id) const
+		template<typename Derived_t>
+		TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId = L"");
+
+
+		template <typename Derived_t>
+		Derived_t* GetResourceByString(const std::wstring& strId) const;
+
+		template <typename Derived_t>
+		Derived_t* GetResourceById(uint32_t id) const
 		{
-			auto whatType = TYPE_DERIVED().GetType();
+			auto whatType = Derived_t().GetType();
 
 			auto it = m_umapResourceSptrDataById.find(id);
 			if (it != m_umapResourceSptrDataById.end()) {
 
-				return static_cast<TYPE_DERIVED*>(it->second);
+				return static_cast<Derived_t*>(it->second);
 			}
 
 			return nullptr;
@@ -229,41 +234,49 @@ namespace rldx {
 		QVector<QString> m_qstrMissingFiles;
 	};
 
+	template<typename Derived_t>
+	inline TResourceHandle<Derived_t> DxResourceManager::Create(const std::wstring& stringId)
+	{
+		auto pResource = GetResourceByString<Derived_t>(stringId);
+		if (pResource) {
+			return { pResource->GetId(), pResource };
+		}
+
+		return TResourceHandle<Derived_t>();
+	}
+
 	/// <summary>
 	/// Create a new resource of the specified type and stores it in the resource manager.
 	/// </summary>
-	/// <typeparam name="TYPE_DERIVED">The resource, hase to be Derived from IDxResource</typeparam>
+	/// <typeparam name="Derived_t">The resource, hase to be Derived from IDxResource</typeparam>
 	/// <param name="stringId">String Id - Optional</param>
 	/// <returns>returns a handle that contains both the pointer to the new resourec, and its global ID</returns>
-	template<typename TYPE_DERIVED>
-	inline TResourceHandle<TYPE_DERIVED> DxResourceManager::AllocEmpty(const std::wstring& stringId)
+	template<typename Derived_t>
+	inline TResourceHandle<Derived_t> DxResourceManager::AllocEmpty(const std::wstring& stringId)
 	{
 		auto resourceId = GetNextId();
-		auto pDerived = new TYPE_DERIVED;
-		pDerived->SetId(resourceId); // manually set resource interal id to be = the global id just generated
-		m_umapResourceSptrDataById[resourceId] = std::shared_ptr<IDxResource>(pDerived);
 
-		const wchar_t* pszStringKey = nullptr;
+		auto upoDerive = std::make_shared<Derived_t>();
+		upoDerive->SetId(resourceId); // manually set resource interal id to be = the global id just generated
+
+
+		m_umapResourceSptrDataById[resourceId] = std::shared_ptr<IDxResource>(upoDerive - get());
+
 		if (!stringId.empty()) {
 			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, pDerived));
-
-			// TODO: does this need to be a pointer? Can't the handle just contain an std::wstring?
-			pszStringKey = it.first->first.data(); // set pointer to string key, in handle struct, 
 		}
 
 		return { resourceId, pDerived, pszStringKey };
 	}
 
 
-	template<typename TYPE_DERIVED>
-	inline TYPE_DERIVED* DxResourceManager::GetResourceByString(const::std::wstring& strId) const
+	template<typename Derived_t>
+	inline Derived_t* DxResourceManager::GetResourceByString(const::std::wstring& strId) const
 	{
-		//auto whatType = TYPE_DERIVED().GetType();
-
 		auto it = m_umapResourcePtrByString.find(strId);
 		if (it != m_umapResourcePtrByString.end()) {
 
-			return static_cast<TYPE_DERIVED*>(it->second);
+			return static_cast<Derived_t*>(it->second);
 		}
 
 		return nullptr;
@@ -298,11 +311,11 @@ namespace rldx {
 //		return nullptr;
 //	};*/
 //
-//	//template <typename TYPE_DERIVED>
-//	//TResourceHandle<TYPE_DERIVED> AllocEmpty(const std::wstring& stringId)
+//	//template <typename Derived_t>
+//	//TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId)
 //	//{
 //	//	auto resourceId = GetNextId();
-//	//	auto pDerived = new TYPE_DERIVED;
+//	//	auto pDerived = new Derived_t;
 //	//	m_umapResourceSptrDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(pDerived);
 //	//	auto pAllocatedResource = m_umapResourceSptrDataById[resourceId].get();
 //
@@ -315,8 +328,8 @@ namespace rldx {
 //	//}
 //
 //
-//	//template <typename TYPE_DERIVED>
-//	//ResourceHandle<TYPE_DERIVED> Add(TYPE_DERIVED* resource, const std::wstring& stringId = "")
+//	//template <typename Derived_t>
+//	//ResourceHandle<Derived_t> Add(Derived_t* resource, const std::wstring& stringId = "")
 //	//{
 //	//	auto resourceId = GetNextId();
 //	//	m_umapResourceSptrDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(resource);
