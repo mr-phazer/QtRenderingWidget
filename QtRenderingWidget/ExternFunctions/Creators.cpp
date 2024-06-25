@@ -150,7 +150,7 @@ void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* 
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
 
-		if (libtools::IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
+		if (IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
 			throw std::exception("Cannot accept disk files");
 		}
 

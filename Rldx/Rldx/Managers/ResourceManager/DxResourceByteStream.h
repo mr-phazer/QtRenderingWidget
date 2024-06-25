@@ -5,6 +5,8 @@
 
 namespace rldx
 {
+	using namespace utils;
+
 	class DxResourceByteStream : public IDxResource
 	{
 	public:

@@ -6,6 +6,7 @@ int main(int argc, char* argv[])
 
 	int  DEBUG_TEST = 1;
 
+	using namespace logging;
 	LogAction("main(): Entry Point");
 	QApplication a(argc, argv);
 

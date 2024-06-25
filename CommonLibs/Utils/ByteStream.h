@@ -69,6 +69,6 @@ namespace utils {
 		void SeekAbsolute(size_t position);
 		void SeekRelative(int steps);
 
-		bool IsValid() const;;
+		bool IsValid() const;
 	};
 }
