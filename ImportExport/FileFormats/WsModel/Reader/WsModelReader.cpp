@@ -45,7 +45,6 @@ void WsModelReader::ReadMaterialPaths(const pugi::xml_node& xmlModel)
 
 void rmv2::WsModelReader::ReadXMLMaterialFiles(XMLMaterialData& materialdata)
 {
-
 	XmMaterialReader xmlMaterialReader(&materialdata);
 	xmlMaterialReader.Read();
 }
