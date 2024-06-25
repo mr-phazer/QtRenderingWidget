@@ -153,6 +153,9 @@
     <ClInclude Include="FileFormats\Anim\Helpers\DecodeHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshEnumsConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Helpers\ImportExport.cpp">
@@ -214,9 +217,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FileFormats\RigidModel\Types\Common\MeshEnumsConstants.h">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="FileFormats\RigidModel\Helpers\VertexCAHelpers.inl">
       <Filter>Header Files</Filter>
     </None>
