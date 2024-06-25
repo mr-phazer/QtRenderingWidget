@@ -28,3 +28,6 @@ rldx::ResourceTypeEnum rldx::IDxShaderProgram::GetType() const
 {
 	return ResourceTypeEnum::ShaderProgram;
 }
+
+rldx::IntId rldx::DefaultShaderCreator::simpleShader = INVALID_ID;
+rldx::IntId rldx::DefaultShaderCreator::noTextureShader = INVALID_ID;

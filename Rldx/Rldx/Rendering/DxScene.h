@@ -43,9 +43,6 @@ namespace rldx {
 
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, public IResizable, public IDrawable, public IUpdateable, public IBindable
 	{
-
-
-
 		friend class DxSceneGraph;
 
 	public:
@@ -62,8 +59,6 @@ namespace rldx {
 		};
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
-
-
 		std::wstring GetTypeString() const override { return L"DxScene"; }
 		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
@@ -77,7 +72,7 @@ namespace rldx {
 		DirectX::BoundingBox GetRootBoundBox() { return m_sceneGraph.GetRootBoundBox(); }
 
 		void SetGridState(DxBaseNode::DrawStateEnum drawState);
-		DxBaseNode::DrawStateEnum GetGridState() const;
+		DxMeshNode* GetGridNode() const;
 
 		void DeleteNode(DxBaseNode* node);
 
@@ -85,7 +80,6 @@ namespace rldx {
 		DxSwapChain::Uptr& GetRefSwapChain() { return m_spoSwapChain; }
 
 		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
 
 		// TODO: remove?
 		void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
@@ -101,8 +95,6 @@ namespace rldx {
 
 		DxCameraOrbital& GetCamera() { return m_globalCamera; };
 		DxSceneGraph& GetSceneGraph() { return m_sceneGraph; };
-
-
 
 	private:
 		void StoreNode(DxBaseNode* node);

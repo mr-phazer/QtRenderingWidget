@@ -3,7 +3,7 @@
 #include "..\Rendering\DxMeshRenderData.h"
 #include "DxShaderProgram.h"
 
-void rldx::DxMeshRenderBucket::AddItem(DxMeshData* renderItem)
+void rldx::DxMeshRenderBucket::AddItem(DxMeshRenderingData* renderItem)
 {
 	m_renderItems.push_back(renderItem);
 }

@@ -7,18 +7,18 @@ struct ID3D11DeviceContext;
 
 namespace rldx {
 
-	struct DxMeshData;
+	struct DxMeshRenderingData;
 	class DxMeshShaderProgram;
 
 	class DxMeshRenderBucket : public IRenderBucket
 	{
-		std::vector<DxMeshData*> m_renderItems;
+		std::vector<DxMeshRenderingData*> m_renderItems;
 
 	public:
-		virtual void AddItem(DxMeshData* renderItem) override;;
+		virtual void AddItem(DxMeshRenderingData* renderItem) override;;
 		virtual void ClearItems() override;;
 
-		const std::vector<DxMeshData*>& GetItems() { return m_renderItems; }
+		const std::vector<DxMeshRenderingData*>& GetItems() { return m_renderItems; }
 
 		void CopyItemsTo(IRenderBucket* pOtherBucket);
 

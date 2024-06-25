@@ -49,14 +49,12 @@ namespace rldx {
 		bool operator==(const DxMaterial& other) const;
 		void SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex);
 
-
-
 		std::string& PathHash() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
-			// TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
-			{
-				{0, L"default_texture.dds"},
-			});
+								  // TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
+								  {
+									  {0, L"default_texture.dds"},
+								  });
 
 		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
 
@@ -95,9 +93,9 @@ namespace rldx {
 
 	class MaterialCreatorRMV2Mesh : public IMaterialCreator
 	{
-		const rmv2::MeshBlockCommon* m_data;
+		const rmv2::MeshBlockCommon* data;
 	public:
-		MaterialCreatorRMV2Mesh(const rmv2::MeshBlockCommon& data) : m_data(&data) {};
+		MaterialCreatorRMV2Mesh(const rmv2::MeshBlockCommon& data) : data(&data) {};
 
 		DxMaterial* Create(ID3D11Device* poDevice) override
 		{
@@ -106,7 +104,7 @@ namespace rldx {
 			newMaterial->InitWithDefaulTextures();
 
 			string hash = "";
-			for (auto& tex : m_data->materialBlock.textureElements)
+			for (auto& tex : data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check
 				auto diskPath = libtools::string_to_wstring(tex.texturePath);

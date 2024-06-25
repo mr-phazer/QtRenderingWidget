@@ -56,11 +56,9 @@ void rldx::DxScene::SetGridState(DxBaseNode::DrawStateEnum drawState)
 	m_poGridNode->SetDrawState(drawState);
 }
 
-DxBaseNode::DrawStateEnum rldx::DxScene::GetGridState() const
+DxMeshNode* rldx::DxScene::GetGridNode() const
 {
-	if (!m_poGridNode) throw std::exception(FULL_FUNC_INFO("GridNode == NULL").c_str());
-
-	return m_poGridNode->GetDrawState();
+	return m_poGridNode;
 }
 
 // TODO: test this
@@ -97,14 +95,6 @@ LRESULT __stdcall DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM
 {
 	if (uMsg == WM_KEYDOWN)
 	{
-		if (wParam == 'A')
-		{
-			m_vmdManager.GenerateVariant();
-		}
-	}
-
-	if (uMsg == WM_KEYDOWN)
-	{
 		if (wParam == VK_CONTROL)
 			m_bCtrlDown = true;
 	}
@@ -115,7 +105,7 @@ LRESULT __stdcall DxScene::ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM
 			m_bCtrlDown = false;
 	}
 
-	if (m_bCtrlDown)
+	if (m_bCtrlDown) // send messages to light controller "camera"
 	{
 		return m_globalDirectionalLight.HandleMessages(hWnd, uMsg, wParam, lParam);
 	}
