@@ -2,13 +2,13 @@
 #include <string>
 #include <winerror.h>
 
-std::wstring getComErrorWide(HRESULT hr);
+std::wstring GetComErrorW(HRESULT hr);
 
-std::string GetComErrorMsgNarrow(HRESULT hr);
+std::string GetComError(HRESULT hr);
 
 bool comAssert_Box(HRESULT hr, std::string _func = "", std::string _operation = "");;
 
-std::string GetComErrorMsgFullNarrow(HRESULT hr);
+std::string GetComErrorFull(HRESULT hr);
 
 std::string GetComErrorFormated(HRESULT hr, const std::string& message = "");
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CustomExceptions\COMErrors.h" />
     <ClInclude Include="CustomExceptions\CustomExceptions.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomExceptions\COMErrors.cpp" />
     <ClCompile Include="CustomExceptions\CustomExceptions.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />

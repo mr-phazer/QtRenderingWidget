@@ -1,20 +1,20 @@
-#include "..\Logging\Logging.h"
 #include "COMerrors.h"
-#include "tools.h"
+#include "..\Utils\StrUtils.h"
+#include "..\Logger\Logger.h"
+
+using namespace utils;
 
 // TODO: unused, but ought to be used for COM-errors, to geta meaningful error msg
-std::wstring getComErrorWide(HRESULT hr)
+std::wstring GetComErrorW(HRESULT hr)
 {
 	_com_error err(hr);
 	LPCTSTR errMsg = err.ErrorMessage();
 	return std::wstring(errMsg);
 }
 
-std::string GetComErrorMsgNarrow(HRESULT hr)
+std::string GetComError(HRESULT hr)
 {
-	_com_error err(hr);
-	LPCTSTR errMsg = err.ErrorMessage();
-	return NarrowStr(std::wstring(errMsg));
+	return ToString(GetComErrorW(hr));
 }
 
 bool comAssert_Box(HRESULT hr, std::string _func, std::string _operation)
@@ -23,25 +23,23 @@ bool comAssert_Box(HRESULT hr, std::string _func, std::string _operation)
 
 	if (!bResult)
 	{
-		auto func = WidenStr(_func);
-		auto op = WidenStr(_operation);
+		auto func = ToWString(_func);
+		auto op = ToWString(_operation);
 
-		std::wostringstream ss;
-		ss << std::hex << hr;
-		std::wstring strHex = ss.str();
+		std::wstring strHex = decToHexW(hr);
 
-		auto msg = getComErrorWide(hr);
+		auto msg = GetComErrorW(hr);
 
 		MessageBox(
 			NULL,
 			(
-				wstring(L"Operation:") + op + L"\n\r" +
+				L"Operation:" + op + L"\n\r" +
 				L"Function: " +
-				wstring(func) + L"\n\r" +
-				wstring(L"Error Code: ") + L"\n\r" +
-				wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
-				to_wstring(hr) + L" :" + L"\n\r" +
-				wstring(L"Errorstd::string: " + msg)).c_str(),
+				func + L"\n\r" +
+				L"Error Code: " + L"\n\r" +
+				L"Hex: " + L"0x" + strHex + L"\n\r" +
+				std::to_wstring(hr) + L" :" + L"\n\r" +
+				L"Errorstd::string: " + msg).c_str(),
 			L"Critical Direct3d Error!",
 			MB_OK | MB_ICONERROR
 		);
@@ -52,18 +50,16 @@ bool comAssert_Box(HRESULT hr, std::string _func, std::string _operation)
 	return true;
 }
 
-std::string GetComErrorMsgFullNarrow(HRESULT hr)
+std::string GetComErrorFull(HRESULT hr)
 {
-	std::ostringstream ssForHex;
-	ssForHex << std::hex << hr;
-	std::string strHex = ssForHex.str();
+	std::wstring strHex = decToHexW(hr);
 
-	auto strCOMError = "Error: " + strHex + ": " + GetComErrorMsgNarrow(hr);
+	auto strCOMError = L"Error: " + strHex + L": " + GetComErrorW(hr);
 
-	return strCOMError;
+	return ToString(strCOMError);
 }
 
-std::string GetComErrorFormated(HRESULT hr, const string& message)
+std::string GetComErrorFormated(HRESULT hr, const std::string& message)
 {
 	// TODO: ok to delete?
 	//std::string s_str;
@@ -74,7 +70,7 @@ std::string GetComErrorFormated(HRESULT hr, const string& message)
 
 	//// -- add errorstd::string
 	//s_str.resize(strlen(s_str.c_str())); // narrowstd::string from len = 128 down to actual size
-	auto msg = GetComErrorMsgFullNarrow(hr);
+	auto msg = GetComErrorFull(hr);
 
 	auto actionString = message.empty() ? "" : "Action: " + message + " : ";
 	return actionString + msg + '\0';
@@ -86,21 +82,15 @@ bool comAssert_LogOnly(HRESULT hr, std::string _func, std::string _operation)
 
 	if (!bResult)
 	{
-		auto func = WidenStr(_func);
-		auto op = WidenStr(_operation);
+		auto func = ToWString(_func);
+		auto op = ToWString(_operation);
 
-		std::ostringstream ss;
-		ss << std::hex << hr;
-		std::string strHex = ss.str();
+		std::wstring strHex = decToHexW(hr);
 
+		auto msg = GetComErrorW(hr);
 
-		std::stringstream stream;
-		stream << std::hex << hr;
-		std::string hrResult(stream.str());
-
-		auto msg = getComErrorWide(hr);
-
-		logging::LogActionError(": Direct3d Error " + std::string(hrResult) + ": " + strHex);
+		using namespace logging;
+		Logger::LogActionError(L": Direct3d Error: " + strHex);
 
 
 		// TODO: ok to delete?

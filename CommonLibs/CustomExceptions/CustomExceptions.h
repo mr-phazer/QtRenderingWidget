@@ -3,7 +3,7 @@
 #include <exception>
 #include <string>
 #include "..\Logger\Logger.h"
-#include "..\..\Rldx\Rldx\Tools\COMerrors.h"
+#include "COMerrors.h"
 
 class ConLogException : public std::exception
 {
