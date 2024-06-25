@@ -15,9 +15,9 @@ namespace skel_anim
 
 	public:
 		AnimContainer() = default;
-		AnimContainer(SkeletonAnimation* animation) : m_animation(animation) {}
+		AnimContainer(SkeletonAnimation* m_animation) : m_animation(m_animation) {}
 
-		void SetAnimation(SkeletonAnimation* animation);
+		void SetAnimation(SkeletonAnimation* m_animation);
 
 		SkeletonKeyFrame Sample(float time);
 

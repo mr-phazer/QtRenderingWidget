@@ -9,7 +9,7 @@ namespace skel_anim
 	class ISkeletalAnimationSampler
 	{
 	public:
-		virtual void SetAnimation(SkeletonAnimation* animation) = 0;
+		virtual void SetAnimation(SkeletonAnimation* m_animation) = 0;
 		virtual SkeletonKeyFrame Sample(float time) = 0;
 		virtual float GetLenth() const = 0;
 	};
@@ -20,11 +20,11 @@ namespace skel_anim
 
 	public:
 		SkeletalAnimationClipSampler() = default;
-		SkeletalAnimationClipSampler(SkeletonAnimation* animation) : m_animation(animation) {}
+		SkeletalAnimationClipSampler(SkeletonAnimation* m_animation) : m_animation(m_animation) {}
 
-		void SetAnimation(SkeletonAnimation* animation) override
+		void SetAnimation(SkeletonAnimation* m_animation) override
 		{
-			m_animation = animation;
+			m_animation = m_animation;
 		}
 
 		SkeletonKeyFrame Sample(float time) override;

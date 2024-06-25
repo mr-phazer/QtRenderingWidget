@@ -1,9 +1,8 @@
 #pragma once
 
 #include "..\..\Managers\ResourceManager\IDxResource.h"
+#include "Skeleton.h"
 #include "SkeletonKeyFrame.h"
-
-#include <Timer\SystemClockChecker.h>
 
 namespace anim_file
 {
@@ -16,14 +15,16 @@ namespace skel_anim
 	{
 		std::vector<SkeletonKeyFrame> frames;
 		std::vector<float> boneBlendWeights; // TODO: for later current anim -> next anim "blend in"?
-		std::vector<bool> boneSpliceMask; // TODO: for splicing in other animations, like "hand", "head", "cape", on main "body"-animation
+		std::vector<bool> boneSpliceMask; // TODO: for splicing in other animations, like "hand", "head", "cape", on main "body"-m_animation
 	};
 
 	/// <summary>
-	/// Contains "relatiave
+	/// Contains "relatiave" transforms for each bone in the skeleton.
 	/// </summary>
 	struct SkeletonAnimation : public rldx::IDxResource
 	{
+		std::wstring m_skeletonName; // name of the skeleton used by animation
+
 		SkeletalAnimationKeyFramData frameData;
 
 		float lastKeyTime = 0.0f;
@@ -33,7 +34,7 @@ namespace skel_anim
 	public:
 		static SkeletonAnimation* CreateFromAnimFile(const anim_file::AnimFile& in);
 
-		// Inherited via IDxResource
+		// Inherited via IDxResource, for resource storage stuff
 		std::wstring GetTypeString() const override;
 		rldx::ResourceTypeEnum GetType() const override;
 	};

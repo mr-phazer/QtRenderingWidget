@@ -25,7 +25,7 @@ namespace skel_anim
 	struct AnimQueueItem
 	{
 		AnimQueueItem(const AnimContainer& animSampler);
-		AnimQueueItem(SkeletonAnimation* animation);
+		AnimQueueItem(SkeletonAnimation* m_animation);
 
 		AnimContainer anim;
 		float timeOffset = 0.0f;
@@ -53,7 +53,7 @@ namespace skel_anim
 			return *this;
 		}*/
 
-		void AddAnimation(SkeletonAnimation* animation);
+		void AddAnimation(SkeletonAnimation* m_animation);
 
 		SkeletonKeyFrame Sample(float time);
 

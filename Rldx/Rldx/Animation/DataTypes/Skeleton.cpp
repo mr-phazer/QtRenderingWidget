@@ -1,29 +1,61 @@
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include <CustomExceptions\CustomExceptions.h>
 #include <Rldx\Animation\AnimationPlayer.h>
+#include <Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include "Skeleton.h"
 
 namespace skel_anim
 {
+	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile)
+	{
+		auto skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+
+		// check if skeleton already exists
+		auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
+		if (pSkeleton) { return pSkeleton; }
+
+		// allocate memmory for skeeton
+		pSkeleton = rldx::DxResourceManager::Instance()->AllocEmpty<Skeleton>(skeletonName).GetPtr();
+
+		// create skeleleton from ANIM file
+		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+		pSkeleton->SetBoneTable(inputFile);
+
+		FramePoseGenerator(*pSkeleton).GenerateMatrices(m_animation->frameData.frames[0], pSkeleton->m_bindposeMatrices);
+
+		for (auto& m : pSkeleton->m_bindposeMatrices) {
+			pSkeleton->m_inverseBindPoseMatrices.push_back(m.Invert());
+		}
+
+		pSkeleton->m_skeletonName = skeletonName;
+
+		return pSkeleton;
+	}
+
+
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
-		auto animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+		// set skeleton name
+		m_skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+
+		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+
+		if (m_animation->frameData.frames.empty()) {
+			throw ConLogExceptionVerbose("No frames i bind pose anim file");
+		}
 
 		SetBoneTable(inputFile);
-		FramePoseGenerator(*this).GenerateMatrices(animation->frameData.frames[0], m_bindposeMatrices);
+		FramePoseGenerator(*this).GenerateMatrices(m_animation->frameData.frames[0], m_bindposeMatrices);
 
 		for (auto& m : m_bindposeMatrices) {
 			m_inverseBindPoseMatrices.push_back(m.Invert());
 		}
 	}
 
-	/*Skeleton& Skeleton::operator=(const Skeleton& inputFile)
+	std::wstring Skeleton::GetName() const
 	{
-		boneTable = inputFile.boneTable;
-		m_inverseBindPoseMatrices = inputFile.m_inverseBindPoseMatrices;
-		m_bindposeMatrices = inputFile.m_bindposeMatrices;
-
-		return *this;
-	}*/
+		return m_skeletonName;
+	}
 
 	const std::vector<SkeletonBoneNode>& Skeleton::GetBoneTable() const
 	{
@@ -33,7 +65,6 @@ namespace skel_anim
 	void Skeleton::SetBoneTable(const anim_file::AnimFile& inputFile)
 	{
 		FillBoneTable(inputFile);
-
 		AddChildren();
 	}
 
@@ -43,7 +74,7 @@ namespace skel_anim
 		{
 			auto& parentBone = boneTable[iChildBone].parentIndex;
 
-			if (parentBone != NO_PARENT)
+			if (parentBone != SkeletonBoneNode::NO_PARENT)
 			{
 				if (parentBone >= boneTable.size())
 				{
@@ -91,5 +122,15 @@ namespace skel_anim
 	const FramePoseMatrices& Skeleton::GetBindPoseMatrices() const
 	{
 		return m_bindposeMatrices;
+	}
+
+	std::wstring Skeleton::GetTypeString() const
+	{
+		return L"Skeleton";
+	}
+
+	rldx::ResourceTypeEnum Skeleton::GetType() const
+	{
+		return rldx::ResourceTypeEnum::Skeleton;
 	}
 }
