@@ -11,6 +11,7 @@ using ByteVector = std::vector<uint8_t>;
 /// </summary>
 class ByteStream
 {
+	// TODO: make a vector of search folders
 	static std::wstring sm_searchFolder; // TODO: static for now, easiest, maybe change to fancier?
 
 	std::wstring m_currentFilePath = L"";
@@ -43,8 +44,8 @@ public:
 	/// A template version of Read that will automatically determine the size of the type
 	/// ...maybe
 	/// </summary>	
-	template <typename CONST_BUF_DATA_TYPE>
-	void TRead(CONST_BUF_DATA_TYPE* pDest);
+	template <typename T>
+	void TRead(T* pDest);
 
 	// TODO: is working?
 	/// <summary>
@@ -53,8 +54,8 @@ public:
 	template <typename DATA_TYPE>
 	DATA_TYPE TReadElement();
 
-	template <typename CONST_BUF_DATA_TYPE>
-	std::vector<CONST_BUF_DATA_TYPE> GetElements(std::size_t elementCount = 1);
+	template <typename T>
+	std::vector<T> GetElements(std::size_t elementCount = 1);
 
 	const uint8_t* GetBufferPtr() const;
 	uint8_t* GetBufferPtr();
@@ -63,8 +64,8 @@ public:
 
 	std::wstring GetPath() const;
 
-	void SetOffset(size_t position);
-	void Seek(int steps);
+	void SeekAbsolute(size_t position);
+	void SeekRelative(int steps);
 
 	bool IsValid() const;;
 };
@@ -78,10 +79,10 @@ inline std::vector<T> ByteStream::GetChunk(size_t elements)
 	return out;
 }
 
-template<typename CONST_BUF_DATA_TYPE>
-inline void ByteStream::TRead(CONST_BUF_DATA_TYPE* pDest)
+template<typename T>
+inline void ByteStream::TRead(T* pDest)
 {
-	auto bytesToCopy = sizeof(CONST_BUF_DATA_TYPE);
+	auto bytesToCopy = sizeof(T);
 
 	if (m_currentOffset + bytesToCopy > m_data.size())
 		throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
@@ -98,13 +99,13 @@ inline DATA_TYPE ByteStream::TReadElement()
 	return element;
 }
 
-template<typename CONST_BUF_DATA_TYPE>
-inline std::vector<CONST_BUF_DATA_TYPE> ByteStream::GetElements(std::size_t elementCount)
+template<typename T>
+inline std::vector<T> ByteStream::GetElements(std::size_t elementCount)
 {
-	std::vector<CONST_BUF_DATA_TYPE> out(elementCount);
+	std::vector<T> out(elementCount);
 	for (auto& itDestElemment : out)
 	{
-		itDestElemment = TReadElement<CONST_BUF_DATA_TYPE>();
+		itDestElemment = TReadElement<T>();
 	}
 
 	return out;

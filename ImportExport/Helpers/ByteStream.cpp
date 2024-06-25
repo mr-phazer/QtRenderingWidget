@@ -1,7 +1,6 @@
 #include "ByteStream.h"
 
 #include <string>
-
 #include "..\..\Rldx\Rldx\Logging\Logging.h"
 #include "..\..\Rldx\Rldx\Tools\tools.h"
 #include "FileHelpers.h"
@@ -35,27 +34,26 @@ ByteStream::ByteStream(void* pMem, size_t sizeInBytes, const std::wstring fileNa
 }
 
 ByteStream::ByteStream(const std::wstring& fileName, bool doThrow)
+	: m_currentFilePath(fileName)
 {
-	if (file_helpers::DoesFileExist(fileName))
+	if (file_helpers::DoesFileExist(m_currentFilePath)) // .exe folder + path ?
 	{
-		m_currentFilePath = fileName;
 		file_helpers::ReadFileToVector(m_currentFilePath, m_data);
-	}
-	else if (file_helpers::DoesFileExist(sm_searchFolder + fileName))
-	{
-		m_currentFilePath = sm_searchFolder + fileName;
-		file_helpers::ReadFileToVector(m_currentFilePath, m_data);
-	}
-	else
-	{
-		logging::LogActionWarning("File: '" + libtools::wstring_to_string(fileName) + "', file does not exist.");
-
-		if (doThrow)
-			throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) + "', file does not exist.").c_str());
-		else
-			m_data.clear();  // TODO: redundant?
 		return;
 	}
+	else if (file_helpers::DoesFileExist(sm_searchFolder + fileName)) // search folder + path?
+	{
+		auto tempDiskPath = sm_searchFolder + m_currentFilePath;
+		file_helpers::ReadFileToVector(tempDiskPath, m_data);
+		return;
+	}
+
+	if (doThrow)
+		throw std::exception(std::string("ByteStream::ByteStream: '" + libtools::wstring_to_string(fileName) + "', file does not exist.").c_str());
+	else
+		m_data.clear();  // TODO: redundant?
+	return;
+
 }
 
 void ByteStream::SetSearchFolder(const std::wstring& path) // TODO: static for now, easiest, maybe change to fancier?
@@ -119,7 +117,7 @@ size_t ByteStream::GetBufferSize() const { return m_data.size(); }
 
 std::wstring ByteStream::GetPath() const { return m_currentFilePath; }
 
-void ByteStream::SetOffset(size_t position) {
+void ByteStream::SeekAbsolute(size_t position) {
 
 	if (position >= m_data.size()) {
 		throw std::exception((FULL_FUNC_INFO("ByteStream SetOffset out of bound >= data size")).c_str());
@@ -128,7 +126,7 @@ void ByteStream::SetOffset(size_t position) {
 	m_currentOffset = position;
 }
 
-void ByteStream::Seek(int steps)
+void ByteStream::SeekRelative(int steps)
 {
 	if (m_currentOffset + steps >= m_data.size() || m_currentOffset + steps < 0) {
 		throw std::exception((FULL_FUNC_INFO("ByteStream Seek out of bounds > data size or < 0")).c_str());
