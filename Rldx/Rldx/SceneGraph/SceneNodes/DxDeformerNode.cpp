@@ -119,6 +119,6 @@ class SkeletonFileWithInfo
 public:
 	std::wstring GetSkeletonName() const
 	{
-		return libtools::string_to_wstring(skeletonName);
+		return ToWString(skeletonName);
 	}
 };

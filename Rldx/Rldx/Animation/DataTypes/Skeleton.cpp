@@ -1,4 +1,3 @@
-#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include <CustomExceptions\CustomExceptions.h>
 #include <Rldx\Animation\AnimationPlayer.h>
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
@@ -10,7 +9,7 @@ namespace skel_anim
 	
 	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile)
 	{
-		auto skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
 		// check if skeleton already exists
 		auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
@@ -38,12 +37,12 @@ namespace skel_anim
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
 		// set skeleton name
-		m_skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+		m_skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
 		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
 
 		if (m_animation->frameData.frames.empty()) {
-			throw ConLogExceptionVerbose("No frames i bind pose anim file");
+			throw ConLogExceptionVerbose(L"No frames i bind pose anim file");
 		}
 
 		SetBoneTable(inputFile);

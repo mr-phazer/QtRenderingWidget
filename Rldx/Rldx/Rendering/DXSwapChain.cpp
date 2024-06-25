@@ -1,4 +1,4 @@
-#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+#include <CustomExceptions\CustomExceptions.h>
 #include "d3d11.h"
 #include "DXSwapChain.h"
 
@@ -114,7 +114,7 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
 	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
 
-	logging::LogActionSuccess("Finished making Swap Chain For Window");
+	Logger::LogActionSuccess(L"Finished making Swap Chain For Window");
 
 	return poNew;
 }

@@ -76,9 +76,6 @@
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
       <Filter>Rldx\ShaderLoadingHelpers</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Tools\tools.cpp">
-      <Filter>Rldx\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp">
       <Filter>Rldx\Creators</Filter>
     </ClCompile>
@@ -107,7 +104,6 @@
     <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
-    <ClCompile Include="Rldx\Tools\COMerrors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -256,12 +252,6 @@
     </ClInclude>
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
       <Filter>Rldx\ShaderLoadingHelpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\COMerrors.h">
-      <Filter>Rldx\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\tools.h">
-      <Filter>Rldx\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />

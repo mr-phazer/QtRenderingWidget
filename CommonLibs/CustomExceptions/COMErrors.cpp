@@ -8,13 +8,40 @@ using namespace utils;
 std::wstring GetComErrorW(HRESULT hr)
 {
 	_com_error err(hr);
-	LPCTSTR errMsg = err.ErrorMessage();
-	return std::wstring(errMsg);
+	std::wstring errorMesssage = err.ErrorMessage();
+
+	return errorMesssage;
 }
 
 std::string GetComError(HRESULT hr)
 {
 	return ToString(GetComErrorW(hr));
+}
+
+std::string GetComErrorFull(HRESULT hr)
+{
+	std::string strHex = ToString(decToHexW(hr));
+
+	auto strCOMError = "Error: " + strHex + ": " + GetComError(hr);
+
+	return strCOMError;
+}
+
+std::string GetComErrorFormated(HRESULT hr, const std::string& message)
+{
+	// TODO: ok to delete?
+	//std::string s_str;
+	//s_str.resize(128);
+
+	//// -- add the hexadecimal error code
+	//sprintf_s((char*)s_str.data(), 128, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(hr));
+
+	//// -- add errorstd::string
+	//s_str.resize(strlen(s_str.c_str())); // narrowstd::string from len = 128 down to actual size
+	auto msg = GetComErrorFull(hr);
+
+	auto actionString = message.empty() ? "" : "Action: " + message + " : ";
+	return actionString + msg + '\0';
 }
 
 bool comAssert_Box(HRESULT hr, std::string _func, std::string _operation)
@@ -48,32 +75,6 @@ bool comAssert_Box(HRESULT hr, std::string _func, std::string _operation)
 	};
 
 	return true;
-}
-
-std::string GetComErrorFull(HRESULT hr)
-{
-	std::wstring strHex = decToHexW(hr);
-
-	auto strCOMError = L"Error: " + strHex + L": " + GetComErrorW(hr);
-
-	return ToString(strCOMError);
-}
-
-std::string GetComErrorFormated(HRESULT hr, const std::string& message)
-{
-	// TODO: ok to delete?
-	//std::string s_str;
-	//s_str.resize(128);
-
-	//// -- add the hexadecimal error code
-	//sprintf_s((char*)s_str.data(), 128, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(hr));
-
-	//// -- add errorstd::string
-	//s_str.resize(strlen(s_str.c_str())); // narrowstd::string from len = 128 down to actual size
-	auto msg = GetComErrorFull(hr);
-
-	auto actionString = message.empty() ? "" : "Action: " + message + " : ";
-	return actionString + msg + '\0';
 }
 
 bool comAssert_LogOnly(HRESULT hr, std::string _func, std::string _operation)

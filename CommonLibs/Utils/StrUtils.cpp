@@ -228,17 +228,4 @@ namespace utils {
 
 		return strOut;
 	}
-
-	std::wstring GetComError(HRESULT hrResult)
-	{
-		_com_error err(hrResult);
-		std::wstring errorMesssage = err.ErrorMessage();
-
-		return errorMesssage;
-	}
-
-	std::string GetComErrorNarrow(HRESULT hrResult)
-	{
-		return ToString(GetComError(hrResult));
-	}
 }

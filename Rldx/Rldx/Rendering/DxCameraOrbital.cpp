@@ -245,7 +245,7 @@ void rldx::DxCameraOrbital::RotateCamera()
 
 	//rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(WidenStr("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")"));
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(ToWString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")"));
 }
 
 void DxCameraOrbital::rotateCamera_Yaw(float angle)

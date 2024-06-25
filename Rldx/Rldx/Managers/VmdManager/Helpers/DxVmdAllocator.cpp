@@ -81,7 +81,7 @@ void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonNam
 
 	if (!std::string(parsedRmv2File.fileHeader.szSkeletonId).empty())
 	{
-		destSkeletonName = libtools::WidenString(parsedRmv2File.fileHeader.szSkeletonId);
+		destSkeletonName = ToWString(parsedRmv2File.fileHeader.szSkeletonId);
 	}
 
 	m_sceneVmdNode->SetModelData(rldx::DxDeviceManager::Device(), parsedRmv2File);

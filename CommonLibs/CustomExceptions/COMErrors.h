@@ -5,13 +5,10 @@
 std::wstring GetComErrorW(HRESULT hr);
 
 std::string GetComError(HRESULT hr);
-
-bool comAssert_Box(HRESULT hr, std::string _func = "", std::string _operation = "");;
-
 std::string GetComErrorFull(HRESULT hr);
-
 std::string GetComErrorFormated(HRESULT hr, const std::string& message = "");
 
+bool comAssert_Box(HRESULT hr, std::string _func = "", std::string _operation = "");;
 bool comAssert_LogOnly(HRESULT hr, std::string _func = "", std::string _operation = "");;
 
 // TODO: delete?

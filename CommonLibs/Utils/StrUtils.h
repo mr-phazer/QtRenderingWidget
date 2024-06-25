@@ -46,7 +46,4 @@ namespace utils {
 
 	std::wstring ToForwardSlash(const std::wstring& _strInput);
 	std::wstring ToLowerAndBackSlash(const std::wstring& _strInput);
-
-	std::wstring GetComError(HRESULT hrResult);
-	std::string GetComErrorNarrow(HRESULT hrResult);
 }

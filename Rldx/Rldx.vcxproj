@@ -113,8 +113,6 @@
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
-    <ClInclude Include="Rldx\Tools\COMerrors.h" />
-    <ClInclude Include="Rldx\Tools\tools.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonAnimation.h" />
@@ -146,8 +144,6 @@
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
-    <ClCompile Include="Rldx\Tools\COMerrors.cpp" />
-    <ClCompile Include="Rldx\Tools\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-tidy" />

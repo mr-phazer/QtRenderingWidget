@@ -11,7 +11,7 @@ namespace skel_anim
 	{
 		auto newAnim = rldx::DxResourceManager::Instance()->AllocAnim().GetPtr();
 
-		newAnim->m_skeletonName = libtools::WidenString(inAnimFile.fileHeader.skeletonName);
+		newAnim->m_skeletonName = ToWString(inAnimFile.fileHeader.skeletonName);
 		newAnim->lastKeyTime = inAnimFile.fileHeader.fLastKeyTime;
 		newAnim->keysPerSecond = inAnimFile.fileHeader.fFrameRate;
 
