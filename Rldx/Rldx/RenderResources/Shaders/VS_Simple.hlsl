@@ -49,16 +49,21 @@ PixelInputType main(in VertexInputType input)
     //float4x4 mWorld = mPerMesh_World;
 
     output.position = mul(float4(input.position.xyz/* + pivot.xyz*/, 1), mWorld);
+    
 
     // save world space position for camera calculations
     output.Wpos.xyz = output.position.xyz;
-    output.Wpos.w = 0;
-
-    output.position = mul(float4(output.position.xyz, 1), mView);
+    output.Wpos.w = 0;                                                        
+    
+    output.position = mul(float4(output.position.xyz, 1), mView);     
     output.position = mul(float4(output.position.xyz, 1), mProjection);
+    
+    output.screenPos = output.position / output.position.w;
 
-    output.screenPos = output.position;
+    output.color = input.color;
 
+    
+    
     //output.screenPos = output.Wpos;
     //output.screenPos.y *= -1;
 

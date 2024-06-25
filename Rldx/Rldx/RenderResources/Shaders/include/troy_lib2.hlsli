@@ -35,7 +35,7 @@ float3 getPixelNormal(PixelInputType input)
 
     float4 NormalTex = shaderTextures[t_Normal].Sample(s_anisotropic, input.tex1);
 
-    float3 Np = 0;
+    float3 Np = 0;                                   
     Np.x = NormalTex.r * NormalTex.a;
     Np.y = NormalTex.g;
     Np = (Np * 2.0f) - 1.0f;
