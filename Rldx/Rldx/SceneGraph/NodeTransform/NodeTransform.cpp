@@ -1,74 +1,77 @@
 #include "NodeTransform.h"
 
-using namespace rldx;
-using namespace DirectX;
+using namespace DirectX::SimpleMath;
 
-sm::Matrix NodeTransform::LocalTransform() const
+namespace rldx
 {
-	auto mLocalTransformMatrix =
-		sm::Matrix::CreateTranslation(local.translation) *
-		sm::Matrix::CreateFromQuaternion(local.rotation) *
-		sm::Matrix::CreateScale(local.scale);
 
-	return mLocalTransformMatrix;
-}
+	const sm::Matrix NodeTransform::LocalTransform() const
+	{
+		auto m4x4LocalTransformMatrix =
+			::sm::Matrix::CreateTranslation(m_localTranform.translation) *
+			::sm::Matrix::CreateFromQuaternion(m_localTranform.rotation) *
+			::sm::Matrix::CreateScale(m_localTranform.scale);
 
-void NodeTransform::SetTransformFromMatrix(const sm::Matrix& _mIn)
-{
-	sm::Matrix tempMatrix = _mIn;
-	tempMatrix.Decompose(local.scale, local.rotation, local.translation);
-}
+		return m4x4LocalTransformMatrix;
+	}
 
-sm::Matrix NodeTransform::GetGlobalTransform(const sm::Matrix& _parent)
-{
-	return _parent * LocalTransform();
-}
+	void NodeTransform::SetTransformFromMatrix(const sm::Matrix& mIn)
+	{
+		sm::Matrix tempMatrix = mIn;
+		tempMatrix.Decompose(m_localTranform.scale, m_localTranform.rotation, m_localTranform.translation);
+	}
 
-void NodeTransform::SetRotation(const sm::Quaternion& q)
-{
-	local.rotation = q;
-}
+	sm::Matrix NodeTransform::GetGlobalTransform(const sm::Matrix& parent) const
+	{
+		return parent * LocalTransform();
+	}
 
-void NodeTransform::SetRotationFromYawPitchRoll(const sm::Vector3& rotation)
-{
-	// TODO: make a "local.rotation = GetQuaterionFromEuler(x,y,z);"
-	// this is clumsy:  ?
-	auto rotMatrix = sm::Matrix::CreateFromYawPitchRoll(rotation.x, rotation.y, rotation.z);
-	sm::Vector3 unusedScale, unsuedTranlation;
-	rotMatrix.Decompose(unusedScale, local.rotation, unsuedTranlation);
-}
+	void NodeTransform::SetRotation(const sm::Quaternion& q)
+	{
+		m_localTranform.rotation = q;
+	}
 
-void NodeTransform::SetTranslation(const sm::Vector3 translation)
-{
-	local.translation = translation;
-}
+	void NodeTransform::SetRotationFromYawPitchRoll(const sm::Vector3& rotation)
+	{
+		// TODO: make a "m_localTranform.rotation = GetQuaterionFromEuler(x,y,z);"
+		// this is clumsy:  ?
+		auto rotMatrix = sm::Matrix::CreateFromYawPitchRoll(rotation.x, rotation.y, rotation.z);
+		sm::Vector3 unusedScale, unsuedTranlation;
+		rotMatrix.Decompose(unusedScale, m_localTranform.rotation, unsuedTranlation);
+	}
 
-void NodeTransform::SetTranslation(float x, float y, float z)
-{
-	SetTranslation(sm::Vector3(x, y, z));
-}
+	void NodeTransform::SetTranslation(const sm::Vector3 translation)
+	{
+		m_localTranform.translation = translation;
+	}
 
-void NodeTransform::SetScale(const sm::Vector3& scale)
-{
-	local.scale = scale;
-}
+	void NodeTransform::SetTranslation(float x, float y, float z)
+	{
+		SetTranslation(sm::Vector3(x, y, z));
+	}
 
-void NodeTransform::SetScale(float scale)
-{
-	local.scale = { scale, scale, scale };
-}
+	void NodeTransform::SetScale(const sm::Vector3& scale)
+	{
+		m_localTranform.scale = scale;
+	}
 
-sm::Vector3 NodeTransform::GetScale()
-{
-	return local.scale;
-}
+	void NodeTransform::SetScale(float scale)
+	{
+		m_localTranform.scale = { scale, scale, scale };
+	}
 
-sm::Vector3 NodeTransform::GetTranslation()
-{
-	return local.translation;
-}
+	sm::Vector3 NodeTransform::GetScale()
+	{
+		return m_localTranform.scale;
+	}
 
-sm::Quaternion NodeTransform::GetRotation()
-{
-	return local.rotation;
+	sm::Vector3 NodeTransform::GetTranslation()
+	{
+		return m_localTranform.translation;
+	}
+
+	sm::Quaternion NodeTransform::GetRotation()
+	{
+		return m_localTranform.rotation;
+	}
 }

@@ -83,16 +83,11 @@ namespace rldx {
 	public:
 		VMDNodeData vmdNodeData;
 
-		DxVmdNode() = default;
+		DxVmdNode() : DxModelNode(L"Unnamed DxVmdNode") {}
 		DxVmdNode(const std::wstring& name) : DxModelNode(name) {}
-
-
 
 	public:
 		using SharedPtr = std::shared_ptr<DxVmdNode>;
-	public:
-
-
 
 	};
 

@@ -20,10 +20,10 @@ namespace rldx
 		using SharedPtr = std::shared_ptr<DxModelNode>;
 
 	public:
-		DxModelNode() = default;
+		DxModelNode() : DxMeshNode(L"Unnamed DxMeshDeformerNode") {}
 		DxModelNode(const std::wstring& name) : DxMeshNode(name) {}
 
-		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
+		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);
 
 		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex) override;
@@ -42,20 +42,10 @@ namespace rldx
 		// TODO: TEEEEESST
 		void LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData);
 
-		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;;
+		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
+		void FlushModelMeshesToRenderBucked(IRenderBucket* pRenderQueue);
 
-		virtual void SetNodeWorldTransForm(const sm::Matrix& mWorld)
-		{
-			DxMeshNode::SetNodeWorldTransForm(mWorld);
-
-			for (auto& lod : m_lods)
-			{
-				for (auto& meshNode : lod)
-				{
-					meshNode->SetNodeWorldTransForm(mWorld);
-				};
-			};
-		}
+		virtual void SetNodeWorldTransForm(const sm::Matrix& mWorld);
 
 		virtual void SetDrawState(DrawStateEnum state) override
 		{
@@ -69,6 +59,9 @@ namespace rldx
 				};
 			};
 		}
+
+		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::ModelNode; }
+		virtual std::wstring GetTypeString() const override { return L"DxModelNode"; };
 
 	private:
 		void SetSingleMesh(

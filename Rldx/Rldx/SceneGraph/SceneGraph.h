@@ -13,8 +13,8 @@ namespace rldx {
 	class DxSceneGraph
 	{
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
-		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
-		DxBaseNode::SharedPtr m_rootNode = DxBaseNode::Create(L"RootNode");
+		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ -1,-1,-1 }, { 1,1,1 });
+		DxBaseNode::SharedPtr m_vmdRootNode = DxBaseNode::Create(L"RootNode");
 
 		std::vector<DxBaseNode*> nodeLookUptable;
 

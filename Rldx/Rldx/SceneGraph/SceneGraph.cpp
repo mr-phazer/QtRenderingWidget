@@ -4,7 +4,7 @@ namespace rldx
 {
 	DxBaseNode* DxSceneGraph::GetRootNode() const
 	{
-		return m_rootNode.get();
+		return m_vmdRootNode.get();
 	}
 
 	/// <summary>
@@ -21,7 +21,7 @@ namespace rldx
 
 	void DxSceneGraph::UpdateNodes(float timeElapsed)
 	{
-		UpdateNodesRecursive(m_rootNode.get(), timeElapsed);
+		UpdateNodesRecursive(m_vmdRootNode.get(), timeElapsed);
 	}
 
 	void DxSceneGraph::UpdateNodes(DxBaseNode* pNode, float timeElapsed)
@@ -31,7 +31,7 @@ namespace rldx
 
 	void DxSceneGraph::FillRenderBucket(IRenderBucket* pDestRenderBucket)
 	{
-		FillRenderBucketRecursive(m_rootNode.get(), pDestRenderBucket);
+		FillRenderBucketRecursive(m_vmdRootNode.get(), pDestRenderBucket);
 	}
 
 	void DxSceneGraph::AddNodeToLinearIndexTable(DxBaseNode* node)

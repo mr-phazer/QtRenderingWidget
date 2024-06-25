@@ -2,30 +2,38 @@
 
 #include <Rldx\Animation\DataTypes\SkeletonAnimation.h>
 #include <Rldx\Animation\FramePoseGenerator.h>
+#include <Rldx\Animation\Helpers\AnimationCreator.h>
+#include <Rldx\Animation\Helpers\AnimationRemapper.h>
 #include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h>
 #include <Rldx\Helpers\DxMeshCreatorHelper.h>
+#include <Rldx\Tools\tools.h>
+#include "..\..\Animation\Helpers\SkeletonHelpers.h"
 #include "..\..\Helpers\DxMeshCreatorHelper.h"
 #include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxShaderProgram.h"
+#include "..\..\Tools\tools.h"
 
 namespace rldx
 {
-	std::shared_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& name)
+	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& name)
 	{
-		auto newMeshNode = std::make_shared<DxDeformerNode>();
+		auto newMeshNode = std::make_unique<DxDeformerNode>();
 		newMeshNode->SetName(name);
-		newMeshNode->m_meshData.CreateConstBuffers(DxDeviceManager::Device());
+		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
+
 
 		return newMeshNode;
 	}
 
-	void DxDeformerNode::LoadBindPose(std::wstring animFilePath)
+	void DxDeformerNode::LoadBindPose(std::wstring m_animFilePath)
 	{
-		auto animBindPoseBytes = rldx::DxResourceManager::GetCallBackFile(animFilePath);
+		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
 		auto animBindPoseFile = m_animFileReader.Read(animBindPoseBytes);
 
-		m_animFileReader.SetBindPose(animBindPoseFile); // TODO: maybe put this somewhere else? Inside the TWAnimFileReader class?
+		// For rome/Attila/ToB skeleton "rome_man_game" is needed to load certain "human" models / animations
+		// The two skeletons are functionally identical, aside from extra bones in the hand and head				
+		ForceCorrectSkeleton(m_skeleton);
 
 		m_skeleton = skel_anim::Skeleton(animBindPoseFile);
 
@@ -35,36 +43,44 @@ namespace rldx
 
 		SetMeshData(skeletonMesh, L"Skeleton Mesh");
 
+		// TODO: put this into a virtual void DxBaseNode::UpdateBoundingBox(DxCommonMeshData&)
 		DirectX::BoundingBox bbout;
 		DirectX::BoundingBox::CreateFromPoints(
 			bbout,
 			skeletonMesh.originalMeshData.vertices.size(),
-			(DirectX::XMFLOAT3*)skeletonMesh.originalMeshData.vertices.data(),
+			(const DirectX::XMFLOAT3*)skeletonMesh.originalMeshData.vertices.data(),
 			sizeof(rldx::CommonVertex));
 
 		SetBoundingBox(bbout);
 
-		auto simpleShaderProgram =
-			rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
-				rldx::DxDeviceManager::Device(),
-				LR"(VS_weighted4.cso)",
-				LR"(PS_Simple.cso)"
-			);
-
+		auto simpleShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
 		SetShaderProgram(simpleShaderProgram);
-		m_meshData.CreateConstBuffers(rldx::DxDeviceManager::Device());
+
+		m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
 
 		auto& invMatrices = m_skeleton.GetInverseBindPoseMatrices();
 		memcpy(&m_constBufferDerformerData_VS.inverseBindPoseMatrices, invMatrices.data(), sizeof(sm::Matrix) * invMatrices.size());
+
+		SetDeformerNode(this, -1);
 	}
 
-	void DxDeformerNode::LoadAnimClip(std::wstring animFilePath)
+	void DxDeformerNode::LoadAnimClip(std::wstring m_animFilePath)
 	{
-		auto animBytes = rldx::DxResourceManager::GetCallBackFile(animFilePath);
-		auto animFile = m_animFileReader.Read(animBytes);
+		// creates 1 animation from the 
+		skel_anim::AnimationCreator animCreateor(m_animFilePath, m_skeleton);
 
-		m_animQueue.AddAnimation(skel_anim::SkeletonAnimation::CreateFromAnimFile(animFile));
+		auto sourceSkeletonName = animCreateor.GetSkeletonName();
+
+		if (CompareNoCase(L"rome_man_game", sourceSkeletonName))
+		{
+			// Performs a remap of the m_animation to the current skeleton, if needed
+			skel_anim::AnimationRemapper animRampper(sourceSkeletonName, m_skeleton.GetName());
+			*animCreateor.GetAnimation() = animRampper.RemapAnimation(*animCreateor.GetAnimation());
+		}
+
+		m_animQueue.AddAnimation(animCreateor.GetAnimation());
 	}
+
 
 	void DxDeformerNode::AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName)
 	{
@@ -94,16 +110,15 @@ namespace rldx
 			m_constBufferDerformerData_VS.boneTransform[i] = (m_skeleton.GetInverseBindPoseMatrices()[i] * m_framePoseMatrices[i]).Transpose();
 		}
 	}
-
-	void DxDeformerNode::CopyMatrices()
-	{
-		auto& invPoseMatrices = m_skeleton.GetInverseBindPoseMatrices();
-
-		m_constBufferDerformerData_VS.boneCount = static_cast<uint32_t>(m_framePoseMatrices.size());
-
-		for (size_t i = 0; i < m_framePoseMatrices.size(); i++)
-		{
-			m_constBufferDerformerData_VS.boneTransform[i] = (invPoseMatrices[i] * m_framePoseMatrices[i]).Transpose();
-		}
-	}
 }
+
+class SkeletonFileWithInfo
+{
+	std::string skeletonName;
+
+public:
+	std::wstring GetSkeletonName() const
+	{
+		return libtools::string_to_wstring(skeletonName);
+	}
+};

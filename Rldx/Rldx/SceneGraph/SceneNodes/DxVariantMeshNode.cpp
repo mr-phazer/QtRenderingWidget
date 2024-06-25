@@ -9,11 +9,15 @@ namespace rldx
 		UpdateGlobalTransform(0.0f);
 		auto mNodwWorld = GetCurrentGlobalTransForm().Transpose();
 
-		for (auto& itMeshData : m_meshQueue)
+		for (auto& itModelData : m_models)
 		{
-			itMeshData->perMesh_VS_CB.data.mNodeWorld = mNodwWorld;
-			pRenderQueue->AddItem(itMeshData.get());
+			itModelData->SetNodeWorldTransForm(mNodwWorld);
+			itModelData->FlushModelMeshesToRenderBucked(pRenderQueue);
 		}
+
+		// add skeleton mesh from deformer node
+		if (m_poDeformerNode->GetDrawState() == DrawStateEnum::Draw)
+			pRenderQueue->AddItem(&m_poDeformerNode->MeshRenderData());
 	};
 }; // namespace rldx
 

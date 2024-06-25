@@ -13,43 +13,62 @@
 namespace rldx {
 
 	// forward decl	
-	struct DxMeshData;
+	struct DxMeshRenderingData;
 	class DxMeshShaderProg;
 	class DxSourceDeformerNode;
+
+	template <class T, class... _Types>
+	std::shared_ptr<T> NewShared(_Types&&... _Args)
+	{
+		auto newHeapInstance = std::make_shared<T>(_Args);
+
+		if (newHeapInstance == nullptr) throw std::bad_alloc();
+
+		return newHeapInstance;
+	}
+
+	template <class T, class... _Types>
+	std::unique_ptr<T> NewUnique(_Types&&... _Args)
+	{
+		auto newHeapInstance = std::make_unique<T>(_Args);
+
+		if (newHeapInstance == nullptr) throw std::bad_alloc();
+
+		return newHeapInstance;
+	}
 
 	class DxMeshNode : public DxBaseNode
 	{
 	protected:
-		DxMeshData m_meshData;
+		DxMeshRenderingData m_meshData; // make this a INodeAtrribute or similar, an interfaces, from which other attributs like Mesh/Model/etc, are derived from
 
 	public:
 		using SharedPtr = std::shared_ptr<DxMeshNode>;
 	public:
-		DxMeshNode() = default;
-		DxMeshNode(const std::wstring& name) : DxBaseNode(name) {}
+		DxMeshNode() : DxBaseNode(L"Unnamed DxMeshNode") {}
+		DxMeshNode(const std::wstring& name) : DxBaseNode(name)
+		{
+			SetName(name);
+			m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
+		}
 
 		// TODO: maybe add d3d device as param here also?, the "global" d3d devices might make the code "spaghetti"
 		static SharedPtr Create(const std::wstring& name = L"");
 
-		DxMeshData& MeshData() { return m_meshData; }
-		void Clone(DxMeshData& clone) const;
-
+		DxMeshRenderingData& MeshRenderData() { return m_meshData; }
+		void Clone(DxMeshRenderingData& clone) const;
 
 		void SetMeshData(const rldx::DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix = sm::Matrix::Identity);
 		void SetMeshPivot(const sm::Vector3& pivot) { m_meshData.pivot = pivot; }
 		void SetMeshWorldTransForm(const sm::Matrix& mWorld) { m_meshData.perMesh_VS_CB.data.mWeaponWorld = mWorld; }
 		void SetMeshVisbilityDistance(float distance) { m_meshData.visibilityDistance = distance; }
+
 		virtual void SetNodeWorldTransForm(const sm::Matrix& mWorld) { m_meshData.perMesh_VS_CB.data.mNodeWorld = mWorld; }
-
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex) override;
-
-
 		virtual void SetAttachBoneAsParent();
 		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram);
 
 		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshData.poMaterial = pDxMaterial; };
-		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
-		void SetBoundingBox(const DirectX::BoundingBox& inBB);
 
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 
@@ -58,4 +77,34 @@ namespace rldx {
 
 		virtual void Update(float time) override;
 	};
+
+	///// <summary>
+	///// Gets data from fbxsdk::FbxMeshNode
+	///// </summary>
+	//class FBXMesNode_Interface
+	//{
+	//	List<Vertex> GetVertives()
+	//	{
+	//		// call FBX, as we already to
+	//	}
+	//
+	//	List<ushort> GetIndices()
+	//	{
+	//		// call FBX, as we already to
+	//	}
+	//
+	//	Matrix GetMeshTransform()
+	//	{
+	//		// call FBX, as we already to
+	//	}
+	//};
+	//
+	///// <summary>
+	///// Gets data from fbxsdk::FbxScene
+	///// </summary>
+	//class FBXSceneInterFace
+	//{
+	//	float GetScaleFactorToMetter();
+	//};
+
 };

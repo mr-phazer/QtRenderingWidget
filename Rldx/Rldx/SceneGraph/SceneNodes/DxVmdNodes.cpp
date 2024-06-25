@@ -4,7 +4,6 @@
 namespace rldx
 {
 
-
 	rldx::DxVMDSlotNode::DxVMDSlotNode(const pugi::xml_node& xmlNode)
 	{
 		SetName(L"DxVMDSlotNode");
