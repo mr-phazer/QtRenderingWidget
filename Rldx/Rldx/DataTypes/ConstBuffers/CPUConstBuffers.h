@@ -45,9 +45,9 @@ namespace rldx {
 		sm::Color mesh_faction_color3 = { 0.31f, 0.12f, 0.92f, 1 };
 		sm::Color mesh_faction_color1 = { 0,0,1,1 };
 
-		sm::Color tint_color1 = { 1,1,1,1 };
-		sm::Color tint_color2 = { 1,1,1,1 };
-		sm::Color tint_color3 = { 1,1,1,1 };
+		sm::Color tint_color1 = { 1,0,0,1 };
+		sm::Color tint_color2 = { 0,1,0,1 };
+		sm::Color tint_color3 = { 0,0,1,1 };
 
 		DirectX::XMUINT4 puiMaskIndices = { 0,1,2,3 };
 

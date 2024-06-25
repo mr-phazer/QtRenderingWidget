@@ -19,6 +19,7 @@ namespace rldx
 		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
 		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
 		static DxCommonMeshData CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh);
+		static DxCommonMeshData MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb);
 	};
 
 	class DxSkeletonMeshCreator
@@ -88,7 +89,7 @@ namespace rldx
 				childVertex.position = { bonePosition.x, bonePosition.y, bonePosition.z, 0 };
 				childVertex.weights = { 1,0,0,0 };
 				childVertex.boneIndices = { boneIndex,0,0,0 };
-				childVertex.color = { 1,1,1,1 };
+				childVertex.color = { 0.2f,0.2f,0.2f,1 };
 				vertices.push_back(childVertex);
 
 				parentVertex.position = { parentBonePosition.x, parentBonePosition.y, parentBonePosition.z, 0 };

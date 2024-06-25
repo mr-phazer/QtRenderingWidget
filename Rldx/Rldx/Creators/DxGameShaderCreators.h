@@ -22,7 +22,7 @@ namespace rldx
 			return DxMeshShaderProgram::Create<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Weighted4.cso)",
-				LR"(PS_Troy.cso)");
+				LR"(PS_Troy.cso)").GetPtr();
 		};
 	};
 
@@ -33,7 +33,7 @@ namespace rldx
 			return DxMeshShaderProgram::Create<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Weighted4.cso)",
-				LR"(PS_Attila_Weigted.cso)");
+				LR"(PS_Attila_Weigted.cso)").GetPtr();
 		};
 	};
 
@@ -46,11 +46,12 @@ namespace rldx
 					poDevice,
 					LR"(VS_Weighted4.cso)",
 					LR"(PS_Three_Kingdoms.cso)"
-				);
+				).GetPtr();
 		};
 	};
 
-	class SimpleShaderProgramCreator : public IShaderProgramCreator
+	// TODO: remove
+	/*class SimpleShaderProgramCreator : public IShaderProgramCreator
 	{
 	public:
 		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
@@ -62,9 +63,7 @@ namespace rldx
 					LR"(PS_Simple.cso)"
 				);
 		};
-	};
-
-
+	};*/
 
 	enum class ShaderTypeEnum
 	{
@@ -77,7 +76,6 @@ namespace rldx
 	{
 		Weighted, NonWeighted
 	};
-
 
 	// TODO: change this to use the "ShaderTypeEnum" ENUMs instead
 	class GameShaderProgramCreatorFactory : public templates::TFactoryWStringKey<IShaderProgramCreator>

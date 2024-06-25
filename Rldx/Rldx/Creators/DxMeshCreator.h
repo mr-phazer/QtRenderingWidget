@@ -15,7 +15,7 @@ namespace rldx {
 		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices);
 		bool FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices);
 	private:
-		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> m_poMesh;
+		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> m_poMeshBuffers;
 
 	}; // class DxMeshCreatorHelper
 
@@ -26,17 +26,17 @@ namespace rldx {
 		const std::vector<VERTEX_TYPE>& vertices,
 		const std::vector<INDEX_TYPE>& indices)
 	{
-		m_poMesh.originalMeshData.vertices = vertices;
-		m_poMesh.originalMeshData.indices = indices;
+		m_poMeshBuffers.originalMeshData.vertices = vertices;
+		m_poMeshBuffers.originalMeshData.indices = indices;
 
 		FillVertexBuffer(_poDevice, static_cast<UINT>(vertices.size()), vertices.data());
 		FillIndexBuffer(_poDevice, static_cast<UINT>(indices.size()), indices.data());
 
-		m_poMesh.indexCount = static_cast<uint32_t>(indices.size());
-		m_poMesh.indexFormat = sizeof(INDEX_TYPE) == 4 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
-		m_poMesh.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		m_poMeshBuffers.indexCount = static_cast<uint32_t>(indices.size());
+		m_poMeshBuffers.indexFormat = sizeof(INDEX_TYPE) == 4 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT;
+		m_poMeshBuffers.primitiveTopology = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-		return m_poMesh;
+		return m_poMeshBuffers;
 	}
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
@@ -61,7 +61,7 @@ namespace rldx {
 		indexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_poMesh.cpoIndexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, &indexData, &m_poMeshBuffers.cpoIndexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);
@@ -89,7 +89,7 @@ namespace rldx {
 		vertexData.SysMemSlicePitch = 0;
 
 		// Now create the vertex buffer.
-		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_poMesh.cpoVertexBuffer);
+		HRESULT hr = _poDevice->CreateBuffer(&vertexBufferDesc, (vertexData.pSysMem) ? &vertexData : NULL, &m_poMeshBuffers.cpoVertexBuffer);
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);

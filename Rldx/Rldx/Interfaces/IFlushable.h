@@ -2,9 +2,10 @@
 
 namespace rldx {
 
-	class IRenderBucket;	
+	class IRenderBucket;
 	/// <summary>
 	/// Interface for objects that can be flushed to a render queue
+	/// The default impl = do nothing
 	/// </summary>
 	class IFlushable
 	{
