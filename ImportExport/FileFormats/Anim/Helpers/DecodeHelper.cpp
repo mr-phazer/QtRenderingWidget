@@ -11,7 +11,6 @@ namespace anim_file
 
 	sm::Vector3 TranslationTrackDecoder::DecodeConstTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
-		auto& transRange = meta.ranges.translationRanges[boneIndex];
 		auto& transMetaId = meta.translationEncodeIds[boneIndex];
 
 		switch (transMetaId.type)
@@ -19,6 +18,7 @@ namespace anim_file
 			case TranslationEncodeTypeEnum::Const_Byte3_Trans:
 			{
 				auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
+				auto& transRange = meta.ranges.translationRanges[boneIndex];
 				return CorrectTranslationRange(translationSNORM, transRange);
 			}
 			break;
@@ -37,7 +37,6 @@ namespace anim_file
 
 	sm::Vector3 TranslationTrackDecoder::DecodeDynamicTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
-		auto& transRange = meta.ranges.translationRanges[boneIndex];
 		auto& encodeId = meta.translationEncodeIds[boneIndex];
 
 		switch (encodeId.type)
@@ -70,7 +69,7 @@ namespace anim_file
 
 				// TODO: REMOVE debugging code
 				DEBUG_translations++;
-
+				auto& transRange = meta.ranges.translationRanges[boneIndex];
 				return CorrectTranslationRange(translationSNORM, transRange);
 			}
 			break;
@@ -79,11 +78,6 @@ namespace anim_file
 			{
 				sm::Vector3 translation;
 				bytes.Read(&translation, sizeof(sm::Vector3));
-
-				//translation = bytes.TReadElement<DirectX::XMFLOAT3>();
-
-				// TODO: remove debugging code
-				DEBUG_translations++;
 
 				return translation;
 			}
@@ -95,7 +89,6 @@ namespace anim_file
 
 	sm::Quaternion QuaternionTrackDecoder::DecodeConstTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
-		auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
 		auto& rotationMetaId = meta.rotationEncodeIds[boneIndex];
 
 		switch (rotationMetaId.type)
@@ -103,6 +96,7 @@ namespace anim_file
 			case RotationEncodeTypeEnum::Const_Byte4_Quat:
 			{
 				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
+				auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
 				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
@@ -113,6 +107,7 @@ namespace anim_file
 			case RotationEncodeTypeEnum::Const_Word4_Quat:
 			{
 				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
+				auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
 				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
@@ -137,8 +132,7 @@ namespace anim_file
 
 	sm::Quaternion QuaternionTrackDecoder::DecodeDynamicTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
-		// TODO: add exceptions to check ranges?
-		auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
+		// TODO: add exceptions to check ranges?		
 		auto& rotationMetaId = meta.rotationEncodeIds[boneIndex];
 
 		switch (rotationMetaId.type)
@@ -169,6 +163,7 @@ namespace anim_file
 			case RotationEncodeTypeEnum::Data_Byte4_Quat:
 			{
 				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedByte4(bytes.GetChunk<int8_t>(4).data());
+				auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
 				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
@@ -178,8 +173,10 @@ namespace anim_file
 
 			case RotationEncodeTypeEnum::Data_Short4_Quat:
 			{
-				auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
-				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
+				sm::Quaternion decodedQuaternion = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
+				//auto quaternionSNorm = quant_tools::GetSNormFloat4FromSignedWord4(bytes.GetChunk<int16_t>(4).data());
+				//auto& quatRange = meta.ranges.quaternionRanges[boneIndex];
+				//auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
 				return decodedQuaternion;

@@ -4,7 +4,7 @@
 #include <SimpleMath.h>
 #include <vector>
 
-#include <GeneralTypes\IDataStructure.h>
+#include "..\..\..\..\GeneralTypes\IDataStructure.h"
 
 namespace anim_file
 {

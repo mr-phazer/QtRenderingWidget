@@ -16,24 +16,29 @@ namespace anim_file
 	{
 		// TODO: either make std::unique_ptr, or otherwise make sure it is cleared, if the reader instance it used more than once
 		AnimFile m_animFile;
-		AnimFile m_bindPose;
+		const AnimFile* m_poBindPose = nullptr;
 
 	public:
-		AnimFile Read(ByteStream& bytes);
-		void SetBindPose(const AnimFile& animFileBindPose) { m_bindPose = animFileBindPose; }
+		AnimFile Read(ByteStream& bytes, const AnimFile* animFileBindPose = nullptr);
+
+		std::wstring GetSkeletonName(ByteStream& bytes);
+		// TODO: remove if above (Read()) works well
+		//void SetBindPose(const AnimFile& animFileBindPose) { m_bindPose = animFileBindPose; }
+
+		// for getting the version without reading the file
+		static uint32_t GetAnimFileVersion(ByteStream& bytes);
 
 	private:
-		static uint32_t GetTWAnimFileVersion(ByteStream& bytes);
+		uint32_t ReadAnimFileVersion(ByteStream& bytes);
 
-		void ReadFileHeader(ByteStream& bytes);
-		void ReadBoneTable(ByteStream& bytes);
+		AnimHeaderCommon ReadFileHeader(ByteStream& bytes);
+		BoneTable ReadBoneTable(ByteStream& bytes);
 
-		static SubClipHeaderV8 ReadSubsClipHeader_v8(ByteStream& bytes);
-
+		SubClipHeaderV8 ReadSubsClipHeader_v8(ByteStream& bytes);
 
 		void ReadSubClip(ByteStream& bytes, const SubClipHeaderV8& subclipHeader);
 
-		void ReadClip_v5_v7(ByteStream& bytes);
+		void ReadClip_v5(ByteStream& bytes);
 		void ReadClip_v7(ByteStream& bytes);
 		void ReadClip_v8(ByteStream& bytes);
 
