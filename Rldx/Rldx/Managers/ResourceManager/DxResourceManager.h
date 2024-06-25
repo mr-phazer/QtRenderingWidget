@@ -90,7 +90,7 @@ namespace rldx {
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 		static ByteStream GetFile(const std::wstring& filePath)
 		{
-			if (libtools::IsDiskFile(filePath))
+			if (IsDiskFile(filePath))
 			{
 				return ByteStream(filePath);
 			}
@@ -159,7 +159,7 @@ namespace rldx {
 
 			if (destBinaries.size() != 1)
 			{
-				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+				throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 			}
 
 			if (destBinaries[0].isEmpty())

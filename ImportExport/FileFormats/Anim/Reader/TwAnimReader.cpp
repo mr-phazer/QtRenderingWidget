@@ -18,6 +18,7 @@
 namespace anim_file
 {
 	using namespace utils;
+	AnimFile TwAnimFileReader::Read(ByteStream& inBytes, const AnimFile* animFileBindPose) {
 
 		m_poBindPose = animFileBindPose;
 
@@ -45,7 +46,7 @@ namespace anim_file
 		auto fileHeader = ReadFileHeader(bytes);
 		bytes.SeekAbsolute(0); // reset file pointer
 
-		return libtools::WidenString(fileHeader.skeletonName);
+		return ToWString(fileHeader.skeletonName);
 	}
 
 	uint32_t TwAnimFileReader::GetAnimFileVersion(ByteStream& bytes)
