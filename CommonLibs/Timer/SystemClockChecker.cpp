@@ -12,7 +12,7 @@ namespace timer {
 		m_startTime = std::chrono::high_resolution_clock::now();
 	}
 
-	double SystemClockChecker::GetLocalTime() const
+	float SystemClockChecker::GetLocalTime() const
 	{
 		auto timeElapsed = std::chrono::high_resolution_clock::now();
 

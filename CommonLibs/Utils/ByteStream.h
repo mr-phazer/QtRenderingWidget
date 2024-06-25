@@ -13,6 +13,7 @@ namespace utils {
 	/// </summary>
 	class ByteStream
 	{
+		// TODO: make a vector of search folders
 		static std::wstring sm_searchFolder; // TODO: static for now, easiest, maybe change to fancier?
 
 		std::wstring m_currentFilePath = L"";
@@ -44,19 +45,19 @@ namespace utils {
 		/// <summary>
 		/// A template version of Read that will automatically determine the size of the type
 		/// ...maybe
-		/// </summary>	
-		template <typename CONST_BUF_DATA_TYPE>
-		void TRead(CONST_BUF_DATA_TYPE* pDest);
+		/// </summary>
+		template <typename T>
+		void TRead(T* pDest);
 
 		// TODO: is working?
 		/// <summary>
 		/// Get an "array" of a certain type, maybbe works
-		/// </summary>	
+		/// </summary>
 		template <typename DATA_TYPE>
 		DATA_TYPE TReadElement();
 
-		template <typename CONST_BUF_DATA_TYPE>
-		std::vector<CONST_BUF_DATA_TYPE> GetElements(std::size_t elementCount = 1);
+		template <typename T>
+		std::vector<T> GetElements(std::size_t elementCount = 1);
 
 		const uint8_t* GetBufferPtr() const;
 		uint8_t* GetBufferPtr();
@@ -65,50 +66,9 @@ namespace utils {
 
 		std::wstring GetPath() const;
 
-		void SetOffset(size_t position);
-		void Seek(int steps);
+		void SeekAbsolute(size_t position);
+		void SeekRelative(int steps);
 
 		bool IsValid() const;;
 	};
-
-
-	template<typename T>
-	inline std::vector<T> ByteStream::GetChunk(size_t elements)
-	{
-		std::vector<T> out(elements);
-		Read(out.data(), elements * sizeof(T));
-		return out;
-	}
-
-	template<typename CONST_BUF_DATA_TYPE>
-	inline void ByteStream::TRead(CONST_BUF_DATA_TYPE* pDest)
-	{
-		auto bytesToCopy = sizeof(CONST_BUF_DATA_TYPE);
-
-		if (m_currentOffset + bytesToCopy > m_data.size())
-			throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
-
-		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
-		m_currentOffset += bytesToCopy;
-	}
-
-	template<typename DATA_TYPE>
-	inline DATA_TYPE ByteStream::TReadElement()
-	{
-		DATA_TYPE element = DATA_TYPE();
-		Read(&element, sizeof(DATA_TYPE));
-		return element;
-	}
-
-	template<typename CONST_BUF_DATA_TYPE>
-	inline std::vector<CONST_BUF_DATA_TYPE> ByteStream::GetElements(std::size_t elementCount)
-	{
-		std::vector<CONST_BUF_DATA_TYPE> out(elementCount);
-		for (auto& itDestElemment : out)
-		{
-			itDestElemment = TReadElement<CONST_BUF_DATA_TYPE>();
-		}
-
-		return out;
-	}
 }

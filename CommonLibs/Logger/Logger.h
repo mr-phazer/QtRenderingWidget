@@ -62,8 +62,8 @@ namespace logging {
 		BG_WHITE = BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE,
 	};
 
-#define FULL_FUNC_INFO(message) std::string(std::string(__func__) +  std::string(", line ") + std::to_string(__LINE__) + ": " + message)
-#define FULL_FUNC_INFO_W(message) ToWString(__func__) +  std::wstring(L": Line: ") + ToWString(__LINE__) + L": " + message
+#define FULL_FUNC_INFO(message) std::string(std::string(__func__) +  ", line " + std::to_string(__LINE__) + ": " + message)
+#define FULL_FUNC_INFO_W(message) std::wstring(std::wstring(__func__) +  L": Line: " + std::to_wstring(__LINE__) + L": " + message)
 #define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
 #define LogInfo(msg) Logger::LogActionInfo( FULL_FUNC_INFO(msg) )
 #define LogAction(message)  Logger::LogActionInfo(ToWString(std::string(__func__)) + L": Line: " + std::to_wstring(__LINE__) + L": " + L"");

@@ -2,7 +2,7 @@
 
 #include <exception>
 #include <string>
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "..\Logger\Logger.h"
 #include "..\..\Rldx\Rldx\Tools\COMerrors.h"
 
 class ConLogException : public std::exception
@@ -19,7 +19,7 @@ class ConLogExceptionVerbose : public std::exception
 	std::string m_message;
 
 public:
-	ConLogExceptionVerbose(const std::string& message);
+	ConLogExceptionVerbose(const std::wstring& message);
 	virtual const char* what() const throw();
 };
 
@@ -52,7 +52,8 @@ public:
 		m_hrResult(hr),
 		m_message(GetComErrorFormated(hr, message))
 	{
-		logging::LogActionError(what());
+		using namespace logging;
+		Logger::LogActionError(ToWString(what()));
 	}
 
 	const char* what() const override
@@ -66,7 +67,8 @@ public:
 #define ThrowAndLogIfAiled(hr, message) \
 	if (!SUCCEEDED(hr)) throw COMExceptionLog(hr, message); \
 	else \
-	logging::LogActionSuccess("CreateRenderTargetView().")
+	using namespace logging; \
+	Logger::LogActionSuccess("CreateRenderTargetView().")
 
 
 

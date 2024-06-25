@@ -19,7 +19,7 @@ namespace utils {
 	bool DoesFileExist(const std::wstring& filePath)
 	{
 		std::ifstream file(filePath);
-		auto result = file.good();
+		bool result = file.is_open();
 		file.close();
 		return result;
 	}

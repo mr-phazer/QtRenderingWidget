@@ -3,6 +3,8 @@
 #include "..\Logger\Logger.h"
 
 using namespace logging;
+using namespace utils;
+
 ConLogException::ConLogException(const std::wstring& message)
 {
 	Logger::LogActionError(L"Exception: " + message);
@@ -15,9 +17,9 @@ const char* ConLogException::what() const throw()
 
 // --------------------------------------------------------------------------------
 
-ConLogExceptionVerbose::ConLogExceptionVerbose(const std::string& message) : m_message(FULL_FUNC_INFO(message))
+ConLogExceptionVerbose::ConLogExceptionVerbose(const std::wstring& message) : m_message(FULL_FUNC_INFO(ToString(message)))
 {
-	logging::LogActionError("Exception: " + message);
+	Logger::LogActionError(L"Exception: " + message);
 }
 
 const char* ConLogExceptionVerbose::what() const throw()

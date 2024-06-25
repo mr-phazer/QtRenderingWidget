@@ -3,6 +3,7 @@
 #include <string>
 
 #include "IOUtils.h"
+#include "StrUtils.h"
 #include "..\Logger\Logger.h"
 
 namespace utils {
@@ -37,27 +38,25 @@ namespace utils {
 	}
 
 	ByteStream::ByteStream(const std::wstring& fileName, bool doThrow)
+		: m_currentFilePath(fileName)
 	{
-		if (DoesFileExist(fileName))
+		if (DoesFileExist(m_currentFilePath)) // .exe folder + path ?
 		{
-			m_currentFilePath = fileName;
 			ReadFileToVector(m_currentFilePath, m_data);
-		}
-		else if (DoesFileExist(sm_searchFolder + fileName))
-		{
-			m_currentFilePath = sm_searchFolder + fileName;
-			ReadFileToVector(m_currentFilePath, m_data);
-		}
-		else
-		{
-			Logger::LogActionWarning(L"File: '" + fileName + L"', file does not exist.");
-
-			if (doThrow)
-				throw std::exception(ToString(L"ByteStream::ByteStream: '" + fileName + L"', file does not exist.").c_str());
-			else
-				m_data.clear();  // TODO: redundant?
 			return;
 		}
+		else if (DoesFileExist(sm_searchFolder + fileName)) // search folder + path?
+		{
+			auto tempDiskPath = sm_searchFolder + m_currentFilePath;
+			ReadFileToVector(tempDiskPath, m_data);
+			return;
+		}
+
+		if (doThrow)
+			throw std::exception(std::string("ByteStream::ByteStream: '" + ToString(fileName) + "', file does not exist.").c_str());
+		else
+			m_data.clear();  // TODO: redundant?
+		return;
 	}
 
 	void ByteStream::SetSearchFolder(const std::wstring& path) // TODO: static for now, easiest, maybe change to fancier?
@@ -121,7 +120,7 @@ namespace utils {
 
 	std::wstring ByteStream::GetPath() const { return m_currentFilePath; }
 
-	void ByteStream::SetOffset(size_t position) {
+	void ByteStream::SeekAbsolute(size_t position) {
 
 		if (position >= m_data.size()) {
 			throw std::exception((FULL_FUNC_INFO("ByteStream SetOffset out of bound >= data size")).c_str());
@@ -130,7 +129,7 @@ namespace utils {
 		m_currentOffset = position;
 	}
 
-	void ByteStream::Seek(int steps)
+	void ByteStream::SeekRelative(int steps)
 	{
 		if (m_currentOffset + steps >= m_data.size() || m_currentOffset + steps < 0) {
 			throw std::exception((FULL_FUNC_INFO("ByteStream Seek out of bounds > data size or < 0")).c_str());
@@ -143,4 +142,45 @@ namespace utils {
 	{
 		return m_data.size() > 0;
 	}
+
+	template<typename T>
+	inline std::vector<T> ByteStream::GetChunk(size_t elements)
+	{
+		std::vector<T> out(elements);
+		Read(out.data(), elements * sizeof(T));
+		return out;
+	}
+
+	template<typename T>
+	inline void ByteStream::TRead(T* pDest)
+	{
+		auto bytesToCopy = sizeof(T);
+
+		if (m_currentOffset + bytesToCopy > m_data.size())
+			throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
+
+		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
+		m_currentOffset += bytesToCopy;
+	}
+
+	template<typename DATA_TYPE>
+	inline DATA_TYPE ByteStream::TReadElement()
+	{
+		DATA_TYPE element = DATA_TYPE();
+		Read(&element, sizeof(DATA_TYPE));
+		return element;
+	}
+
+	template<typename T>
+	inline std::vector<T> ByteStream::GetElements(std::size_t elementCount)
+	{
+		std::vector<T> out(elementCount);
+		for (auto& itDestElemment : out)
+		{
+			itDestElemment = TReadElement<T>();
+		}
+
+		return out;
+	}
 }
+
