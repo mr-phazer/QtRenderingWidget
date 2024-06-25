@@ -22,10 +22,10 @@ bool CmpList(const std::wstring& in, const std::vector<std::wstring>& values)
 XMLMaterialData rmv2::XmMaterialReader::Read()
 {
 	if (!m_poMaterialData) {
-		throw std::exception("INTERNAL ERROR: XmMaterialReader: supplied data == nullptr");
+		throw std::exception("INTERNAL ERROR: XmlMaterialReader: supplied data == nullptr");
 	}
 
-	auto bytes = rldx::DxResourceManager::GetCallBackFile(m_poMaterialData->xmlMaterialFilePath);
+	auto bytes = rldx::DxResourceManager::GetFile(m_poMaterialData->xmlMaterialFilePath);
 
 	auto xmlParseResult = m_xmlDoc.load_buffer(bytes.GetBufferPtr(), bytes.GetBufferSize());
 
@@ -33,14 +33,14 @@ XMLMaterialData rmv2::XmMaterialReader::Read()
 		throw std::exception(("XMlXmMaterialReader::Read(): XML error: " + std::string(xmlParseResult.description())).c_str());
 	}
 
-	FetchTexturesFromXML();
+	FetchTextures();
 
 	return *m_poMaterialData;
 }
+
 // TODO: add error checking, for invalid XML nodes, anything that can crash
 // TODO: make this more neat
-
-void rmv2::XmMaterialReader::FetchTexturesFromXML()
+void rmv2::XmMaterialReader::FetchTextures()
 {
 	std::map < TextureTypeEnum, std::vector<std::wstring>> mapTypeToNames =
 	{

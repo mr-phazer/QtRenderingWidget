@@ -18,6 +18,6 @@ namespace rmv2
 
 
 	private:
-		void FetchTexturesFromXML();
+		void FetchTextures();
 	};
 }
