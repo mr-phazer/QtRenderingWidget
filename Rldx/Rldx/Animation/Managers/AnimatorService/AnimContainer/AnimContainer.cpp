@@ -5,9 +5,9 @@
 
 namespace skel_anim
 {
-	void AnimContainer::SetAnimation(SkeletonAnimation* animation)
+	void AnimContainer::SetAnimation(SkeletonAnimation* m_animation)
 	{
-		m_animation = animation;
+		m_animation = m_animation;
 	}
 
 	SkeletonKeyFrame AnimContainer::Sample(float time)

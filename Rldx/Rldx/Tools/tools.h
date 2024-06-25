@@ -1,6 +1,6 @@
 #pragma once
 
-
+// TODO: but in common project
 #include  <cwctype>
 #include <iterator>
 #include <map>
@@ -67,16 +67,16 @@ namespace libtools
 	class COMException : public std::exception
 	{
 	public:
-		COMException(HRESULT hr) noexcept : result(hr) {};
+		COMException(HRESULT hr) noexcept : hrResult(hr) {};
 
 		const char* what() const override;
 
-		HRESULT GetHrResult() const noexcept { return result; };
+		HRESULT GetHrResult() const noexcept { return hrResult; };
 
-		operator HRESULT() { return result; };
+		operator HRESULT() { return hrResult; };
 
 	private:
-		HRESULT result;
+		HRESULT hrResult;
 
 	};
 };

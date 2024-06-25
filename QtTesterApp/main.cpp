@@ -4,8 +4,9 @@
 int main(int argc, char* argv[])
 {
 
-	using namespace logging;
-	Logger::LogAction("main(): Entry Point");
+	int  DEBUG_TEST = 1;
+
+	LogAction("main(): Entry Point");
 	QApplication a(argc, argv);
 
 	QtMainWindowView w;

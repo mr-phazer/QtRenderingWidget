@@ -132,22 +132,17 @@ LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 
 bool QtRenderWidgetView::InitRenderView()
 {
+	logging::LogAction("Make new Device Manager");
+	DxDeviceManager::Init();
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
-
-	LogAction("");
-	LogAction("Make new Device Manager");
 
 	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
-	LogAction("Retriving Default Textures from .exe");
-
-
-	LogAction("Create New Scene");
-
+	logging::LogAction("Retriving Default Textures from .exe");
 	LoadExeResources(poDevice);
 
+	logging::LogAction("Create New Scene");
 	MakeScene();
-
 
 	// TODO: remove
 	//m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 1024, 1024);
@@ -242,18 +237,29 @@ void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
 		case Qt::Key_G:
 		{
 			auto newState =
-				(view->m_upoSceneManager->GetCurrentScene()->GetGridState() == rldx::DxBaseNode::DrawStateEnum::Draw)
+				(view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
 				?
 				rldx::DxBaseNode::DrawStateEnum::DontDraw :
 				rldx::DxBaseNode::DrawStateEnum::Draw;
-			view->m_upoSceneManager->GetCurrentScene()->SetGridState(newState);
+			view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->SetDrawState(newState);
 			keyEvent->accept();
 		}
 		break;
 
-		case Qt::Key_S:
+		case Qt::Key_A:
 		{
-			// TODO: switch Skeleton on/off
+			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetNewVariant();
+		}
+
+		case Qt::Key_Q:
+		{
+			auto newState =
+				(view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
+				?
+				rldx::DxBaseNode::DrawStateEnum::DontDraw :
+				rldx::DxBaseNode::DrawStateEnum::Draw;
+			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->SetDrawState(newState);
+			keyEvent->accept();
 		}
 	}
 }

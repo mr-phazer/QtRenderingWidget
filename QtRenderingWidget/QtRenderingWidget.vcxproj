@@ -23,6 +23,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
@@ -82,7 +83,7 @@
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies);D3DCompiler.lib;dxguid.lib;$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -106,7 +107,7 @@
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

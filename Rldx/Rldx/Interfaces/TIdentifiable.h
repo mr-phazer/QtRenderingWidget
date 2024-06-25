@@ -34,7 +34,7 @@ namespace rldx {
 
 	{
 	public:
-		TIdentifiable(const std::wstring& name) : IdentifiableBase(), m_name(name) {}
+		TIdentifiable(const std::wstring& name) : IdentifiableBase(), name(name) {}
 
 		//TODO: have private default constructor, to force derived classes to set Type Enum/Type description in the constructor
 		TIdentifiable();
@@ -43,10 +43,10 @@ namespace rldx {
 		// TODO: Scrap these, and make the derived classes set Type Enum/Type description in the constructor
 		virtual std::wstring GetTypeString() const = 0;
 		virtual KEY_TYPE GetType() const = 0;
-
+		virtual std::wstring GetIdString() { return GetTypeString() + L"_" + std::to_wstring(GetId()); }
 
 	protected:
-		std::wstring m_name = L"Unnamed_Object";
+		std::wstring name = L"Unnamed_Object";
 	};
 
 	template<typename KEY_TYPE>

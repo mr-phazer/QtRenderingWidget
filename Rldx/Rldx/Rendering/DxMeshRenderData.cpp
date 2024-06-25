@@ -1,12 +1,19 @@
 #include "..\..\DXUT\Core\DXUT.h"
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
-#include "..\Rendering/DxMesh.h"
+#include "..\Interfaces\IRenderBucket.h"
 #include "..\SceneGraph\SceneNodes\DxDeformerNode.h"
+
+#include "..\Rendering\DxShaderProgram.h"
+#include "DxMesh.h"
 #include "DxMeshRenderData.h"
 
 namespace rldx {
+	DxMeshRenderingData::DxMeshRenderingData()
+	{
+		CreateConstBuffers(DxDeviceManager::Device());
+	}
 
-	void DxMeshData::CreateConstBuffers(ID3D11Device* poDevice)
+	void DxMeshRenderingData::CreateConstBuffers(ID3D11Device* poDevice)
 	{
 		perMesh_VS_CB.Init(poDevice, "VS_PerMesh_CB");
 		perMeshDerformer_VS_CB.Init(poDevice, "VS_PerMesh_Derformer");
@@ -14,20 +21,24 @@ namespace rldx {
 		perMesh_PS_CB.Init(poDevice, "PS_PerMesh");
 	}
 
-	void DxMeshData::Update(float time)
+	void DxMeshRenderingData::CreateConstBuffers_DOES_NOTHING__REMOVE(ID3D11Device* poDevice)
+	{
+	}
+
+	void DxMeshRenderingData::Update(float time)
 	{
 
 	}
 
-	void DxMeshData::Draw(ID3D11DeviceContext* pDeviceContext)
+	void DxMeshRenderingData::Draw(ID3D11DeviceContext* pDeviceContext)
 	{
 		poMesh->Draw(pDeviceContext);
 	}
 
-	void DxMeshData::BindToDC(ID3D11DeviceContext* pDeviceContext)
+	void DxMeshRenderingData::BindToDC(ID3D11DeviceContext* pDeviceContext)
 	{
 		if (poMesh) poMesh->BindToDC(pDeviceContext);
-		if (poShaderProgram) 	poShaderProgram->BindToDC(pDeviceContext);
+		if (poShaderProgram) poShaderProgram->BindToDC(pDeviceContext);
 		if (poMaterial) poMaterial->BindToDC(pDeviceContext);
 
 
@@ -67,7 +78,6 @@ namespace rldx {
 
 			if (attachPoint.boneIndex != -1)
 			{
-
 				auto correctMatrix = sm::Matrix::CreateFromYawPitchRoll(DirectX::XM_PI, -DirectX::XM_PIDIV2, 0);
 				perMesh_VS_CB.data.mWeaponWorld = skeletonVSConstBufferData->boneTransform[attachPoint.boneIndex] * correctMatrix; //  TODO: MAYBE bounds checking??
 				perMesh_VS_CB.data.pivot = pivot;

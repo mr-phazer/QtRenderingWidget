@@ -74,7 +74,7 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 
 	Logger::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + path);
 
-	auto bytes = DxResourceManager::GetCallBackFile(path);
+	auto bytes = DxResourceManager::GetFile(path);
 
 	if (!bytes.IsValid()) // texture file is missing or empty
 	{

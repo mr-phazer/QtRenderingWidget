@@ -48,13 +48,13 @@ namespace anim_file
 
 	struct TranslationRangeElement
 	{
-		sm::Vector3 factor = { 0,0,0 };
+		sm::Vector3 factor = { 1,1,1 };
 		sm::Vector3 base = { 0,0,0 };
 	};
 
 	struct QuanterionRangeElement
 	{
-		sm::Vector4 factor = { 0,0,0,0 };
+		sm::Vector4 factor = { 1,1,1,1 };
 		sm::Vector4 base = { 0,0,0,0 };
 	};
 
@@ -95,7 +95,7 @@ namespace anim_file
 		ranges;
 
 		AnimFrameCommon constTrackFrame;
-		AnimFrameCommon* poSkeletonBindPoseFrame = nullptr;
+		const AnimFrameCommon* poSkeletonBindPoseFrame = nullptr;
 	};
 
 	struct CompressionMetaData_V5_V7

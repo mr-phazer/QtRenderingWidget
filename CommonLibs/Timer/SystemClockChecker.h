@@ -24,7 +24,7 @@ namespace timer {
 		///  Get "local" time, 
 		/// </summary>
 		/// <returns>"state time" - "now" </returns>
-		double GetLocalTime() const;
+		float GetLocalTime() const;
 
 		/// <summary>
 		/// Rerturn the CPU "ticks"

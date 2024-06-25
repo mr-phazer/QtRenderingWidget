@@ -19,10 +19,10 @@ namespace anim_file
 {
 	using namespace utils;
 
-	AnimFile TwAnimFileReader::Read(ByteStream& inBytes)
-	{
-		ReadFileHeader(inBytes);
-		ReadBoneTable(inBytes);
+		m_poBindPose = animFileBindPose;
+
+		m_animFile.fileHeader = ReadFileHeader(inBytes);
+		m_animFile.boneTable = ReadBoneTable(inBytes);
 
 		SubClipHeaderV8 subClipHeader;
 		subClipHeader.subClipCounts = 1; // pre-v8 ANIM only has 1 clip per file
@@ -40,42 +40,55 @@ namespace anim_file
 		return m_animFile;
 	}
 
-	uint32_t TwAnimFileReader::GetTWAnimFileVersion(ByteStream& bytes)
+	std::wstring TwAnimFileReader::GetSkeletonName(ByteStream& bytes)
+	{
+		auto fileHeader = ReadFileHeader(bytes);
+		bytes.SeekAbsolute(0); // reset file pointer
+
+		return libtools::WidenString(fileHeader.skeletonName);
+	}
+
+	uint32_t TwAnimFileReader::GetAnimFileVersion(ByteStream& bytes)
 	{
 		AnimHeaderCommon in;
 		in.dwVersion = bytes.TReadElement<uint32_t>();
+		bytes.SeekAbsolute(0);
 
-		bytes.SetOffset(0); // reset file pointer
 		return in.dwVersion;
 	}
 
-	void anim_file::TwAnimFileReader::ReadFileHeader(ByteStream& inBytes)
+	uint32_t TwAnimFileReader::ReadAnimFileVersion(ByteStream& bytes)
 	{
-		auto version = GetTWAnimFileVersion(inBytes);
+		auto dwVersion = bytes.TReadElement<uint32_t>();
+		bytes.SeekAbsolute(0);
+
+		return dwVersion;
+	}
+
+	AnimHeaderCommon anim_file::TwAnimFileReader::ReadFileHeader(ByteStream& inBytes)
+	{
+		auto version = ReadAnimFileVersion(inBytes);
 
 		switch (version)
 		{
-		case ANIM_VERSION_5:
-			m_animFile.fileHeader = Anim_V6_HeaderFileCommonCreator().Create(inBytes);
-			break;
+			case ANIM_VERSION_5:
+				return Anim_V5_HeaderFileCommonCreator().Create(inBytes);
+				break;
 
-		case ANIM_VERSION_7:
-			m_animFile.fileHeader = Anim_V7_HeaderFileCommonCreator().Create(inBytes);
-			break;
+			case ANIM_VERSION_7:
+				return Anim_V7_HeaderFileCommonCreator().Create(inBytes);
 
-		case ANIM_VERSION_8:
-			m_animFile.fileHeader = Anim_V8_HeaderFileCommonCreator().Create(inBytes);
-			break;
+			case ANIM_VERSION_8:
+				return Anim_V8_HeaderFileCommonCreator().Create(inBytes);
 
 		default:
 			throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", std::to_string(version)).c_str());
 		}
 	}
 
-	void TwAnimFileReader::ReadBoneTable(ByteStream& inBytes)
+	BoneTable TwAnimFileReader::ReadBoneTable(ByteStream& inBytes)
 	{
-		BoneTableCreator boneTableCreator;
-		m_animFile.boneTable = boneTableCreator.Create(inBytes, m_animFile.fileHeader.dwBoneCount);
+		return BoneTableCreator().Create(inBytes, m_animFile.fileHeader.dwBoneCount);
 	}
 
 	SubClipHeaderV8 TwAnimFileReader::ReadSubsClipHeader_v8(ByteStream& inBytes)
@@ -91,10 +104,12 @@ namespace anim_file
 	{
 		switch (m_animFile.fileHeader.dwVersion)
 		{
-		case AnimVersionEnum::ANIM_VERSION_5:
-		case AnimVersionEnum::ANIM_VERSION_7:
-			ReadClip_v7(inBytes);
-			break;
+			case AnimVersionEnum::ANIM_VERSION_5:
+				ReadClip_v5(inBytes);
+				break;
+			case AnimVersionEnum::ANIM_VERSION_7:
+				ReadClip_v7(inBytes);
+				break;
 
 		case AnimVersionEnum::ANIM_VERSION_8:
 			ReadClip_v8(inBytes);
@@ -106,7 +121,7 @@ namespace anim_file
 
 	};
 
-	void TwAnimFileReader::ReadClip_v5_v7(ByteStream& inBytes)
+	void TwAnimFileReader::ReadClip_v5(ByteStream& inBytes)
 	{
 		auto tracksMetaData = ReadCompressionMetaData_v5_v7(inBytes, m_animFile.fileHeader.dwBoneCount);
 
@@ -115,7 +130,7 @@ namespace anim_file
 		m_animFile.frames.resize(subClipHeader.frameCount);
 		for (auto& itFrame : m_animFile.frames)
 		{
-			itFrame = DecodeFrame_V7(inBytes, tracksMetaData, subClipHeader, nullptr, (!m_bindPose.frames.empty()) ? &m_bindPose.frames[0] : nullptr);
+			itFrame = DecodeFrame_V7(inBytes, tracksMetaData, subClipHeader, nullptr, (m_poBindPose) ? &m_poBindPose->frames[0] : nullptr);
 		};
 	};
 
@@ -127,11 +142,11 @@ namespace anim_file
 		auto constTrackFrame = ReadConstTracksFrame_v7(inBytes, constTrackFrameHeader);
 
 		auto subClipHeader = ReadSubClipFramesHeader(inBytes);
-
 		m_animFile.frames.resize(subClipHeader.frameCount);
+
 		for (auto& itFrame : m_animFile.frames)
 		{
-			itFrame = DecodeFrame_V7(inBytes, tracksMetaData, subClipHeader, &constTrackFrame, (!m_bindPose.frames.empty()) ? &m_bindPose.frames[0] : nullptr);
+			itFrame = DecodeFrame_V7(inBytes, tracksMetaData, subClipHeader, &constTrackFrame, (m_poBindPose) ? &m_poBindPose->frames[0] : nullptr);
 		};
 	};
 
@@ -168,6 +183,7 @@ namespace anim_file
 		return outFrame;
 	};
 
+
 	AnimFrameCommon TwAnimFileReader::DecodeFrame_V7(
 		ByteStream& inBytes,
 		const CompressionMetaData_V5_V7& metaTable,
@@ -186,27 +202,28 @@ namespace anim_file
 
 			switch (transMeta.GetTrackSourceState())
 			{
-			case BoneTrackDataSourceEnum_v5_v7::FrameData:
-			{
-				outFrame.translations[iBone] = inBytes.TReadElement<sm::Vector3>();
-			}
-			break;
+				case BoneTrackDataSourceEnum_v5_v7::FrameData:
+				{
+					outFrame.translations[iBone] = inBytes.TReadElement<sm::Vector3>();
+				}
+				break;
 
-			case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
-			{
-				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
+				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
+				{
+					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
-				outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
-			}
-			break;
+					auto DEBUG__CONST_TRACK_INDEX = transMeta.GetConstTrackIndex();
+					outFrame.translations[iBone] = pConstTrackFrame->translations[transMeta.GetConstTrackIndex()];
+				}
+				break;
 
-			case BoneTrackDataSourceEnum_v5_v7::BindPose:
-			{
-				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
+				case BoneTrackDataSourceEnum_v5_v7::BindPose:
+				{
+					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
-				outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
-			}
-			break;
+					outFrame.translations[iBone] = pBindPoseFrame->translations[iBone];
+				}
+				break;
 			};
 		};
 
@@ -345,7 +362,10 @@ namespace anim_file
 		inBytes.Read(outMetaTable.ranges.translationRanges.data(), sizeof(TranslationRangeElement) * outMetaTable.ranges.translationRangeTableLength);
 		inBytes.Read(outMetaTable.ranges.quaternionRanges.data(), sizeof(QuanterionRangeElement) * outMetaTable.ranges.quaterionRangeTableLength);
 
-		outMetaTable.poSkeletonBindPoseFrame = m_bindPose.frames.empty() ? nullptr : &m_bindPose.frames[0];
+		if (m_poBindPose)
+		{
+			outMetaTable.poSkeletonBindPoseFrame = m_poBindPose->frames.empty() ? nullptr : &m_poBindPose->frames[0];
+		}
 
 		return outMetaTable;
 	};

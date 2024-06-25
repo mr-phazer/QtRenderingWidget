@@ -46,7 +46,7 @@ namespace rldx
 				return;
 			}
 
-			auto bytesRmv2 = DxResourceManager::GetCallBackFile(m_pVmdModeData->varintMeshData.modelPath);
+			auto bytesRmv2 = DxResourceManager::GetFile(m_pVmdModeData->varintMeshData.modelPath);
 			auto Rmv2File = rmv2::RigidModelReader().Read(bytesRmv2);
 
 			if (bytesRmv2.GetBufferSize() == 0)
@@ -72,7 +72,7 @@ namespace rldx
 
 		void GetMaterialsWSModel()
 		{
-			auto bytesWsModel = DxResourceManager::GetCallBackFile(m_pVmdModeData->varintMeshData.modelPath);
+			auto bytesWsModel = DxResourceManager::GetFile(m_pVmdModeData->varintMeshData.modelPath);
 
 			if (bytesWsModel.GetBufferSize() == 0)
 			{

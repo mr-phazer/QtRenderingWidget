@@ -20,9 +20,27 @@ bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 
 		std::stringstream stream;
 		stream << std::hex << hr;
-		std::string result(stream.str());
+		std::string hrResult(stream.str());
 
-		auto msg = GetComError(hr);
+		auto msg = getComErrorWide(hr);
+
+		//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(hrResult) + ": ") + std::wstring_to_string(strHex));
+
+
+				/*	MessageBox(
+				NULL,
+				(
+				wstring(L"Operation:") + op + L"\n\r" +
+				L"Function: " +
+				wstring(func) + L"\n\r" +
+				wstring(L"Error Code: ") + L"\n\r" +
+				wstring(L"Hex: ") + L"0x" + strHex + L"\n\r" +
+				to_wstring(hr) + L" :" + L"\n\r" +
+				wstring(L"Error String: " + msg)).c_str(),
+				L"Critical Direct3d Error!",
+				MB_OK | MB_ICONERROR
+				);*/
+
 		return false;
 	};
 
@@ -38,11 +56,11 @@ inline const char* libtools::COMException::what() const
 	tempString.resize(fixedStringLength);
 
 	// -- add the hexadecimal error code, 
-	sprintf_s((char*)tempString.data(), fixedStringLength, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(result));
+	sprintf_s((char*)tempString.data(), fixedStringLength, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(hrResult));
 
 	// -- add error string
 	tempString.resize(strlen(tempString.c_str())); // resize string to fit the error string
-	auto comErrorMessage = GetComErrorNarrow(result);
+	auto comErrorMessage = GetComErrorMsgNarrow(hrResult);
 	tempString += " : " + comErrorMessage + '\0';
 
 	return tempString.c_str();

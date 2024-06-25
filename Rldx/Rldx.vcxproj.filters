@@ -84,7 +84,6 @@
     </ClCompile>
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.cpp" />
-    <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
@@ -102,7 +101,13 @@
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
-    <ClCompile Include="Rldx\Animation\Helpers\PathHelper.cpp" />
+    <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp">
+      <Filter>Rldx\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
+    <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
+    <ClCompile Include="Rldx\Tools\COMerrors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -259,7 +264,6 @@
       <Filter>Rldx\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.h" />
-    <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
@@ -279,8 +283,13 @@
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
-    <ClInclude Include="Rldx\Animation\Helpers\PathHelper.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
+    <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h">
+      <Filter>Rldx\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationRemapper.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\AnimationCreator.h" />
+    <ClInclude Include="Rldx\Animation\Helpers\SkeletonHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-tidy" />

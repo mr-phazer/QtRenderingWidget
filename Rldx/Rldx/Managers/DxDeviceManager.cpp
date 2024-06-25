@@ -38,8 +38,9 @@ DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 DxDeviceManager& rldx::DxDeviceManager::GetInstance()
 {
 	if (!sm_spoInstance) {
-		sm_spoInstance = Create();
+		throw std::exception("DxDeviceManager is not created!!");
 	}
+
 	return *sm_spoInstance.get();
 }
 

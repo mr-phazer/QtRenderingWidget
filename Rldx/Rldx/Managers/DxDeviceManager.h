@@ -1,4 +1,9 @@
 #pragma once
+#pragma comment(lib,"d3d11.lib")
+#pragma comment(lib,"d3dcompiler.lib")
+#pragma comment(lib,"dwmapi.lib")
+#pragma comment(lib, "d3d11.lib")
+
 
 //#ifndef DIRECTINPUT_VERSION
 //#define DIRECTINPUT_VERSION  0x0800 // to avoid compiler warnings about DirecIput version not set
@@ -11,7 +16,7 @@
 //  WRL wrappers from COM Objects - smart pointers for Direct3d resources
 #include <wrl/client.h>
 
-#pragma comment(lib, "d3d11.lib")
+
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "DxDebugTextWriter.h"
@@ -38,6 +43,11 @@ namespace rldx
 		}
 
 	public:
+		static void Init()
+		{
+			sm_spoInstance = Create();
+		}
+
 		static DxDeviceManager& GetInstance();
 
 		static ID3D11DeviceContext* DeviceContext() {
@@ -52,7 +62,8 @@ namespace rldx
 			};
 		}
 
-		static ID3D11Device* Device() {
+		static ID3D11Device* Device()
+		{
 			return GetInstance().GetDevice();
 		}
 

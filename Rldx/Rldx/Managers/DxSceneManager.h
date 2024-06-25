@@ -12,6 +12,7 @@ namespace rldx {
 
 	class DxSceneManager : public IResizable
 	{
+
 	public:
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
 

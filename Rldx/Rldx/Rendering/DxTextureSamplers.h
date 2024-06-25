@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <CommonStates.h>
+#include <vector>
 
 #include "..\Interfaces\IBindable.h"
 

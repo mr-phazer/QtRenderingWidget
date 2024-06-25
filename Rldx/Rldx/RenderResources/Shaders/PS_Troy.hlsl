@@ -21,6 +21,8 @@ float4 main(in PixelInputType input) : SV_TARGET
     float3 N;
     bool faction_colours = true;
 
+    const float brightnessCorrection = 3.5f;
+    
 	//	Get the inputs...
     ps30_get_shared_inputs(eye_vector, light_vector, diffuse_colour, specular_colour, smoothness, basis, N, input, faction_colours);
 
@@ -69,12 +71,12 @@ float4 main(in PixelInputType input) : SV_TARGET
 
 
     float3 hdr_linear_col = standard_lighting_model_directional_light(
-        lightData[0].radiance * lightData[0].color.rgb*2,
+        lightData[0].radiance * lightData[0].color.rgb * brightnessCorrection,
         light_vector,
         eye_vector,
         standard_mat
     );
-
+    
 	//  Tone-map the pixel...
     float3 ldr_linear_col = (saturate(tone_map_linear_hdr_pixel_value(1.3 * hdr_linear_col)));
     //float3 ldr_linear_col = saturate(tone_map_linear_hdr_pixel_value(hdr_linear_col));

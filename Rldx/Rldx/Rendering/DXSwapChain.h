@@ -2,20 +2,21 @@
 
 // --- Direct3d 11 Headers
 #include <d3d11.h>
-#include <d3d11_1.h>
-#include <D3Dcompiler.h>
-#include "..\..\DirectXTK\Src\PlatformHelpers.h"
 
-//  WRL wrappers from COM Objects - smart pointers for Direct3d resources
-#include <wrl/client.h>
-#include <wrl/wrappers/corewrappers.h>
+//#include <d3d11_1.h>
+//#include <D3Dcompiler.h>
 
-// Standard lib headers
-#include <assert.h>
-#include <functional>
+//
+////  WRL wrappers from COM Objects - smart pointers for Direct3d resources
+//#include <wrl/client.h>
+//#include <wrl/wrappers/corewrappers.h>
+//
+//// Standard lib headers
+//#include <assert.h>
+//#include <functional>
 #include <memory>
-#include <stdexcept>
-#include <vector>
+//#include <stdexcept>
+//#include <vector>
 
 
 // qt headers

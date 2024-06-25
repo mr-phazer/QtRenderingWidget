@@ -4,7 +4,8 @@
 #include "AnimContainer.h"
 #include "AnimQueue.h"
 
-namespace skel_anim {
+namespace skel_anim
+{
 
 	float AnimQueue::GetInterPolationFactor(float time)
 	{
@@ -12,18 +13,18 @@ namespace skel_anim {
 
 		if (time < blendStart1) // if time is before blend start
 		{
-			rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(0, L"Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L"Interpolation factor : 0.0");
+			// TODO: debugging onlye
+			// dx::DxDeviceManager::DebugTextWriter()->SetStringRow(0, L"Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L/Interpolation factor : 0.0");
 			return 0.0f;
 		}
 		else if (time > blendStart1)
-		{
-			rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(1, L"BLENDING: Time:" + to_wstring(time - blendStart1) + L" / " + to_wstring(GetLenth()) + L"Interpolation factor : " + std::to_wstring((time - blendStart1) / m_blendInTime));
+
+			// TODO: debugging onlye{
+			//rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(1, L"BLENDING: Time:" + to_wstring(time - blendStart1) + L" / " + to_wstring(GetLenth()) + L"Interpolation factor : " + std::to_wstring((time - blendStart1) / m_blendInTime));
 			return (time - blendStart1) / m_blendInTime;
 
 
-			auto debug_break = 1;
-		}
-
+		auto debug_break = 1;
 		return 0.0f;
 	}
 
@@ -37,9 +38,13 @@ namespace skel_anim {
 
 	void AnimQueue::SwapNextAndCurrent()
 	{
-		auto DEBUG_STOP_TIME = m_clockChecker.GetLocalTime();
 
-		rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(2, L"SWAP!!!");
+
+		// TODO: only for debugging
+		// auto DEBUG_STOP_TIME = m_clockChecker.GetLocalTime();
+		//rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(2, L"SWAP!!!");
+
+		// - Interpolation/swap playlisting:
 
 		/*                B    A
 		-----------------------
@@ -65,16 +70,15 @@ namespace skel_anim {
 		return animIndex;
 	}
 
-	void AnimQueue::AddAnimation(SkeletonAnimation* animation)
+	void AnimQueue::AddAnimation(SkeletonAnimation* m_animation)
 	{
 		// TODO: this mess is only for testing		
-		// TODO: simple set both current and next anims to "GetNextAnimation()"
+		// TODO: simple set both current and next anims to "GetNextAnimation()"		
 
-		m_animSamplers.push_back(AnimQueueItem(animation));
+		m_animSamplers.push_back(AnimQueueItem(m_animation));
 
 		if (m_animSamplers.size() >= 1)
 		{
-
 			m_currentAnim = &m_animSamplers[GetNextAnimation()];
 			m_nextAnim = &m_animSamplers[GetNextAnimation()];
 
@@ -124,9 +128,9 @@ namespace skel_anim {
 
 	AnimQueueItem::AnimQueueItem(const AnimContainer& animSampler) : anim(animSampler) {}
 
-	AnimQueueItem::AnimQueueItem(SkeletonAnimation* animation)
+	AnimQueueItem::AnimQueueItem(SkeletonAnimation* m_animation)
 	{
-		anim = AnimContainer(animation);
+		anim = AnimContainer(m_animation);
 	}
 
 } // namespace skel_anim

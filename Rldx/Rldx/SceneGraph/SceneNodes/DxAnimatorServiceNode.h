@@ -26,8 +26,8 @@
 //		DxAnimatorServiceNode() = default;
 //
 //
-//		void LoadBindPose(std::wstring animFilePath) override;
-//		void LoadAnimClip(std::wstring animFilePath) override;
+//		void LoadBindPose(std::wstring m_animFilePath) override;
+//		void LoadAnimClip(std::wstring m_animFilePath) override;
 //
 //		void Update(float time);
 //

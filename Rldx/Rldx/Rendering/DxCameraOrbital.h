@@ -4,9 +4,9 @@
 #define DIRECTINPUT_VERSION 0x0800
 #endif
 
-#include <SimpleMath.h>
 #include <DirectXMath.h>
 #include <map>
+#include <SimpleMath.h>
 #include <string>
 //#include "TextOutDebug.h"
 //#include "..\SystemLib\libtools.h"
@@ -38,7 +38,7 @@ namespace rldx
 		float m_fCameraMoveSpeed = 0.1f;
 		float m_fCameraRotate = 0.02f;
 
-	public:		
+	public:
 
 		//MyOrbitalCamera(float yaw = 0.8f, float pitch = -0.32f, float currentZoom = 1)
 		DxCameraOrbital(float yaw = 0.0, float pitch = 0.0, float currentZoom = 0.1)
@@ -88,7 +88,7 @@ namespace rldx
 		{
 			DirectX::SimpleMath::Vector3 m_v3Origin = { 0.f,0.f,0.f };
 			sm::Vector3 v3NewPosition = { 0.f,0.f,0.f };
-			sm::Vector3 v3EyePosition;// = sm::Vector3(0.30336335f, 5.1672184f, 2.3106112f);
+			sm::Vector3 v3EyePosition = sm::Vector3(0.30336335f, 5.1672184f, 2.3106112f);
 			sm::Vector3 v3Up = { 0.f, 1.f, 0.f };
 
 			float fYaw = -DirectX::XM_PIDIV4;; // -0.949992001;
@@ -110,6 +110,8 @@ namespace rldx
 			float fMinRadius = 0.00001f;                     // Min radius
 			float fMaxRadius = 10.0f;                     // Max radius
 
+			float fAspect = 1.0f;
+
 		} m_geometryData;
 
 		bool m_bLHCoords = true;
@@ -122,8 +124,8 @@ namespace rldx
 	public:
 
 		void RayCast(const DirectX::SimpleMath::Vector2& ptCursor, const DirectX::SimpleMath::Vector2& screenDims,
-			DirectX::SimpleMath::Vector3& _ray,
-			DirectX::SimpleMath::Vector3& _origin);
+					 DirectX::SimpleMath::Vector3& _ray,
+					 DirectX::SimpleMath::Vector3& _origin);
 
 
 		//void RayCast(sm::Vector2 ptCursor, sm::Vector2 screenDims, sm::Vector3& _ray_origin_world, sm::Vector3& _ray_direction_world);
@@ -155,6 +157,7 @@ namespace rldx
 
 		void SetFieldOfView(float value);
 		float GetFieldOfView() const;
+		float GetAspectRatio() const;
 
 		void SetViewParams(const sm::Vector3& pos, const sm::Vector3& lookAt)
 		{
@@ -233,8 +236,8 @@ namespace rldx
 		int m_nRotateCameraButtonMask;
 
 		void SetButtonMasks(_In_ int nRotateModelButtonMask = MOUSE_MIDDLE_BUTTON, _In_ int nZoomButtonMask = MOUSE_WHEEL,
-			_In_ int nRotateCameraButtonMask = MOUSE_LEFT_BUTTON
-			/*_In_ int nTranskateButtonMask */
+							_In_ int nRotateCameraButtonMask = MOUSE_LEFT_BUTTON
+							/*_In_ int nTranskateButtonMask */
 		)
 		{
 			m_nRotateModelButtonMask = nRotateModelButtonMask;
@@ -244,8 +247,8 @@ namespace rldx
 
 		void SetRadius(_In_ float fDefaultRadius = 0.5f, _In_ float fMinRadius = 1.0f, _In_ float fMaxRadius = FLT_MAX)
 		{
-			m_geometryData.fDefaultRadius = m_geometryData.fRadius = fDefaultRadius; 
-			m_geometryData.fMinRadius = fMinRadius; 
+			m_geometryData.fDefaultRadius = m_geometryData.fRadius = fDefaultRadius;
+			m_geometryData.fMinRadius = fMinRadius;
 			m_geometryData.fMaxRadius = fMaxRadius;
 			m_bDragSinceLastUpdate = true;
 		}

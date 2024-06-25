@@ -51,7 +51,7 @@ namespace skel_anim {
 
 		// TODO: maybe make into "getTrackReader()"?
 		/// <summary>
-		/// Set the current animation clip to process
+		/// Set the current m_animation clip to process
 		/// </summary>		
 		void SetAnimClip(const SkeletonAnimation* pAnimClip) override
 		{

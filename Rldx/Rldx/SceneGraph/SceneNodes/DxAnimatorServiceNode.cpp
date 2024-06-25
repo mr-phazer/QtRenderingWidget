@@ -9,9 +9,9 @@
 //
 //namespace rldx
 //{
-//	void DxAnimatorServiceNode::LoadBindPose(std::wstring animFilePath)
+//	void DxAnimatorServiceNode::LoadBindPose(std::wstring m_animFilePath)
 //	{
-//		auto animBindPoseBytes = rldx::DxResourceManager::GetCallBackFile(animFilePath);
+//		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
 //		auto animBindPoseFile = m_animFileReader.Read(animBindPoseBytes);
 //
 //		m_animFileReader.SetBindPose(animBindPoseFile); // TODO: maybe put this somewhere else? Inside the TWAnimFileReader class?
@@ -41,15 +41,15 @@
 //			);
 //
 //		SetShaderProgram(simpleShaderProgram);
-//		m_meshData.CreateConstBuffers(rldx::DxDeviceManager::Device());
+//		m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
 //
 //		auto& invMatrices = m_skeleton.GetInverseBindPoseMatrices();
 //		memcpy(&m_constBufferDerformerData_VS.inverseBindPoseMatrices, invMatrices.data(), sizeof(sm::Matrix) * invMatrices.size());
 //	}
 //
-//	void DxAnimatorServiceNode::LoadAnimClip(std::wstring animFilePath)
+//	void DxAnimatorServiceNode::LoadAnimClip(std::wstring m_animFilePath)
 //	{
-//		auto animBytes = rldx::DxResourceManager::GetCallBackFile(animFilePath);
+//		auto animBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
 //		auto animFile = m_animFileReader.Read(animBytes);
 //
 //		m_animQueue.AddAnimation(skel_anim::SkeletonAnimation::CreateFromAnimFile(animFile));
@@ -76,7 +76,7 @@
 //	//void DxAnimatorServiceNode::LoadBindPose(const std::string& skeletonName)
 //	//{
 //	//	//m_deformerNode = rldx::DxDeformerNode::Create();
-//	//	LoadBindPose(path_helper::GetPathFromSkeletonName(skeletonName));
+//	//	LoadBindPose(path_helper::GetPackPathFromSkeletonName(skeletonName));
 //
 //	//	m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_01.anim)");
 //	//	m_deformerNode->LoadAnimClip(LR"(I:\Modding\WH3\animations\battle\humanoid01\sword_and_shield\stand\hu1_sws_stand_idle_02.anim)");

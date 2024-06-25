@@ -2,10 +2,11 @@
 #include "..\Tools\tools.h"
 #include "ShaderLoadingHelpers.h"
 
-#include <exception>
+#include <d3dcompiler.h>
+//#include <exception>
 
-#pragma comment(lib, "D3DCompiler.lib")
-#pragma comment(lib, "dxguid.lib")
+//#pragma comment(lib, "D3DCompiler.lib")
+//#pragma comment(lib, "dxguid.lib")
 
 using namespace utils;
 

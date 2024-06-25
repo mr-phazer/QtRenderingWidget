@@ -22,22 +22,25 @@ namespace rldx
 	/// <summary>
 	/// For holding a general GPU-side mesh data, plus copy of original (for CPU-write access DX mesh buffers)
 	/// </summary>
-	/// <typeparam name="VERTEX_TYPE"></typeparam>
-	/// <typeparam name="INDEX_TYPE"></typeparam>
-	template <typename VERTEX_TYPE, typename INDEX_TYPE>
+	/// <typeparam name="VertexType"></typeparam>
+	/// <typeparam name="IndexType"></typeparam>
+	template <typename VertexType, typename IndexType>
 	struct TDxMeshRenderData
 	{
 		uint32_t								indexCount = 0;
 		uint32_t								startIndex = 0;
 		int32_t									vertexOffset = 0;
-		uint32_t								vertexStride = sizeof(VERTEX_TYPE);
-		DXGI_FORMAT								indexFormat = sizeof(INDEX_TYPE) == 2 ? DXGI_FORMAT::DXGI_FORMAT_R16_UINT : DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
+		uint32_t								vertexStride = sizeof(VertexType);
+		DXGI_FORMAT								indexFormat = sizeof(IndexType) == 2 ? DXGI_FORMAT::DXGI_FORMAT_R16_UINT : DXGI_FORMAT::DXGI_FORMAT_R32_UINT;
 		D3D11_PRIMITIVE_TOPOLOGY				primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	cpoIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	cpoVertexBuffer;
 
-		TRawMeshData<VERTEX_TYPE, INDEX_TYPE>	originalMeshData;
+		TRawMeshData<VertexType, IndexType>	originalMeshData;
 	};
 
 	using DxCommonMeshData = TDxMeshRenderData<CommonVertex, uint32_t>;
+
+
+
 };

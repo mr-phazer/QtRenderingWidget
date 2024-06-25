@@ -36,7 +36,7 @@ namespace skel_anim
 			return *this;
 		}
 
-		void SetAnimation(SkeletonAnimation* animation) override;
+		void SetAnimation(SkeletonAnimation* m_animation) override;
 
 		SkeletonKeyFrame Sample(float time) override;
 

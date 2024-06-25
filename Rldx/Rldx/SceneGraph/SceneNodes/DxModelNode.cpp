@@ -34,6 +34,8 @@ namespace rldx {
 				);
 			}
 		}
+
+		UpdateAllBoundBoxes();
 	}
 
 	void DxModelNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
@@ -89,11 +91,7 @@ namespace rldx {
 			meshHeader.vMaxBB
 		);
 
-		// Model's BoundBox has to contain all the mesh bound boxes:
-		DirectX::BoundingBox::CreateMerged(
-			this->GetNodeBoundingBox(),
-			this->GetNodeBoundingBox(),
-			m_lods[iLod][iMesh]->GetNodeBoundingBox());
+		FitChildBoundBox(m_lods[iLod][iMesh].get());
 	}
 
 	void DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
@@ -130,13 +128,31 @@ namespace rldx {
 
 	void DxModelNode::FlushToRenderBucket(IRenderBucket* pRenderQueue)
 	{
+		FlushModelMeshesToRenderBucked(pRenderQueue);
+	}
+
+	void DxModelNode::FlushModelMeshesToRenderBucked(IRenderBucket* pRenderQueue)
+	{
 		if (m_activeLod >= m_lods.size() || GetDrawState() != DrawStateEnum::Draw) {
 			return;
 		}
 
 		for (auto& itMeshNode : m_lods[m_activeLod])
 		{
-			itMeshNode->FlushToRenderBucket(pRenderQueue);
+			itMeshNode->DxMeshNode::FlushToRenderBucket(pRenderQueue);
+		};
+	}
+
+	void DxModelNode::SetNodeWorldTransForm(const sm::Matrix& mWorld)
+	{
+		DxMeshNode::SetNodeWorldTransForm(mWorld);
+
+		for (auto& lod : m_lods)
+		{
+			for (auto& meshNode : lod)
+			{
+				meshNode->SetNodeWorldTransForm(mWorld);
+			};
 		};
 	}
 }

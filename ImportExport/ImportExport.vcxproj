@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -165,6 +165,7 @@
     <ClInclude Include="FileFormats\Anim\Types\Common\TwAnimFile.h" />
     <ClInclude Include="FileFormats\Anim\Reader\TwAnimReader.h" />
     <ClInclude Include="FileFormats\Anim\Types\Raw\AnimFrameRaw.h" />
+    <ClInclude Include="FileFormats\RigidModel\Types\Common\MeshEnumsConstants.h" />
     <ClInclude Include="Helpers\CustomExceptions.h" />
     <ClInclude Include="Helpers\TTree.h" />
     <ClInclude Include="Libs\PugiXML\pugiconfig.hpp" />
@@ -220,7 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="FileFormats\RigidModel\Helpers\VertexCAHelpers.inl" />
-    <None Include="FileFormats\RigidModel\Types\Common\MeshEnumsConstants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,11 +13,13 @@ namespace rldx
 	/// </summary>
 	class VariantGenerator
 	{
-		DxVariantMeshNode* m_outModels = nullptr;
-		DxVmdNode* m_rootNode = nullptr;
+		std::vector<DxModelNode*>* m_poOutModels = nullptr;
+		DxVmdNode* m_vmdRootNode = nullptr;
 		timer::SystemClockChecker m_clock; // used to random seed
 	public:
-		VariantGenerator(DxVmdNode* rootNode, DxVariantMeshNode* outModels = nullptr);
+		VariantGenerator(DxVmdNode* rootNode, std::vector<DxModelNode*>* poOutModels)
+			: m_poOutModels(poOutModels), m_vmdRootNode(rootNode)
+		{}
 
 		void GenerateVariant();
 
@@ -26,6 +28,6 @@ namespace rldx
 		void EnableVariantMesh(DxVmdNode* node);
 
 		void EnableSlot(DxVmdNode* node);
-		void GenerateVariant(DxVmdNode* node);
+		void GetNewVariant(DxVmdNode* node);
 	};
 };

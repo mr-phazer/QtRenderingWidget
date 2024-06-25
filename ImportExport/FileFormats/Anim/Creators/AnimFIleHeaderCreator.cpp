@@ -3,6 +3,19 @@
 
 namespace anim_file
 {
+	anim_file::AnimHeaderCommon Anim_V5_HeaderFileCommonCreator::Create(ByteStream& bytes)
+	{
+		anim_file::AnimHeaderCommon in;
+		in.dwVersion = bytes.TReadElement<uint32_t>();
+		in.dwUnknown = bytes.TReadElement<uint32_t>();
+		in.fFrameRate = bytes.TReadElement<float>();
+		in.skeletonName = bytes.ReadLengthPrefixed16StringA();
+		in.fLastKeyTime = bytes.TReadElement<float>();
+		in.dwBoneCount = bytes.TReadElement<uint32_t>();
+
+		return in;
+	}
+
 	anim_file::AnimHeaderCommon Anim_V6_HeaderFileCommonCreator::Create(ByteStream& bytes)
 	{
 		anim_file::AnimHeaderCommon in;

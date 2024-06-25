@@ -26,6 +26,11 @@ float rldx::DxCameraOrbital::GetFieldOfView() const
 	return m_geometryData.fFieldOfView;
 }
 
+float rldx::DxCameraOrbital::GetAspectRatio() const
+{
+	return m_geometryData.fAspect;
+}
+
 void DxCameraOrbital::SetWindow(int width, int height)
 {
 	m_width = width;
@@ -78,7 +83,9 @@ void DxCameraOrbital::CalculateEyePosition_Trigonometric()
 
 	eye += m_geometryData.v3LookAt; // add zoom/pan
 }
-
+/// <summary>
+///  Set eye pos with cartesian coords
+/// </summary>
 void DxCameraOrbital::SetEyePosition(const sm::Vector3& position)
 {
 	/*---------------------------------------------
@@ -236,9 +243,9 @@ void rldx::DxCameraOrbital::RotateCamera()
 	rotateCamera_Yaw(m_vRotVelocity.x);
 	rotateCamera_Pitch(m_vRotVelocity.y);
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(ToDegrees(m_geometryData.fYaw)) + L")");
-	// TODO: renabel
-	//TextOutDebug::AddFadingString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")");
+	//rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
+
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(WidenStr("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")"));
 }
 
 void DxCameraOrbital::rotateCamera_Yaw(float angle)
@@ -368,6 +375,7 @@ void DxCameraOrbital::SetProjParams(_In_ float fFOV, _In_ float fAspect, _In_ fl
 	//m_fAsp = fAspect;
 	m_geometryData.nearDistance = fNearPlane;
 	m_geometryData.farDistance = fFarPlane;
+	m_geometryData.fAspect = fAspect;
 
 	DirectX::XMMATRIX mProj = DirectX::XMMatrixPerspectiveFovLH(m_geometryData.fFieldOfView, fAspect, m_geometryData.nearDistance, m_geometryData.farDistance);
 
@@ -498,7 +506,7 @@ void DxCameraOrbital::UpdateMouseDelta()
 		GetCursorPos(&ptCurMousePos);
 
 		// Calc how _far it's moved since last frame
-		POINT ptCurMouseDelta;
+		POINT ptCurMouseDelta = { 0,0 };
 		ptCurMouseDelta.x = ptCurMousePos.x - m_ptLastMousePosition.x;
 		ptCurMouseDelta.y = ptCurMousePos.y - m_ptLastMousePosition.y;
 
@@ -634,9 +642,9 @@ void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor
 	auto unprojectedFar = DirectX::XMVector3Unproject(mouseFar, 0, 0, screenDims.x, screenDims.y, 0.0f, 1.0f,
 													  GetProjMatrix(), GetViewMatrix(), DirectX::XMMatrixIdentity());
 
-	DirectX::XMVECTOR result = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(unprojectedFar, unprojectedNear));
+	DirectX::XMVECTOR hrResult = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(unprojectedFar, unprojectedNear));
 	DirectX::XMFLOAT3 direction;
-	DirectX::XMStoreFloat3(&direction, result);
+	DirectX::XMStoreFloat3(&direction, hrResult);
 
 	_ray = direction;
 	_origin = unprojectedFar;
@@ -685,7 +693,7 @@ HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPA
 			//// Update member var state
 			//if (uMsg == WM_LBUTTONUP)
 			//{
-			//	m_bMouseLButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
+			//	m_bMouse	ButtonDown = false; m_nCurrentButtonMask &= ~MOUSE_LEFT_BUTTON;
 			//}
 			//if (uMsg == WM_MBUTTONUP)
 			//{

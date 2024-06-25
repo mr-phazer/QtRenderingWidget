@@ -8,15 +8,18 @@ namespace skel_anim
 	float SkeletonAnimQueueBlendampler::GetInterPolationFactor(float time)
 	{
 		auto blendStart1 = m_currentAnim->GetLenth() - m_blendInTime;
+		auto blendStart2 = blendStart1;
 
 		if (time < blendStart1) // if time is before blend start
 		{
-			rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(0, L"Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L": " + to_wstring((uint64_t)(m_currentAnim)) + L"Interpolation factor : 0.0");
+			// only for debugging
+			//rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(0, L"Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L": " + to_wstring((uint64_t)(m_currentAnim)) + L"Interpolation factor : 0.0");
 			return 0.0f;
 		}
-		else if (time > blendStart1)
+		else if (time > blendStart2)
 		{
-			rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(1, L"BLENDING: Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L": " + to_wstring((uint64_t)(m_currentAnim)) + L"Interpolation factor : " + std::to_wstring((time - blendStart1) / m_blendInTime));
+			// only for debugging
+			//rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(1, L"BLENDING: Time:" + to_wstring(time) + L" / " + to_wstring(GetLenth()) + L": " + to_wstring((uint64_t)(m_currentAnim)) + L"Interpolation factor : " + std::to_wstring((time - blendStart1) / m_blendInTime));
 			return (time - blendStart1) / m_blendInTime;
 		}
 
@@ -33,7 +36,7 @@ namespace skel_anim
 
 	void SkeletonAnimQueueBlendampler::SwapNextAndCurrent()
 	{
-		rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(2, L"SWAP!!!");
+		//rldx::DxDeviceManager::DebugTextWriter()->SetStringRow(2, L"SWAP!!!");
 
 		// swap animations		
 		m_currentAnim = m_nextAnim;
@@ -54,12 +57,12 @@ namespace skel_anim
 		return animIndex;
 	}
 
-	void SkeletonAnimQueueBlendampler::SetAnimation(SkeletonAnimation* animation)
+	void SkeletonAnimQueueBlendampler::SetAnimation(SkeletonAnimation* m_animation)
 	{
 		// TODO: this mess is only for testing		
 		// TODO: simple set both current and next anims to "GetNextAnimation()"
 
-		m_animSamplers.push_back(SkeletalAnimationClipSampler(animation));
+		m_animSamplers.push_back(SkeletalAnimationClipSampler(m_animation));
 
 		if (m_animSamplers.size() >= 2)
 		{

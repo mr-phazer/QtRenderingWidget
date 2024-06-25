@@ -109,10 +109,11 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 #ifdef _DEBUG
 		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
-
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		LogAction(std::string("Error: Excpetion: ") + e.what());
 
+#ifdef _DEBUG
+		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+#endif
 		return false;
 	}
 
@@ -144,9 +145,15 @@ void ResumeRendering(QWidget* pQRenderWiget)
 
 void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
 {
+
 	outBinFiles->clear();
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
+
+		if (libtools::IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
+			throw std::exception("Cannot accept disk files");
+		}
+
 		// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
 		auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + (*missingFiles)[iAsset].toStdWString();
 		ByteStream newStream(filePath, false);

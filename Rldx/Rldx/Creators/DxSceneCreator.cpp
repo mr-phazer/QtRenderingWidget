@@ -70,12 +70,7 @@ rldx::DxScene::Uptr rldx::DxSceneCreator::Create(HWND nativeWindHandle, ID3D11De
 			LR"(PS_NoTextures.cso)"
 		);
 
-	AddGrid(poDevice, newSimpleShaderProgram);
-
-
-	DxResourceManager::Instance()->SetDefaultShaderProgram(noTextures_ShaderProgram);
-
-
+	AddGrid(poDevice, newSimpleShaderProgram.GetPtr());
 
 	// TODO: remove- this code from here, it goes in AddVMD
 
@@ -101,46 +96,9 @@ void rldx::DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poSce
 	// TODO: clean block up !!!
 
 	poScene->GetVmdManager().LoadVariantMesh(poScene->GetSceneRootNode(), fileData, gameIdString);
+	poScene->GetVmdManager().GetNewVariant();
+	poScene->GetSceneRootNode()->UpdateAllBoundBoxes();
 
-	for (size_t M = 0; M < 10; M++)
-	{
-		for (size_t N = 0; N < 12; N++)
-		{
-			// TODO: clean all this up, so the BB stuff is done when nodes are added to the scene, internally
-			// TODO: clean up
-			auto newVariant = poScene->GetVmdManager().GenerateVariant();
-
-			DirectX::BoundingBox DEBUG_BB = poScene->GetVmdManager().GetNode()->GetNodeBoundingBox();
-
-			newVariant->Transform().SetTranslation((N + 1) * DEBUG_BB.Extents.y * 1.2, 0, (M + 1) * DEBUG_BB.Extents.x * 1.6);
-			poScene->GetSceneRootNode()->AddChild(newVariant);
-
-			auto transform = newVariant->Transform().LocalTransform();
-			DEBUG_BB.Transform(DEBUG_BB, DirectX::XMLoadFloat4x4(&transform));
-
-
-			// grow the bounding box to contain the child node bounding box
-			DirectX::BoundingBox::CreateMerged(
-				poScene->GetSceneRootNode()->GetNodeBoundingBox(),
-				poScene->GetSceneRootNode()->GetNodeBoundingBox(),
-				DEBUG_BB);
-		}
-	}
-
-	auto baseNode = poScene->GetSceneRootNode();
-	DxBaseNode::DoTreeWOrk<DxBaseNode>(baseNode, [](DxBaseNode* node) {node->SetName(L"Blah"); });
-
-
-	//// TODO: re-enable these 2 lines when done debuggin skeleteon
-	//poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
-	/*auto skeletonNode = DxDeformerNode::Create();
-	skeletonNode->LoadBindPose(LR"(animations\skeletons\humanoid01.anim)");
-	skeletonNode->LoadAnimClip(LR"(K:\Modding\WH2\animations\battle\humanoid01\sword_and_shield\locomotion\hu1_sws_walk_01.anim)");
-
-	poScene->GetSceneRootNode()->AddChild(skeletonNode);
-	poScene->GetVmdManager().GetNode()->SetDeformerNodeRecursive(skeletonNode.get());*/
-
-	//	poScene->GetSceneRootNode()->AddChild(poScene->GetVmdManager().GetNode());
 
 	SetCameraAutoFit(poScene);
 }
@@ -177,14 +135,25 @@ void rldx::DxSceneCreator::SetCameraAutoFit(rldx::DxScene* poScene)
 {
 	auto boundBox = poScene->GetRootBoundBox();
 	//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
-	const float adjustBBExtend = 0.3f;
-	float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x)) * (2.0f + adjustBBExtend);
+	//const float adjustBBExtend = 0.3f;
+	float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x))/* * (2.0f + adjustBBExtend)*/;
 	float fieldIOfView = poScene->GetCamera().GetFieldOfView();
 	auto DEBUG_CENTER = boundBox.Center;
-
 	float cameraDistance = (bbSize / 2.0f) / tan(fieldIOfView / 2.0f);
 
-	poScene->GetCamera().SetRadius(cameraDistance);
+	// Get the radius of a sphere that encapsulates the bounding box
+	float radius = bbSize;
+
+	// Calculate the horizontal and vertical field of view
+	float halfVerticalFOV = fieldIOfView / 2.0f;
+	float halfHorizontalFOV = atan(tan(halfVerticalFOV) * poScene->GetCamera().GetAspectRatio());
+
+	// Calculate distance based on the larger field of view to ensure everything is visible
+	float distanceVertical = radius / sin(halfVerticalFOV);
+	float distanceHorizontal = radius / sin(halfHorizontalFOV);
+
+	//poScene->GetCamera().SetRadius(std::max<float>(distanceVertical, distanceHorizontal));
+	poScene->GetCamera().SetEyePosition(sm::Vector3(0, 0, std::max<float>(distanceVertical, distanceHorizontal)));
 	poScene->GetCamera().SetLookAt(boundBox.Center); // bound box fomula doesn't take "look at" into account, so move up a bit
 	poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 8.0f); // rotate the scene into a neat orientation
 }
