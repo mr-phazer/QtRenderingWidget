@@ -65,11 +65,11 @@ bool libtools::comAssert_LogOnly(HRESULT hr, string _func, string _operation)
 
 		std::stringstream stream;
 		stream << std::hex << hr;
-		std::string result(stream.str());
+		std::string hrResult(stream.str());
 
 		auto msg = getComErrorWide(hr);
 
-		//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(result) + ": ") + std::wstring_to_string(strHex));
+		//		LogActionError(_func + " " + _operation + string(": Direct3d Error " + string(hrResult) + ": ") + std::wstring_to_string(strHex));
 
 
 				/*	MessageBox(
@@ -104,6 +104,11 @@ bool libtools::DoesFileExist(const std::wstring& name)
 	return (_wstat(name.c_str(), &buffer) == 0);
 };
 
+
+
+
+
+
 std::wstring libtools::string_to_wstring(const std::string& str)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -120,7 +125,7 @@ std::string libtools::wstring_to_string(const std::wstring& wstr)
 	return converterX.to_bytes(wstr);
 }
 
-std::wstring libtools::convert_string(const std::string& str)
+std::wstring libtools::WidenString(const std::string& str)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -128,7 +133,7 @@ std::wstring libtools::convert_string(const std::string& str)
 	return converterX.from_bytes(str);
 }
 
-std::string libtools::convert_string(const std::wstring& wstr)
+std::string libtools::NarrowString(const std::wstring& wstr)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
@@ -484,11 +489,11 @@ inline const char* libtools::COMException::what() const
 	tempString.resize(fixedStringLength);
 
 	// -- add the hexadecimal error code, 
-	sprintf_s((char*)tempString.data(), fixedStringLength, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(result));
+	sprintf_s((char*)tempString.data(), fixedStringLength, "Failure with HRESULT of 0x%08X", static_cast<unsigned int>(hrResult));
 
 	// -- add error string
 	tempString.resize(strlen(tempString.c_str())); // resize string to fit the error string
-	auto comErrorMessage = getComErrorNarrow(result);
+	auto comErrorMessage = GetComErrorMsgNarrow(hrResult);
 	tempString += " : " + comErrorMessage + '\0';
 
 	return tempString.c_str();

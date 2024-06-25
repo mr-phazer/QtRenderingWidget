@@ -6,7 +6,6 @@
 
 // DX3d
 #include <d3d11.h>
-#include <d3dcompiler.h>
 
 // Author
 #include "..\DataTypes\ShaderFiles.h"

@@ -1,11 +1,12 @@
 #include "..\..\ImportExport\Helpers\ByteStream.h"
-#include "..\Tools\tools.h"
+//#include "..\Tools\tools.h"
 #include "ShaderLoadingHelpers.h"
 
-#include <exception>
+#include <d3dcompiler.h>
+//#include <exception>
 
-#pragma comment(lib, "D3DCompiler.lib")
-#pragma comment(lib, "dxguid.lib")
+//#pragma comment(lib, "D3DCompiler.lib")
+//#pragma comment(lib, "dxguid.lib")
 
 std::vector<uint8_t> rldx::ShaderLoaderHelper::GetRawDataFromDisk(const std::wstring& shaderPath)
 {
