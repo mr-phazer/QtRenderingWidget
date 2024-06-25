@@ -5,11 +5,11 @@
 
 class QtMainWindowView : public QMainWindow, public Ui::QtTesterAppClass
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    QtMainWindowView(QWidget *parent = nullptr);
-    ~QtMainWindowView();
+	QtMainWindowView(QWidget* parent = nullptr);
+	~QtMainWindowView();
 
-    void InitRenderView();         
+	void InitRenderView();
 };

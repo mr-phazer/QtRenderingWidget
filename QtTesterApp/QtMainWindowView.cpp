@@ -2,11 +2,11 @@
 
 #include <qlayout.h>
 
-#include "..\QtRenderingWidget\ExternFunctions\Creators.h"
-#include "..\ImportExport\Helpers\ByteStream.h"
-#include "..\QtRenderingWidget\Constants\GameIdKeys.h"
-#include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
-#include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
+#include <ImportExport\Helpers\ByteStream.h>
+#include <QtRenderingWidget\Constants\GameIdKeys.h>
+#include <QtRenderingWidget\ExternFunctions\Creators.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 
 /// <summary>
 /// Debugging data struct, made to unclutter the code
@@ -111,15 +111,15 @@ void QtMainWindowView::InitRenderView()
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdString(ptestData->gameId);
-	
+
 	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget_RPFM\x64\Debug)");
-	SetAssetFolder(&globalAssetFolder);	
+	SetAssetFolder(&globalAssetFolder);
 
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
 	SetLogFolder(&globalLogFolder);
 
 	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr);
-		
+
 	if (!renderWidget)
 		return;
 
@@ -133,7 +133,7 @@ void QtMainWindowView::InitRenderView()
 
 	PauseRendering(renderWidget);
 	ResumeRendering(renderWidget);
-	
+
 	// TODO: remove - test code for making "free windows"
 	//renderWidget->setWindowFlag(Qt::WindowType::Window, true);
 	//renderWidget->resize(1024, 1024);
