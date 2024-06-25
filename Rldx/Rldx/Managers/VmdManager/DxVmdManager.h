@@ -13,10 +13,11 @@ namespace rldx
 	/// </summary>
 	class DxVmdManager
 	{
-		std::string m_skeletonName;
-		DxBaseNode::SharedPtr m_rootNode;
-		DxVmdNode::SharedPtr m_vmdNode;
-		std::shared_ptr<DxDeformerNode> m_deformerNode; // the skeleton animating this VMD
+		std::wstring m_skeletonName;
+		std::shared_ptr<DxVmdNode> m_vmdRootNode;
+		DxBaseNode* m_sceneRootNode = nullptr;
+		std::unique_ptr<DxDeformerNode> m_deformerNode; // the skeleton animating this VMD
+		std::shared_ptr<DxVariantMeshNode> m_variantMeshNode;
 
 		// TODO: these are stored ONLY for later saving? With no saving they could just be instantiated locally
 		DxVmdTreeBuilder m_treeBuilder;
@@ -25,14 +26,18 @@ namespace rldx
 		// TODO: does this need to be a state?
 		std::vector<std::wstring> m_attachPointNames;
 
+
+
 	public:
-		void LoadVariantMesh(DxBaseNode* poSceneNode, ByteStream& bytes, const std::wstring& gameIdString);
+		void LoadVariantMesh(
+			DxBaseNode* poSceneNode,
+			ByteStream& bytes,
+			const std::wstring& gameIdString);
 
 
-		// TODO: implement this, for simple use cases, before the fancy animation manager is done
-		void LoadAnimation(const std::wstring& animPath);
+		void GetNewVariant();
 
-		std::shared_ptr<DxVariantMeshNode> GenerateVariant();
+		DxDeformerNode* GetDerformer();
 
 		// TODO: implement; 
 		/// <summary>
@@ -40,11 +45,12 @@ namespace rldx
 		/// </summary>
 		virtual void Refresh()
 		{
+
 			// TODO: this algo:
 			/*
 				erase tree
 				Remake with the same "root" VMD/RMV2/WSMODEL
-				Run AllocateDXBuffers
+				Run AllocateTreeDXBuffers
 			*/
 		}
 
@@ -53,16 +59,16 @@ namespace rldx
 	private:
 		// TODO: convers the rmv2.file.header to "wstring" for consistency?
 		// TODO: is it ok that method both allocated, and fetches skeleton? (2 jobs for 1 methods)
-		void AllocateDXBuffers(const std::wstring& gameIdString, WStringkeyMap<sm::Matrix>& preTransformMap);
-		void AllocateNodesRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap);
+		void AllocateTreeDXBuffers(const std::wstring& gameIdString, WStringkeyMap<sm::Matrix>& preTransformMap);
+		void AllocateNodeDXBufferRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap);
 
 		/// <summary>
 		/// Loads the skeleton bind pose, etc
 		/// </summary>
-		void InitAttachPoints();
+		void InitDeformation();
 
 		/// <summary>
-		/// Setups the mesh deformation by a skeleton
+		/// Setup-s the mesh deformation by a skeleton
 		/// </summary>
 		void SetMeshDeformation(DxBaseNode* vmdNode);
 
@@ -77,3 +83,5 @@ namespace rldx
 		void LoadFromVmdXML(ByteStream& bytes);
 	};
 }
+
+

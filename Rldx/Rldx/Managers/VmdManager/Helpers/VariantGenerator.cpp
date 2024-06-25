@@ -3,16 +3,12 @@
 
 namespace rldx
 {
-	VariantGenerator::VariantGenerator(DxVmdNode* rootNode, DxVariantMeshNode* outModels)
-		:
-		m_rootNode(rootNode),
-		m_outModels(outModels)
-	{}
+
 
 	void VariantGenerator::GenerateVariant()
 	{
-		DisbaleAllNodes(m_rootNode);
-		GenerateVariant(m_rootNode);
+		DisbaleAllNodes(m_vmdRootNode);
+		GetNewVariant(m_vmdRootNode);
 	}
 
 	void VariantGenerator::DisbaleAllNodes(DxVmdNode* node)
@@ -48,17 +44,15 @@ namespace rldx
 		{
 			auto childIndex = rand() % node->GetChildCount(); // Pick 1 "model" at random
 			auto vmdNode = static_cast<DxVmdNode*>(node->GetChild(childIndex));
-			vmdNode->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
 
-			if (m_outModels) {
-				m_outModels->AddModel(vmdNode);
-			}
+			vmdNode->SetDrawState(DxBaseNode::DrawStateEnum::Draw);
+			m_poOutModels->push_back(vmdNode);
 
 			EnableVariantMesh(vmdNode);
 		}
 	};
 
-	inline void VariantGenerator::GenerateVariant(DxVmdNode* node)
+	inline void VariantGenerator::GetNewVariant(DxVmdNode* node)
 	{
 		if (node->vmdNodeData.tagType == VMDTagEnum::VariantMesh)
 		{

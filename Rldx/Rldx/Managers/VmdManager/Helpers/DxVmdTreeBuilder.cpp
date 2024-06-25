@@ -56,7 +56,7 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
 	std::wstring vmdFilePath = xmlNode.attribute_no_case(VMDTagAttributes::Definition).as_string();
-	auto vmdBytes = DxResourceManager::GetCallBackFile(vmdFilePath);
+	auto vmdBytes = DxResourceManager::GetFile(vmdFilePath);
 
 	if (vmdBytes.GetBufferSize() == 0) {
 		sceneGraphNode->vmdNodeData.tagType = VMDTagEnum::INVALID;
