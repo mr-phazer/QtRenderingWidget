@@ -1,9 +1,9 @@
 #pragma once
 
-#include "..\Types\Common\RigidModelFile.h"
 #include "..\Creators\LodHeaderCreators.h"
 #include "..\Creators\Material\IMaterialCommonCreators.h"
 #include "..\Creators\Vertices\VertexCreators.h"
+#include "..\Types\Common\RigidModelFile.h"
 
 namespace rmv2
 {
@@ -13,25 +13,17 @@ namespace rmv2
 		MaterialCommonCreatorFactory m_materialCreatorFactory;
 		VertexCreatorFactory m_vertexCreatorProvider;
 
-		// TODO: use this file to store data in? Before returning
-		// RigidModelFileCommon m_rigidModelFile;				
-
 	public:
 		RigidModelFileCommon Read(ByteStream& bytes);
 
-		/// <summary>
-		///  public to enable reading of header only by "client"
-		/// </summary>		
+	private:
 		void ReadFileHeaders(ByteStream& bytes, rmv2::RigidModelFileCommon& rmv2File);
 
-	private:
 		std::vector<LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
 
 		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
-		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 
-		// TODO: why do the vectors<vertex> etc not "exist" in debugger?
-		//MeshData16 ReadMeshData_WEIRD(ByteStream& bytes, const MeshHeaderType3& meshHeader3, const MaterialHeaderType5& meshHeader5);
+		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 
 		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
 

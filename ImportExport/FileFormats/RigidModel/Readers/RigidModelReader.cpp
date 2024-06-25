@@ -1,11 +1,7 @@
 #include "RigidModelReader.h"
 
 #include "..\Creators\FileHeaderCreators.h"
-#include "..\Creators\LodHeaderCreators.h"
-#include "..\Creators\Vertices\VertexCreators.h"
 #include "..\Creators\MeshHeaderType3Creator.h"
-#include "..\Creators\MeshMaterialCreators.h"
-#include "..\Creators\Material\IMaterialCommonCreators.h"
 
 using namespace rmv2;
 
@@ -46,7 +42,7 @@ std::vector<LODHeaderCommon> rmv2::RigidModelReader::ReadLodHeaders(ByteStream& 
 	{
 		lodHeaderElement = lodHeaderCreator->Create(bytes);
 
-		if (!lodHeaderElement.IsContentValid())	{
+		if (!lodHeaderElement.IsContentValid()) {
 			throw std::exception("Error: LOD Header contains invalid data.");
 		}
 	}
@@ -77,14 +73,14 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, R
 	if (!meshBlock.meshHeader.IsContentValid()) {
 		throw std::exception("Error: Mesh Header Type 3 contains invalid data.");
 	}
-	
+
 	auto materialCreator = m_materialCreatorFactory.Get(meshBlock.meshHeader.RigidMaterialId);
 	meshBlock.materialBlock = materialCreator->Create(bytes);
 
 	// TODO: make "IMeshCreator" too: (instead just reading...?) maybe?
 	// -> auto meshCreator = m_meshCreatorFactory.Get(meshBlock.meshHeader.RigidMaterialId);
 	ReadMeshData(bytes, meshBlock, rmv2Version);
-	
+
 	// TODO: remove if using the older method?
 	//meshBlock.meshData = ReadMeshData(bytes, meshBlock.meshHeaderType3, meshBlock.meshHeaderType5);
 
@@ -95,7 +91,7 @@ rmv2::MeshBlockCommon rmv2::RigidModelReader::ReadMeshBlock(ByteStream& bytes, R
 
 void rmv2::RigidModelReader::ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& destMeshblock, Rmv2VersionEnum rmv2Version)
 {
-	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.vertexFormatId);	
+	auto vertexCreator = m_vertexCreatorProvider.Get(destMeshblock.materialBlock.materialHeader.vertexFormatId);
 
 	destMeshblock.meshData.vertices.resize(destMeshblock.meshHeader.dwVertexCount);
 	for (auto& vertex : destMeshblock.meshData.vertices)
