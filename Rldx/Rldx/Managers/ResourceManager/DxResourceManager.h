@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <type_traits>
 
 // author heade
 #include "..\..\Helpers\StringKeyMap.h"
@@ -30,44 +31,22 @@ namespace rldx {
 	class IDxShaderProgram;
 	class DxMeshShaderProgram;
 
-
-	class ResourceHandle
-	{
-	public:
-
-	public:
-		~ResourceHandle() = default;
-
-		ResourceHandle(uint32_t id, IDxResource* ptr) : m_id(id), m_ptr(ptr) {};
-		//ResourceHandle(uint32_t id, char* pszStringId, RESOURCE_TYPE* ptr) : m_id(id), m_pwszName(pszStringId), m_ptr(ptr) {};
-
-		uint32_t GetId() const { return m_id; };
-		IDxResource* GetPtr() const { return m_ptr; };
-
-	private:
-		char* m_pwszName = nullptr;
-		int32_t m_id = -1;
-		IDxResource* m_ptr;
-	};
-
-
 	template <typename RESOURCE_TYPE>
 	class TResourceHandle
 	{
 	public:
-		~TResourceHandle() = default;
-		TResourceHandle(uint32_t id, RESOURCE_TYPE* ptr, const wchar_t* pwszName = nullptr) : m_id(id), m_ptr(ptr), m_pwszName(pwszName) {};
+		TResourceHandle() = default;
+		TResourceHandle(uint32_t id, RESOURCE_TYPE* ptr, std::wstring stringID = L"") : m_id(id), m_ptr(ptr), m_stringID(stringID) {};
 
 		uint32_t GetId() const { return m_id; };
 		RESOURCE_TYPE* GetPtr() const { return m_ptr; };
+		std::wstring* GetStringKey() const { return m_stringID; };
 
 	private:
-		const wchar_t* m_pwszName = nullptr; // pointer to string key
+		std::wstring m_stringID = L"";  // pointer to string key
 		int32_t m_id = INVALID_ID;
-		RESOURCE_TYPE* m_ptr;
+		RESOURCE_TYPE* m_ptr = nullptr;
 	};
-
-
 
 	// non-template parent, SHOULD? make sure that the static id is unique per instantiation?
 	class IdCounterBase
@@ -78,7 +57,6 @@ namespace rldx {
 	private:
 		static uint32_t sm_nextId;
 	};
-
 
 	class DxResourceManager : public IdCounterBase
 	{
@@ -100,34 +78,21 @@ namespace rldx {
 		/// </summary>		
 		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
 
-
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
-		std::wstring GetGameIdSting() { return m_gameIdString; }
-
+		std::wstring GetGameIdSting() const { return m_gameIdString; }
 
 		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
-		static ByteStream GetCallBackFile(const std::wstring& fileName)
+		static ByteStream GetFile(const std::wstring& filePath)
 		{
-			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
-			QList<QByteArray> destBinaries;
-
-
-			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
-
-			if (destBinaries.size() != 1)
+			if (libtools::IsDiskFile(filePath))
 			{
-				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+				return ByteStream(filePath);
 			}
+			else {
 
-			if (destBinaries[0].isEmpty())
-			{
-				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
-				return ByteStream();
+				return GetFileFromCallBack(filePath);
 			}
-
-
-			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
 		}
 
 		// TODO: is this serving any purpose?
@@ -135,8 +100,6 @@ namespace rldx {
 
 		// TODO: make work?
 		TResourceHandle<DxTexture> MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file);
-
-
 
 		void SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram);
 		DxMeshShaderProgram* GetDefaultShaderProgram() const { return m_defaultShaderProgram; }
@@ -147,35 +110,22 @@ namespace rldx {
 			auto DEBUG_1 = 1;
 		}
 
-
 		static DxResourceManager* Instance();
 
 		template<typename Derived_t>
 		TResourceHandle<Derived_t> Create(const std::wstring& stringId = L"");
 
-
-
 		template<typename Derived_t>
 		TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId = L"");
 
+		template<typename Derived_t>
+		TResourceHandle<Derived_t> Alloc(const std::wstring& stringId = L"");
 
 		template <typename Derived_t>
 		Derived_t* GetResourceByString(const std::wstring& strId) const;
 
 		template <typename Derived_t>
-		Derived_t* GetResourceById(uint32_t id) const
-		{
-			auto whatType = Derived_t().GetType();
-
-			auto it = m_umapResourceSptrDataById.find(id);
-			if (it != m_umapResourceSptrDataById.end()) {
-
-				return static_cast<Derived_t*>(it->second);
-			}
-
-			return nullptr;
-		}
-
+		Derived_t* GetResourceById(uint32_t id) const;
 
 		template <typename SHADER_TYPE>
 		TResourceHandle<SHADER_TYPE> AllocShaderProgram(const std::wstring& strId = "")
@@ -195,6 +145,26 @@ namespace rldx {
 
 
 	private:
+		static ByteStream GetFileFromCallBack(const std::wstring& fileName)
+		{
+			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
+			QList<QByteArray> destBinaries;
+
+			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
+
+			if (destBinaries.size() != 1)
+			{
+				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+			}
+
+			if (destBinaries[0].isEmpty())
+			{
+				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
+				return ByteStream();
+			}
+
+			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
+		}
 		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
@@ -203,7 +173,6 @@ namespace rldx {
 
 			m_assetCallBack(&qstrMissingFiles, &destBinaries);
 		}
-
 
 	private:
 		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
@@ -254,21 +223,22 @@ namespace rldx {
 	template<typename Derived_t>
 	inline TResourceHandle<Derived_t> DxResourceManager::AllocEmpty(const std::wstring& stringId)
 	{
+		static_assert(std::is_base_of<IDxResource, Derived_t>::value, "Errror: 'Derived_t' is derived from `IDxResource`");
+
 		auto resourceId = GetNextId();
 
-		auto upoDerive = std::make_shared<Derived_t>();
-		upoDerive->SetId(resourceId); // manually set resource interal id to be = the global id just generated
+		auto spoDerived = std::make_shared<Derived_t>();
+		spoDerived->SetId(resourceId); // manually set resource interal id to be = the global id just generated
 
+		m_umapResourceSptrDataById[resourceId] = spoDerived;;
 
-		m_umapResourceSptrDataById[resourceId] = std::shared_ptr<IDxResource>(upoDerive - get());
-
+		// optional stringifd -> raw pointer association
 		if (!stringId.empty()) {
-			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, pDerived));
+			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, spoDerived.get()));
 		}
 
-		return { resourceId, pDerived, pszStringKey };
+		return TResourceHandle<Derived_t>(resourceId, spoDerived.get(), stringId);
 	}
-
 
 	template<typename Derived_t>
 	inline Derived_t* DxResourceManager::GetResourceByString(const::std::wstring& strId) const
@@ -282,6 +252,17 @@ namespace rldx {
 		return nullptr;
 	}
 
+	template<typename Derived_t>
+	inline Derived_t* DxResourceManager::GetResourceById(uint32_t id) const
+	{
+		auto it = m_umapResourceSptrDataById.find(id);
+		if (it != m_umapResourceSptrDataById.end()) {
+
+			return static_cast<Derived_t*>(it->second.get());
+		}
+
+		return nullptr;
+	}
 }; // namespace rldx
 
 // TODO: remove once all usuable code is moved to DxResourceManager

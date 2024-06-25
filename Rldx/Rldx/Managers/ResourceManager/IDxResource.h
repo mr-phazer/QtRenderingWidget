@@ -7,7 +7,7 @@ namespace rldx {
 
 	enum class ResourceTypeEnum
 	{
-		MeshData,
+		MeshRenderData,
 		ShaderProgram,
 		Texture,
 		Material,
