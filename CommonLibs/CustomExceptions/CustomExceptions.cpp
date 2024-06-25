@@ -1,6 +1,5 @@
-#include "CustomExceptions.h"
-
 #include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "CustomExceptions.h"
 
 ConLogException::ConLogException(const std::string& message) : m_message(message)
 {
