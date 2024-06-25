@@ -12,8 +12,10 @@
 //
 
 #include "Utils\MathUtils.h"
+#include "Utils\StrUtils.h"
 
 using namespace rldx;
+using namespace utils;
 
 
 void DxCameraOrbital::SetFieldOfView(float value)
@@ -245,7 +247,7 @@ void rldx::DxCameraOrbital::RotateCamera()
 
 	//rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(ToWString("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")"));
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Pitch,Yaw,Roll): (" + F3ToWString({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + L")");
 }
 
 void DxCameraOrbital::rotateCamera_Yaw(float angle)

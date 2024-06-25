@@ -1,15 +1,17 @@
 #include "SkeletonHelpers.h"
 
+#include <Utils/ByteStream.h>
 #include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
 #include <ImportExport\Helpers\ByteStream.h>
 
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
-#include <Rldx\Tools\tools.h>
 #include <string>
 #include "..\..\Animation\DataTypes\Skeleton.h"
 
 namespace skel_anim
 {
+	using namespace utils;
+
 	const std::wstring packSkeletonsPath = L"animations/skeletons/";
 	const std::wstring packSkeletonExtention = L".anim";
 

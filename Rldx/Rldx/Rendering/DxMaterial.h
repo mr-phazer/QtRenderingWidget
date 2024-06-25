@@ -103,7 +103,7 @@ namespace rldx {
 
 			newMaterial->InitWithDefaulTextures();
 
-			string hash = "";
+			std::string hash = "";
 			for (auto& tex : data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check

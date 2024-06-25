@@ -9,9 +9,7 @@
 #include <SpriteBatch.h>
 #include <SpriteFont.h>
 
-#include "..\..\Rldx\Rldx\Tools\tools.h"
-
-#include "..\..\CommonLibs\Timer\SystemClockChecker.h"
+#include "Timer\SystemClockChecker.h"
 
 namespace rldx {
 

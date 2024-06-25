@@ -1,5 +1,4 @@
 #include "Utils\ByteStream.h"
-#include "..\Tools\tools.h"
 #include "ShaderLoadingHelpers.h"
 
 #include <d3dcompiler.h>

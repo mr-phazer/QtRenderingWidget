@@ -22,9 +22,9 @@ namespace rldx
 		DirectX::XMFLOAT3 v3Min(FLT_MAX, FLT_MAX, FLT_MAX);
 		for (const auto& vertex : m_poMeshBuffers.originalMeshData.vertices)
 		{
-			v3Min.x = min<float>(v3Min.x, vertex.position.x);
-			v3Min.y = min<float>(v3Min.y, vertex.position.y);
-			v3Min.z = min<float>(v3Min.z, vertex.position.z);
+			v3Min.x = std::min<float>(v3Min.x, vertex.position.x);
+			v3Min.y = std:: min<float>(v3Min.y, vertex.position.y);
+			v3Min.z = std::min<float>(v3Min.z, vertex.position.z);
 		}
 
 		return v3Min;
@@ -35,9 +35,9 @@ namespace rldx
 		DirectX::XMFLOAT3 v3Max(FLT_MIN, FLT_MIN, FLT_MIN);
 		for (const auto& vertex : m_poMeshBuffers.originalMeshData.vertices)
 		{
-			v3Max.x = max<float>(v3Max.x, vertex.position.x);
-			v3Max.y = max<float>(v3Max.y, vertex.position.y);
-			v3Max.z = max<float>(v3Max.z, vertex.position.z);
+			v3Max.x = std::max<float>(v3Max.x, vertex.position.x);
+			v3Max.y = std::max<float>(v3Max.y, vertex.position.y);
+			v3Max.z = std::max<float>(v3Max.z, vertex.position.z);
 		}
 
 		return v3Max;

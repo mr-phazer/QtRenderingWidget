@@ -1,6 +1,8 @@
 #include "DxMaterial.h"
 #include "DxTexture.h"
 
+#include <string>
+
 #include "..\Managers\DxDeviceManager.h"
 
 using namespace rldx;
@@ -59,7 +61,7 @@ inline bool IsDDSTextureFile(char* bin)
 }
 
 // TODO: current not used, as all slots are filled with default textures, remove?
-inline bool IsTextureCriticalForMaterial(const wstring& filePath)
+inline bool IsTextureCriticalForMaterial(const std::wstring& filePath)
 {
 	return !(
 		(ToLower(filePath).find(L"mask") != std::wstring::npos)
@@ -97,9 +99,9 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(m_defaultTexturesMap.at(TextureTypeEnum(slot)));
 		return resHandleDiffuse.GetPtr();
 	}
-	catch (std::out_of_range& e) {
+	catch (std::exception& e) {
 		auto debug_1 = e.what(); // TODO: REMOVE!!
-		Logger::LogActionError(L"Failed to load default texture: key enum id: " + ToWString(to_string(slot)) + L", message: " + ToWString(e.what()));
+		Logger::LogActionError(L"Failed to load default texture: key enum id: " + ToWString(std::to_string(slot)) + L", message: " + ToWString(e.what()));
 		return nullptr;
 	}
 

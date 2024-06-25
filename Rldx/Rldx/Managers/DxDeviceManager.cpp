@@ -2,7 +2,7 @@
 #include <windows.h>
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 #include "Logger\Logger.h"
-#include "..\Tools\tools.h"
+#include "CustomExceptions/CustomExceptions.h"
 #include "DxDeviceManager.h"
 
 
@@ -91,11 +91,11 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 			&m_cpoDeviceContext);
 #endif
 	}
-	catch (libtools::COMException& comException)
+	catch (COMException& comException)
 	{
 		_com_error err(comException);
 		LPCTSTR errMsg = err.ErrorMessage();
-		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(to_string(hr)) + L": " + errMsg);
+		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(std::to_string(hr)) + L": " + errMsg);
 
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
 	}
@@ -104,7 +104,7 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 	{
 		_com_error err(hr);
 		LPCTSTR errMsg = err.ErrorMessage();
-		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(to_string(hr)) + L": " + errMsg);
+		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(std::to_string(hr)) + L": " + errMsg);
 
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
 	}

@@ -27,7 +27,7 @@ namespace utils {
 		return converterX.from_bytes(str);
 	}
 
-	std::wstring ToWString(DirectX::XMFLOAT3 _v3)
+	std::wstring F3ToWString(DirectX::XMFLOAT3 _v3)
 	{
 		return
 			L"(" +
@@ -36,7 +36,7 @@ namespace utils {
 			std::to_wstring(_v3.z) + L" ) ";
 	}
 
-	std::wstring ToWString(DirectX::XMFLOAT4 _v4)
+	std::wstring F4ToWString(DirectX::XMFLOAT4 _v4)
 	{
 		return
 			L"(" +

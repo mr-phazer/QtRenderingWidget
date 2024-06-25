@@ -3,7 +3,6 @@
 #include <Timer\SystemClockChecker.h>
 #include "Utils\ByteStream.h"
 #include "Logger\Logger.h"
-#include "..\Tools\tools.h"
 #include "DxDebugTextWriter.h"
 
 using namespace rldx;

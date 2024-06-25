@@ -1,12 +1,14 @@
 #include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
-#include <Rldx\Tools\tools.h>
+#include <Utils\StrUtils.h>
 #include "..\..\Animation\DataTypes\SkeletonAnimation.h"
 #include "Skeleton.h"
 #include "SkeletonAnimation.h"
 
 namespace skel_anim
 {
+	using namespace utils;
+
 	SkeletonAnimation* SkeletonAnimation::CreateFromAnimFile(const anim_file::AnimFile& inAnimFile)
 	{
 		auto newAnim = rldx::DxResourceManager::Instance()->AllocAnim().GetPtr();

@@ -58,7 +58,7 @@ namespace rldx {
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			rmv2::WsModelData wsModelData;
-			unique_ptr<rmv2::RigidModelFileCommon> parsedRigidModelFile; // avoid having to load the file twice (tree.build and tree.allocate
+			std::unique_ptr<rmv2::RigidModelFileCommon> parsedRigidModelFile; // avoid having to load the file twice (tree.build and tree.allocate
 		} varintMeshData;
 
 		struct VaritantRefereceData

@@ -42,7 +42,7 @@ namespace skel_anim
 		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
 
 		if (m_animation->frameData.frames.empty()) {
-			throw ConLogExceptionVerbose(L"No frames i bind pose anim file");
+			throw COMException(L"No frames i bind pose anim file", COMExceptionFormatMode::StandardLogVerbose, 0);
 		}
 
 		SetBoneTable(inputFile);

@@ -6,12 +6,10 @@
 #include <Rldx\Animation\Helpers\AnimationRemapper.h>
 #include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h>
 #include <Rldx\Helpers\DxMeshCreatorHelper.h>
-#include <Rldx\Tools\tools.h>
 #include "..\..\Animation\Helpers\SkeletonHelpers.h"
 #include "..\..\Helpers\DxMeshCreatorHelper.h"
 #include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxShaderProgram.h"
-#include "..\..\Tools\tools.h"
 
 namespace rldx
 {
@@ -119,6 +117,7 @@ class SkeletonFileWithInfo
 public:
 	std::wstring GetSkeletonName() const
 	{
+		using namespace utils;
 		return ToWString(skeletonName);
 	}
 };

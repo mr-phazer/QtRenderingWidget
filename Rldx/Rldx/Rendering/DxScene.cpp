@@ -129,7 +129,7 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_globalDirectionalLight.SetRotationScale(0.005f);
 	m_globalDirectionalLight.SetRotate(5.48f, 5.95f);
 
-	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
+	m_upoCommonStates = std::make_unique<DirectX::CommonStates>(poDevice);
 
 	m_sceneFrameVSConstBuffer.Init(poDevice, "VS_PerFrame_CB");
 	m_sceneFramePSConstBuffer.Init(poDevice, "PS_PerFrame_CB");

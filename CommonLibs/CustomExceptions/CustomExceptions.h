@@ -23,13 +23,14 @@ public:
 	COMException(const std::wstring& message, const COMExceptionFormatMode formatMode, const HRESULT hrResult);
 	virtual const char* what() const throw();
 	HRESULT GetResult() const;
+	operator HRESULT() { return m_hrResult; };
 };
 
-#define ThrowAndLogIfAiled(hr, message) \
-	if (!SUCCEEDED(hr)) throw COMExceptionLog(hr, message); \
+#define ThrowAndLogIfAiled(message, formatMode, hrResult) \
+	if (!SUCCEEDED(hr)) throw COMException(message, formatMode, hrResult); \
 	else \
 	using namespace logging; \
-	Logger::LogActionSuccess("CreateRenderTargetView().")
+	Logger::LogActionSuccess(L"CreateRenderTargetView().")
 
 #define COM_COND_THROW(HR) \
 if (!SUCCEEDED(HR)) throw COMException(HR); \

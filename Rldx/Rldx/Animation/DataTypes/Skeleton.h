@@ -3,7 +3,6 @@
 #include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <SimpleMath.h>
 #include "..\..\Rldx\Rldx\Managers\ResourceManager\IDxResource.h"
-#include "..\..\Tools\tools.h"
 #include "SkeletonKeyFrame.h"
 
 namespace skel_anim

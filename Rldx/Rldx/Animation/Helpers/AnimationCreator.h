@@ -1,7 +1,11 @@
 #pragma once
 
+#include "Utils\StrUtils.h"
+
 namespace skel_anim
 {
+	using namespace utils;
+
 	struct SkeletonAnimation;
 	class Skeleton;
 

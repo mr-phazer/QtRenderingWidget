@@ -16,8 +16,8 @@ namespace utils {
 
 	std::wstring ToWString(const std::string& str);
 	std::string ToString(const std::wstring& wstr);
-	std::wstring ToWString(DirectX::XMFLOAT3 _v3);
-	std::wstring ToWString(DirectX::XMFLOAT4 _v4);
+	std::wstring F3ToWString(DirectX::XMFLOAT3 _v3);
+	std::wstring F4ToWString(DirectX::XMFLOAT4 _v4);
 
 	std::wstring decToHexW(int dec);
 
