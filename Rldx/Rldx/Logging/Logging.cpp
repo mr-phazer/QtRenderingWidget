@@ -154,3 +154,25 @@ void WinConsole::PrintLn(const std::wstring& str, WORD color)
 }
 
 timer::SystemClockChecker ImplLog::m_globalClock;
+
+
+
+class blah
+{
+	template<typename T>  // primary template
+	void FuncBlah(T t)
+	{
+		// fallback ?
+	}
+};
+
+template<>
+void blah::FuncBlah(int t)
+{
+	// specialization for int
+}
+
+bool IsEven(int32_t i)
+{
+	return (i & 0b0000000000000001) == 0;
+}

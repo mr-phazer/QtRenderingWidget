@@ -18,14 +18,10 @@
 #include "..\..\CommonLibs\Timer\SystemClockChecker.h"
 #include "..\Tools\tools.h"
 
-namespace logging
-{
-
+namespace logging {
 
 	inline bool emptyBool() { return false; }
 	inline void empty() {  }
-
-
 #if 0
 #define LogActionColor(message) empty()
 #define LogActionError(msg) emptyBool()
@@ -49,7 +45,8 @@ namespace logging
 
 #define FULL_FUNC_INFO_W(message) libtools::string_to_wstring(__func__) +  std::wstring(L": Line: ") + std::to_wstring(__LINE__) + L": " + message
 
-#define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
+	//#define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
+#define FULL_FUNC_INFO_W_EXC(message) ToWString(__DATE__) + L":" + ToWString(__TIME__) + L":  " + ToWString(__func__) + L"()" + std::wstring(L": Line: ") + std::to_wstring(__LINE__) + L": " + message
 
 
 
