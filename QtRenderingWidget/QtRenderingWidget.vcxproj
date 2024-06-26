@@ -83,7 +83,7 @@
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib;$(SolutionDir)$(Platform)\$(Configuration)\ImportExport.lib;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -107,7 +107,7 @@
     </ClCompile>
     <Lib>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);$(Qt_LIBS_);$(SolutionDir)$(Platform)\$(Configuration)\Rldx.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib;$(SolutionDir)$(Platform)\$(Configuration)\ImportExport.lib;$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

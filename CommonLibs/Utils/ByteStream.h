@@ -71,4 +71,45 @@ namespace utils {
 
 		bool IsValid() const;
 	};
+
+	template<typename T>
+	inline std::vector<T> ByteStream::GetChunk(size_t elements)
+	{
+		std::vector<T> out(elements);
+		Read(out.data(), elements * sizeof(T));
+		return out;
+	}
+
+	template<typename T>
+	inline void ByteStream::TRead(T* pDest)
+	{
+		auto bytesToCopy = sizeof(T);
+
+		if (m_currentOffset + bytesToCopy > m_data.size())
+			throw std::exception("MemoryByteStream::TAutoRead: out of bounds");
+
+		memcpy(pDest, m_data.data() + m_currentOffset, bytesToCopy);
+		m_currentOffset += bytesToCopy;
+	}
+
+	template<typename DATA_TYPE>
+	inline DATA_TYPE ByteStream::TReadElement()
+	{
+		DATA_TYPE element = DATA_TYPE();
+		Read(&element, sizeof(DATA_TYPE));
+		return element;
+	}
+
+	template<typename T>
+	inline std::vector<T> ByteStream::GetElements(std::size_t elementCount)
+	{
+		std::vector<T> out(elementCount);
+		for (auto& itDestElemment : out)
+		{
+			itDestElemment = TReadElement<T>();
+		}
+
+		return out;
+	}
+
 }

@@ -13,7 +13,4 @@ public:
 
 	// TODO: Debugging code in here, clean up
 	void InitRenderView_DEBUG();
-
-
-
 };

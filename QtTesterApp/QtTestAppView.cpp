@@ -5,11 +5,11 @@
 #include <qlayout.h>
 
 
-#include "Utils\ByteStream.h"
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
+#include "Utils\ByteStream.h"
 
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
@@ -25,6 +25,9 @@
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 #include "TestData.h"
 
+// TODO: REMOVE WHEN WORKING, make neater debugging stuff
+#include <iostream>
+#include "..\QtRenderingWidget\ExternFunctions\Creators.h" // TODO: change this, this is ugly, though I guess fine for testing.
 
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
@@ -64,9 +67,13 @@ QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 // TODO: REMOVE and cleanup
 void QtMainWindowView::InitRenderView_DEBUG()
 {
+	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
+	// Or really, the testerapp is not meant to run in Release anyway.
+	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
+	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
+
 	auto ptestData = &test_app_data::testData_WH3_RMV2_KARL;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
-
 
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdWString(ptestData->gameId);
