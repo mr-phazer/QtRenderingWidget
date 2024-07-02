@@ -1,9 +1,9 @@
-#include "StrUtils.h"
-#include "IOUtils.h"
 #include <algorithm>
 #include <codecvt>
 #include <cwctype>
 #include <sstream>
+#include "IOUtils.h"
+#include "StrUtils.h"
 
 namespace utils {
 
@@ -77,9 +77,9 @@ namespace utils {
 	std::wstring ToLower(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			[](wchar_t c) {
-				return std::towlower(c);
-			}
+					   [](wchar_t c) {
+						   return std::towlower(c);
+					   }
 		);
 
 		return s;
@@ -88,9 +88,9 @@ namespace utils {
 	std::wstring ToUpper(std::wstring s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			[](wchar_t c) {
-				return std::towupper(c);
-			}
+					   [](wchar_t c) {
+						   return std::towupper(c);
+					   }
 		);
 
 		return s;
@@ -99,7 +99,7 @@ namespace utils {
 	std::string ToUpper(std::string s)
 	{
 		std::transform(s.begin(), s.end(), s.begin(),
-			[](unsigned char c) { return std::toupper(c); } // correct
+					   [](unsigned char c) { return std::toupper(c); } // correct
 		);
 
 		return s;
