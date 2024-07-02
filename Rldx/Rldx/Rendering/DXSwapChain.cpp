@@ -50,7 +50,7 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 		&m_BackBufferTexture.GetComPtrDepthStencilView()
 	);
 
-	ThrowAndLogIfAiled(L"Creating Depth Stencil...", COMExceptionFormatMode::StandardLog, hr);
+	ThrowAndLogIfAiled(L"Error Creating Depth Stencil", COMExceptionFormatMode::StandardLog, hr);
 
 	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_BackBufferTexture.GetDescriptionRef().Height;
