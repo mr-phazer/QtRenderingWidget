@@ -72,7 +72,7 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 
-	auto ptestData = &test_app_data::testData_WH3_RMV2_KARL;
+	auto ptestData = &test_app_data::testData_WH3_brt_grail_guardians_VMD;
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());

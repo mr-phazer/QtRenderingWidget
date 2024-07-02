@@ -15,12 +15,20 @@ namespace test_app_data
 	/// </summary>
 	struct TestData
 	{
+		TestData() = default;
+		TestData(const std::wstring& inAssetFolder, const std::wstring& inGameIdString, const std::wstring& inFilePath)
+			:
+			assetFolder(inAssetFolder),
+			gameId(inGameIdString),
+			filePath(inFilePath)
+		{}
+
 		std::wstring assetFolder = assetFolder_WH3;
 		std::wstring gameId = game_id_keys::KEY_WARHAMMER_3;
 		std::wstring filePath = LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\ksl\ksl_katarin\ksl_katarin_01.rigid_model_v2)";
-	}
-	testData_WH3_Person;
+	};
 
+	TestData testData_WH3_Person;
 
 	TestData testData_WH3_Weapon =
 	{
