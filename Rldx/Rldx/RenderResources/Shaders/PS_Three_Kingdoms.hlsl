@@ -46,13 +46,13 @@ float4 main(in PixelInputType input) : SV_TARGET
     R2_5_StandardLightingModelMaterial_For_GBuffer standard_mat_compressed = R2_5_create_standard_lighting_material_for_gbuffer(base_colour.rgb, pixel_normal, roughness, metalness, occlusion);
 
 	//	Create the uncompressed material.  This is what is read from the gbuffer...
-    R2_5_StandardLightingModelMaterial_For_Lighting slm_uncompressed = R2_5_get_slm_for_lighting(standard_mat_compressed);
-
+    R2_5_StandardLightingModelMaterial_For_Lighting slm_uncompressed = R2_5_get_slm_for_lighting(standard_mat_compressed);    
+    
 	//	Apply faction colours...
-    //apply_faction_colours(slm_uncompressed.Diffuse_Colour.rgb, input.tex1.xy, faction_colours);
-
+    apply_faction_colours(slm_uncompressed.Diffuse_Colour, input.tex1, bDoFactionColoring);
+    
     //  Light the pixel...
-    float3 hdr_linear_col = standard_lighting_model_directional_light(get_sun_colour(), light_vector, eye_vector, slm_uncompressed);
+    float3 hdr_linear_col = standard_lighting_model_directional_light(get_sun_colour(), light_vector, eye_vector, slm_uncompressed);    
 
     ////  Tone-map the pixel...
     float3 ldr_linear_col = saturate(tone_map_linear_hdr_to_linear_ldr(hdr_linear_col, Tone_Map_Black, Tone_Map_White));
