@@ -2,8 +2,8 @@
 
 #include <exception>
 #include <string>
-#include "COMerrors.h"
 #include "..\Logger\Logger.h"
+#include "COMerrors.h"
 
 // TODO: This needs a revision to ensure it works as expected.
 enum class COMExceptionFormatMode {
@@ -20,7 +20,7 @@ class COMException : public std::exception
 	COMExceptionFormatMode m_formatMode;
 
 public:
-	COMException(const std::wstring& message, const COMExceptionFormatMode formatMode, const HRESULT hrResult);
+	COMException(const std::wstring& message, const COMExceptionFormatMode formatMode = COMExceptionFormatMode::StandardLog, const HRESULT hrResult = S_OK);
 	virtual const char* what() const throw();
 	HRESULT GetResult() const;
 	operator HRESULT() { return m_hrResult; };
