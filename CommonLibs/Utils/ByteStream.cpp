@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "..\CustomExceptions\CustomExceptions.h"
 #include "..\Logger\Logger.h"
 #include "IOUtils.h"
 #include "StrUtils.h"
@@ -53,7 +54,7 @@ namespace utils {
 		}
 
 		if (doThrow)
-			throw std::exception(std::string("ByteStream::ByteStream: '" + ToString(fileName) + "', file does not exist.").c_str());
+			throw COMException(std::wstring(L"ByteStream::ByteStream: '" + fileName + L"', file does not exist."));
 		else
 			m_data.clear();  // TODO: redundant?
 		return;
