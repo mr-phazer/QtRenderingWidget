@@ -135,7 +135,7 @@ namespace rldx
 
 	void DxVmdManager::LoadFromRigidModel(ByteStream& bytes) {
 
-		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
+		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
 		if (!gameShaderProgramCreator) {
 			throw std::exception("Error loadeinfGame Shader");
 		}

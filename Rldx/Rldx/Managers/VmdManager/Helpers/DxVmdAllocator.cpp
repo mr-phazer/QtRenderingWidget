@@ -60,7 +60,7 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers(std::wstring& destSkeletonName,
 
 void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
 {
-	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
+	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
 	if (!gameShaderProgramCreator) {
 		throw std::exception("Error loadeing Game Shader Creator");
 	}
