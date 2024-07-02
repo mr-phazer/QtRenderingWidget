@@ -12,10 +12,10 @@
 #include <type_traits>
 
 // author heade
+#include <Logger/Logger.h>
 #include "..\..\Helpers\StringKeyMap.h"
 #include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "IDxResource.h"
-#include <Logger/Logger.h>
 #include "Utils\ByteStream.h"
 #include "Utils\IOUtils.h"
 
@@ -82,7 +82,7 @@ namespace rldx {
 		static std::wstring GetDefaultAssetFolder() { return GetExePath(); }
 
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
-		std::wstring GetGameIdSting() { return m_gameIdString; }
+		std::wstring GetGameIdString() const { return m_gameIdString; }
 
 		static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
 
