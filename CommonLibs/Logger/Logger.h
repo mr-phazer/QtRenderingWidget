@@ -8,19 +8,13 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <consoleapi2.h>
-
-#include <string>
 #include <memory>
+#include <string>
 
 #include "..\Timer\SystemClockChecker.h"
 #include "..\Utils\StrUtils.h"
 
 namespace logging {
-
-	using namespace timer;
-	using namespace utils;
 
 	enum ConsoleColorFG
 	{
@@ -63,17 +57,22 @@ namespace logging {
 	};
 
 #define FULL_FUNC_INFO(message) std::string(std::string(__func__) +  ", line " + std::to_string(__LINE__) + ": " + message)
-#define FULL_FUNC_INFO_W(message) std::wstring(ToWString(std::string(__func__)) +  L": Line: " + std::to_wstring(__LINE__) + L": " + message)
+
+#define FULL_FUNC_INFO_W(message) utils::ToWString(std::string(__func__)) +  L": Line: " + std::to_wstring(__LINE__) + L": " + std::wstring(message)
+
 #define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
-#define LogInfo(msg) Logger::LogActionInfo( FULL_FUNC_INFO(msg) )
-#define LogAction(message)  Logger::LogActionInfo(ToWString(std::string(__func__)) + L": Line: " + std::to_wstring(__LINE__) + L": " + L"");
-#define LogActionColor(message)  Logger::LogSimpleWithColor(std::string(__func__) + std::string(": Line: ") + std::to_string(__LINE__) + ": " + message)
+
+#define LogInfo(message) Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
+#define LogAction(message)  Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
+#define LogActionColor(message)  Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
+#define LogActionColor(message)  Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
 
 	class WinConsole
 	{
+		static constexpr WORD DEFAULT_CONSOLE_COLOR = BG_BLACK | FG_WHITE;
 	public:
-		static void Print(const std::wstring& str, WORD wColorFlags = BG_BLACK | FG_WHITE);
-		static void PrintLn(const std::wstring& str, WORD color = BG_BLACK | FG_WHITE);
+		static void Print(const std::wstring& str, WORD wColorFlags = DEFAULT_CONSOLE_COLOR);
+		static void PrintLn(const std::wstring& str, WORD wColorFlags = DEFAULT_CONSOLE_COLOR);
 	};
 
 	// TODO: finish making this into a neat singleton
@@ -97,7 +96,7 @@ namespace logging {
 		static void LogActionInfo(const std::wstring& strMsg);
 		static void LogActionWarning(const std::wstring& strMsg);
 		static void LogActionError(const std::wstring& strMsg);
-		static void LogException(const std::wstring& strMsg);
+		static void LogException(const std::wstring& strMsg, const std::string& exceptionWhat);
 
 		static void WriteToLogFile(const std::wstring& logString);
 
@@ -107,7 +106,7 @@ namespace logging {
 		static std::wstring sm_loggingFolder;
 		static std::wstring sm_logFileName;
 		static std::wstring sm_prefix;
-		static SystemClockChecker m_globalClock;
+		static timer::SystemClockChecker m_globalClock;
 
 	private:
 		static std::unique_ptr<Logger> m_poInstance;
@@ -124,11 +123,11 @@ namespace logging {
 		void PrintDone(const std::wstring& messageToShow = L"");
 		void PrintDoneSuccess(const std::wstring& messageToShow = L"");
 
-		SystemClockChecker& GetClock();
+		timer::SystemClockChecker& GetClock();
 		double GetLocalTime();
 
 	private:
-		SystemClockChecker m_clock;
+		timer::SystemClockChecker m_clock;
 		std::wstring m_message = L"";
 	};
 }

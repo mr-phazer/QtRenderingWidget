@@ -132,16 +132,16 @@ LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 
 bool QtRenderWidgetView::InitRenderView()
 {
-	logging::LogAction("Make new Device Manager");
+	logging::LogAction(L"Make new Device Manager");
 	DxDeviceManager::Init();
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 
 	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
-	logging::LogAction("Retriving Default Textures from .exe");
+	logging::LogAction(L"Retriving Default Textures from .exe");
 	LoadExeResources(poDevice);
 
-	logging::LogAction("Create New Scene");
+	logging::LogAction(L"Create New Scene");
 	MakeScene();
 
 	// TODO: remove

@@ -52,7 +52,7 @@ QWidget* CreateQRenderingWidget(
 		MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
 
-		LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
 
 		delete poNewRenderingWidget;
 		return nullptr;
@@ -85,7 +85,7 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 #endif
 
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
 
 		return false;
 	}
@@ -112,7 +112,7 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
 
 #ifdef _DEBUG
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
 #endif
 		return false;
 	}

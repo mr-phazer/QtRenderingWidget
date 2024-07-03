@@ -1,7 +1,7 @@
-#include "IOUtils.h"
 #include <fstream>
-#include "ByteStream.h"
 #include "..\Logger\Logger.h"
+#include "ByteStream.h"
+#include "IOUtils.h"
 
 namespace utils {
 
@@ -107,7 +107,7 @@ namespace utils {
 
 	void ReadFileToVector(const std::wstring& filePath, std::vector<uint8_t>& destBuffer)
 	{
-		LogAction(FULL_FUNC_INFO_W(L""));
+		LogAction(L"");
 
 		auto fileSize = GetFileSize(filePath);
 

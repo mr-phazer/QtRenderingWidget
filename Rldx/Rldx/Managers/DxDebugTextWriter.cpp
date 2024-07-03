@@ -34,7 +34,7 @@ using namespace logging;
 
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
 {
-	Logger::LogAction("DxDebugTextWriter::Create");
+	Logger::LogAction(L"DxDebugTextWriter::Create");
 
 	auto newInstance = std::make_unique<DxDebugTextWriter>();
 	ByteStream fontData(SPRITEFONT_PATH);

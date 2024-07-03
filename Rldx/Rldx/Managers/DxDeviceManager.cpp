@@ -4,20 +4,22 @@
 #include "Logger\Logger.h"
 #include "CustomExceptions/CustomExceptions.h"
 #include "DxDeviceManager.h"
+#include "Logger\Logger.h"
 
 
 
 using namespace rldx;
 using namespace logging;
+using namespace utils;
 
 std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
 DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 {
-	Logger::LogAction("Creating New Device Mangager");
+	Logger::LogAction(L"Creating New Device Mangager");
 	auto poNewInstance = std::unique_ptr<DxDeviceManager>(new DxDeviceManager);
 
-	Logger::LogAction("Calling InitDirectd3d11..");
+	Logger::LogAction(L"Calling InitDirectd3d11..");
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
 	if (!SUCCEEDED(hr)) {
@@ -25,11 +27,11 @@ DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 		throw DirectX::com_exception(hr);
 	}
 
-	Logger::LogAction("Create State Object..");
+	Logger::LogAction(L"Create State Object..");
 	// Create state objects.
 	poNewInstance->m_stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
 
-	Logger::LogAction("Create Debug Text Writer..");
+	Logger::LogAction(L"Create Debug Text Writer..");
 	poNewInstance->m_upoDebugTextWriter = DxDebugTextWriter::Create(poNewInstance->GetDevice(), poNewInstance->GetDeviceContext());
 
 	return poNewInstance;
@@ -46,7 +48,7 @@ DxDeviceManager& rldx::DxDeviceManager::GetInstance()
 
 HRESULT rldx::DxDeviceManager::InitDirect3d11()
 {
-	Logger::LogAction("Attempting to create Direct3d 11 Device...");
+	Logger::LogAction(L"Attempting to create Direct3d 11 Device...");
 
 	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_11_1,

@@ -1,6 +1,10 @@
 #include "Logger.h"
+
+#include <consoleapi2.h>
 #include <fstream>
 #include <sstream>
+#include <Windows.h>
+
 
 //---------------------------------------------------------------------//
 // Logger implementation
@@ -55,12 +59,12 @@ namespace logging {
 
 	void Logger::LogActionSuccess(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"SUCCESS", BG_BLACK | FG_WHITE, BG_BLACK | FG_GREEN);
+		DoLog(strMsg, L"SUCCESS", BG_BLACK | FG_GREEN, BG_BLACK | FG_DARKGREEN);
 	}
 
 	void Logger::LogActionInfo(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"INFO");
+		DoLog(strMsg, L"INFO", BG_BLACK | FG_WHITE, BG_BLACK | FG_GRAY);
 	}
 
 	void Logger::LogActionWarning(const std::wstring& strMsg)
@@ -73,9 +77,9 @@ namespace logging {
 		DoLog(strMsg, L"ERROR", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 	}
 
-	void Logger::LogException(const std::wstring& strMsg)
+	void Logger::LogException(const std::wstring& strMsg, const std::string& exceptionWhat)
 	{
-		DoLog(strMsg, L"EXCEPTION Caught", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
+		DoLog(strMsg + L"what: ' " + utils::ToWString(exceptionWhat) + L"'", L"Exception: ", BG_BLACK | FG_WHITE, BG_BLACK | FG_RED);
 	}
 
 	void Logger::WriteToLogFile(const std::wstring& strMsg)
@@ -84,7 +88,7 @@ namespace logging {
 		logString << std::endl << sm_prefix + strMsg;
 
 		std::ofstream oOutFile(GetOutLogFilePath(), std::ios::app);
-		oOutFile << ToString(logString.str());
+		oOutFile << utils::ToString(logString.str());
 		oOutFile.close();
 	}
 
@@ -141,7 +145,7 @@ namespace logging {
 		Logger::LogSimpleWithColor(timeElapsedMessageString, BG_BLACK | FG_GREEN);
 	};
 
-	SystemClockChecker& TimeLogAction::GetClock() {
+	timer::SystemClockChecker& TimeLogAction::GetClock() {
 		return m_clock;
 	};
 	double TimeLogAction::GetLocalTime() {
@@ -177,6 +181,6 @@ namespace logging {
 	std::wstring Logger::sm_loggingFolder;
 	std::wstring Logger::sm_logFileName = L"RenderViewLog.txt";
 	std::wstring Logger::sm_prefix = L"[QRenderingView Debug:] ";
-	SystemClockChecker Logger::m_globalClock;
+	timer::SystemClockChecker Logger::m_globalClock;
 	std::unique_ptr<Logger> Logger::m_poInstance;
 }

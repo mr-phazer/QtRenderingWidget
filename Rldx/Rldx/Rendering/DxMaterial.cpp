@@ -74,7 +74,7 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 
 	textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
 
-	Logger::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + path);
+	Logger::LogAction(L"DEBUG: attempting to get 1 file from CALLBACK: " + path);
 
 	auto bytes = DxResourceManager::GetFile(path);
 

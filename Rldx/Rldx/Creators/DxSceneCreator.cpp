@@ -93,9 +93,12 @@ void rldx::DxSceneCreator::AddGrid(ID3D11Device* poDevice, rldx::DxMeshShaderPro
 
 void rldx::DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 {
-	// TODO: clean block up !!!
+		logging::LogAction(L"Start Clearing Existing Assets");
+		// remove any existing asset
+		poScene->GetAssetNode()->RemoveChildren();
 
-	poScene->GetVmdManager().LoadVariantMesh(poScene->GetSceneRootNode(), fileData, gameIdString);
+		logging::LogAction(L"Done Clearing Existing Assets");
+		poScene->GetVmdManager().LoadVariantMesh(poScene->GetAssetNode(), fileData, gameIdString);
 	poScene->GetVmdManager().GetNewVariant();
 	poScene->GetSceneRootNode()->UpdateAllBoundBoxes();
 

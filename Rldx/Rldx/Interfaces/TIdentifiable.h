@@ -57,7 +57,7 @@ namespace rldx {
 	{
 		// TODO: remove after debugging
 #if _DEBUG
-		logging::LogAction(/*this->GetTypeString() + */"# " + std::to_string(GetId()) + ": created.");
+		logging::LogAction(/*this->GetTypeString() + */L"# " + std::to_wstring(GetId()) + L": created.");
 #endif
 	}
 
@@ -65,7 +65,7 @@ namespace rldx {
 	inline TIdentifiable<KEY_TYPE>::~TIdentifiable()
 	{
 #if _DEBUG
-		logging::LogAction(/*GetTypeString()*/ +"# " + std::to_string(GetId()) + ": deallocated.");
+		logging::LogAction(/*this->GetTypeString() + */L"# " + std::to_wstring(GetId()) + L": deallocated.");
 #endif
 	};
 };
