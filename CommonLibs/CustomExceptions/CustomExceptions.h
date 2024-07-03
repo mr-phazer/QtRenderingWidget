@@ -30,7 +30,7 @@ public:
 	if (!SUCCEEDED(hr)) throw COMException(message, formatMode, hrResult); \
 	else \
 	using namespace logging; \
-	Logger::LogActionSuccess(L"CreateRenderTargetView().")
+	Logger::LogActionSuccess(message)
 
 #define COM_COND_THROW(HR) \
 if (!SUCCEEDED(HR)) throw COMException(HR); \
