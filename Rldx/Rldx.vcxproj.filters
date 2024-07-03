@@ -97,7 +97,6 @@
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp">
       <Filter>Rldx\Managers</Filter>
     </ClCompile>
@@ -272,7 +271,6 @@
     <ClInclude Include="Rldx\Animation\AnimPlayList.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h">
       <Filter>Rldx\Managers</Filter>

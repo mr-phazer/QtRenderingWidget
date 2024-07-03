@@ -27,7 +27,6 @@
     <ClCompile Include="Rldx\Animation\DataTypes\Skeleton.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
     <ClCompile Include="Rldx\Animation\KeyFrameInterpolator.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
     <ClCompile Include="Rldx\Animation\SkeletonKeyFrameSampler.cpp" />
@@ -48,7 +47,6 @@
     <ClInclude Include="Rldx\Animation\Helpers\SkeletonHelpers.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
     <ClInclude Include="Rldx\Animation\KeyFrameInterpolator.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
     <ClInclude Include="Rldx\Animation\SkeletonKeyFrameSampler.h" />
