@@ -250,6 +250,7 @@ void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
 		{
 			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetNewVariant();
 		}
+		break;
 
 		case Qt::Key_Q:
 		{
