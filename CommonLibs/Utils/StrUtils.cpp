@@ -27,6 +27,15 @@ namespace utils {
 		return converterX.from_bytes(str);
 	}
 
+	// TODO: rename these to "FloatXToString"	
+	std::wstring F2ToWString(DirectX::XMFLOAT2 _v3)
+	{
+		return
+			L"(" +
+			std::to_wstring(_v3.x) + L", " +
+			std::to_wstring(_v3.y) + L")";
+	}
+
 	std::wstring F3ToWString(DirectX::XMFLOAT3 _v3)
 	{
 		return

@@ -1,9 +1,9 @@
 #include <string>
 
 #include <Timer\SystemClockChecker.h>
-#include "Utils\ByteStream.h"
-#include "Logger\Logger.h"
 #include "DxDebugTextWriter.h"
+#include "Logger\Logger.h"
+#include "Utils\ByteStream.h"
 
 using namespace rldx;
 using namespace utils;
@@ -72,7 +72,7 @@ void DxDebugTextWriter::AddString(const std::wstring& _string, DirectX::XMFLOAT4
 		m_stringExtQueue.clear();
 	}
 
-	//	m_stringExtQueue.push_back({ _string, color, timeOut });
+	m_stringExtQueue.push_back({ _string, color, timeOut });
 }
 
 void rldx::DxDebugTextWriter::SetStringRow(size_t row, const std::wstring& stringToDisplay, DirectX::XMFLOAT4 color, float timeOut)
@@ -85,8 +85,8 @@ void DxDebugTextWriter::RenderText()
 {
 	m_upoSpriteBatch->Begin();
 
-	//RenderStrings(m_stringExtQueue);
-	RenderStrings(m_stringRows);
+	RenderStrings(m_stringExtQueue);
+	//RenderStrings(m_stringRows);
 
 	m_upoSpriteBatch->End();
 

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <comdef.h>
 #include <DirectXMath.h>
+#include <string>
+#include <vector>
 
 //---------------------------------------------------------------------//
 // Functions for String manipulation
@@ -16,6 +16,8 @@ namespace utils {
 
 	std::wstring ToWString(const std::string& str);
 	std::string ToString(const std::wstring& wstr);
+
+	std::wstring F2ToWString(DirectX::XMFLOAT2 _v3);
 	std::wstring F3ToWString(DirectX::XMFLOAT3 _v3);
 	std::wstring F4ToWString(DirectX::XMFLOAT4 _v4);
 

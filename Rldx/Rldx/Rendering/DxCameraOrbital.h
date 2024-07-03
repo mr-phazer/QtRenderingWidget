@@ -82,6 +82,7 @@ namespace rldx
 
 		float m_fRotationScaler = 0.01f;         // Scaler for rotation
 		float m_fMoveScaler = 0.01f;            // Scaler for movement
+		float m_fZoomScaler = 4E-4f;            // Scaler for zoom
 
 
 		struct GeometryData
@@ -218,11 +219,7 @@ namespace rldx
 		//void SetScalers(float )
 
 		void MoveFrame(float time);
-
-
-
 		void MoveLookAt();
-
 		void Zoom();
 
 		POINT m_ptLastMousePosition = { 0,0 };            // Last absolute position of mouse cursor
