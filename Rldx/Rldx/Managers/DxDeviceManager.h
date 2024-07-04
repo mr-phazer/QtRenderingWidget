@@ -45,7 +45,10 @@ namespace rldx
 	public:
 		static void Init()
 		{
-			sm_spoInstance = Create();
+			if (!sm_spoInstance)
+			{
+				sm_spoInstance = Create();
+			}
 		}
 
 		static DxDeviceManager& GetInstance();

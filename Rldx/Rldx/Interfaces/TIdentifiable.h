@@ -33,7 +33,6 @@ namespace rldx {
 
 	template  <typename KEY_TYPE>
 	class TIdentifiable : public IdentifiableBase
-
 	{
 	public:
 		TIdentifiable(const std::wstring& name) : IdentifiableBase(), name(name) {}
@@ -43,9 +42,9 @@ namespace rldx {
 		virtual ~TIdentifiable();
 
 		// TODO: Scrap these, and make the derived classes set Type Enum/Type description in the constructor
-		virtual std::wstring GetTypeString() const = 0;
+		virtual std::wstring GetTypeString() const { return L"TIdentifiable<T>"; }
 		virtual KEY_TYPE GetType() const = 0;
-		virtual std::wstring GetIdString() { return GetTypeString() + L"_" + std::to_wstring(GetId()); }
+		virtual std::wstring GetIdString() const { return GetTypeString() + L"_" + std::to_wstring(GetId()); }
 
 	protected:
 		std::wstring name = L"Unnamed_Object";
@@ -57,7 +56,7 @@ namespace rldx {
 	{
 		// TODO: remove after debugging
 #if _DEBUG
-		logging::LogAction(/*this->GetTypeString() + */L"# " + std::to_wstring(GetId()) + L": created.");
+		logging::LogAction(GetTypeString() + L"# " + std::to_wstring(GetId()) + L": created.");
 #endif
 	}
 
@@ -65,7 +64,7 @@ namespace rldx {
 	inline TIdentifiable<KEY_TYPE>::~TIdentifiable()
 	{
 #if _DEBUG
-		logging::LogAction(/*this->GetTypeString() + */L"# " + std::to_wstring(GetId()) + L": deallocated.");
+		logging::LogAction(GetTypeString() + L"# " + std::to_wstring(GetId()) + L": deallocated.");
 #endif
 	};
 };

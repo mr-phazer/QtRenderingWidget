@@ -1,17 +1,17 @@
 #include "DxAmbientLightSource.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
-#include "Utils\ByteStream.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Rendering\DxTexture.h"
+#include "Utils\ByteStream.h"
 
 namespace rldx
 {
 	using namespace std;
 
 	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
-		const std::wstring& pathSpecularMap, const std::wstring& pathLUT,
-		UINT startSlotSrv, UINT startSlotConstBuf)
+													  const std::wstring& pathSpecularMap, const std::wstring& pathLUT,
+													  UINT startSlotSrv, UINT startSlotConstBuf)
 	{
 		DxAmbientLightSource oNewInstance;
 
@@ -24,8 +24,8 @@ namespace rldx
 	}
 
 	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, DxTexture* diffuseCubemap,
-		DxTexture* specularCubmap, DxTexture* lut, UINT startSlotConstBuf,
-		UINT startSlotSRV)
+													  DxTexture* specularCubmap, DxTexture* lut, UINT startSlotConstBuf,
+													  UINT startSlotSRV)
 	{
 		DxAmbientLightSource oNewInstance;
 
@@ -39,8 +39,8 @@ namespace rldx
 	}
 
 	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, ByteStream& pathDiffuseMap,
-		ByteStream& pathSpecularMap, ByteStream& pathLUT, UINT startSlotSRV,
-		UINT startSlotConstBuf)
+													  ByteStream& pathSpecularMap, ByteStream& pathLUT, UINT startSlotSRV,
+													  UINT startSlotConstBuf)
 	{
 		DxAmbientLightSource oNewInstance;
 
@@ -53,8 +53,8 @@ namespace rldx
 	}
 
 	void DxAmbientLightSource::SetTexturesFromFiles(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
-		const std::wstring& pathSpecularMap, const std::wstring& pathLUT,
-		UINT startSlotSRV)
+													const std::wstring& pathSpecularMap, const std::wstring& pathLUT,
+													UINT startSlotSRV)
 	{
 		if (pathDiffuseMap.empty())
 			throw std::exception("path for IBL Diffuse cubemap is empty");
@@ -71,7 +71,7 @@ namespace rldx
 	}
 
 	void DxAmbientLightSource::SetTexturesFromMemory(ID3D11Device* poDevice, ByteStream& streamDiffuseMap,
-		ByteStream& streamSpecularMap, ByteStream& pathLUT, UINT startSlotSRV)
+													 ByteStream& streamSpecularMap, ByteStream& pathLUT, UINT startSlotSRV)
 	{
 		m_poDiffuseMap = DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"DiffuseIBL").GetPtr();
 		;
@@ -83,10 +83,10 @@ namespace rldx
 		//	DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"LUT").GetPtr();;
 
 		m_poSpecularMap->LoadCubeMap(poDevice, streamSpecularMap.GetBufferPtr(), streamSpecularMap.GetBufferSize(),
-			"IBL CubeMap Specular");
+									 "IBL CubeMap Specular");
 
 		m_poDiffuseMap->LoadCubeMap(poDevice, streamDiffuseMap.GetBufferPtr(), streamDiffuseMap.GetBufferSize(),
-			"IBL CubeMcap Diffuse");
+									"IBL CubeMcap Diffuse");
 	}
 
 	void DxAmbientLightSource::BindToDC(ID3D11DeviceContext* poDC)

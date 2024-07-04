@@ -1,7 +1,6 @@
 
 #include <windows.h>
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
-#include "Logger\Logger.h"
 #include "CustomExceptions/CustomExceptions.h"
 #include "DxDeviceManager.h"
 #include "Logger\Logger.h"

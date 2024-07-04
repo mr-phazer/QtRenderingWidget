@@ -168,8 +168,11 @@ namespace rldx {
 				return ByteStream();
 			}
 
+			//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
+
 			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
 		}
+
 		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {

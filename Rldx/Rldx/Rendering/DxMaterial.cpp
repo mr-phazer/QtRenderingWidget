@@ -10,10 +10,9 @@ using namespace rldx;
 DxMaterial* rldx::DxMaterial::Create(std::vector<rmv2::TextureElement>& textures)
 {
 	auto newMaterial = rldx::DxResourceManager::Instance()->AllocMaterial().GetPtr();
-	newMaterial->InitWithDefaulTextures();
+	newMaterial->InitWithDefaulTextures(); // fill with default textures first, so if any texures are missing, the model will sill draw
 
 	newMaterial->SetTextures(DxDeviceManager::Device(), textures);
-
 	return newMaterial;
 }
 
