@@ -1,5 +1,4 @@
 #include <Rldx\Rendering\DxMeshRenderBucket.h>
-#include <Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h>
 #include "..\..\Animation\Helpers\SkeletonHelpers.h"
 #include "DxDeformerNode.h"
 #include "DxModelNode.h"
@@ -47,7 +46,7 @@ namespace rldx
 	private:
 		void InitAnimation()
 		{
-			//LoadBindPose(skel_anim::GetPackPathFromSkeletonName(m_skeletonName));
+			// load the bind pose frame as animation, so the asset just stands still
 			m_poDeformerNode->LoadAnimClip(skel_anim::GetPackPathFromSkeletonName(m_poDeformerNode->GetSkeleton().GetName()));
 		}
 	};

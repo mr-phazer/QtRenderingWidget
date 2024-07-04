@@ -15,7 +15,7 @@ namespace rldx
 			itModelData->FlushModelMeshesToRenderBucked(pRenderQueue);
 		}
 
-		// add skeleton mesh from deformer node
+		// add skeleton "stick figure" mesh from deformer node
 		if (m_poDeformerNode->GetDrawState() == DrawStateEnum::Draw)
 			pRenderQueue->AddItem(&m_poDeformerNode->MeshRenderData());
 	};
