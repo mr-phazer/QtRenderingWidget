@@ -20,13 +20,12 @@ namespace rldx
 		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
 
-
 		return newMeshNode;
 	}
 
-	void DxDeformerNode::LoadBindPose(std::wstring m_animFilePath)
+	void DxDeformerNode::LoadBindPose(std::wstring animFilePath)
 	{
-		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
+		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(animFilePath);
 		auto animBindPoseFile = m_animFileReader.Read(animBindPoseBytes);
 
 		// For rome/Attila/ToB skeleton "rome_man_game" is needed to load certain "human" models / animations
@@ -109,15 +108,3 @@ namespace rldx
 		}
 	}
 }
-
-class SkeletonFileWithInfo
-{
-	std::string skeletonName;
-
-public:
-	std::wstring GetSkeletonName() const
-	{
-		using namespace utils;
-		return ToWString(skeletonName);
-	}
-};

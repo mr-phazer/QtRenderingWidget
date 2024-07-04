@@ -36,8 +36,6 @@ namespace rldx
 		// TODO: remove: make private
 
 	protected:
-		std::shared_ptr<DxMeshNode> m_spoFramePoseGenerator;
-
 		skel_anim::Skeleton m_skeleton;
 		skel_anim::AnimQueue m_animQueue;
 		anim_file::TwAnimFileReader m_animFileReader; // TODO: Refactor: should this really be stored here?
