@@ -1,9 +1,10 @@
 #include "QtTestAppView.h"
 
+// Qt headers
 #include <QDirIterator>
+#include <qdockwidget.h>
 #include <QFileInfo>
 #include <qlayout.h>
-
 
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
@@ -72,7 +73,9 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 
-	auto ptestData = &test_app_data::testData_WH3_brt_grail_guardians_VMD;
+	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
+	auto ptestData2 = &test_app_data::testData_WH3_RMV2_Person_Malekith;
+
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
@@ -84,10 +87,14 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
 	SetLogFolder(&globalLogFolder);
 
-	auto renderWidget = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	auto renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	if (!renderWidget1)	return;
 
-	if (!renderWidget)
-		return;
+	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	if (!renderWidget2)	return;
+
+	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	if (!renderWidget2)	return;
 
 	ByteStream bytes(ptestData->filePath);
 	QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
@@ -95,18 +102,38 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString outErrorString;
 
 
-	PauseRendering(renderWidget);
-	//AddNewPrimaryAsset(renderWidget, &fileName, &qBytes, &outErrorString);
-	TESTCODE_AddNewPrimaryAsset(renderWidget, &fileName, &qBytes, &outErrorString);
 
-	ResumeRendering(renderWidget);
+	ByteStream bytes2(ptestData2->filePath);
+	QString fileName2 = QString::fromStdWString(bytes2.GetPath().c_str());
+	QByteArray qBytes2((char*)bytes2.GetBufferPtr(), bytes2.GetBufferSize());
+	QString outErrorString2;
 
-	setCentralWidget(renderWidget);
+
+	// testing if "refresh" works...(clearing node, reloading same asset)
+	AddNewPrimaryAsset(renderWidget1, &fileName2, &qBytes2, &outErrorString2);
+
+	AddNewPrimaryAsset(renderWidget2, &fileName, &qBytes, &outErrorString);
+	AddNewPrimaryAsset(renderWidget3, &fileName, &qBytes, &outErrorString);
+
+
+	setCentralWidget(renderWidget1); // add widget as the central widget in the QMainWindow 
+
+	QDockWidget* dockWidget = new QDockWidget(tr("Dock Widget"), this);
+	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
+								Qt::RightDockWidgetArea);
+
+	dockWidget->setWidget(renderWidget2);
+	addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
+
+
+
+	dockWidget = new QDockWidget(tr("Dock Widget"), this);
+	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
+								Qt::RightDockWidgetArea);
+
+	dockWidget->setWidget(renderWidget3);
+	addDockWidget(Qt::RightDockWidgetArea, dockWidget);
 }
-
-
-
-
 
 QtMainWindowView::~QtMainWindowView()
 {}

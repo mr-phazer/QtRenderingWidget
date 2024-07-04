@@ -34,42 +34,42 @@ namespace test_app_data
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\ksl\ksl_props\ksl_archer_sword_1h_01.rigid_model_v2)"
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\ksl\ksl_props\ksl_archer_sword_1h_01.rigid_model_v2)"
 	};
 
-	TestData testData_WH3_Person_Malekith =
+	TestData testData_WH3_RMV2_Person_Malekith =
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_WSMODEL
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\wf1\chd\chd_wolf\chd_wolf_02.wsmodel)"
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\wf1\chd\chd_wolf\chd_wolf_02.wsmodel)"
 	};
 
 	TestData testData_WH3_Person_Malekith_Wrong_Folder =
 	{
-		LR"(I:\Modding\WH3\WRONG\WRONG\)",
+		LR"(H:\Modding\WH3\WRONG\WRONG\)",
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1d\def\def_malekith\def_malekith_body_01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_Prop_missing_specglos
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\emp\emp_props\emp_amber_wizard_staff_01.rigid_model_v2)"
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\emp\emp_props\emp_amber_wizard_staff_01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_Building_Mean_to_not_work_yet =
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(I:\Modding\WH3\rigidmodels/buildings/brt_seacliff_a/brt_seacliff_a_piece01_destruct01.rigid_model_v2)"
+		LR"(H:\Modding\WH3\rigidmodels/buildings/brt_seacliff_a/brt_seacliff_a_piece01_destruct01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_Building_missing_texture =
@@ -114,7 +114,7 @@ namespace test_app_data
 		LR"(K:\Modding\WH2\variantmeshes\variantmeshdefinitions\brt_grail_guardians.variantmeshdefinition)"
 	};
 
-	TestData testData_WH3_brt_grail_guardians_VMD =
+	TestData testData_WH3_VMD_brt_grail_guardians =
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
@@ -126,6 +126,34 @@ namespace test_app_data
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
 		LR"(H:\modding\WH3\variantmeshes\wh_variantmodels\bc2\emp\emp_demigryph\body\emp_demigryph_body_01.rigid_model_v2)"
+	};
+
+	TestData testData_WH3_VMD_brt_pegasus
+	{
+		assetFolder_WH3,
+		game_id_keys::KEY_WARHAMMER_3,
+		LR"(H:\modding\WH3\variantmeshes\variantmeshdefinitions\brt_pegasus.variantmeshdefinition)"
+	};
+
+	TestData testData_WH3_VMD_brt_ch_king_louen
+	{
+		assetFolder_WH3,
+		game_id_keys::KEY_WARHAMMER_3,
+		LR"(H:\modding\WH3\variantmeshes/variantmeshdefinitions/brt_ch_king_louen_leoncoeur.variantmeshdefinition)"
+	};
+
+	TestData testData_WH3_RMV2_lzd_coatl
+	{
+		assetFolder_WH3,
+		game_id_keys::KEY_WARHAMMER_3,
+		LR"(H:\modding\WH3\variantmeshes\wh_variantmodels\bi4\lzd\lzd_coatl\lzd_coatl_01.rigid_model_v2)"
+	};
+
+	TestData testData_WH3_RMV2_lzd_bst_jabberslythe
+	{
+		assetFolder_WH3,
+		game_id_keys::KEY_WARHAMMER_3,
+		LR"(H:\modding\WH3\variantmeshes\wh_variantmodels\hc3\bst\bst_jabberslythe\bst_jabberslythe_01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_RMV2_KARL
