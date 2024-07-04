@@ -5,6 +5,7 @@
 #include <qdockwidget.h>
 #include <QFileInfo>
 #include <qlayout.h>
+#include <QMimeData>
 
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
@@ -33,6 +34,9 @@
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
 {
+
+	setAcceptDrops(true);
+
 	using namespace logging;
 	Logger::LogActionSuccess(L"Starting the program.");
 	setupUi(this);
@@ -45,6 +49,9 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 	resize(1525, 1525);
 }
 
+
+QtMainWindowView::~QtMainWindowView()
+{}
 
 QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 {
@@ -74,7 +81,7 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
-	auto ptestData2 = &test_app_data::testData_WH3_RMV2_Person_Malekith;
+	auto ptestData2 = &test_app_data::testData_WH3_WSMODEL_2;
 
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 
@@ -87,8 +94,8 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
 	SetLogFolder(&globalLogFolder);
 
-	auto renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
-	if (!renderWidget1)	return;
+	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	if (!m_renderWidget1)	return;
 
 	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget2)	return;
@@ -101,23 +108,6 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 	QString outErrorString;
 
-
-
-	ByteStream bytes2(ptestData2->filePath);
-	QString fileName2 = QString::fromStdWString(bytes2.GetPath().c_str());
-	QByteArray qBytes2((char*)bytes2.GetBufferPtr(), bytes2.GetBufferSize());
-	QString outErrorString2;
-
-
-	// testing if "refresh" works...(clearing node, reloading same asset)
-	AddNewPrimaryAsset(renderWidget1, &fileName2, &qBytes2, &outErrorString2);
-
-	AddNewPrimaryAsset(renderWidget2, &fileName, &qBytes, &outErrorString);
-	AddNewPrimaryAsset(renderWidget3, &fileName, &qBytes, &outErrorString);
-
-
-	setCentralWidget(renderWidget1); // add widget as the central widget in the QMainWindow 
-
 	QDockWidget* dockWidget = new QDockWidget(tr("Dock Widget"), this);
 	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
 								Qt::RightDockWidgetArea);
@@ -127,13 +117,45 @@ void QtMainWindowView::InitRenderView_DEBUG()
 
 
 
+
+
 	dockWidget = new QDockWidget(tr("Dock Widget"), this);
 	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
 								Qt::RightDockWidgetArea);
 
 	dockWidget->setWidget(renderWidget3);
 	addDockWidget(Qt::RightDockWidgetArea, dockWidget);
+
+
+	setCentralWidget(m_renderWidget1); // add widget as the central widget in the QMainWindow 
+
 }
 
-QtMainWindowView::~QtMainWindowView()
-{}
+void QtMainWindowView::dragEnterEvent(QDragEnterEvent* event)
+{
+	event->acceptProposedAction();
+}
+
+void QtMainWindowView::dropEvent(QDropEvent* event)
+{
+	// Handle drop event (e.g., process dropped file)
+	// TODO:: move this code to the CONTROLLER, emit "ItemDropped" and have the controller handle that event with this code
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData->hasUrls()) {
+		QList<QUrl> urls = mimeData->urls();
+		for (const QUrl& url : urls)
+		{
+			auto filePath = url.toLocalFile().toStdWString();
+
+			ByteStream bytes(filePath);
+			QString fileName2 = QString::fromStdWString(filePath);
+			QByteArray qBytes2((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
+			QString outErrorString;
+
+			AddNewPrimaryAsset(m_renderWidget1, &fileName2, &qBytes2, &outErrorString);
+
+			break; // only read one file, for now
+		}
+	}
+	event->acceptProposedAction();
+}

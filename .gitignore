@@ -368,3 +368,6 @@ DirectXTK/Src/Shaders/Compiled/
 
 # Change for testing
 /QtTesterApp/RenderViewLog.txt
+
+# Do not include compiled shaders with source
+/Rldx/Rldx/RenderResources/ShaderBin/

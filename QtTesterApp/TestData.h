@@ -170,6 +170,13 @@ namespace test_app_data
 		LR"(H:\modding\WH3\variantmeshes\wh_variantmodels\hu1_t1\cst\cst_deck_gunners\cst_deck_gunners_back_body_01.wsmodel)"
 	};
 
+	TestData testData_WH3_WSMODEL_2
+	{
+		assetFolder_WH3,
+		game_id_keys::KEY_WARHAMMER_3,
+		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\brt\brt_grail_knights\head\brt_grail_knights_helmet_01.wsmodel)"
+	};
+
 	TestData WH2_battlePilgrims_VMD =
 	{
 		LR"(K:\Modding\WH2\)",
