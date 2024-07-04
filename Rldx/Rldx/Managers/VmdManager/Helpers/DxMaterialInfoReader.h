@@ -31,7 +31,6 @@ namespace rldx
 			if (CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::RigidModelV2))
 			{
 				GetMaterialsFromRmv2();
-
 			}
 			else if (CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::WSmodel))
 			{
@@ -73,6 +72,8 @@ namespace rldx
 
 					m_pVmdModeData->varintMeshData.wsModelData.AddXmlMaterial(meshMaterial, iLod, iMesh); // set the material structure as the materials for this node
 				}
+
+
 			}
 
 		}
@@ -90,7 +91,7 @@ namespace rldx
 
 					meshMaterial.AddTexture(TextureTypeEnum::eBaseColor, pathRoot + "base_colour.dds");
 					meshMaterial.AddTexture(TextureTypeEnum::eMaterialMap, pathRoot + "material_map.dds");
-					meshMaterial.AddTexture(TextureTypeEnum::eNormal, pathRoot + "normal_map.dds");
+					meshMaterial.AddTexture(TextureTypeEnum::eNormal, pathRoot + "normal.dds");
 					meshMaterial.AddTexture(TextureTypeEnum::eMask, pathRoot + "mask.dds");
 
 					break;
