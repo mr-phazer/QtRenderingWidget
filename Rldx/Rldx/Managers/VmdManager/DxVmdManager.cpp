@@ -15,7 +15,7 @@ namespace rldx
 		m_sceneRootNode = poSceneNode;
 		m_vmdRootNode = std::make_shared<DxVmdNode>(L"VMD Root Node");
 		// build tree from xml, without loadin any assets
-		BuildTreeFromXml(bytes);
+		BuildTreeFromAssetFile(bytes);
 		//m_sceneRootNode->AddChild(m_vmdRootNode);
 
 		// load assets		
@@ -50,7 +50,7 @@ namespace rldx
 		SetAttachPointsRecursive(m_vmdRootNode.get());
 	}
 
-	void DxVmdManager::BuildTreeFromXml(ByteStream& bytes)
+	void DxVmdManager::BuildTreeFromAssetFile(ByteStream& bytes)
 	{
 		if (CompareExtension(bytes.GetPath(), FileExtensions::VariantMeshDef))
 		{
@@ -145,7 +145,9 @@ namespace rldx
 			throw std::exception("Error Creating Shader");
 		}
 
-		m_vmdRootNode = std::make_shared<DxVmdNode>();
+		m_vmdRootNode = std::make_shared<DxVmdNode>(L"VMD Root Node");
+		m_sceneRootNode->AddChild(m_vmdRootNode);
+
 		VMDNodeData& nodeTagData = m_vmdRootNode->vmdNodeData;
 		nodeTagData.tagType = VMDTagEnum::VariantMesh; // add the RMV2 as
 		nodeTagData.varintMeshData.modelPath = bytes.GetPath();

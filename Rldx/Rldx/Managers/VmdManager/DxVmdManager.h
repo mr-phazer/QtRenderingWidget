@@ -77,7 +77,7 @@ namespace rldx
 		/// </summary>		
 		void SetAttachPointsRecursive(DxMeshNode* vmdNode);
 
-		void BuildTreeFromXml(ByteStream& bytes);
+		void BuildTreeFromAssetFile(ByteStream& bytes);
 		void LoadFromRigidModel(ByteStream& bytes);
 		void LoadFromWsmodelXML(ByteStream& bytes);
 		void LoadFromVmdXML(ByteStream& bytes);
