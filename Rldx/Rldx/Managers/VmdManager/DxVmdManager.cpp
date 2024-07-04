@@ -157,7 +157,19 @@ namespace rldx
 
 	void DxVmdManager::LoadFromWsmodelXML(ByteStream& bytes)
 	{
-		m_vmdRootNode = std::make_shared<DxVmdNode>(L"DxVmdNode");
+		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
+		if (!gameShaderProgramCreator) {
+			throw std::exception("Error loadeinfGame Shader");
+		}
+
+		auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
+		if (!newPbrShaderProgram) {
+			throw std::exception("Error Creating Shader");
+		}
+
+		m_vmdRootNode = std::make_shared<DxVmdNode>(L"VMD Root Node");
+		m_sceneRootNode->AddChild(m_vmdRootNode);
+
 		VMDNodeData& newData = m_vmdRootNode->vmdNodeData;
 		newData.tagType = VMDTagEnum::VariantMesh;
 		newData.varintMeshData.modelPath = bytes.GetPath();
