@@ -367,3 +367,4 @@ FodyWeavers.xsd
 DirectXTK/Src/Shaders/Compiled/
 
 # Change for testing
+/QtTesterApp/RenderViewLog.txt
