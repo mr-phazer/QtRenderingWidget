@@ -49,12 +49,11 @@ namespace rldx {
 		friend class IDxSceneBuilder;
 		friend class DxSceneCreator;
 
-		using Uptr = std::unique_ptr<DxScene>;
-
 	public:
 		DxScene() = default;
 		DxScene(const std::wstring& name = L"") : TIdentifiable(name)
 		{
+			// TODO: move more of the initializing into the constructor, RAII
 			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
 		};
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
@@ -73,6 +72,7 @@ namespace rldx {
 
 		void SetGridState(DxBaseNode::DrawStateEnum drawState);
 		DxMeshNode* GetGridNode() const;
+		DxBaseNode* GetAssetNode() const;
 
 		void DeleteNode(DxBaseNode* node);
 
@@ -144,6 +144,8 @@ namespace rldx {
 		DxMeshNode* m_poGridNode = nullptr;
 
 	private:
+		DxBaseNode* m_poAssetNode = nullptr;
+
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);
 		bool m_bCtrlDown = false; // TODO: should not be here, a more formal "input handler" is needed
 		bool m_bAltDown = false; // TODO: should not be here, a more formal "input handler" is needed
