@@ -62,7 +62,7 @@ namespace rldx
 		// -- make default, fallback shaders
 		// for grid
 		auto newSimpleShaderProgram =
-			DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Simple.cso)",
 				LR"(PS_Simple.cso)"
@@ -71,7 +71,7 @@ namespace rldx
 		// TODO: I don't think this is ever used, it is needed, when there are are default matrerial? Maybe it IS needed as a fallback?
 		// for no textures
 		auto noTextures_ShaderProgram =
-			DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Simple.cso)",
 				LR"(PS_NoTextures.cso)"

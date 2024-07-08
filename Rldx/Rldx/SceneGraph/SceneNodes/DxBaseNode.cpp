@@ -23,11 +23,12 @@ namespace rldx
 		GetNodeBoundingBox() = inBB;
 
 		auto newSimpleShaderProgram =
-			rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
+			rldx::DxMeshShaderProgram::CreateFromDisk<rldx::DxMeshShaderProgram>(
 				rldx::DxDeviceManager::Device(),
 				LR"(VS_Simple.cso)",
 				LR"(PS_Simple.cso)"
 			);
+
 
 		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), GetNodeBoundingBox());
 
@@ -49,7 +50,7 @@ namespace rldx
 		DirectX::BoundingBox::CreateFromPoints(GetNodeBoundingBox(), xmMin, xmMax);
 
 		auto newSimpleShaderProgram =
-			rldx::DxMeshShaderProgram::Create<rldx::DxMeshShaderProgram>(
+			rldx::DxMeshShaderProgram::CreateFromDisk<rldx::DxMeshShaderProgram>(
 				rldx::DxDeviceManager::Device(),
 				LR"(VS_Simple.cso)",
 				LR"(PS_Simple.cso)"

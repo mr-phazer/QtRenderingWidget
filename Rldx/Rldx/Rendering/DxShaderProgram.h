@@ -11,7 +11,6 @@
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\DataTypes\ShaderFiles.h"
 #include "..\Interfaces\IBindable.h"
-#include "..\Logging\Logging.h"
 #include "..\Managers\DxDeviceManager.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\ResourceManager\IDxResource.h"
@@ -41,39 +40,8 @@ namespace rldx {
 
 		virtual ID3D11Buffer* GetPixelShaderConstBuffer() const = 0;
 		virtual ID3D11Buffer* GetVertexShaderConstBuffer() const = 0;
-
-		//	virtual void SetVSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-		//	{
-		//		auto pConstBufferTemp = GetVertexShaderConstBuffer();
-		//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
-		//	};
-
-		//	virtual void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-		//	{
-		//		ID3D11Buffer* pConstBufferTemp[] = { GetPixelShaderConstBuffer() };
-		//		poDC->PSSetConstantBuffers(0, 1, pConstBufferTemp);
-		//	}
-
-		//	virtual void SetVertexShaderAsActive(ID3D11DeviceContext* poDC) const
-		//	{
-		//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
-		//	}
-
-		//	virtual void SetPixelShaderSAsActive(ID3D11DeviceContext* poDC) const
-		//	{
-		//		poDC->PSSetShader(GetPixelShader(), nullptr, 0);
-		//	}
-
-
-		// Inherited via IDxResource
 		std::wstring GetTypeString() const override;
 		ResourceTypeEnum GetType() const override;
-
-		//	virtual  void SetPSConstBufferAsActive(ID3D11DeviceContext* poDC) const
-		//	{
-		//		auto pConstBufferTemp = GetPixelShaderConstBuffer();
-		//		poDC->VSSetConstantBuffers(0, 1, &pConstBufferTemp);
-		//	}
 	};
 
 	template <typename VS_CONST_BUFER, typename PS_CONST_BUFER>
@@ -93,7 +61,7 @@ namespace rldx {
 
 	public:
 		template <typename SHADER_TYPE>
-		static auto Create(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
+		static auto CreateFromMemoery(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
 		{
 			auto newShaderHandle = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
 
@@ -111,7 +79,7 @@ namespace rldx {
 
 
 		template <typename SHADER_TYPE>
-		static auto Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
+		static auto CreateFromDisk(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{
 			Logger::LogAction(L"Creating Shaders...");
 
@@ -204,7 +172,7 @@ namespace rldx {
 			if (simpleShader == INVALID_ID)
 			{
 				auto newSimpleShaderProgram =
-					DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+					DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 						DxDeviceManager::Device(),
 						LR"(VS_Simple.cso)",
 						LR"(PS_Simple.cso)");
@@ -221,7 +189,7 @@ namespace rldx {
 			if (noTextureShader == INVALID_ID)
 			{
 				auto noTexturesShaderProgram =
-					DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+					DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 						DxDeviceManager::Device(),
 						LR"(VS_Simple.cso)",
 						LR"(PS_NoTextures.cso)"

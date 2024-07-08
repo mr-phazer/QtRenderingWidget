@@ -19,7 +19,7 @@ namespace rldx
 	{
 		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 		{
-			return DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Weighted4.cso)",
 				LR"(PS_Troy.cso)").GetPtr();
@@ -30,7 +30,7 @@ namespace rldx
 	{
 		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 		{
-			return DxMeshShaderProgram::Create<DxMeshShaderProgram>(
+			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
 				LR"(VS_Weighted4.cso)",
 				LR"(PS_Attila_Weigted.cso)").GetPtr();
@@ -41,7 +41,7 @@ namespace rldx
 	{
 		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 		{
-			return DxMeshShaderProgram::Create<DxMeshShaderProgram>
+			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>
 				(
 					poDevice,
 					LR"(VS_Weighted4.cso)",
@@ -56,7 +56,7 @@ namespace rldx
 	public:
 		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
 		{
-			return DxMeshShaderProgram::Create<DxMeshShaderProgram>
+			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>
 				(
 					poDevice,
 					LR"(VS_Weighted4.cso)",
