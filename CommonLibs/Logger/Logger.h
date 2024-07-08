@@ -62,10 +62,12 @@ namespace logging {
 
 #define FULL_FUNC_INFO_W_EXC(message) std::string(__func__) +  std::string(L": Line: ") + std::to_string(__LINE__) + L": " + message
 
-#define LogInfo(message) Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
-#define LogAction(message)  Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
-#define LogActionColor(message)  Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
-#define LogActionColor(message)  Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
+#define LogInfo(message)		Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
+#define LogAction(message)		Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
+#define LogError(message)		Logger::LogActionError( FULL_FUNC_INFO_W(message)  )
+#define LogWarning(message)		Logger::LogActionWarning( FULL_FUNC_INFO_W(message)  )
+#define LogActionColor(message)	Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
+#define LogActionColor(message)	Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
 
 	class WinConsole
 	{
