@@ -15,8 +15,7 @@
 namespace utils {
 
 	std::wstring PopFolderEntries(const std::wstring& inPath, size_t folderCount);
-	std::wstring GetRepoFolderFromExe(const std::wstring& inPath, size_t folderCount);
-
+	std::wstring GetRepoRootFolderFromExe(const std::wstring& inPath);
 
 	std::wstring ToWString(const std::string& str);
 	std::string ToString(const std::wstring& wstr);

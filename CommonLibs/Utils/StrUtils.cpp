@@ -40,7 +40,7 @@ namespace utils {
 		return tempPath;
 	}
 
-	std::wstring GetRepoFolderFromExe(const std::wstring& inPath, )
+	std::wstring GetRepoRootFolderFromExe(const std::wstring& inPath)
 	{
 		return PopFolderEntries(inPath, 2);
 	}
