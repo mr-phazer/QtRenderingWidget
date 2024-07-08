@@ -28,6 +28,6 @@ namespace rldx
 		void EnableVariantMesh(DxVmdNode* node);
 
 		void EnableSlot(DxVmdNode* node);
-		void GetNewVariant(DxVmdNode* node);
+		void GenerateNewVariant(DxVmdNode* node);
 	};
 };

@@ -248,7 +248,7 @@ void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
 
 		case Qt::Key_A:
 		{
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetNewVariant();
+			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GenerateNewVariant()
 		}
 		break;
 

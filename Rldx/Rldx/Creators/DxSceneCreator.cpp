@@ -105,7 +105,7 @@ namespace rldx
 
 		logging::LogAction(L"Done Clearing Existing Assets");
 		poScene->GetVmdManager().LoadVariantMesh(poScene->GetAssetNode(), fileData, gameIdString);
-		poScene->GetVmdManager().GetNewVariant();
+		poScene->GetVmdManager().GenerateNewVariant();
 		poScene->GetSceneRootNode()->UpdateAllBoundBoxes();
 
 		SetCameraAutoFit(poScene);
