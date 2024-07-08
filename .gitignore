@@ -371,3 +371,10 @@ DirectXTK/Src/Shaders/Compiled/
 
 # Do not include compiled shaders with source
 /Rldx/Rldx/RenderResources/ShaderBin/
+/Rldx/Rldx/RenderResources/ShaderBin/PS_Attila_Weigted.cso
+/Rldx/Rldx/RenderResources/ShaderBin/PS_NoTextures.cso
+/Rldx/Rldx/RenderResources/ShaderBin/PS_Simple.cso
+/Rldx/Rldx/RenderResources/ShaderBin/PS_Three_Kingdoms.cso
+/Rldx/Rldx/RenderResources/ShaderBin/PS_Troy.cso
+/Rldx/Rldx/RenderResources/ShaderBin/VS_Simple.cso
+/Rldx/Rldx/RenderResources/ShaderBin/VS_Weighted4.cso

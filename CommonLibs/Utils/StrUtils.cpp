@@ -19,6 +19,32 @@ namespace utils {
 		return converterX.to_bytes(wstr);
 	}
 
+	std::wstring PopFolderEntries(const std::wstring& inPath, size_t folderCount)
+	{
+		std::wstring tempPath = inPath;
+
+
+		for (size_t folder = 0; folder < folderCount; folder++)
+		{
+
+			for (std::wstring::iterator itChar = tempPath.end() - 1; itChar != tempPath.begin(); itChar--)
+			{
+				if (*itChar == L'/' || *itChar == L'\\')
+				{
+					tempPath.erase(itChar, tempPath.end());
+					break;
+				}
+			}
+
+		}
+		return tempPath;
+	}
+
+	std::wstring GetRepoFolderFromExe(const std::wstring& inPath, )
+	{
+		return PopFolderEntries(inPath, 2);
+	}
+
 	std::wstring ToWString(const std::string& str)
 	{
 		using convert_typeX = std::codecvt_utf8<wchar_t>;
