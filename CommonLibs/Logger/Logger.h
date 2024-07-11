@@ -65,6 +65,7 @@ namespace logging {
 #define LogInfo(message)		Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
 #define LogAction(message)		Logger::LogActionInfo( FULL_FUNC_INFO_W(message) )
 #define LogError(message)		Logger::LogActionError( FULL_FUNC_INFO_W(message)  )
+#define LogSucess(message)		Logger::LogActionSucess( FULL_FUNC_INFO_W(message)  )
 #define LogWarning(message)		Logger::LogActionWarning( FULL_FUNC_INFO_W(message)  )
 #define LogActionColor(message)	Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
 #define LogActionColor(message)	Logger::LogSimpleWithColor( FULL_FUNC_INFO_W(message) )
@@ -98,6 +99,7 @@ namespace logging {
 		static void LogActionInfo(const std::wstring& strMsg);
 		static void LogActionWarning(const std::wstring& strMsg);
 		static void LogActionError(const std::wstring& strMsg);
+		static void LogActionSucess(const std::wstring& strMsg);
 		static void LogException(const std::wstring& strMsg, const std::string& exceptionWhat);
 
 		static void WriteToLogFile(const std::wstring& logString);
