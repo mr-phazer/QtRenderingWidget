@@ -25,7 +25,7 @@ namespace rldx {
 		std::unique_ptr<DxScene> m_upoNewScene;
 
 	private:
-		std::unique_ptr<DxScene> InitSceneDX(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB = true, const std::wstring& name = L"");;
+		std::unique_ptr<DxScene> InitSceneDX(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB = true, const std::wstring& m_nodeName = L"");;
 		static void SetCameraAutoFit(rldx::DxScene* poScene);
 		void AddGrid(ID3D11Device* poDevice, rldx::DxMeshShaderProgram* newSimpleShaderProgram);
 

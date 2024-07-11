@@ -10,12 +10,12 @@
 #include "DxSceneCreator.h"
 
 using namespace utils;
+
 namespace rldx
 {
-
-	std::unique_ptr<DxScene> DxSceneCreator::InitSceneDX(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& name)
+	std::unique_ptr<DxScene> DxSceneCreator::InitSceneDX(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& m_nodeName)
 	{
-		auto upoNewScene = std::make_unique<DxScene>(name);
+		auto upoNewScene = std::make_unique<DxScene>(m_nodeName);
 
 		// TODO: remove this mess? Setting the window size in win32 api?
 		//SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
@@ -35,8 +35,8 @@ namespace rldx
 
 		// Create a separate "assset node", so assets can be deleted indepdently of grid
 		auto asssetNode = DxBaseNode::Create(L"Asset Node");
-		upoNewScene->GetSceneRootNode()->AddChild(asssetNode);
-		upoNewScene->m_poAssetNode = asssetNode.get();
+
+		upoNewScene->m_poAssetNode = &upoNewScene->GetSceneRootNode()->AddChild(std::move(asssetNode));
 
 		return std::move(upoNewScene);
 	}
@@ -88,24 +88,21 @@ namespace rldx
 	void DxSceneCreator::AddGrid(ID3D11Device* poDevice, DxMeshShaderProgram* newSimpleShaderProgram)
 	{
 		// make grid node, mesh, fill node, set shaders
-		auto meshNodeGrid = DxMeshNode::Create(L"Grid");
+		auto meshNodeGrid = std::make_unique<DxMeshNode>(L"Grid");
 		auto gridMeshData = DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
 		meshNodeGrid->SetMeshData(gridMeshData, L"Grid Mesh");
 		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 
-		m_upoNewScene->GetSceneRootNode()->AddChild(meshNodeGrid);
 		m_upoNewScene->m_poGridNode = meshNodeGrid.get();
+
+		m_upoNewScene->GetSceneRootNode()->AddChild(std::move(meshNodeGrid));
 	}
 
 	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
-		logging::LogAction(L"Start Clearing Existing Assets");
-		// remove any existing asset
-		poScene->GetAssetNode()->RemoveChildren();
-
-		logging::LogAction(L"Done Clearing Existing Assets");
-		poScene->GetVmdManager().LoadVariantMesh(poScene->GetAssetNode(), fileData, gameIdString);
+		auto DEBUGING__assetNode = poScene->GetAssetNode();
+		poScene->GetVmdManager().LoadVariantMeshIntoNode(poScene->GetAssetNode(), fileData, gameIdString);
 		poScene->GetVmdManager().GenerateNewVariant();
 		poScene->GetSceneRootNode()->UpdateAllBoundBoxes();
 
@@ -115,7 +112,9 @@ namespace rldx
 	// TODO: remove? is this needed anymore, when "addvariantmesh" takes care of all cases??
 	void DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
-		auto modelNodeRmv2 = DxNodeCreator::CreateNode<DxModelNode>(L"ModelNode RMV2");
+		// TODO: REMOVE this line if everything works
+		//auto modelNodeRmv2 = DxNodeCreator::CreateNode<DxModelNode>(L"ModelNode RMV2");
+		auto modelNodeRmv2 = std::make_unique<DxModelNode>(L"ModelNode RMV2");
 
 		auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
 		if (!newPbrShaderCreator) {
@@ -136,7 +135,8 @@ namespace rldx
 		modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);
 		modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
 
-		poScene->GetSceneRootNode()->AddChild(modelNodeRmv2);
+		// TODO:: create in place and edit now-owning pointer
+		poScene->GetSceneRootNode()->AddChild(std::move(modelNodeRmv2));
 
 		SetCameraAutoFit(poScene);
 	}

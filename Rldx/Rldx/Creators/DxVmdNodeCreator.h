@@ -20,7 +20,7 @@ class VariantMeshParser
 		*/
 	}
 
-	static bool IsTag_Attach_SLOT(const pugi::xml_node& xmlNode, wstring& name, wstring& attach_point)
+	static bool IsTag_Attach_SLOT(const pugi::xml_node& xmlNode, wstring& m_nodeName, wstring& attach_point)
 	{
 		auto Pred = [](wchar_t* sz) { return toUpper(sz) == VMDTag::AttachPoint; };
 		xmlNode.find_attribute(Pred);
@@ -34,7 +34,7 @@ class VariantMeshParser
 		auto attr = xmlNode.first_attribute();
 		while (attr)
 		{
-			if (toUpper(attr.name()) == toUpper(VMDTag::AttachPoint))
+			if (toUpper(attr.m_nodeName()) == toUpper(VMDTag::AttachPoint))
 			{
 
 
