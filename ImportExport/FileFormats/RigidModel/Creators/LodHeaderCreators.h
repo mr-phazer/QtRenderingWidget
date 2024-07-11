@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Utils\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 #include "..\Types\Common\FileHeader.h"
 #include "..\Types\Common\LodHeader.h"
+#include "Utils\ByteStream.h"
 
 namespace rmv2 {
 

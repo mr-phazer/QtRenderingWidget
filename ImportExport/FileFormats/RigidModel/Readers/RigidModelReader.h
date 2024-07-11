@@ -21,7 +21,7 @@ namespace rmv2
 
 		std::vector<LODHeaderCommon> ReadLodHeaders(utils::ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
 
-		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
+		ModelBlockCommon ReadModelBlock(utils::ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
 
 		rmv2::MeshBlockCommon ReadMeshBlock(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Utils\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 #include "..\Types\Common\MeshHeaderType5.h"
+#include "Utils\ByteStream.h"
 
 namespace rmv2 {
 

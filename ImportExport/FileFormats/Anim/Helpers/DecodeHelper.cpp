@@ -1,5 +1,5 @@
-#include <Utils\ByteStream.h>
 #include <Quantization\QuantTools.h>
+#include <Utils\ByteStream.h>
 #include "..\Types\Common\QuantMetaTables.h"
 #include "DecodeHelper.h"
 
@@ -43,31 +43,31 @@ namespace anim_file
 
 		switch (encodeId.type)
 		{
-		case TranslationEncodeTypeEnum::Const_Byte3_Trans:
-		case TranslationEncodeTypeEnum::Const_Float3_Trans:
-		{
-			if (m_constTrackIndex >= meta.constTrackFrame.translations.size())
-				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Const track index out of bounds!");
+			case TranslationEncodeTypeEnum::Const_Byte3_Trans:
+			case TranslationEncodeTypeEnum::Const_Float3_Trans:
+			{
+				if (m_constTrackIndex >= meta.constTrackFrame.translations.size())
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Const track index out of bounds!");
 
-			return meta.constTrackFrame.translations[m_constTrackIndex++];
-		}
-		break;
+				return meta.constTrackFrame.translations[m_constTrackIndex++];
+			}
+			break;
 
-		case TranslationEncodeTypeEnum::BindPose_Trans:
-		{
-			if (meta.poSkeletonBindPoseFrame == nullptr) // TODO: maybe not use a pointer, just have param = a reference to a copied object?
-				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
+			case TranslationEncodeTypeEnum::BindPose_Trans:
+			{
+				if (meta.poSkeletonBindPoseFrame == nullptr) // TODO: maybe not use a pointer, just have param = a reference to a copied object?
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose Expected: BindPose==nullptr!");
 
-			if (boneIndex >= meta.poSkeletonBindPoseFrame->translations.size())
-				throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
+				if (boneIndex >= meta.poSkeletonBindPoseFrame->translations.size())
+					throw std::exception("TranslationTrackDecoder::DecodeDynamicTrack(): ERROR: Bindpose track index out of bounds!");
 
-			return meta.poSkeletonBindPoseFrame->translations[boneIndex];
-		}
-		break;
+				return meta.poSkeletonBindPoseFrame->translations[boneIndex];
+			}
+			break;
 
-		case TranslationEncodeTypeEnum::Data_Byte3_Trans:
-		{
-			auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
+			case TranslationEncodeTypeEnum::Data_Byte3_Trans:
+			{
+				auto translationSNORM = quant_tools::GetSNORMFloat3FromSINT84(bytes.GetChunk<int8_t>(3).data());
 
 				// TODO: REMOVE debugging code
 				DEBUG_translations++;
@@ -76,10 +76,10 @@ namespace anim_file
 			}
 			break;
 
-		case TranslationEncodeTypeEnum::Data_Float3_Trans:
-		{
-			sm::Vector3 translation;
-			bytes.Read(&translation, sizeof(sm::Vector3));
+			case TranslationEncodeTypeEnum::Data_Float3_Trans:
+			{
+				sm::Vector3 translation;
+				bytes.Read(&translation, sizeof(sm::Vector3));
 
 				return translation;
 			}
@@ -102,9 +102,9 @@ namespace anim_file
 				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
-			return decodedQuaternion;
-		}
-		break;
+				return decodedQuaternion;
+			}
+			break;
 
 			case RotationEncodeTypeEnum::Const_Word4_Quat:
 			{
@@ -113,18 +113,18 @@ namespace anim_file
 				auto decodedQuaternion = CorrectQuaterionRange(quaternionSNorm, quatRange);
 				decodedQuaternion.Normalize();
 
-			return decodedQuaternion;
-		}
-		break;
+				return decodedQuaternion;
+			}
+			break;
 
-		case RotationEncodeTypeEnum::Const_Float4_Quat:
-		{
-			sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
-			decodedQuaternion.Normalize();
+			case RotationEncodeTypeEnum::Const_Float4_Quat:
+			{
+				sm::Quaternion decodedQuaternion = bytes.TReadElement<DirectX::XMFLOAT4>();
+				decodedQuaternion.Normalize();
 
-			return decodedQuaternion;
-		}
-		break;
+				return decodedQuaternion;
+			}
+			break;
 		}
 
 		throw std::exception((" QuaternionTrackDecoder::DecodeConstTrack: Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(rotationMetaId.type))).c_str());

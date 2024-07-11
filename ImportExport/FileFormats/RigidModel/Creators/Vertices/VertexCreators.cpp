@@ -1,7 +1,6 @@
 #include <Quantization\QuantTools.h>
 #include "..\..\RawStructs\VerticesRaw.h"
 #include "Utils\ByteStream.h"
-#include "..\..\RawStructs\VerticesRaw.h"
 #include "VertexCreators.h"
 
 #include "..\..\Helpers\VertexCAHelpers.inl"

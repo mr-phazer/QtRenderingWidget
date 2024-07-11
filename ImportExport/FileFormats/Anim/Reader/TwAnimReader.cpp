@@ -4,8 +4,6 @@
 
 #include <Quantization\QuantTools.h>
 #include <SimpleMath.h>
-#include "Logger\Logger.h"
-#include "Utils\ByteStream.h"
 #include "..\..\RigidModel\Types\Common\MeshEnumsConstants.h"
 #include "..\Creators\AnimFileHeaderCreator.h"
 #include "..\Creators\BoneTableCreator.h"
@@ -85,8 +83,8 @@ namespace anim_file
 			case ANIM_VERSION_8:
 				return Anim_V8_HeaderFileCommonCreator().Create(inBytes);
 
-		default:
-			throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", std::to_string(version)).c_str());
+			default:
+				throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", std::to_string(version)).c_str());
 		}
 	}
 
@@ -115,12 +113,12 @@ namespace anim_file
 				ReadClip_v7(inBytes);
 				break;
 
-		case AnimVersionEnum::ANIM_VERSION_8:
-			ReadClip_v8(inBytes);
-			break;
+			case AnimVersionEnum::ANIM_VERSION_8:
+				ReadClip_v8(inBytes);
+				break;
 
-		default:
-			throw std::exception(FULL_FUNC_INFO("Unsuported ANIM version.").c_str());
+			default:
+				throw std::exception(FULL_FUNC_INFO("Unsuported ANIM version.").c_str());
 		};
 
 	};
@@ -235,27 +233,27 @@ namespace anim_file
 		{
 			switch (metaTable.rotationTrackInfo[iBone].GetTrackSourceState())
 			{
-			case BoneTrackDataSourceEnum_v5_v7::FrameData:
-			{
-				outFrame.rotations[iBone] = quant_tools::GetSNormFloat4FromSignedWord4(inBytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
-			}
-			break;
+				case BoneTrackDataSourceEnum_v5_v7::FrameData:
+				{
+					outFrame.rotations[iBone] = quant_tools::GetSNormFloat4FromSignedWord4(inBytes.TReadElement<DirectX::PackedVector::XMSHORT4>());
+				}
+				break;
 
-			case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
-			{
-				if (pConstTrackFrame == nullptr) throw constTrackErrorException;
+				case BoneTrackDataSourceEnum_v5_v7::ConstTrack:
+				{
+					if (pConstTrackFrame == nullptr) throw constTrackErrorException;
 
-				outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
-			}
-			break;
+					outFrame.rotations[iBone] = pConstTrackFrame->rotations[metaTable.rotationTrackInfo[iBone].GetConstTrackIndex()];
+				}
+				break;
 
-			case BoneTrackDataSourceEnum_v5_v7::BindPose:
-			{
-				if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
+				case BoneTrackDataSourceEnum_v5_v7::BindPose:
+				{
+					if (pBindPoseFrame == nullptr) throw bindPoseErrorException;
 
-				outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
-			}
-			break;
+					outFrame.rotations[iBone] = pBindPoseFrame->rotations[iBone];
+				}
+				break;
 			};
 		};
 

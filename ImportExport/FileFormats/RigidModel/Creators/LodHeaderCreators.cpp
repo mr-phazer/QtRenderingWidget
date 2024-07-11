@@ -1,10 +1,11 @@
-#include "Utils\ByteStream.h"
 #include "..\Types\Common\MeshEnumsConstants.h"
 #include "LodHeaderCreators.h"
+#include "Utils\ByteStream.h"
 
 #include "..\RawStructs\RawLodHeaders.h"
 
 using namespace rmv2;
+using namespace utils;
 
 LODHeaderCommon LodHeader_V6_Creator::Create(ByteStream& bytes)
 {

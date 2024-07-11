@@ -2,10 +2,10 @@
 
 // TODO: Forward declare anything possible
 #include <SimpleMath.h>
-#include "Utils\ByteStream.h"
 #include "..\Types\Common\AnimFrameCommon.h"
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\TwAnimFile.h"
+#include "Utils\ByteStream.h"
 
 namespace anim_file
 {
