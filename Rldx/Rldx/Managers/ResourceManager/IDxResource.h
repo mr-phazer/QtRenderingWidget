@@ -16,5 +16,15 @@ namespace rldx {
 		Animation
 	};
 
-	class IDxResource : public TIdentifiable<ResourceTypeEnum> {};
+	class IDxResource : public TIdentifiable<ResourceTypeEnum>
+	{
+	public:
+		IDxResource() = default;
+		IDxResource(ResourceTypeEnum type, const std::wstring& typeString, const std::wstring& name)
+		{
+			SetType(type);
+			SetTypeString(typeString);
+			SetName(name);
+		}
+	};
 }; // namespce rldx
