@@ -69,7 +69,7 @@ namespace rldx {
 
 		struct SlotData
 		{
-			std::wstring name = L"";
+			std::wstring m_nodeName = L"";
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			std::wstring attcachPointName;
@@ -84,10 +84,10 @@ namespace rldx {
 		VMDNodeData vmdNodeData;
 
 		DxVmdNode() : DxModelNode(L"Unnamed DxVmdNode") {}
-		DxVmdNode(const std::wstring& name) : DxModelNode(name) {}
+		DxVmdNode(const std::wstring& m_nodeName) : DxModelNode(m_nodeName) {}
 
 	public:
-		using SharedPtr = std::shared_ptr<DxVmdNode>;
+		using UniquePtr = std::unique_ptr<DxVmdNode>;
 
 	};
 

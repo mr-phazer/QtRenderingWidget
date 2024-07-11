@@ -20,20 +20,25 @@ namespace rldx {
 		MeshNode,
 		ModelNode,
 		VmdNode,
+		VariantMeshNode,
+		DeformerNode
 	};
 
+	// forward decl
 	class IRenderBucket;
-	class DxDeformerNode; // forward decl, as DxDeformerNode is derived DxBaseNode
-
+	class DxDeformerNode;
+	class DxVmdNode;
+	class DxVariantMeshNode;
+	class DxModelNode;
 
 	class DxNodeCreator
 	{
 	public:
 		template<typename NODE_TYPE>
-		static std::shared_ptr<NODE_TYPE> CreateNode(const std::wstring& name = "")
+		static std::shared_ptr<NODE_TYPE> CreateNode(const std::wstring& m_nodeName = "")
 		{
 			auto newInstance = std::make_shared<NODE_TYPE>();
-			newInstance->SetName(name);
+			newInstance->SetName(m_nodeName);
 			return newInstance;
 		}
 	};
@@ -41,16 +46,19 @@ namespace rldx {
 
 	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
+	public:
+		enum class DrawStateEnum : bool { DontDraw = false, Draw = true };
+		using UniquePtr = std::unique_ptr<DxBaseNode>;
+
+	private:
+		DrawStateEnum m_drawState = DrawStateEnum::Draw;
+		DrawStateEnum m_BoundingBoxDrawState = DrawStateEnum::Draw;
+
 		DxMeshRenderingData m_boundingBoxMesh;
 		DxMeshRenderingData m_nodeMesh;
 
-	public:
-		enum class DrawStateEnum : bool { DontDraw = false, Draw = true };
-		using SharedPtr = std::shared_ptr<DxBaseNode>;
-
-	private:
 		// Tree structure 
-		std::vector<SharedPtr> m_children;
+		std::vector<std::unique_ptr<DxBaseNode>> m_children;
 		DxBaseNode* m_wpoParent = nullptr;
 
 		// Node geomtry
@@ -61,75 +69,74 @@ namespace rldx {
 		// init to very small extend, but not zero, as it will/might cause problems with bounding box
 		DirectX::BoundingBox m_BoundBox = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 
-		DrawStateEnum m_drawState = DrawStateEnum::Draw;
-		DrawStateEnum m_BoundingBoxDrawState = DrawStateEnum::DontDraw;
-
 	public:
-		DxBaseNode() : TIdentifiable<SceneNodeTypeEnum>(L"Unames DxBaseNode") {}
-		DxBaseNode(const std::wstring& name) : TIdentifiable<SceneNodeTypeEnum>(name) {}
+		DxBaseNode()
+		{
+			SetType(SceneNodeTypeEnum::MeshNode);
+			SetTypeString(L"DxMeshNode");
+		}
+
+		DxBaseNode(const std::wstring& name)
+		{
+			DxBaseNode();
+			SetName(name);
+		}
+
 		virtual ~DxBaseNode() = default;
 
+		template<typename T>
+		static std::unique_ptr<T> TCreateTreeNode(std::wstring nodeName);
 
 	public:
 		// TODO: make constructor, to force derived classes to set NodeType Enum / Type Description String
 		// TODO: make: "DxBaseNode(SceneNodeTypeEnum type, std::wstring Name)
 
-		DirectX::BoundingBox& GetNodeBoundingBox() { return m_BoundBox; }
+		DirectX::BoundingBox& GetNodeBoundingBox();
 
 		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
-
 		void SetBoundingBox(const DirectX::BoundingBox& inBB);
 
-		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
-		{
-			auto debug_break_1 = 1;;
-		};
-
+		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex);;
 		virtual void SetDeformerNodeRecursive(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex);
 
 		virtual void SetAttachBone(int32_t boneIndex) {};
+		static UniquePtr Create(const std::wstring& m_nodeName = L"");
 
-		static SharedPtr Create(const std::wstring& name = L"")
-		{
-			auto newInstance = std::make_shared<DxBaseNode>();
-			newInstance->SetName(name);
-			return newInstance;
-		}
 
-		virtual void SetName(const std::wstring& strName)
-		{
-			name = this->GetTypeString() + L" # " + strName + L" # " + std::to_wstring(GetId());
-		}
+		// TODOD: should m_nodeName be here, when it derived from TIdentifiable that also has m_nodeName?
+		std::wstring GetName() const;
 
-		std::wstring GetName() const
-		{
-			return name;
-		}
+		DxBaseNode* GetParent();
+		const DxBaseNode* GetParent() const;
 
-		DxBaseNode* GetParent()
-		{
-			return m_wpoParent;
-		}
+		size_t GetChildCount() const;
 
-		const DxBaseNode* GetParent() const
+		// TODO: check that this shit actually work, calling the over overload and not itself
+		/*template <typename T>
+		T* AddChild(std::unique_ptr<T>&& spoChild)
 		{
-			return m_wpoParent;
-		}
+			return AddChild(static_cast<std::unique_ptr<T>&>(spoChild));
+		}*/
 
-		size_t GetChildCount() const
-		{
-			return m_children.size();
-		}
 
-		void AddChild(SharedPtr spoChild)
+		/// <summary>
+		/// Adds a child to tree, takes ownership of incoming node, previous instances will be invalid
+		/// </summary>
+		/// <typeparam name="T">node type</typeparam>
+		/// <param name="spoNode">node, unique ptr by value</param>
+		/// <returns>non-owning reference to the add child</returns>
+		template <typename T>
+		T& AddChild(std::unique_ptr<T> spoNode)
 		{
-			if (spoChild == nullptr)
+			if (!spoNode)
 			{
-				return;
+				throw std::exception("Fatal Error: spoChild == nullptr");
 			}
 
-			spoChild->SetParent(this);
-			m_children.push_back(spoChild);
+			spoNode->SetParent(this);
+			m_children.push_back(std::move(spoNode));
+
+			return *static_cast<T*>(m_children.back().get());
 		}
 
 		DxBaseNode* GetChildByPtr(DxBaseNode* poChild)
@@ -187,17 +194,17 @@ namespace rldx {
 			return nullptr;
 		};
 
-		const std::vector<SharedPtr>& GetChildren() const
+		const std::vector<UniquePtr>& GetChildren() const
 		{
 			return m_children;
 		}
 
-		std::vector<SharedPtr>& GetChildren()
+		std::vector<UniquePtr>& GetChildren()
 		{
 			return m_children;
 		}
 
-		void RemoveChild(const SharedPtr& spoChild)
+		void RemoveChild(const UniquePtr& spoChild)
 		{
 			for (size_t i = 0; i < m_children.size(); i++)
 			{
@@ -209,6 +216,9 @@ namespace rldx {
 			}
 
 		};
+
+		void RemoveThis();
+		void RemoveNode(DxBaseNode* poChild);
 
 		void RemoveChild(DxBaseNode* poChild)
 		{
@@ -238,6 +248,18 @@ namespace rldx {
 		void RemoveChildren()
 		{
 			m_children.clear();
+		}
+
+		static void RemoveChildrenRecursive(DxBaseNode* node)
+		{
+			if (!node) return;
+
+			for (auto& itChild : node->GetChildren())
+			{
+				RemoveChildrenRecursive(itChild.get());
+			}
+
+			node->RemoveChildren();
 		}
 
 		NodeTransform& Transform() { return m_nodeTransform; };
@@ -314,50 +336,32 @@ namespace rldx {
 		{
 			m_wpoParent = poParent;
 		}
-
-	private:
-		std::wstring GetTypeString() const override;
-		SceneNodeTypeEnum GetType() const override;
 	};
 
-	template<typename NODE_TYPE, typename WORK_TYPE>
-	inline void DxBaseNode::DoTreeWOrk(NODE_TYPE* rootNode, const WORK_TYPE&& WorkFunc)
+	template<typename T>
+	inline std::unique_ptr<T> DxBaseNode::TCreateTreeNode(const std::wstring nodeName)
 	{
-		//std::vector<NODE_TYPE*> nodeStack;
-		//nodeStack.push_back(poNode);
+		SceneNodeTypeEnum type = SceneNodeTypeEnum::Unknown;
 
-		//while (nodeStack.size() > 0)
-		//{
-		//	NODE_TYPE* node = nodeStack.back(); // get copy of last element (raw pointers)
-		//	nodeStack.pop_back(); // remove that last element from "stack
+		// check for supported types at compile-time
+		static_assert(
+			std::is_same<T, DxBaseNode>::value ||
+			std::is_same<T, DxMeshNode>::value ||
+			std::is_same<T, DxModelNode>::value ||
+			std::is_same<T, DxVmdNode>::value ||
+			std::is_same<T, DxVariantMeshNode>::value,
+			"Fatal Error: Unknown type");
 
-		//	WorkFunc(node);
+		// assign all the different type enum value based on "is_same" checks
+		if (std::is_same<T, DxBaseNode>::value)	type = SceneNodeTypeEnum::BaseNode;
+		if (std::is_same<T, DxMeshNode>::value)	type = SceneNodeTypeEnum::MeshNode;
+		if (std::is_same<T, DxModelNode>::value)	type = SceneNodeTypeEnum::ModelNode;
+		if (std::is_same<T, DxVmdNode>::value)	type = SceneNodeTypeEnum::VmdNode;
+		if (std::is_same<T, DxVariantMeshNode>::value)	type = SceneNodeTypeEnum::VariantMeshNode;
 
-		//	for (auto& itSpNode : node->GetChildren()) {
-		//		nodeStack.push_back(itSpNode.get());
-		//	}
-		//}
+		auto newNode = std::make_unique<T>(nodeName);
+
+		return newNode;
 	}
 
-
 }; // namespace rldx
-
-/// <summary>
-/// Work can do stuff, as add to queue, update stuff, and other thing (member params set in constrcutor)
-/// </summary>
-//class INodeWorker
-//{
-//public:
-//	virtual void DoWork(TreeNode*) = 0;
-//};
-
-//class TreeNode
-//{
-//public:
-//	/// <summary>
-//	/// Recursiveky go trough the tree (sceneGraph)
-//	/// for ecah node, all "worker" are "applied"
-//	/// </summary>
-//	void ForEachNode(std::vector<INodeWorker*> nodeWorkes);
-//};
-

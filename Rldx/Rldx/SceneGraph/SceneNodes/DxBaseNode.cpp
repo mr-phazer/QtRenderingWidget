@@ -8,16 +8,6 @@
 
 namespace rldx
 {
-	std::wstring DxBaseNode::GetTypeString() const
-	{
-		return L"DxBaseNode";
-	}
-
-	SceneNodeTypeEnum DxBaseNode::GetType() const
-	{
-		return SceneNodeTypeEnum::EmptyNode;
-	}
-
 	void DxBaseNode::SetBoundingBox(const DirectX::BoundingBox& inBB)
 	{
 		GetNodeBoundingBox() = inBB;
@@ -40,6 +30,16 @@ namespace rldx
 			m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
 		m_boundingBoxMesh.meshName = L"BoundNox";
 		m_boundingBoxMesh.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
+	}
+
+	void DxBaseNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
+	{
+		// does nothing here, as it has not mesh
+	}
+
+	DirectX::BoundingBox& DxBaseNode::GetNodeBoundingBox()
+	{
+		return m_BoundBox;
 	}
 
 	void DxBaseNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint)
@@ -75,6 +75,51 @@ namespace rldx
 		{
 			itChild->SetDeformerNodeRecursive(poDeformerNode, boneIndex);
 		}
+	}
+
+	DxBaseNode::UniquePtr DxBaseNode::Create(const std::wstring& name)
+	{
+		auto newInstance = std::make_unique<DxBaseNode>(name);
+
+		return std::move(newInstance);
+	}
+
+	// TODOD: should m_nodeName be here, when it derived from TIdentifiable that also has m_nodeName?
+
+	const DxBaseNode* DxBaseNode::GetParent() const
+	{
+		return m_wpoParent;
+	}
+
+	DxBaseNode* DxBaseNode::GetParent()
+	{
+		return m_wpoParent;
+	}
+
+	size_t DxBaseNode::GetChildCount() const
+	{
+		return m_children.size();
+	}
+
+
+
+	void DxBaseNode::RemoveThis()
+	{
+		auto parent = GetParent();
+		if (parent)
+		{
+			parent->RemoveChild(this);
+		}
+	}
+
+	void DxBaseNode::RemoveNode(DxBaseNode* poChild)
+	{
+		if (poChild == nullptr) return;
+
+		auto parent = GetParent();
+		if (!parent) return;
+
+		parent->RemoveChild(this);
 	}
 
 	void DxBaseNode::Update(float timeElapsed)

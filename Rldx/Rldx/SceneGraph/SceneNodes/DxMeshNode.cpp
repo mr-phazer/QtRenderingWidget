@@ -11,13 +11,11 @@
 
 namespace rldx
 {
-	DxMeshNode::SharedPtr DxMeshNode::Create(const std::wstring& name)
+	DxMeshNode::UniquePtr DxMeshNode::Create(const std::wstring& name)
 	{
-		auto newMeshNode = std::shared_ptr<DxMeshNode>(new DxMeshNode);
-		newMeshNode->SetName(name);
-
+		auto newMeshNode = std::make_unique<DxMeshNode>(name);
 		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
-		return newMeshNode;
+		return std::move(newMeshNode);
 	}
 
 	void DxMeshNode::Clone(DxMeshRenderingData& clone) const {

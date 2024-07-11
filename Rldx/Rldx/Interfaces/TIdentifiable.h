@@ -23,7 +23,6 @@ namespace rldx {
 	private: // in C++ is convention so seperate method from variable with and access modifier
 		static IntId GetNextId() { return sm_nextId++; }
 
-
 	private:
 		IntId m_id = INVALID_ID;
 		static IntId sm_nextId;
@@ -33,19 +32,24 @@ namespace rldx {
 	class TIdentifiable : public IdentifiableBase
 	{
 	public:
-		TIdentifiable(const std::wstring& name) : IdentifiableBase(), name(name) {}
-
-		//TODO: have private default constructor, to force derived classes to set Type Enum/Type description in the constructor
 		TIdentifiable();
 		virtual ~TIdentifiable();
 
 		// TODO: Scrap these, and make the derived classes set Type Enum/Type description in the constructor
-		virtual std::wstring GetTypeString() const { return L"TIdentifiable<T>"; }
-		virtual KEY_TYPE GetType() const = 0;
-		virtual std::wstring GetIdString() const { return GetTypeString() + L"_" + std::to_wstring(GetId()); }
+		std::wstring GetName() const { return m_name; }
+		std::wstring GetTypeString() const { return m_typeString; }
+		std::wstring GetIdString() const { return GetTypeString() + L"_" + std::to_wstring(GetId()); }
+		KEY_TYPE GetType() const { return m_nodeType; }
 
 	protected:
-		std::wstring name = L"Unnamed_Object";
+		void SetType(KEY_TYPE type) { m_nodeType = type; }
+		void SetTypeString(const std::wstring& typeString) { m_typeString = typeString; }
+		void SetName(const std::wstring& name) { m_name = name; }
+
+	private:
+		std::wstring m_name = L"Unnamed_Object";
+		std::wstring m_typeString = L"TIdentifiable<T>";
+		KEY_TYPE m_nodeType;
 	};
 
 	template<typename KEY_TYPE>

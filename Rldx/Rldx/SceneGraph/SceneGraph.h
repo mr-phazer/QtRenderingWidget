@@ -14,7 +14,7 @@ namespace rldx {
 	{
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ -1,-1,-1 }, { 1,1,1 });
-		DxBaseNode::SharedPtr m_vmdRootNode = DxBaseNode::Create(L"RootNode");
+		DxBaseNode::UniquePtr m_vmdRootNode = DxBaseNode::Create(L"RootNode");
 
 		std::vector<DxBaseNode*> nodeLookUptable;
 
@@ -33,7 +33,7 @@ namespace rldx {
 		/// <summary>
 		/// Fetches all "
 		/// </summary>
-		/// <param name="pDestRenderBucket"></param>
+		/// <param m_nodeName="pDestRenderBucket"></param>
 		void FillRenderBucket(IRenderBucket* pDestRenderBucket);
 
 		void AddNodeToLinearIndexTable(DxBaseNode* node);

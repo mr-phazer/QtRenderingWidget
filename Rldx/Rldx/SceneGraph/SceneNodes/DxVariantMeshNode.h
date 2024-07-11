@@ -26,14 +26,29 @@ namespace rldx
 		DxDeformerNode* m_poDeformerNode = nullptr;
 
 	public:
-		DxVariantMeshNode() : DxModelNode(L"Unnamed DxVariantMeshNode") {}
+		DxVariantMeshNode()
+		{
+			SetType(SceneNodeTypeEnum::VariantMeshNode);
+			SetTypeString(L"DxVariantMeshNode");
+
+		}
+
+
+		virtual ~DxVariantMeshNode() {
+			auto DEBUG_BREAK = 1;
+		}
 
 		DxVariantMeshNode(const std::wstring& nodeName, DxDeformerNode* poDeformerNode)
 			:
 			m_poDeformerNode(poDeformerNode)
 		{
+			DxVariantMeshNode();
 			SetName(nodeName);
-			InitAnimation();
+
+			if (m_poDeformerNode)
+			{
+				InitAnimation();
+			}
 		};
 
 		void SetModels(const std::vector<DxModelNode*>& modelsIn)

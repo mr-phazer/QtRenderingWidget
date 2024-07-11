@@ -15,9 +15,12 @@ namespace rldx
 			itModelData->FlushModelMeshesToRenderBucked(pRenderQueue);
 		}
 
+		if (!m_poDeformerNode) return;
+
 		// add skeleton "stick figure" mesh from deformer node
-		if (m_poDeformerNode->GetDrawState() == DrawStateEnum::Draw)
+		if (m_poDeformerNode->GetDrawState() == DrawStateEnum::Draw) {
 			pRenderQueue->AddItem(&m_poDeformerNode->MeshRenderData());
+		}
 	};
 }; // namespace rldx
 

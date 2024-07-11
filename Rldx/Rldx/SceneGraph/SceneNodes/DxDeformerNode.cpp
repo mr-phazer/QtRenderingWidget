@@ -15,10 +15,16 @@ using namespace utils;
 
 namespace rldx
 {
-	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& name)
+	DxDeformerNode::~DxDeformerNode()
+	{
+		DxBaseNode::RemoveNode(this);
+	}
+
+	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& m_nodeName)
 	{
 		auto newMeshNode = std::make_unique<DxDeformerNode>();
-		newMeshNode->SetName(name);
+
+		// TODO: remove?
 		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
 
@@ -40,7 +46,7 @@ namespace rldx
 			rldx::DxDeviceManager::Device(),
 			m_skeleton);
 
-		SetMeshData(skeletonMesh, L"Skeleton Mesh");
+		SetMeshData(skeletonMesh, L"Skeleton Mesh: " + m_skeleton.GetName());
 
 		// TODO: put this into a virtual void DxBaseNode::UpdateBoundingBox(DxCommonMeshData&)
 		DirectX::BoundingBox bbout;
