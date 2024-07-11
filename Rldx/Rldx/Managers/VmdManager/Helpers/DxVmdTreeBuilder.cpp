@@ -16,24 +16,25 @@ void SetAttachPointName(DxVmdNode* node)
 	if (node->vmdNodeData.slotData.attcachPointName.empty())
 	{
 		node->vmdNodeData.slotData.attcachPointName
-			= parentNode->vmdNodeData.slotData.attcachPointName; // get the parent's attach point name
+			= parentNode->vmdNodeData.slotData.attcachPointName; // get the parent's attach point m_nodeName
 	}
 }
 
 void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
-	DxVmdNode::SharedPtr spoNewSceneChild;
+	DxVmdNode* spoNewSceneChild = nullptr;
 
 	if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMesh))
 	{
-		spoNewSceneChild = std::make_shared<DxVMDVariantMeshNode>(xmlNode);
+		auto newVariantMeshNode = std::make_unique<DxVMDVariantMeshNode>(xmlNode);
+		spoNewSceneChild = &sceneGraphNode->AddChild(std::move(newVariantMeshNode));
 		DxMaterialInfoReader(&spoNewSceneChild->vmdNodeData).Parse(); // -- Load material info			
-		sceneGraphNode->AddChild(spoNewSceneChild);
+
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::Slot))
 	{
-		spoNewSceneChild = std::make_shared<DxVMDSlotNode>(xmlNode);
-		sceneGraphNode->AddChild(spoNewSceneChild);
+		auto newSlotNode = std::make_unique<DxVMDSlotNode>(xmlNode);
+		spoNewSceneChild = &sceneGraphNode->AddChild(std::move(newSlotNode));
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMeshReference))
 	{
@@ -44,12 +45,12 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 		// TODO: maybe create a "universal" node type that can handle any type of data, so the VMD can saved from this tree
 	}
 
-	SetAttachPointName(spoNewSceneChild.get());
+	SetAttachPointName(spoNewSceneChild);
 
 	for (auto& itXmlChild : xmlNode.children())
 	{
 		if (spoNewSceneChild) {
-			Build(spoNewSceneChild.get(), itXmlChild);
+			Build(spoNewSceneChild, itXmlChild);
 		}
 	}
 }

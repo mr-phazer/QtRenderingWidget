@@ -1,5 +1,6 @@
 #pragma once
 
+#include <CommonLibs\Logger\logger.h>
 #include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
 #include "..\..\..\..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
@@ -32,7 +33,7 @@ namespace rldx
 			{
 				GetMaterialsFromRmv2();
 			}
-			else if (CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::WSmodel))
+			else if (utils::CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::WSmodel))
 			{
 				GetMaterialsWSModel();
 			}
@@ -46,11 +47,18 @@ namespace rldx
 			}
 
 			auto bytesRmv2 = DxResourceManager::GetFile(m_pVmdModeData->varintMeshData.modelPath);
+			if (!bytesRmv2.IsValid())
+			{
+				logging::LogWarning(L"Failed to read RMV2 file: " + m_pVmdModeData->varintMeshData.modelPath);
+				return;
+			}
+
 			auto Rmv2File = rmv2::RigidModelReader().Read(bytesRmv2);
 
 			if (bytesRmv2.GetBufferSize() == 0)
 			{
 				m_pVmdModeData->varintMeshData.wsModelData.geometryPath = L"";
+				logging::LogWarning(L"Issue After Loading RMV2 file, dest buffer empty." + m_pVmdModeData->varintMeshData.modelPath);
 				return;
 			}
 
