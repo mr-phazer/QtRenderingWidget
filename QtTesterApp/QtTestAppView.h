@@ -19,6 +19,5 @@ public:
 	void InitRenderView_DEBUG();
 
 protected:
-	void dragEnterEvent(QDragEnterEvent* event)  override;
-	void dropEvent(QDropEvent* event) override;
+
 };

@@ -5,7 +5,6 @@
 #include <qdockwidget.h>
 #include <QFileInfo>
 #include <qlayout.h>
-#include <QMimeData>
 
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
@@ -29,6 +28,7 @@
 
 // TODO: REMOVE WHEN WORKING, make neater debugging stuff
 #include <iostream>
+#include <qcoreapplication.h>
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h" // TODO: change this, this is ugly, though I guess fine for testing.
 
 using namespace utils;
@@ -36,11 +36,7 @@ using namespace utils;
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
 {
-
-	setAcceptDrops(true);
-
-	using namespace logging;
-	Logger::LogActionSuccess(L"Starting the program.");
+	logging::LogAction(L"Starting the program.");
 	setupUi(this);
 
 	// TODO: maybe not have this constructor !!!! even for test program
@@ -74,36 +70,40 @@ QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 	return listPaths;
 }
 
-// TODO: REMOVE and cleanup
+// TODO: REMOVE and cleanup 
 void QtMainWindowView::InitRenderView_DEBUG()
 {
 	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
 	// Or really, the testerapp is not meant to run in Release anyway.
 	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
+	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter); // TODO: in release, this isn't set, for complex reasons
 
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
 	auto ptestData2 = &test_app_data::testData_WH3_WSMODEL_2;
 
 	auto qAssetPath = QString::fromStdWString(ptestData->assetFolder);
 
+	// TODO: move all the ugly stuff into a CONTROLLER, if this ever becomes a proper app
 	rldx::DxResourceManager::SetGameAssetFolder(qAssetPath.toStdWString());
 	QString gameIdString = QString::fromStdWString(ptestData->gameId);
+	QString exeFolder = QCoreApplication::applicationDirPath();
 
-	QString globalAssetFolder = QString::fromStdWString(LR"(I:\Coding\Repos\QtRenderingWidget\Rldx\Rldx\RenderResources\)");
+	auto repoFolder = QString::fromStdWString(GetRepoRootFolderFromExe(exeFolder.toStdWString()));
+
+	QString globalAssetFolder = repoFolder + QString::fromStdWString(LR"(/Rldx/Rldx/RenderResources/)");
 	SetAssetFolder(&globalAssetFolder);
 
-	QString globalLogFolder = QString::fromStdWString(LR"(c:\temp\)");
+	QString globalLogFolder = repoFolder + QString::fromStdWString(LR"(/log/)");
 	SetLogFolder(&globalLogFolder);
 
-	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
 	if (!m_renderWidget1)	return;
 
-	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
 	if (!renderWidget2)	return;
 
-	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
-	if (!renderWidget2)	return;
+	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	if (!renderWidget3)	return;
 
 	ByteStream bytes(ptestData->filePath);
 	QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
@@ -117,10 +117,6 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	dockWidget->setWidget(renderWidget2);
 	addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
 
-
-
-
-
 	dockWidget = new QDockWidget(tr("Dock Widget"), this);
 	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
 								Qt::RightDockWidgetArea);
@@ -128,36 +124,5 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	dockWidget->setWidget(renderWidget3);
 	addDockWidget(Qt::RightDockWidgetArea, dockWidget);
 
-
 	setCentralWidget(m_renderWidget1); // add widget as the central widget in the QMainWindow 
-
-}
-
-void QtMainWindowView::dragEnterEvent(QDragEnterEvent* event)
-{
-	event->acceptProposedAction();
-}
-
-void QtMainWindowView::dropEvent(QDropEvent* event)
-{
-	// Handle drop event (e.g., process dropped file)
-	// TODO:: move this code to the CONTROLLER, emit "ItemDropped" and have the controller handle that event with this code
-	const QMimeData* mimeData = event->mimeData();
-	if (mimeData->hasUrls()) {
-		QList<QUrl> urls = mimeData->urls();
-		for (const QUrl& url : urls)
-		{
-			auto filePath = url.toLocalFile().toStdWString();
-
-			ByteStream bytes(filePath);
-			QString fileName2 = QString::fromStdWString(filePath);
-			QByteArray qBytes2((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
-			QString outErrorString;
-
-			AddNewPrimaryAsset(m_renderWidget1, &fileName2, &qBytes2, &outErrorString);
-
-			break; // only read one file, for now
-		}
-	}
-	event->acceptProposedAction();
 }
