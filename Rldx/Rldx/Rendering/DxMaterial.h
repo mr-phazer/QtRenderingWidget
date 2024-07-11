@@ -107,7 +107,7 @@ namespace rldx {
 			for (auto& tex : data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check
-				auto diskPath = ToWString(tex.texturePath);
+				auto diskPath = utils::ToWString(tex.texturePath);
 				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
 				newMaterial->PathHash() += std::string(tex.texturePath);
 			};

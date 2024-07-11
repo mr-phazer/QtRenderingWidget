@@ -5,6 +5,8 @@
 #include "..\..\DxDeviceManager.h"
 #include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
+using namespace utils;
+
 // TODO: remove?
 //void rldx::DxVmdNodeAllocator::AllocateDxBuffers(DxVmdNode* sceneVmdNode)
 //{

@@ -31,7 +31,7 @@ namespace rldx {
 
 	public:
 		std::unique_ptr<DxScene> Create(HWND nativeWindHande, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::wstring& gameIdString) override;
-		static void AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString);
-		static void AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString);
+		static void AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, utils::ByteStream& fileData, const std::wstring& gameIdString);
+		static void AddModel(ID3D11Device* poDevice, DxScene* poScene, utils::ByteStream& fileData, const std::wstring& gameIdString);
 	};
 }

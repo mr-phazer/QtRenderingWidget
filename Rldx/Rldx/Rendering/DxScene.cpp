@@ -7,6 +7,7 @@
 #include "DxMeshRenderBucket.h"
 
 using namespace rldx;
+using namespace utils;
 
 void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {

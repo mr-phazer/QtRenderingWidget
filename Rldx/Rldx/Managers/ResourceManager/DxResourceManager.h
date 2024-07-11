@@ -24,7 +24,6 @@ namespace skel_anim {
 }
 
 namespace rldx {
-	using namespace logging;
 
 	// forward declarations
 

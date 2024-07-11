@@ -5,6 +5,9 @@
 #include "..\Rendering\DxTexture.h"
 #include "Utils\ByteStream.h"
 
+using namespace std;
+using namespace utils;
+
 namespace rldx
 {
 	using namespace std;

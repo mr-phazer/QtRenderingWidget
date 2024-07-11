@@ -28,7 +28,7 @@ namespace rldx
 
 		void Parse()
 		{
-			if (CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::RigidModelV2))
+			if (utils::CompareExtension(m_pVmdModeData->varintMeshData.modelPath, FileExtensions::RigidModelV2))
 			{
 				GetMaterialsFromRmv2();
 			}

@@ -14,10 +14,13 @@
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\QuantMetaTables.h"
 #include "..\Types\Common\TwAnimFile.h"
+#include "Logger\Logger.h"
+#include "Utils\ByteStream.h"
+
+using namespace utils;
 
 namespace anim_file
 {
-	using namespace utils;
 	AnimFile TwAnimFileReader::Read(ByteStream& inBytes, const AnimFile* animFileBindPose) {
 
 		m_poBindPose = animFileBindPose;

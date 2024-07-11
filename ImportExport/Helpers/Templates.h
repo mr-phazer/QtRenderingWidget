@@ -4,7 +4,7 @@
 #include <memory>
 #include "Utils\ByteStream.h"
 #include "..\..\Rldx\Rldx\Helpers\StringKeyMap.h"
-using namespace utils;
+#include "Utils\ByteStream.h"
 
 //////////////////////////////////////////////////////////////////////////
 namespace templates
@@ -13,7 +13,7 @@ namespace templates
 	template <typename DATA_TYPE>
 	class TCreator
 	{
-		virtual DATA_TYPE Create(ByteStream& stream) = 0;
+		virtual DATA_TYPE Create(utils::ByteStream& stream) = 0;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

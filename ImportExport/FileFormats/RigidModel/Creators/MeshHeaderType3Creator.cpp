@@ -3,6 +3,7 @@
 
 
 using namespace rmv2;
+using namespace utils;
 
 MeshHeaderType3 MeshHeaderType3Creator::Create(ByteStream& bytes)
 {

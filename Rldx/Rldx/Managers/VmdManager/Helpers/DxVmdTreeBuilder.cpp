@@ -3,6 +3,7 @@
 
 using namespace rldx;
 using namespace rmv2;
+using namespace utils;
 
 void SetAttachPointName(DxVmdNode* node)
 {

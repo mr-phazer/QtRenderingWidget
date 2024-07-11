@@ -4,8 +4,6 @@
 
 namespace rldx {
 
-	using namespace utils;
-
 	using IntId = uint32_t;
 	static const IntId INVALID_ID = ~static_cast<IntId>(0);
 

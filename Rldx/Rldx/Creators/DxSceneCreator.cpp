@@ -9,6 +9,7 @@
 #include "..\SceneGraph\SceneNodes\DxVmdNodes.h"
 #include "DxSceneCreator.h"
 
+using namespace utils;
 namespace rldx
 {
 

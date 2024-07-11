@@ -31,6 +31,8 @@
 #include <iostream>
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h" // TODO: change this, this is ugly, though I guess fine for testing.
 
+using namespace utils;
+
 QtMainWindowView::QtMainWindowView(QWidget* parent)
 	: QMainWindow(parent)
 {

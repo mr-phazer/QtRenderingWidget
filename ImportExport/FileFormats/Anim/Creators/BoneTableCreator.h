@@ -8,7 +8,7 @@ namespace anim_file
 	class BoneTableCreator
 	{
 	public:
-		BoneTable Create(ByteStream& bytes, size_t boneCount)
+		BoneTable Create(utils::ByteStream& bytes, size_t boneCount)
 		{
 			BoneTable outBoneTable;
 			outBoneTable.bones.resize(boneCount);

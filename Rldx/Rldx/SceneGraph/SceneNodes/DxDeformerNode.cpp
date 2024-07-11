@@ -11,6 +11,8 @@
 #include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxShaderProgram.h"
 
+using namespace utils;
+
 namespace rldx
 {
 	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& name)

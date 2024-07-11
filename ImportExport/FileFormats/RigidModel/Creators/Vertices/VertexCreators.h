@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Constants\Rmv2Constants.h"
 #include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
@@ -14,7 +14,7 @@ namespace rmv2 {
 	class IVertexCreator
 	{
 	public:
-		virtual rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) = 0;
+		virtual rldx::CommonVertex Create(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version) = 0;
 	};
 
 	/// <summary>
@@ -24,7 +24,7 @@ namespace rmv2 {
 	class DefaultCommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
+		rldx::CommonVertex Create(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
 	/// <summary>
@@ -33,7 +33,7 @@ namespace rmv2 {
 	class Weighted2CommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
+		rldx::CommonVertex Create(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
 	/// <summary>
@@ -42,7 +42,7 @@ namespace rmv2 {
 	class Weighted4CommonVertexCreator : public IVertexCreator
 	{
 	public:
-		rldx::CommonVertex Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
+		rldx::CommonVertex Create(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version) override;
 	};
 
 	class VertexCreatorFactory : public templates::TAbstractFactory<IVertexCreator, VertexFormatEnum>

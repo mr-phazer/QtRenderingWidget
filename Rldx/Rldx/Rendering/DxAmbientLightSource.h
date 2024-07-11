@@ -1,18 +1,17 @@
 #pragma once
 
+#include <commonlibs/utils/ByteStream.h>
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\Interfaces\IBindable.h"
 #include "DxConstBuffer.h"
 
 #include <d3d11.h>
-#include "Utils\ByteStream.h"
 
 #include <string>
 
 namespace rldx
 {
 
-	using namespace utils;
 
 	// make this base class of all buffers
 	class IBuffer : public IBindable
@@ -72,15 +71,15 @@ namespace rldx
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, DxTexture* diffuseCubemap, DxTexture* specularCubemap,
 										   DxTexture* lut = nullptr, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
-		static DxAmbientLightSource Create(ID3D11Device* poDevice, ByteStream& pathDiffuseMap, ByteStream& pathSpecularMap,
-										   ByteStream& pathLUT, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
+		static DxAmbientLightSource Create(ID3D11Device* poDevice, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
+										   utils::ByteStream& pathLUT, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
 	private:
 		void SetTexturesFromFiles(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
 								  const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
 								  UINT startSlotSRV = 0);
 
-		void SetTexturesFromMemory(ID3D11Device* poDevice, ByteStream& pathDiffuseMap, ByteStream& pathSpecularMap,
-								   ByteStream& pathLUT, UINT startSlotSRV = 0);
+		void SetTexturesFromMemory(ID3D11Device* poDevice, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
+								   utils::ByteStream& pathLUT, UINT startSlotSRV = 0);
 	};
 }; // namespace rldx

@@ -34,6 +34,7 @@ namespace rldx
 			ByteStream& bytes,
 			const std::wstring& gameIdString);
 
+		void LoadVariantMeshIntoNode(DxBaseNode* poSceneNode, utils::ByteStream& bytes, const std::wstring& gameIdString);
 
 		void GetNewVariant();
 
@@ -77,10 +78,10 @@ namespace rldx
 		/// </summary>		
 		void SetAttachPointsRecursive(DxMeshNode* vmdNode);
 
-		void BuildTreeFromAssetFile(ByteStream& bytes);
-		void LoadFromRigidModel(ByteStream& bytes);
-		void LoadFromWsmodelXML(ByteStream& bytes);
-		void LoadFromVmdXML(ByteStream& bytes);
+		void BuildTreeFromAssetFile(utils::ByteStream& bytes);
+		void LoadFromRigidModel(utils::ByteStream& bytes);
+		void LoadFromWsmodelXML(utils::ByteStream& bytes);
+		void LoadFromVmdXML(utils::ByteStream& bytes);
 	};
 }
 

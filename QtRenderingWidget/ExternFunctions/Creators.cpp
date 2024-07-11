@@ -8,6 +8,7 @@
 #include "..\QtObjects\Views\QtRenderView.h"
 
 using namespace logging;
+using namespace utils;
 
 QWidget* CreateQRenderingWidget(
 	QWidget* parent,

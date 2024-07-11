@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace rmv2;
+using namespace utils;
 
 WsModelData WsModelReader::Read(ByteStream& fileData)
 {

@@ -1,7 +1,9 @@
 #include "MeshMaterialCreators.h"
 
 #include "..\Constants\Rmv2Constants.h"
+
 using namespace rmv2;
+using namespace utils;
 
 MaterialHeaderType5 MaterielHeaderType5Creator::Create(ByteStream& bytes)
 {

@@ -2,6 +2,8 @@
 
 #include "..\..\Helpers\DxMeshCreatorHelper.h"
 
+using namespace utils;
+
 namespace rldx {
 
 	void DxModelNode::SetShaderProgram(DxMeshShaderProgram* shaderProgram)

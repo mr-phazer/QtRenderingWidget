@@ -5,12 +5,10 @@
 
 namespace rldx
 {
-	using namespace utils;
-
 	class DxResourceByteStream : public IDxResource
 	{
 	public:
-		ByteStream byteStream;
+		utils::ByteStream byteStream;
 
 		std::wstring GetTypeString() const { return L"ByteStream"; }
 		ResourceTypeEnum GetType() const { return ResourceTypeEnum::BytesStream; }

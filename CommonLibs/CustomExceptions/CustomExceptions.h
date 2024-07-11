@@ -28,9 +28,7 @@ public:
 
 #define ThrowAndLogIfAiled(message, formatMode, hrResult) \
 	if (!SUCCEEDED(hr)) throw COMException(message, formatMode, hrResult); \
-	else \
-	using namespace logging; \
-	Logger::LogActionSuccess(message)
+	else LogSucess(message) \
 
 #define COM_COND_THROW(HR) \
 if (!SUCCEEDED(HR)) throw COMException(HR); \

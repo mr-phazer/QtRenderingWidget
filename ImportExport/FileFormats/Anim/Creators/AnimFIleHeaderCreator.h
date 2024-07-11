@@ -11,24 +11,24 @@ namespace anim_file
 	class Anim_V5_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
 	{
 	public:
-		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+		virtual anim_file::AnimHeaderCommon Create(utils::ByteStream& bytes) override;
 	};
 
 	class Anim_V6_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
 	{
 	public:
-		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+		virtual anim_file::AnimHeaderCommon Create(utils::ByteStream& bytes) override;
 	};
 
 	class Anim_V7_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
 	{
 	public:
-		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+		virtual anim_file::AnimHeaderCommon Create(utils::ByteStream& bytes) override;
 	};
 
 	class Anim_V8_HeaderFileCommonCreator : public IAnimHeaderCommonCreator
 	{
 	public:
-		virtual anim_file::AnimHeaderCommon Create(ByteStream& bytes) override;
+		virtual anim_file::AnimHeaderCommon Create(utils::ByteStream& bytes) override;
 	};
 }

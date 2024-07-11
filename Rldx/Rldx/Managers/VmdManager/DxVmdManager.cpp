@@ -7,6 +7,7 @@
 #include "..\..\SceneGraph\SceneNodes\DxDeformerNode.h"
 #include "DxVmdManager.h"
 
+using namespace utils;
 
 namespace rldx
 {
