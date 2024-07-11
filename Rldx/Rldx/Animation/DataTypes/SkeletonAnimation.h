@@ -23,7 +23,12 @@ namespace skel_anim
 	/// </summary>
 	struct SkeletonAnimation : public rldx::IDxResource
 	{
-		std::wstring m_skeletonName; // name of the skeleton used by animation
+		SkeletonAnimation() = default;
+		SkeletonAnimation(const std::wstring& name) :
+			rldx::IDxResource(rldx::ResourceTypeEnum::Animation, L"SkeletonAnimation", name)
+		{};
+
+		std::wstring m_skeletonName; // m_nodeName of the skeleton used by animation
 
 		SkeletalAnimationKeyFramData frameData;
 
@@ -33,10 +38,6 @@ namespace skel_anim
 
 	public:
 		static SkeletonAnimation* CreateFromAnimFile(const anim_file::AnimFile& in);
-
-		// Inherited via IDxResource, for resource storage stuff
-		std::wstring GetTypeString() const override;
-		rldx::ResourceTypeEnum GetType() const override;
 	};
 
 } // namespace skel_anim

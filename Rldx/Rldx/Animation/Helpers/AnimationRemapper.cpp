@@ -36,7 +36,7 @@ namespace skel_anim
 		for (auto& srcBone : m_sourceSkeleton.GetBoneTable())
 		{
 			// get the targetAnim bone index
-			auto targetBone = m_targetSkeleton.GetIndexFromBoneName(srcBone.name);
+			auto targetBone = m_targetSkeleton.GetIndexFromBoneName(srcBone.m_nodeName);
 
 			if (targetBone == -1)
 				throw std::exception("Bone not found in the target skeleton");

@@ -1,8 +1,8 @@
 #include "SkeletonHelpers.h"
 
-#include <Utils/ByteStream.h>
 #include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
 #include <ImportExport\Helpers\ByteStream.h>
+#include <Utils/ByteStream.h>
 
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include <string>
@@ -28,6 +28,10 @@ namespace skel_anim
 		return Skeleton(animFileSkeleton);
 	}
 
+	/// <summary>
+	/// For Rome2/Atilla/ToB, has 2 versions of the same skeleton, we dorrect the skeleton to most detailed version, to support all anims
+	/// </summary>
+	/// <param m_nodeName="inOutSkeleton"></param>
 	void ForceCorrectSkeleton(skel_anim::Skeleton& inOutSkeleton)
 	{
 		if (CompareNoCase(inOutSkeleton.GetName(), L"rome_man_game"))
@@ -37,8 +41,5 @@ namespace skel_anim
 			inOutSkeleton = skel_anim::Skeleton(animSkeletonFile);
 		}
 	}
-	std::wstring GetPackPathFromSkeletonName(const std::string& skeletonName)
-	{
-		return std::wstring();
-	}
+
 }

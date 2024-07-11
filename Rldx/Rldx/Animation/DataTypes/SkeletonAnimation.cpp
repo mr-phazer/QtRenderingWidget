@@ -25,14 +25,5 @@ namespace skel_anim
 		}
 
 		return newAnim;
-	}
-	std::wstring SkeletonAnimation::GetTypeString() const
-	{
-		return L"Animation";
-	}
-
-	rldx::ResourceTypeEnum SkeletonAnimation::GetType() const
-	{
-		return rldx::ResourceTypeEnum::Animation;
-	}
-}
+	};
+} // namespace skel_anim

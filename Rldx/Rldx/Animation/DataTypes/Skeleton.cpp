@@ -6,7 +6,7 @@
 namespace skel_anim
 {
 	using namespace utils;
-	
+
 	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile)
 	{
 		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
@@ -36,7 +36,7 @@ namespace skel_anim
 
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
-		// set skeleton name
+		// set skeleton m_nodeName
 		m_skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
 		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
@@ -94,7 +94,7 @@ namespace skel_anim
 		{
 			SkeletonBoneNode node;
 
-			node.name = itBone.strName;
+			node.m_nodeName = itBone.strName;
 			node.boneIndex = itBone.id;
 			node.parentIndex = itBone.parent_id;
 
@@ -106,7 +106,7 @@ namespace skel_anim
 	{
 		for (int32_t boneIndex = 0; boneIndex < boneTable.size(); boneIndex++)
 		{
-			if (CompareNoCase(ToWString(boneTable[boneIndex].name), ToWString(boneName)))
+			if (CompareNoCase(ToWString(boneTable[boneIndex].m_nodeName), ToWString(boneName)))
 			{
 				return boneIndex;
 			}
@@ -124,14 +124,4 @@ namespace skel_anim
 	{
 		return m_bindposeMatrices;
 	}
-
-	std::wstring Skeleton::GetTypeString() const
-	{
-		return L"Skeleton";
-	}
-
-	rldx::ResourceTypeEnum Skeleton::GetType() const
-	{
-		return rldx::ResourceTypeEnum::Skeleton;
-	}
-}
+} // namespace skel_anim
