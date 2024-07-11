@@ -32,10 +32,19 @@ namespace rldx {
 	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
 	{
 	public:
+		DxTexture()
+		{
+			SetType(ResourceTypeEnum::Texture);
+			SetTypeString(L"DxTexture");
+		}
+
+		DxTexture(const std::wstring& name)
+		{
+			DxTexture();
+			SetName(name);
+		}
 		virtual ~DxTexture() = default;
 
-		ResourceTypeEnum GetType() const override;
-		std::wstring GetTypeString() const override;
 
 		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();

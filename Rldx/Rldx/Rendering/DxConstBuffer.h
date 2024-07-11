@@ -14,7 +14,7 @@ namespace rldx {
 	/// Wrapper for MS Direct::ConstantBuffer
 	/// Which stores the CPU side data 
 	/// </summary>
-	/// <typeparam name="CONST_BUF_DATA_TYPE">CPU side constant buffer type, typically a struct</typeparam>
+	/// <typeparam m_nodeName="CONST_BUF_DATA_TYPE">CPU side constant buffer type, typically a struct</typeparam>
 	template<typename CONST_BUF_DATA_TYPE>
 	class TConstBuffer
 	{
@@ -45,7 +45,7 @@ namespace rldx {
 		/// <summary>
 		/// Copiesw the internal data to the CPU
 		/// </summary>
-		/// <param name="poDeviceContext"></param>
+		/// <param m_nodeName="poDeviceContext"></param>
 		virtual void RefreshGPUData(ID3D11DeviceContext* poDeviceContext)
 		{
 			buffer->SetData(poDeviceContext, data);

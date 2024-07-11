@@ -50,16 +50,19 @@ namespace rldx {
 		friend class DxSceneCreator;
 
 	public:
-		DxScene() = default;
-		DxScene(const std::wstring& name = L"") : TIdentifiable(name)
+		DxScene() {
+			SetType(DxSceneTypeEnum::Normal);
+			SetTypeString(L"DxScene");
+		}
+
+		DxScene(const std::wstring& name = L"Unnamed Scene")
 		{
+			SetName(name);
+
 			// TODO: move more of the initializing into the constructor, RAII
 			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
 		};
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
-
-		std::wstring GetTypeString() const override { return L"DxScene"; }
-		DxSceneTypeEnum GetType() const override { return DxSceneTypeEnum::Normal; }
 
 		virtual void InitRenderView(ID3D11Device* poDevice);
 		virtual void Update(float timeElapsed) override;

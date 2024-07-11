@@ -1,10 +1,10 @@
+#include <string>
 #include "DxMaterial.h"
 #include "DxTexture.h"
 
-#include <string>
-
 #include "..\Managers\DxDeviceManager.h"
 
+using namespace utils;
 using namespace rldx;
 
 DxMaterial* rldx::DxMaterial::Create(std::vector<rmv2::TextureElement>& textures)
@@ -71,22 +71,22 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 {
 	DxTexture* textPtr = nullptr;
 
-	textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
+	textPtr = DxResourceManager::Instance()->AllocTexture(path, DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
 
-	Logger::LogAction(L"DEBUG: attempting to get 1 file from CALLBACK: " + path);
+	logging::LogAction(L"DEBUG: attempting to get 1 file from CALLBACK: " + path);
 
 	auto bytes = DxResourceManager::GetFile(path);
 
 	if (!bytes.IsValid()) // texture file is missing or empty
 	{
-		Logger::LogActionError(L"Loading From CALLBACK failed, missing or empty file, " + path);
+		logging::LogError(L"Loading From CALLBACK failed, missing or empty file, " + path);
 
 		return;
 	}
 
 	textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
 
-	Logger::LogActionSuccess(L"Loaded From CALLBACK: " + path);
+	logging::LogAction(L"Loaded From CALLBACK: " + path);
 
 	m_textures[TextureTypeEnum(slot)] = { textPtr };
 }
@@ -100,7 +100,7 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 	}
 	catch (std::exception& e) {
 		auto debug_1 = e.what(); // TODO: REMOVE!!
-		Logger::LogActionError(L"Failed to load default texture: key enum id: " + ToWString(std::to_string(slot)) + L", message: " + ToWString(e.what()));
+		logging::LogAction(L"Failed to load default texture: key enum id: " + ToWString(std::to_string(slot)) + L", message: " + ToWString(e.what()));
 		return nullptr;
 	}
 
@@ -174,16 +174,5 @@ int DxMaterial::GetTextureStartSlot()
 {
 	return 47;
 }
-
-ResourceTypeEnum DxMaterial::GetType() const
-{
-	return ResourceTypeEnum::Material;
-}
-
-std::wstring DxMaterial::GetTypeString() const
-{
-	return L"DxMaterial";
-}
-
 
 std::vector<ID3D11ShaderResourceView*> DxMaterial::m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);

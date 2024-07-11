@@ -10,8 +10,6 @@ using namespace utils;
 
 namespace rldx
 {
-	using namespace std;
-
 	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,
 													  const std::wstring& pathSpecularMap, const std::wstring& pathLUT,
 													  UINT startSlotSrv, UINT startSlotConstBuf)

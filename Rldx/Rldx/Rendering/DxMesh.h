@@ -17,12 +17,10 @@ namespace rldx
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
 	public:
-		void Draw(ID3D11DeviceContext* poDC) override;;
-		void SetMeshData(const DxCommonMeshData& meshData);
-		void BindToDC(ID3D11DeviceContext* poDC);;
+		void Draw(ID3D11DeviceContext* poDC) override;
+		void BindToDC(ID3D11DeviceContext* poDC) override;
 
-		ResourceTypeEnum GetType() const override;
-		std::wstring GetTypeString() const override;
+		void SetMeshData(const DxCommonMeshData& meshData);
 
 		DirectX::XMFLOAT3 GetMin();
 		DirectX::XMFLOAT3 GetMax();

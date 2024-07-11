@@ -4,8 +4,8 @@
 #include <CustomExceptions\CustomExceptions.h>
 #include "..\..\DirectXTK\Inc\DirectXHelpers.h"
 #include "..\..\DXUT\Core\DXUT.h"
-#include "Logger\Logger.h"
 #include "d3d11.h"
+#include "Logger\Logger.h"
 
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
 
@@ -233,15 +233,6 @@ HRESULT rldx::DxTexture::CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice)
 	return hr;
 }
 
-rldx::ResourceTypeEnum rldx::DxTexture::GetType() const
-{
-	return ResourceTypeEnum::Texture;
-}
-
-std::wstring rldx::DxTexture::GetTypeString() const
-{
-	return L"DxTexture";
-}
 
 void rldx::DxTexture::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)
 {

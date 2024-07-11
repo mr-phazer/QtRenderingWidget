@@ -11,9 +11,7 @@
 
 namespace rldx
 {
-
-
-	// make this base class of all buffers
+	// TODO: maybe, make this base class of all buffers?
 	class IBuffer : public IBindable
 	{
 		UINT m_startSlot = 0;
@@ -61,7 +59,7 @@ namespace rldx
 		/// <summary>
 		/// Bind IBL const buffer, and set cubemap textures
 		/// </summary>
-		/// <param name="poDC"></param>
+		/// <param m_nodeName="poDC"></param>
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, const std::wstring& pathDiffuseMap,

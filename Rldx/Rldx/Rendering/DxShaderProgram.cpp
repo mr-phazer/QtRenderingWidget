@@ -19,15 +19,5 @@ std::vector<std::string::const_iterator> find_all2(const std::string& s, char c)
 	return res;
 }
 
-std::wstring rldx::IDxShaderProgram::GetTypeString() const
-{
-	return L"IDxShaderProgram";
-}
-
-rldx::ResourceTypeEnum rldx::IDxShaderProgram::GetType() const
-{
-	return ResourceTypeEnum::ShaderProgram;
-}
-
 rldx::IntId rldx::DefaultShaderCreator::simpleShader = INVALID_ID;
 rldx::IntId rldx::DefaultShaderCreator::noTextureShader = INVALID_ID;

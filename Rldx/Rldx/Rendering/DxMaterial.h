@@ -66,9 +66,6 @@ namespace rldx {
 		bool IsValid() const { return m_bIsValid; };
 		int GetTextureStartSlot();
 
-		ResourceTypeEnum GetType() const override;
-		std::wstring GetTypeString() const override;
-
 	private:
 		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
 	private:

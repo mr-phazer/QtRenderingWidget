@@ -7,23 +7,13 @@ namespace rldx
 		poDC->DrawIndexed(m_poMeshBuffers.indexCount, 0, 0);
 	}
 
-	ResourceTypeEnum DxMesh::GetType() const
-	{
-		return ResourceTypeEnum::MeshRenderData;
-	}
-
-	std::wstring DxMesh::GetTypeString() const
-	{
-		return L"DxMesh";
-	}
-
 	DirectX::XMFLOAT3 DxMesh::GetMin()
 	{
 		DirectX::XMFLOAT3 v3Min(FLT_MAX, FLT_MAX, FLT_MAX);
 		for (const auto& vertex : m_poMeshBuffers.originalMeshData.vertices)
 		{
 			v3Min.x = std::min<float>(v3Min.x, vertex.position.x);
-			v3Min.y = std:: min<float>(v3Min.y, vertex.position.y);
+			v3Min.y = std::min<float>(v3Min.y, vertex.position.y);
 			v3Min.z = std::min<float>(v3Min.z, vertex.position.z);
 		}
 
