@@ -1,30 +1,30 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
 #include "..\Types\Common\FileHeader.h"
 #include "..\Types\Common\LodHeader.h"
+#include "Utils\ByteStream.h"
 
 namespace rmv2 {
 
 	class ILODHeaderCreator
 	{
 	public:
-		virtual LODHeaderCommon Create(ByteStream& bytes) = 0;
+		virtual LODHeaderCommon Create(utils::ByteStream& bytes) = 0;
 		virtual size_t GetHeaderSize() = 0;
 	};
 
 	class LodHeader_V6_Creator : public ILODHeaderCreator
 	{
 	public:
-		LODHeaderCommon Create(ByteStream& bytes) override;
+		LODHeaderCommon Create(utils::ByteStream& bytes) override;
 		size_t GetHeaderSize() override;
 	};
 
 	class LodHeader_V7_V8_Creator : public ILODHeaderCreator
 	{
 	public:
-		LODHeaderCommon Create(ByteStream& bytes) override;
+		LODHeaderCommon Create(utils::ByteStream& bytes) override;
 		size_t GetHeaderSize() override;
 	};
 

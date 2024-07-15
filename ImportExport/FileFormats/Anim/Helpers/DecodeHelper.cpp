@@ -1,15 +1,17 @@
-#include <Helpers\ByteStream.h>
 #include <Quantization\QuantTools.h>
+#include <Utils\ByteStream.h>
 #include "..\Types\Common\QuantMetaTables.h"
 #include "DecodeHelper.h"
 
 namespace anim_file
 {
+	using namespace utils;
+
 	// TODO: REMOVE THIS ONCE WORKS
 	size_t DEBUG_translations = 0;
 	size_t DEBUG_rotations = 0;
 
-	sm::Vector3 TranslationTrackDecoder::DecodeConstTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
+	sm::Vector3 TranslationTrackDecoder::DecodeConstTrack(utils::ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
 		auto& transMetaId = meta.translationEncodeIds[boneIndex];
 
@@ -35,7 +37,7 @@ namespace anim_file
 		return sm::Vector3::Zero; // TODO: throw exception here, when stuff works
 	}
 
-	sm::Vector3 TranslationTrackDecoder::DecodeDynamicTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
+	sm::Vector3 TranslationTrackDecoder::DecodeDynamicTrack(utils::ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
 		auto& encodeId = meta.translationEncodeIds[boneIndex];
 
@@ -87,7 +89,7 @@ namespace anim_file
 		throw std::exception(("TranslationTrackDecoder::DecodeConstTrack(): Unknown compression id, numerical value: " + std::to_string(static_cast<int8_t>(encodeId.type))).c_str());
 	}
 
-	sm::Quaternion QuaternionTrackDecoder::DecodeConstTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
+	sm::Quaternion QuaternionTrackDecoder::DecodeConstTrack(utils::ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
 		auto& rotationMetaId = meta.rotationEncodeIds[boneIndex];
 
@@ -130,7 +132,7 @@ namespace anim_file
 		return sm::Quaternion::Identity; // TODO: throw exception here, when stuff works
 	}
 
-	sm::Quaternion QuaternionTrackDecoder::DecodeDynamicTrack(ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
+	sm::Quaternion QuaternionTrackDecoder::DecodeDynamicTrack(utils::ByteStream& bytes, const uint32_t boneIndex, const CompressionMetaData_V8& meta)
 	{
 		// TODO: add exceptions to check ranges?		
 		auto& rotationMetaId = meta.rotationEncodeIds[boneIndex];

@@ -8,7 +8,7 @@ namespace rldx
 	void VariantGenerator::GenerateVariant()
 	{
 		DisbaleAllNodes(m_vmdRootNode);
-		GetNewVariant(m_vmdRootNode);
+		GenerateNewVariant(m_vmdRootNode);
 	}
 
 	void VariantGenerator::DisbaleAllNodes(DxVmdNode* node)
@@ -52,7 +52,7 @@ namespace rldx
 		}
 	};
 
-	inline void VariantGenerator::GetNewVariant(DxVmdNode* node)
+	inline void VariantGenerator::GenerateNewVariant(DxVmdNode* node)
 	{
 		if (node->vmdNodeData.tagType == VMDTagEnum::VariantMesh)
 		{

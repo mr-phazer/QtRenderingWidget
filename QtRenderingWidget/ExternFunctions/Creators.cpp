@@ -2,36 +2,28 @@
 
 #include <exception>
 
+#include <CommonLibs\Logger\logger.h>
 #include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
 #include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
-
 #include "..\QtObjects\Views\QtRenderView.h"
 
-#include "..\rldx\rldx\Logging\Logging.h"
+using namespace logging;
+using namespace utils;
 
-void SetLogPath(const QString& path)
-{
-	// TODO: implement
-	//throw std::exception("The method or operation is not implemented.");
-}
-
-// TODO: clean up this, maybe throw it out and write a proper app
-/// <summary>
-/// Demostration/test of using callback to set resources
-/// </summary>
-static void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
-
-QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles))
+QWidget* CreateQRenderingWidget(
+	QWidget* parent,
+	QString* gameIdString,
+	void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles),
+	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
+)
 {
 	// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
 #ifdef _DEBUG
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 #else	
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
+	rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 #endif	
-
-	// TODO: disable this for release
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
 
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
@@ -47,17 +39,16 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 		MessageBoxA(reinterpret_cast<HWND>(parent->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
 #endif
 
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		logging::LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
 
 		delete poNewRenderingWidget;
 		return nullptr;
 	}
 
 	poNewRenderingWidget->setWindowFlag(Qt::WindowType::Widget);
-	poNewRenderingWidget->setWindowTitle("BLAH");// "QRenderingWidget (testing, with various stuff in layout, for testin.");
+	poNewRenderingWidget->setWindowTitle("QtRenderingWidget");// "QRenderingWidget (testing, with various stuff in layout, for testin.");
 	poNewRenderingWidget->show();
 	poNewRenderingWidget->StartRendering();
-
 
 	return poNewRenderingWidget;
 }
@@ -65,32 +56,8 @@ QWidget* CreateQRenderingWidget(QWidget* parent, QString* gameIdString, void (*A
 bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
 {
 	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
-	auto gameIdString = renderWidget->GetGameIdString();
-	auto currentScene = renderWidget->GetSceneManager()->GetCurrentScene();
 
-	try {
-
-		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
-		rldx::DxSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
-	}
-	catch (std::exception& e)
-	{
-#ifdef _DEBUG
-		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
-#endif
-
-		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
-
-		return false;
-	}
-
-	return true;
-}
-
-bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
-{
-	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+	renderWidget->PauseRendering();
 	auto gameIdString = renderWidget->GetGameIdString();
 	auto currentScene = renderWidget->GetSceneManager()->GetCurrentScene();
 
@@ -107,10 +74,12 @@ bool TESTCODE_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, Q
 		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
 
 #ifdef _DEBUG
-		logging::LogAction(std::string("Error: Excpetion: ") + e.what());
+		LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
 #endif
 		return false;
 	}
+
+	renderWidget->ResumeRendering();
 
 	return true;
 }
@@ -122,7 +91,7 @@ void SetAssetFolder(QString* folder)
 
 void SetLogFolder(QString* folder)
 {
-	logging::ImplLog::SetLogFolder(folder->toStdWString());
+	Logger::SetLogFolder(folder->toStdWString());
 }
 
 void PauseRendering(QWidget* pQRenderWiget)
@@ -137,7 +106,6 @@ void ResumeRendering(QWidget* pQRenderWiget)
 	renderWidget->ResumeRendering();
 }
 
-
 void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
 {
 
@@ -145,7 +113,7 @@ void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* 
 	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
 	{
 
-		if (libtools::IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
+		if (IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
 			throw std::exception("Cannot accept disk files");
 		}
 
@@ -167,3 +135,30 @@ void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* 
 		newStream.Read((*outBinFiles)[iAsset].data(), (*outBinFiles)[iAsset].size());
 	}
 }
+
+// TODO: remove, when everythig above works
+//bool OLD_AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
+//{
+//	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+//	auto gameIdString = renderWidget->GetGameIdString();
+//	auto currentScene = renderWidget->GetSceneManager()->GetCurrentScene();
+//
+//	try {
+//
+//		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
+//		rldx::DxSceneCreator::AddModel(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
+//	}
+//	catch (std::exception& e)
+//	{
+//#ifdef _DEBUG
+//		MessageBoxA(reinterpret_cast<HWND>(pQRenderWiget->winId()), e.what(), "Error: Exception", MB_OK | MB_ICONERROR);
+//#endif
+//
+//		* outErrorString = QString::fromStdString(std::string("Error: Excpetion: ") + e.what());
+//		LogAction(L"Error: Excpetion: " + utils::ToWString(e.what()));
+//
+//		return false;
+//	}
+//
+//	return true;
+//}

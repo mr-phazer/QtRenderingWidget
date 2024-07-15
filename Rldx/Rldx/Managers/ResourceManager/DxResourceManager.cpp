@@ -9,13 +9,13 @@
 
 namespace rldx
 {
-	uint32_t IdCounterBase::sm_nextId;
+	IntId IdCounterBase::sm_nextId;
 	std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
 
 	TResourceHandle<DxTexture> DxResourceManager::MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file)
 	{
-		auto resourceHandle = DxResourceManager::Instance()->AllocTexture(file);
+		auto resourceHandle = DxResourceManager::Instance()->AllocTexture(file, AllocTypeEnum::AttempReuseIdForNew);
 		resourceHandle.GetPtr()->LoadCubeMap(poDevice, file);
 
 		return resourceHandle;
@@ -35,9 +35,9 @@ namespace rldx
 		return sm_spoInstance.get();
 	}
 
-	TResourceHandle<DxTexture> DxResourceManager::AllocTexture(const std::wstring& strId)
+	TResourceHandle<DxTexture> DxResourceManager::AllocTexture(const std::wstring& strId, AllocTypeEnum allocType)
 	{
-		return AllocEmpty<DxTexture>(strId);
+		return AllocEmpty<DxTexture>(strId, allocType);
 	}
 
 	TResourceHandle<DxMaterial> DxResourceManager::AllocMaterial(const std::wstring& strId)
@@ -57,9 +57,9 @@ namespace rldx
 
 	TResourceHandle<DxTexture> DxResourceManager::GetTexture(const std::wstring& strId)
 	{
-		auto it = m_umapResourcePtrByString.find(strId);
+		auto it = m_umapRawResourcePtrByString.find(strId);
 
-		if (it != m_umapResourcePtrByString.end()) {
+		if (it != m_umapRawResourcePtrByString.end()) {
 			return { it->second->GetId(), static_cast<DxTexture*>(it->second) };
 		}
 

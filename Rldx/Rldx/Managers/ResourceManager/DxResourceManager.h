@@ -12,18 +12,18 @@
 #include <type_traits>
 
 // author heade
+#include <Logger/Logger.h>
 #include "..\..\Helpers\StringKeyMap.h"
-#include "..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "IDxResource.h"
+#include "Utils\ByteStream.h"
+#include "Utils\IOUtils.h"
 
 namespace skel_anim {
 	struct SkeletonAnimation;
 }
 
 namespace rldx {
-
-	// forward declarations
 
 	class DxMesh;
 	class DxTexture;
@@ -36,30 +36,33 @@ namespace rldx {
 	{
 	public:
 		TResourceHandle() = default;
-		TResourceHandle(uint32_t id, RESOURCE_TYPE* ptr, std::wstring stringID = L"") : m_id(id), m_ptr(ptr), m_stringID(stringID) {};
+		TResourceHandle(IntId id, RESOURCE_TYPE* poResource, std::wstring stringID = L"") : m_id(id), m_poResource(poResource), m_stringId(stringID) {};
 
-		uint32_t GetId() const { return m_id; };
-		RESOURCE_TYPE* GetPtr() const { return m_ptr; };
-		std::wstring* GetStringKey() const { return m_stringID; };
+		IntId GetId() const { return m_id; };
+		RESOURCE_TYPE* GetPtr() const { return m_poResource; };
+		std::wstring* GetStringKey() const { return m_stringId; };
 
 	private:
-		std::wstring m_stringID = L"";  // pointer to string key
-		int32_t m_id = INVALID_ID;
-		RESOURCE_TYPE* m_ptr = nullptr;
+		std::wstring m_stringId = L"";  // pointer to string key
+		IntId m_id = INVALID_ID;
+		RESOURCE_TYPE* m_poResource = nullptr;
 	};
 
 	// non-template parent, SHOULD? make sure that the static id is unique per instantiation?
 	class IdCounterBase
 	{
 	protected:
-		uint32_t GetNextId() const { return sm_nextId++; }
+		IntId GetNextId() const { return sm_nextId++; }
 
 	private:
-		static uint32_t sm_nextId;
+		static IntId sm_nextId;
 	};
 
 	class DxResourceManager : public IdCounterBase
 	{
+	public:
+		enum class AllocTypeEnum { AttempReuseIdForNew, MakeNew, AttempUseExisting };
+
 		std::wstring m_gameIdString = L"";
 
 	public:
@@ -76,18 +79,20 @@ namespace rldx {
 		/// <summary>
 		/// TODO: move this to ByteStream?
 		/// </summary>		
-		static std::wstring GetDefaultAssetFolder() { return libtools::GetExePath(); }
+		static std::wstring GetDefaultAssetFolder() { return utils::GetExePath(); }
 
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
-		std::wstring GetGameIdSting() const { return m_gameIdString; }
+		std::wstring GetGameIdString() const { return m_gameIdString; }
+
+		static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
 
 		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
 		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
-		static ByteStream GetFile(const std::wstring& filePath)
+		static utils::ByteStream GetFile(const std::wstring& filePath)
 		{
-			if (libtools::IsDiskFile(filePath))
+			if (utils::IsDiskFile(filePath))
 			{
-				return ByteStream(filePath);
+				return utils::ByteStream(filePath);
 			}
 			else {
 
@@ -116,7 +121,7 @@ namespace rldx {
 		TResourceHandle<Derived_t> Create(const std::wstring& stringId = L"");
 
 		template<typename Derived_t>
-		TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId = L"");
+		TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId, AllocTypeEnum allotype = AllocTypeEnum::AttempUseExisting);
 
 		template<typename Derived_t>
 		TResourceHandle<Derived_t> Alloc(const std::wstring& stringId = L"");
@@ -125,15 +130,15 @@ namespace rldx {
 		Derived_t* GetResourceByString(const std::wstring& strId) const;
 
 		template <typename Derived_t>
-		Derived_t* GetResourceById(uint32_t id) const;
+		Derived_t* GetResourceById(IntId id) const;
 
 		template <typename SHADER_TYPE>
-		TResourceHandle<SHADER_TYPE> AllocShaderProgram(const std::wstring& strId = "")
+		TResourceHandle<SHADER_TYPE> AllocShaderProgram(const std::wstring& strId)
 		{
 			return AllocEmpty<SHADER_TYPE>(strId);
 		};
 
-		TResourceHandle<DxTexture> AllocTexture(const std::wstring& strId = L"");
+		TResourceHandle<DxTexture> AllocTexture(const std::wstring& strId, AllocTypeEnum allocType = AllocTypeEnum::AttempUseExisting);
 		TResourceHandle<DxMaterial> AllocMaterial(const std::wstring& strId = L"");;
 		TResourceHandle<DxMesh> AllocMesh(const std::wstring& strId = L"");
 		TResourceHandle<skel_anim::SkeletonAnimation> AllocAnim(const std::wstring& strId = L"");
@@ -145,7 +150,7 @@ namespace rldx {
 
 
 	private:
-		static ByteStream GetFileFromCallBack(const std::wstring& fileName)
+		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName)
 		{
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
 			QList<QByteArray> destBinaries;
@@ -154,21 +159,26 @@ namespace rldx {
 
 			if (destBinaries.size() != 1)
 			{
-				throw std::exception(string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+				throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 			}
 
 			if (destBinaries[0].isEmpty())
 			{
+				// TODO: CLEAN UP
 				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
-				return ByteStream();
+				return utils::ByteStream();
 			}
 
-			return ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
+			// TODO: CLEAN UP
+			//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
+
+			return utils::ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
 		}
+
 		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
 		{
 			if (!m_assetCallBack) {
-				throw exception("No asset callback function set");
+				throw std::exception("No asset callback function set");
 			}
 
 			m_assetCallBack(&qstrMissingFiles, &destBinaries);
@@ -177,29 +187,13 @@ namespace rldx {
 	private:
 		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
 
-		std::map<uint32_t, std::shared_ptr<IDxResource>> m_umapResourceSptrDataById;
-		WStringkeyMap<IDxResource*> m_umapResourcePtrByString;
-
-		/*template <typename VALUE>
-		using StringkeyMap
-			= typename
-		std::unordered_map<
-			std::wstring,
-			IDxResource*,
-			CaseInsensitiveUnorderedMapComparer::Hash,
-			CaseInsensitiveUnorderedMapComparer::Compare> m_umapResourcePtrByString;
-
-		using MapInterator =
-			std::unordered_map<
-			std::wstring,
-			IDxResource*,
-			CaseInsensitiveUnorderedMapComparer::Hash,
-			CaseInsensitiveUnorderedMapComparer::Compare>::iterator;*/
+		std::map<IntId, std::unique_ptr<IDxResource>> m_umapResourceSptrDataById;
+		WStringkeyMap<IDxResource*> m_umapRawResourcePtrByString;
 
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;
 		std::wstring m_rooPathAssetPath = LR"(c:/temp/)";
 		std::function<void(QList<QString>*, QList<QByteArray>*)> m_assetCallBack;
-
+		std::function<void(QString*, QList<QString>*)> m_animPathsBySkeletonCallBack;
 		QVector<QString> m_qstrMissingFiles;
 	};
 
@@ -217,34 +211,63 @@ namespace rldx {
 	/// <summary>
 	/// Create a new resource of the specified type and stores it in the resource manager.
 	/// </summary>
-	/// <typeparam name="Derived_t">The resource, hase to be Derived from IDxResource</typeparam>
-	/// <param name="stringId">String Id - Optional</param>
+	/// <typeparam m_nodeName="Derived_t">The resource, hase to be Derived from IDxResource</typeparam>
+	/// <param m_nodeName="stringId">String Id - Optional</param>
 	/// <returns>returns a handle that contains both the pointer to the new resourec, and its global ID</returns>
 	template<typename Derived_t>
-	inline TResourceHandle<Derived_t> DxResourceManager::AllocEmpty(const std::wstring& stringId)
+	inline TResourceHandle<Derived_t> DxResourceManager::AllocEmpty(const std::wstring& stringId, AllocTypeEnum allocType)
 	{
-		static_assert(std::is_base_of<IDxResource, Derived_t>::value, "Errror: 'Derived_t' is derived from `IDxResource`");
+		static_assert(std::is_base_of<IDxResource, Derived_t>::value, "Error: 'Derived_t' is not derived from `IDxResource`");
 
+		// TODO: DEBUGGING CODE: makes every alloc "always make New" as before. Make the out-commented code work if possible
+		//if ((allocType == AllocTypeEnum::AttempUseExisting || allocType == AllocTypeEnum::AttempReuseIdForNew) && !stringId.empty())
+		//{
+		//	auto itExistingResource = m_umapRawResourcePtrByString.find(stringId);
+		//	if (itExistingResource != m_umapRawResourcePtrByString.end()) // is resource alreadyd loaded
+		//	{
+		//		auto tempResourceId = itExistingResource->second->GetId();
+
+		//		if (allocType == AllocTypeEnum::AttempUseExisting) // return existing resource			
+		//		{
+		//			return TResourceHandle<Derived_t>(tempResourceId, static_cast<Derived_t*>(itExistingResource->second), stringId);
+		//		}
+
+		//		if (allocType == AllocTypeEnum::AttempReuseIdForNew)
+		//		{
+		//			auto upoDerived = std::make_unique<Derived_t>(); // allocate new resource mem				
+
+		//			// update the maps with the new resource reusing the keys
+		//			auto poRawResource = upoDerived.get();
+		//			m_umapRawResourcePtrByString[stringId] = poRawResource;
+		//			m_umapResourceSptrDataById[tempResourceId] = std::move(upoDerived);
+
+		//			return TResourceHandle<Derived_t>(tempResourceId, static_cast<Derived_t*>(poRawResource), stringId);
+		//		}
+		//	}
+		//}
+
+		// TODO: move "GetNextId()", and its "static IntId sm_NextId" to IDxResource, makes much more sense
+		// create new resource
 		auto resourceId = GetNextId();
+		auto upoNewResource = std::make_unique<Derived_t>();
+		upoNewResource->SetId(resourceId); // manually set resource interal id to be = the global id just generated
 
-		auto spoDerived = std::make_shared<Derived_t>();
-		spoDerived->SetId(resourceId); // manually set resource interal id to be = the global id just generated
+		auto poRawResource = upoNewResource.get();
+		m_umapResourceSptrDataById[resourceId] = std::move(upoNewResource);
 
-		m_umapResourceSptrDataById[resourceId] = spoDerived;;
+		if (!stringId.empty()) { // associate raw ptr with string id
 
-		// optional stringifd -> raw pointer association
-		if (!stringId.empty()) {
-			auto it = m_umapResourcePtrByString.insert(std::make_pair(stringId, spoDerived.get()));
+			auto it = m_umapRawResourcePtrByString.insert(std::make_pair(stringId, poRawResource));
 		}
 
-		return TResourceHandle<Derived_t>(resourceId, spoDerived.get(), stringId);
+		return TResourceHandle<Derived_t>(resourceId, static_cast<Derived_t*>(poRawResource), stringId);
 	}
 
 	template<typename Derived_t>
 	inline Derived_t* DxResourceManager::GetResourceByString(const::std::wstring& strId) const
 	{
-		auto it = m_umapResourcePtrByString.find(strId);
-		if (it != m_umapResourcePtrByString.end()) {
+		auto it = m_umapRawResourcePtrByString.find(strId);
+		if (it != m_umapRawResourcePtrByString.end()) {
 
 			return static_cast<Derived_t*>(it->second);
 		}
@@ -253,7 +276,7 @@ namespace rldx {
 	}
 
 	template<typename Derived_t>
-	inline Derived_t* DxResourceManager::GetResourceById(uint32_t id) const
+	inline Derived_t* DxResourceManager::GetResourceById(IntId id) const
 	{
 		auto it = m_umapResourceSptrDataById.find(id);
 		if (it != m_umapResourceSptrDataById.end()) {
@@ -264,99 +287,3 @@ namespace rldx {
 		return nullptr;
 	}
 }; // namespace rldx
-
-// TODO: remove once all usuable code is moved to DxResourceManager
-//template <typename RESOURCE_TYPE>
-//class TResourceManager : public ResourceManagerBase
-//{
-//public:
-//
-//	/*RESOURCE_TYPE* GetResourceById(uint32_t id) const
-//	{
-//		auto it = m_umapResourceSptrDataById.find(id);
-//		if (it != m_umapResourceSptrDataById.end())
-//		{
-//			return it->second.get();
-//		}
-//
-//		return nullptr;
-//	};
-//
-//	RESOURCE_TYPE* GetResourceByString(const std::wstring& strId) const
-//	{
-//		auto it = m_umapResourcePtrByString.find(strId);
-//		if (it != m_umapResourcePtrByString.end()) {
-//			return it->second;
-//		}
-//
-//		return nullptr;
-//	};*/
-//
-//	//template <typename Derived_t>
-//	//TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId)
-//	//{
-//	//	auto resourceId = GetNextId();
-//	//	auto pDerived = new Derived_t;
-//	//	m_umapResourceSptrDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(pDerived);
-//	//	auto pAllocatedResource = m_umapResourceSptrDataById[resourceId].get();
-//
-//	//	// if string supplied, associate string with raw pointer to resource
-//	//	if (!stringId.empty()) {
-//	//		m_umapResourcePtrByString[stringId] = pAllocatedResource; //m_umapResourceSptrDataById[resourceId].get();			
-//	//	}			
-//
-//	//	return { resourceId, pDerived};
-//	//}
-//
-//
-//	//template <typename Derived_t>
-//	//ResourceHandle<Derived_t> Add(Derived_t* resource, const std::wstring& stringId = "")
-//	//{
-//	//	auto resourceId = GetNextId();
-//	//	m_umapResourceSptrDataById[resourceId] = std::shared_ptr<RESOURCE_TYPE>(resource);
-//	//	auto pAllocatedResource = m_umapResourceSptrDataById[resourceId].get();
-//
-//	//	// if string supplied, associate string with raw pointer to resource
-//	//	if (!stringId.empty()) {
-//	//		m_umapResourcePtrByString[stringId] = pAllocatedResource; //m_umapResourceSptrDataById[resourceId].get();			
-//	//	}
-//
-//	//	return { resourceId, pAllocatedResource};
-//	//}
-//
-//
-//	TResourceHandle<RESOURCE_TYPE> Add(const std::shared_ptr<RESOURCE_TYPE>& resource, const std::wstring& stringId = "")
-//	{
-//		auto resourceId = GetNextId();
-//		auto& allocatedResource = m_umapResourceSptrDataById[resourceId] = resource;
-//
-//		// if string supplied, associate string with raw pointer to resource
-//		if (!stringId.empty()) {
-//			m_umapResourcePtrByString[stringId] = allocatedResource.get(); //m_umapResourceSptrDataById[resourceId].get();			
-//		}
-//
-//		return { resourceId, allocatedResource.get() };
-//	}
-//
-//private:
-//	std::map<uint32_t, std::shared_ptr<RESOURCE_TYPE>> m_umapResourceSptrDataById;
-//
-//	std::unordered_map<
-//		std::wstring,
-//		RESOURCE_TYPE*,
-//		CaseInsensitiveUnorderedMapComparer::Hash,
-//		CaseInsensitiveUnorderedMapComparer::Compare> m_umapResourcePtrByString;
-//};
-//
-//
-//TResourceManager<DxMesh>* GetMeshes();
-//TResourceManager<DxTexture>* GetTextures();
-//TResourceManager<DxMaterial>* GetMaterialManager();
-//TResourceManager<IDxShaderProgram>* Shaders();
-//
-//	private:
-//		TResourceManager<DxMesh> m_spoMeshManager;
-//		TResourceManager<DxTexture> m_spoTextureManager;
-//		TResourceManager<DxMaterial> m_spoMaterialManager;
-//		TResourceManager<IDxShaderProgram> m_spoShaderManager;
-//

@@ -1,13 +1,13 @@
-#include "MeshHeaderType3Creator.h"
 #include <DirectXMath.h>
-
+#include "MeshHeaderType3Creator.h"
 
 using namespace rmv2;
+using namespace utils;
 
 MeshHeaderType3 MeshHeaderType3Creator::Create(ByteStream& bytes)
 {
-    MeshHeaderType3 meshHeaderType3;
-    
+	MeshHeaderType3 meshHeaderType3;
+
 	// TODO: CLEAN UP!! Dedice whether to use TReadElement or Read
 	meshHeaderType3.RigidMaterialId = bytes.TReadElement<RigidMaterialEnum>();
 	//bytes.Read(&meshHeaderType3.RigidMaterialId, 2);
@@ -23,7 +23,7 @@ MeshHeaderType3 MeshHeaderType3Creator::Create(ByteStream& bytes)
 	bytes.Read(&meshHeaderType3.vMinBB, sizeof(DirectX::XMFLOAT3));
 	bytes.Read(&meshHeaderType3.vMaxBB, sizeof(DirectX::XMFLOAT3));
 
-	bytes.Read(&meshHeaderType3.szLightingConstants, 32);	
+	bytes.Read(&meshHeaderType3.szLightingConstants, 32);
 
-	return meshHeaderType3;   
+	return meshHeaderType3;
 }

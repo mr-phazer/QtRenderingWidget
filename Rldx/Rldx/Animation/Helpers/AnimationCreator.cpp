@@ -17,7 +17,7 @@ namespace skel_anim
 		auto animBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
 
 		// TODO: Static method for "GetSkeletonName"?
-		// fetch skeleton name from anim file
+		// fetch skeleton m_nodeName from anim file
 		auto skeletonName = anim_file::TwAnimFileReader().GetSkeletonName(animBytes);
 
 		// get bind pose file, as TwAnimReader needs it for dequantization

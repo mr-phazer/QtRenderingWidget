@@ -14,18 +14,18 @@ namespace rmv2
 		VertexCreatorFactory m_vertexCreatorProvider;
 
 	public:
-		RigidModelFileCommon Read(ByteStream& bytes);
+		RigidModelFileCommon Read(utils::ByteStream& bytes);
 
 	private:
-		void ReadFileHeaders(ByteStream& bytes, rmv2::RigidModelFileCommon& rmv2File);
+		void ReadFileHeaders(utils::ByteStream& bytes, rmv2::RigidModelFileCommon& rmv2File);
 
-		std::vector<LODHeaderCommon> ReadLodHeaders(ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
+		std::vector<LODHeaderCommon> ReadLodHeaders(utils::ByteStream& bytes, Rmv2VersionEnum rmv2VersionId, uint16_t wLODCount);
 
-		ModelBlockCommon ReadModelBlock(ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
+		ModelBlockCommon ReadModelBlock(utils::ByteStream& bytes, Rmv2VersionEnum, size_t meshCount, size_t lodIndex);
 
-		rmv2::MeshBlockCommon ReadMeshBlock(ByteStream& bytes, Rmv2VersionEnum rmv2Version);
+		rmv2::MeshBlockCommon ReadMeshBlock(utils::ByteStream& bytes, Rmv2VersionEnum rmv2Version);
 
-		void ReadMeshData(ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
+		void ReadMeshData(utils::ByteStream& bytes, rmv2::MeshBlockCommon& meshblock, Rmv2VersionEnum rmv2Version);
 
 	};
 };

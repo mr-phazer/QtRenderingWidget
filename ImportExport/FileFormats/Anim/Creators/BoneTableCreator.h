@@ -1,14 +1,14 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
 #include "..\Types\Common\BoneTable.h"
+#include "Utils\ByteStream.h"
 
 namespace anim_file
 {
 	class BoneTableCreator
 	{
 	public:
-		BoneTable Create(ByteStream& bytes, size_t boneCount)
+		BoneTable Create(utils::ByteStream& bytes, size_t boneCount)
 		{
 			BoneTable outBoneTable;
 			outBoneTable.bones.resize(boneCount);

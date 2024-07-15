@@ -2,16 +2,24 @@
 
 #include <qdir>
 
+#include "Logger\Logger.h"
+
+#ifdef _DEBUG
+#include "..\ExternFunctions\Creators.h"
+#endif
 //#include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
 
 //#include "..\RenderLib\Direct3d11Device.h"
 
 using namespace rldx;
+using namespace logging;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
 	: QWidget(parent), m_controller(new QtRenderController(this))
 {
 	setupUi(this);
+
+	setAcceptDrops(true);
 
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::black);
@@ -129,16 +137,16 @@ LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 
 bool QtRenderWidgetView::InitRenderView()
 {
-	logging::LogAction("Make new Device Manager");
+	logging::LogAction(L"Make new Device Manager");
 	DxDeviceManager::Init();
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 
 	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
-	logging::LogAction("Retriving Default Textures from .exe");
+	logging::LogAction(L"Retriving Default Textures from .exe");
 	LoadExeResources(poDevice);
 
-	logging::LogAction("Create New Scene");
+	logging::LogAction(L"Create New Scene");
 	MakeScene();
 
 	// TODO: remove
@@ -213,7 +221,11 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 			throw std::exception((FULL_FUNC_INFO("Error loading internal resource: " + itRes.toStdString())).c_str());
 		}
 
-		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString()).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+		// TODO: remove debuging code
+		auto DEBUG__rawPtr = DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
+		DEBUG__rawPtr->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+
+		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
 	}
 }
 
@@ -245,8 +257,9 @@ void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
 
 		case Qt::Key_A:
 		{
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetNewVariant();
+			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GenerateNewVariant();
 		}
+		break;
 
 		case Qt::Key_Q:
 		{
@@ -265,3 +278,29 @@ QtRenderController::QtRenderController(QtRenderWidgetView* parentAndView) : QObj
 {
 	connect(view, &QtRenderWidgetView::keyPressed, this, &QtRenderController::OnkeyPressed);
 };
+
+#ifdef _DEBUG
+void QtRenderWidgetView::dropEvent(QDropEvent* event)
+{
+	// Handle drop event (e.g., process dropped file)
+	// TODO:: move this code to the CONTROLLER, emit "ItemDropped" and have the controller handle that event with this code
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData->hasUrls()) {
+		QList<QUrl> urls = mimeData->urls();
+		for (const QUrl& url : urls)
+		{
+			auto filePath = url.toLocalFile().toStdWString();
+
+			utils::ByteStream bytes(filePath);
+			QString fileName2 = QString::fromStdWString(filePath);
+			QByteArray qBytes2((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
+			QString outErrorString;
+
+			AddNewPrimaryAsset(this, &fileName2, &qBytes2, &outErrorString);
+
+			break; // only read one file, for now
+		}
+	}
+	event->acceptProposedAction();
+}
+#endif

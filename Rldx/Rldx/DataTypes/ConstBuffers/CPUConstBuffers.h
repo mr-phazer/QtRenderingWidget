@@ -41,9 +41,9 @@ namespace rldx {
 
 		sm::Color color_no_tex = { 155., 155., 155., 1. };
 
-		sm::Color mesh_faction_color2 = { 0.71f, 0.16f, 0.17f, 1 };
-		sm::Color mesh_faction_color3 = { 0.31f, 0.12f, 0.92f, 1 };
-		sm::Color mesh_faction_color1 = { 0,0,1,1 };
+		sm::Color mesh_faction_color1 = { 0.71f, 0.16f, 0.17f, 1 };
+		sm::Color mesh_faction_color2 = { 0.31f, 0.12f, 0.92f, 1 };
+		sm::Color mesh_faction_color3 = { 0,0,1,1 };
 
 		sm::Color tint_color1 = { 1,0,0,1 };
 		sm::Color tint_color2 = { 0,1,0,1 };

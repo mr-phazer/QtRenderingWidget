@@ -1,6 +1,8 @@
 
 #include "AnimFIleHeaderCreator.h"
 
+using namespace utils;
+
 namespace anim_file
 {
 	anim_file::AnimHeaderCommon Anim_V5_HeaderFileCommonCreator::Create(ByteStream& bytes)

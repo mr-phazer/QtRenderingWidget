@@ -36,8 +36,6 @@ namespace rldx
 		// TODO: remove: make private
 
 	protected:
-		std::shared_ptr<DxMeshNode> m_spoFramePoseGenerator;
-
 		skel_anim::Skeleton m_skeleton;
 		skel_anim::AnimQueue m_animQueue;
 		anim_file::TwAnimFileReader m_animFileReader; // TODO: Refactor: should this really be stored here?
@@ -47,8 +45,20 @@ namespace rldx
 		VS_PerMeshConstBuffer_Skeleton m_constBufferDerformerData_VS;
 
 	public:
-		DxDeformerNode() : DxMeshNode(L"Unnamed DxMeshDeformerNode") {}
-		static std::unique_ptr<DxDeformerNode> Create(const std::wstring& name = L"");
+		DxDeformerNode()
+		{
+			SetType(SceneNodeTypeEnum::DeformerNode);
+			SetTypeString(L"DxDeformerNode");
+		}
+
+		DxDeformerNode(const std::wstring& name)
+		{
+			DxDeformerNode();
+			SetName(name);
+		}
+
+		virtual ~DxDeformerNode();
+		static std::unique_ptr<DxDeformerNode> Create(const std::wstring& m_nodeName = L"");
 
 		virtual void LoadBindPose(std::wstring m_animFilePath);
 		virtual void LoadAnimClip(std::wstring animFile);

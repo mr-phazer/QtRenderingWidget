@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-#include "..\..\..\ImportExport\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\TextureElement.h"
@@ -66,9 +66,6 @@ namespace rldx {
 		bool IsValid() const { return m_bIsValid; };
 		int GetTextureStartSlot();
 
-		ResourceTypeEnum GetType() const override;
-		std::wstring GetTypeString() const override;
-
 	private:
 		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
 	private:
@@ -103,11 +100,11 @@ namespace rldx {
 
 			newMaterial->InitWithDefaulTextures();
 
-			string hash = "";
+			std::string hash = "";
 			for (auto& tex : data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check
-				auto diskPath = libtools::string_to_wstring(tex.texturePath);
+				auto diskPath = utils::ToWString(tex.texturePath);
 				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
 				newMaterial->PathHash() += std::string(tex.texturePath);
 			};

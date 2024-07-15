@@ -43,17 +43,22 @@ namespace rldx {
 		DxMeshRenderingData m_meshData; // make this a INodeAtrribute or similar, an interfaces, from which other attributs like Mesh/Model/etc, are derived from
 
 	public:
-		using SharedPtr = std::shared_ptr<DxMeshNode>;
+		using UniquePtr = std::unique_ptr<DxMeshNode>;
 	public:
-		DxMeshNode() : DxBaseNode(L"Unnamed DxMeshNode") {}
-		DxMeshNode(const std::wstring& name) : DxBaseNode(name)
+		DxMeshNode() : DxBaseNode()
 		{
+			SetType(SceneNodeTypeEnum::MeshNode);
+			SetTypeString(L"DxMeshNode");
+		}
+
+		DxMeshNode(const std::wstring& name)
+		{
+			DxMeshNode();
 			SetName(name);
-			m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		}
 
 		// TODO: maybe add d3d device as param here also?, the "global" d3d devices might make the code "spaghetti"
-		static SharedPtr Create(const std::wstring& name = L"");
+		static UniquePtr Create(const std::wstring& m_nodeName = L"");
 
 		DxMeshRenderingData& MeshRenderData() { return m_meshData; }
 		void Clone(DxMeshRenderingData& clone) const;
@@ -71,9 +76,6 @@ namespace rldx {
 		void SetMaterial(rldx::DxMaterial* pDxMaterial) { m_meshData.poMaterial = pDxMaterial; };
 
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
-
-		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::MeshNode; }
-		virtual std::wstring GetTypeString() const override { return L"DxMeshNode"; };
 
 		virtual void Update(float time) override;
 	};

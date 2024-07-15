@@ -2,12 +2,8 @@
 
 #include "..\Types\Common\FileHeader.h"
 
-#include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Helpers\Templates.h"
-
-
-
-#define ABSTRACT = 0
+#include "Utils\ByteStream.h"
 
 namespace rmv2 {
 
@@ -16,6 +12,6 @@ namespace rmv2 {
 	class FileHeaderCreatorDefault : public IFileHeaderCreator
 	{
 	public:
-		FileHeaderCommon Create(ByteStream&);
+		FileHeaderCommon Create(utils::ByteStream&);
 	};
 }; // namespace rmv2

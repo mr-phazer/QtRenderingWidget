@@ -1,17 +1,19 @@
 #include <FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
-#include <Rldx\Tools\tools.h>
+#include <Utils\StrUtils.h>
 #include "..\..\Animation\DataTypes\SkeletonAnimation.h"
 #include "Skeleton.h"
 #include "SkeletonAnimation.h"
 
 namespace skel_anim
 {
+	using namespace utils;
+
 	SkeletonAnimation* SkeletonAnimation::CreateFromAnimFile(const anim_file::AnimFile& inAnimFile)
 	{
 		auto newAnim = rldx::DxResourceManager::Instance()->AllocAnim().GetPtr();
 
-		newAnim->m_skeletonName = libtools::WidenString(inAnimFile.fileHeader.skeletonName);
+		newAnim->m_skeletonName = ToWString(inAnimFile.fileHeader.skeletonName);
 		newAnim->lastKeyTime = inAnimFile.fileHeader.fLastKeyTime;
 		newAnim->keysPerSecond = inAnimFile.fileHeader.fFrameRate;
 
@@ -23,14 +25,5 @@ namespace skel_anim
 		}
 
 		return newAnim;
-	}
-	std::wstring SkeletonAnimation::GetTypeString() const
-	{
-		return L"Animation";
-	}
-
-	rldx::ResourceTypeEnum SkeletonAnimation::GetType() const
-	{
-		return rldx::ResourceTypeEnum::Animation;
-	}
-}
+	};
+} // namespace skel_anim

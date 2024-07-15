@@ -2,16 +2,17 @@
 
 #include <map>
 #include <memory>
-#include "..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\..\Rldx\Rldx\Helpers\StringKeyMap.h"
+#include "Utils\ByteStream.h"
 
 //////////////////////////////////////////////////////////////////////////
 namespace templates
 {
+
 	template <typename DATA_TYPE>
 	class TCreator
 	{
-		virtual DATA_TYPE Create(ByteStream& stream) = 0;
+		virtual DATA_TYPE Create(utils::ByteStream& stream) = 0;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

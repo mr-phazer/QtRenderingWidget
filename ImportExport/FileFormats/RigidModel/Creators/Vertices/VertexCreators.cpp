@@ -1,9 +1,11 @@
 #include <Quantization\QuantTools.h>
-#include "..\..\..\..\Helpers\ByteStream.h"
 #include "..\..\RawStructs\VerticesRaw.h"
+#include "Utils\ByteStream.h"
 #include "VertexCreators.h"
 
 #include "..\..\Helpers\VertexCAHelpers.inl"
+
+using namespace utils;
 
 rldx::CommonVertex rmv2::Weighted2CommonVertexCreator::Create(ByteStream& bytes, Rmv2VersionEnum rmv2Version)
 {

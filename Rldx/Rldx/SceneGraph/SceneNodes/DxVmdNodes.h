@@ -58,7 +58,7 @@ namespace rldx {
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			rmv2::WsModelData wsModelData;
-			unique_ptr<rmv2::RigidModelFileCommon> parsedRigidModelFile; // avoid having to load the file twice (tree.build and tree.allocate
+			std::unique_ptr<rmv2::RigidModelFileCommon> parsedRigidModelFile; // avoid having to load the file twice (tree.build and tree.allocate
 		} varintMeshData;
 
 		struct VaritantRefereceData
@@ -69,7 +69,7 @@ namespace rldx {
 
 		struct SlotData
 		{
-			std::wstring name = L"";
+			std::wstring m_nodeName = L"";
 			std::wstring imposterModelPath = L"";
 			std::wstring modelPath = L"";
 			std::wstring attcachPointName;
@@ -84,10 +84,10 @@ namespace rldx {
 		VMDNodeData vmdNodeData;
 
 		DxVmdNode() : DxModelNode(L"Unnamed DxVmdNode") {}
-		DxVmdNode(const std::wstring& name) : DxModelNode(name) {}
+		DxVmdNode(const std::wstring& m_nodeName) : DxModelNode(m_nodeName) {}
 
 	public:
-		using SharedPtr = std::shared_ptr<DxVmdNode>;
+		using UniquePtr = std::unique_ptr<DxVmdNode>;
 
 	};
 

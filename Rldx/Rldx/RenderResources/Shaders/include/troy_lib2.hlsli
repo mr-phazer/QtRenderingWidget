@@ -1399,21 +1399,30 @@ float3 standard_lighting_model_environment_light_SM4_private( /*in const float3 
 }
 
 //  Common functionality pulled out to facilitate minor optimisations.
+//  From PHAZER: odd "extra" branching added to avoid "warning X4000: use of potentially uninitialized variable"
 float3 get_reflectivity_base(in float3 light_vec, in float3 normal_vec, in float3 view_vec, in float3 material_reflectivity, in float smoothness, in float light_vec_reflected_view_vec_angle)
-{
-    float n_dot_l = dot(light_vec, normal_vec);
-
+{       
+    float n_dot_l = dot(light_vec, normal_vec);    
+    
 	//	If the fragment is facing away from the light source then there is nothing further to do...
     if (n_dot_l <= 0.0f)
+    {    
         return float3(0, 0, 0);
+    }
+    else
+    {    
+        float fraction_of_facets = determine_fraction_of_facets_at_reflection_angle(smoothness, light_vec_reflected_view_vec_angle);
 
-    float fraction_of_facets = determine_fraction_of_facets_at_reflection_angle(smoothness, light_vec_reflected_view_vec_angle);
+        float facet_visibility = determine_facet_visibility(1.0f - smoothness, normal_vec, light_vec);
 
-    float facet_visibility = determine_facet_visibility(1.0f - smoothness, normal_vec, light_vec);
+        float3 surface_reflectivity = determine_surface_reflectivity(material_reflectivity, 1.0f - smoothness, light_vec, view_vec, normal_vec);
 
-    float3 surface_reflectivity = determine_surface_reflectivity(material_reflectivity, 1.0f - smoothness, light_vec, view_vec, normal_vec);
-
-    return fraction_of_facets * facet_visibility * surface_reflectivity;
+        float3 reflectivityBaseValue = fraction_of_facets * facet_visibility * surface_reflectivity;
+        
+        return reflectivityBaseValue;
+    }
+    
+    return float3(0, 0, 0);
 }
 
 //  Determines the reflectivity of a surface, for given light, normal, and view vectors, along with a material's standard reflectivity and smoothness.  The reflectivity

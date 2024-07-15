@@ -14,10 +14,11 @@ namespace rldx
 	class DxVmdManager
 	{
 		std::wstring m_skeletonName;
-		std::shared_ptr<DxVmdNode> m_vmdRootNode;
+		DxVmdNode* m_vmdRootNode = nullptr;
 		DxBaseNode* m_sceneRootNode = nullptr;
+		DxVariantMeshNode* m_poVariantMeshNode = nullptr;
+
 		std::unique_ptr<DxDeformerNode> m_deformerNode; // the skeleton animating this VMD
-		std::shared_ptr<DxVariantMeshNode> m_variantMeshNode;
 
 		// TODO: these are stored ONLY for later saving? With no saving they could just be instantiated locally
 		DxVmdTreeBuilder m_treeBuilder;
@@ -26,35 +27,13 @@ namespace rldx
 		// TODO: does this need to be a state?
 		std::vector<std::wstring> m_attachPointNames;
 
-
-
 	public:
-		void LoadVariantMesh(
-			DxBaseNode* poSceneNode,
-			ByteStream& bytes,
-			const std::wstring& gameIdString);
 
+		void LoadVariantMeshIntoNode(DxBaseNode* poSceneNode, utils::ByteStream& bytes, const std::wstring& gameIdString);
 
-		void GetNewVariant();
-
+		void GenerateNewVariant();
 		DxDeformerNode* GetDerformer();
-
-		// TODO: implement; 
-		/// <summary>
-		/// Reload the entire model without changing anything else
-		/// </summary>
-		virtual void Refresh()
-		{
-
-			// TODO: this algo:
-			/*
-				erase tree
-				Remake with the same "root" VMD/RMV2/WSMODEL
-				Run AllocateTreeDXBuffers
-			*/
-		}
-
-		DxVmdNode::SharedPtr GetNode();
+		DxVmdNode::UniquePtr& GetNode();
 
 	private:
 		// TODO: convers the rmv2.file.header to "wstring" for consistency?
@@ -77,10 +56,10 @@ namespace rldx
 		/// </summary>		
 		void SetAttachPointsRecursive(DxMeshNode* vmdNode);
 
-		void BuildTreeFromXml(ByteStream& bytes);
-		void LoadFromRigidModel(ByteStream& bytes);
-		void LoadFromWsmodelXML(ByteStream& bytes);
-		void LoadFromVmdXML(ByteStream& bytes);
+		void BuildTreeFromAssetFile(utils::ByteStream& bytes);
+		void LoadFromRigidModel(utils::ByteStream& bytes);
+		void LoadFromWsmodelXML(utils::ByteStream& bytes);
+		void LoadFromVmdXML(utils::ByteStream& bytes);
 	};
 }
 

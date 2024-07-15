@@ -14,17 +14,11 @@ class Vector;
 /// <param name="pAssetCallBackFunc">function pointer: call back for asset fetching</param>
 /// <returns>Newly create Rendering Widget</returns>
 extern "C" QWidget * CreateQRenderingWidget(
-	QWidget * parent, 
-	QString* gameIdString, 
-	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles));
-
-// TODO: remove?
-//extern "C" QWidget * CreateQRenderingWidget(
-//	QWidget * parent, 
-//	uint32_t gameId, 
-//	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles));
-
-
+	QWidget * parent,
+	QString * gameIdString,
+	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles),
+	void (*AnimPathsBySkeletonCallBack) (QString * skeletonName, QList<QString>*out) = nullptr
+);
 
 /// <summary>
 /// Add an RigidModelV2, WSMODEL or VMD (model) to scene
@@ -33,49 +27,35 @@ extern "C" QWidget * CreateQRenderingWidget(
 /// <param name="pQRendeeWiget">Thee rendering widget pointer</param>
 /// <param name="assetFolder">internal/externala path</param>
 /// <param name="assetData">raw binary data of asset</param>
-extern "C" bool AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData, QString* outErrorString);
-
-/// <summary>
-/// Add an RigidModelV2, WSMODEL or VMD (model) to scene
-/// TODO: WIP
-/// </summary>
-/// <param name="pQRendeeWiget">Thee rendering widget pointer</param>
-/// <param name="assetFolder">internal/externala path</param>
-/// <param name="assetData">raw binary data of asset</param>
-extern "C" bool TESTCODE_AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray* assetData, QString* outErrorString);
+extern "C" bool AddNewPrimaryAsset(QWidget * pQRenderWiget, QString * assetFolder, QByteArray * assetData, QString * outErrorString);
 
 /// <summary>
 /// Path where shaders, cubemaps, and defalt material(textues) are stored
 /// </summary>
 /// <param name="parent"></param>
 /// <param name="path"></param>
-extern "C" void SetAssetFolder(QString* folder);
+extern "C" void SetAssetFolder(QString * folder);
+
+/// <summary>
+/// Set folder where the loggin .txt files is written
+/// </summary>
+/// <param name="folder">full file path</param>
 extern "C" void SetLogFolder(QString * folder);
-
-/// <summary>
-/// Sets the number of ms between each frame, FPS = 1000 / FrameTimeMS
-/// </summary>
-//extern "C" void SetFrameTime(QWidget * pQRendeeWiget, int FrameTimeMS);
-
-extern "C" void PauseRendering(QWidget * pQRendeeWiget);
-extern "C" void ResumeRendering(QWidget * pQRendeeWiget);
-
-
-
- 
- 
-
-
-/// <summary>
-/// Starts rendering, at certain FPS (optional)
-/// </summary>
-//extern "C" void StartRendering(QWidget * pQRendeeWiget, float framesPerSeconf = 60.0f);
 
 /// <summary>
 /// Pauses Rendering
 /// </summary>
 /// <param name="pQRendeeWiget"></param>
-//extern "C" void PausetRendering(QWidget * pQRendeeWiget);
+extern "C" void PauseRendering(QWidget * pQRendeeWiget);
 
+/// <summary>
+/// Resumes Rendering
+/// </summary>
+/// <param name="pQRendeeWiget"></param>
+extern "C" void ResumeRendering(QWidget * pQRendeeWiget);
 
-	
+/// <summary>
+/// For debugging 
+/// Stand-in callback, search disk path where all the .pack files of a game have beene extracted
+/// </summary>
+extern void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);

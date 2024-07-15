@@ -1,17 +1,18 @@
+#include <string>
 #include "DxMaterial.h"
 #include "DxTexture.h"
 
 #include "..\Managers\DxDeviceManager.h"
 
+using namespace utils;
 using namespace rldx;
 
 DxMaterial* rldx::DxMaterial::Create(std::vector<rmv2::TextureElement>& textures)
 {
 	auto newMaterial = rldx::DxResourceManager::Instance()->AllocMaterial().GetPtr();
-	newMaterial->InitWithDefaulTextures();
+	newMaterial->InitWithDefaulTextures(); // fill with default textures first, so if any texures are missing, the model will sill draw
 
 	newMaterial->SetTextures(DxDeviceManager::Device(), textures);
-
 	return newMaterial;
 }
 
@@ -34,7 +35,7 @@ void rldx::DxMaterial::SetTextures(ID3D11Device* poDevice, const std::vector<rmv
 {
 	for (auto& itText : inTex)
 	{
-		AddTexture(poDevice, itText.textureType, libtools::string_to_wstring(itText.texturePath));
+		AddTexture(poDevice, itText.textureType, ToWString(itText.texturePath));
 	}
 }
 
@@ -59,10 +60,10 @@ inline bool IsDDSTextureFile(char* bin)
 }
 
 // TODO: current not used, as all slots are filled with default textures, remove?
-inline bool IsTextureCriticalForMaterial(const wstring& filePath)
+inline bool IsTextureCriticalForMaterial(const std::wstring& filePath)
 {
 	return !(
-		(toLower(filePath).find(L"mask") != std::wstring::npos)
+		(ToLower(filePath).find(L"mask") != std::wstring::npos)
 		);
 }
 
@@ -70,22 +71,22 @@ void DxMaterial::AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstrin
 {
 	DxTexture* textPtr = nullptr;
 
-	textPtr = DxResourceManager::Instance()->AllocTexture().GetPtr();
+	textPtr = DxResourceManager::Instance()->AllocTexture(path, DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
 
-	logging::LogAction("DEBUG: attempting to get 1 file from CALLBACK: " + libtools::wstring_to_string(path));
+	logging::LogAction(L"DEBUG: attempting to get 1 file from CALLBACK: " + path);
 
 	auto bytes = DxResourceManager::GetFile(path);
 
 	if (!bytes.IsValid()) // texture file is missing or empty
 	{
-		logging::LogActionError("Loading From CALLBACK failed, missing or empty file, " + libtools::wstring_to_string(path));
+		logging::LogError(L"Loading From CALLBACK failed, missing or empty file, " + path);
 
 		return;
 	}
 
 	textPtr->LoadFileFromMemory(poDevice, bytes.GetBufferPtr(), bytes.GetBufferSize());
 
-	logging::LogActionSuccess("Loaded From CALLBACK: " + libtools::wstring_to_string(path));
+	logging::LogAction(L"Loaded From CALLBACK: " + path);
 
 	m_textures[TextureTypeEnum(slot)] = { textPtr };
 }
@@ -97,9 +98,9 @@ DxTexture* DxMaterial::LoadDefaultTexture(ID3D11Device* poDevice, UINT slot)
 		auto resHandleDiffuse = DxResourceManager::Instance()->GetTexture(m_defaultTexturesMap.at(TextureTypeEnum(slot)));
 		return resHandleDiffuse.GetPtr();
 	}
-	catch (std::out_of_range& e) {
+	catch (std::exception& e) {
 		auto debug_1 = e.what(); // TODO: REMOVE!!
-		logging::LogActionError("Failed to load default texture: key enum id: " + to_string(slot) + ", message: " + e.what());
+		logging::LogAction(L"Failed to load default texture: key enum id: " + ToWString(std::to_string(slot)) + L", message: " + ToWString(e.what()));
 		return nullptr;
 	}
 
@@ -173,16 +174,5 @@ int DxMaterial::GetTextureStartSlot()
 {
 	return 47;
 }
-
-ResourceTypeEnum DxMaterial::GetType() const
-{
-	return ResourceTypeEnum::Material;
-}
-
-std::wstring DxMaterial::GetTypeString() const
-{
-	return L"DxMaterial";
-}
-
 
 std::vector<ID3D11ShaderResourceView*> DxMaterial::m_emptyMaterial = std::vector<ID3D11ShaderResourceView*>(D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, nullptr);

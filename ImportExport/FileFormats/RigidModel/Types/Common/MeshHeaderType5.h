@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <DirectXMath.h>
 #include <GeneralTypes\IDataStructure.h>
-#include "..\..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "MeshEnumsConstants.h"
 
 namespace rmv2

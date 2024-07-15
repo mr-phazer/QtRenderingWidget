@@ -6,13 +6,14 @@
 
 using namespace rmv2;
 using namespace rldx;
+using namespace utils;
 
 
 bool CmpList(const std::wstring& in, const std::vector<std::wstring>& values)
 {
 	for (auto& str : values)
 	{
-		if (toUpper(str) == toUpper(in))
+		if (ToUpper(str) == ToUpper(in))
 			return true;
 	}
 
@@ -68,7 +69,7 @@ void rmv2::XmMaterialReader::FetchTextures()
 		{
 			if (CmpList(slotName, mapItem.second))
 			{
-				m_poMaterialData->AddTexture(mapItem.first, libtools::wstring_to_string(slotPath));
+				m_poMaterialData->AddTexture(mapItem.first, ToString(slotPath));
 			}
 		}
 

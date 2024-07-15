@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "..\..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Creators\MeshHeaderType3Creator.h"
 #include "..\..\Creators\MeshMaterialCreators.h"
@@ -15,18 +14,18 @@ namespace rmv2 {
 	class IMaterialCommonCreator
 	{
 	public:
-		virtual MaterialCommon Create(ByteStream& bytes) = 0;
+		virtual MaterialCommon Create(utils::ByteStream& bytes) = 0;
 	};
 
 	class DefaultMaterialCreator : public IMaterialCommonCreator
 	{
 	public:
-		MaterialCommon Create(ByteStream& bytes) override;
+		MaterialCommon Create(utils::ByteStream& bytes) override;
 
 	private:
-		void ReadExtraMaterialParams(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
-		void ReadTextures(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
-		void ReadAttachPointTable(ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
+		void ReadExtraMaterialParams(utils::ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
+		void ReadTextures(utils::ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
+		void ReadAttachPointTable(utils::ByteStream& bytes, rmv2::MaterialCommon& matBlock, const rmv2::MaterialHeaderType5& header);
 	};
 
 	class MaterialCommonCreatorFactory : public templates::TAbstractFactory<IMaterialCommonCreator, RigidMaterialEnum>

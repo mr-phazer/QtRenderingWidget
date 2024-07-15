@@ -1,4 +1,3 @@
-#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include <CustomExceptions\CustomExceptions.h>
 #include <Rldx\Animation\AnimationPlayer.h>
 #include <Rldx\Managers\ResourceManager\DxResourceManager.h>
@@ -6,9 +5,11 @@
 
 namespace skel_anim
 {
+	using namespace utils;
+
 	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile)
 	{
-		auto skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
 		// check if skeleton already exists
 		auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
@@ -35,13 +36,13 @@ namespace skel_anim
 
 	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
 	{
-		// set skeleton name
-		m_skeletonName = libtools::string_to_wstring(inputFile.fileHeader.skeletonName);
+		// set skeleton m_nodeName
+		m_skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
 		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
 
 		if (m_animation->frameData.frames.empty()) {
-			throw ConLogExceptionVerbose("No frames i bind pose anim file");
+			throw COMException(L"No frames i bind pose anim file", COMExceptionFormatMode::StandardLogVerbose, 0);
 		}
 
 		SetBoneTable(inputFile);
@@ -93,7 +94,7 @@ namespace skel_anim
 		{
 			SkeletonBoneNode node;
 
-			node.name = itBone.strName;
+			node.m_nodeName = itBone.strName;
 			node.boneIndex = itBone.id;
 			node.parentIndex = itBone.parent_id;
 
@@ -105,7 +106,7 @@ namespace skel_anim
 	{
 		for (int32_t boneIndex = 0; boneIndex < boneTable.size(); boneIndex++)
 		{
-			if (CompareNoCase(boneTable[boneIndex].name, boneName))
+			if (CompareNoCase(ToWString(boneTable[boneIndex].m_nodeName), ToWString(boneName)))
 			{
 				return boneIndex;
 			}
@@ -123,14 +124,4 @@ namespace skel_anim
 	{
 		return m_bindposeMatrices;
 	}
-
-	std::wstring Skeleton::GetTypeString() const
-	{
-		return L"Skeleton";
-	}
-
-	rldx::ResourceTypeEnum Skeleton::GetType() const
-	{
-		return rldx::ResourceTypeEnum::Skeleton;
-	}
-}
+} // namespace skel_anim

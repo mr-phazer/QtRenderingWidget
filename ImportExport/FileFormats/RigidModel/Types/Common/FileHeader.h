@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\..\..\Helpers\ByteStream.h"
+#include "Utils\ByteStream.h"
 #include "..\..\Constants\Rmv2Constants.h"
 #include "..\..\Types\Common\MeshEnumsConstants.h"
 

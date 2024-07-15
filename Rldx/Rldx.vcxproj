@@ -27,7 +27,6 @@
     <ClCompile Include="Rldx\Animation\DataTypes\Skeleton.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
     <ClCompile Include="Rldx\Animation\KeyFrameInterpolator.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
     <ClCompile Include="Rldx\Animation\SkeletonKeyFrameSampler.cpp" />
@@ -48,7 +47,6 @@
     <ClInclude Include="Rldx\Animation\Helpers\SkeletonHelpers.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
     <ClInclude Include="Rldx\Animation\KeyFrameInterpolator.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
     <ClInclude Include="Rldx\Animation\SkeletonKeyFrameSampler.h" />
@@ -81,7 +79,6 @@
     <ClInclude Include="Rldx\Interfaces\IResizable.h" />
     <ClInclude Include="Rldx\Interfaces\IUpdateable.h" />
     <ClInclude Include="Rldx\Interfaces\TIdentifiable.h" />
-    <ClInclude Include="Rldx\Logging\Logging.h" />
     <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h" />
     <ClInclude Include="Rldx\Managers\DxDeviceManager.h" />
     <ClInclude Include="Rldx\Managers\DxSceneManager.h" />
@@ -114,8 +111,6 @@
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxModelNode.h" />
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.h" />
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h" />
-    <ClInclude Include="Rldx\Tools\COMerrors.h" />
-    <ClInclude Include="Rldx\Tools\tools.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonKeyFrame.h" />
     <ClInclude Include="Rldx\Animation\DataTypes\SkeletonAnimation.h" />
@@ -124,7 +119,6 @@
     <ClCompile Include="Rldx\DataTypes\ShaderFiles.cpp" />
     <ClCompile Include="Rldx\Creators\DxMeshCreator.cpp" />
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp" />
-    <ClCompile Include="Rldx\Logging\Logging.cpp" />
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp" />
     <ClCompile Include="Rldx\Managers\DxDeviceManager.cpp" />
     <ClCompile Include="Rldx\Managers\DxSceneManager.cpp" />
@@ -148,13 +142,9 @@
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxModelNode.cpp" />
     <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxVmdNodes.cpp" />
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp" />
-    <ClCompile Include="Rldx\Tools\COMerrors.cpp" />
-    <ClCompile Include="Rldx\Tools\tools.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-tidy" />
-    <None Include="Rldx\Logging\Inl\ConsoleColors.inl" />
-    <None Include="Rldx\Logging\Inl\WinConsoleColors.inl" />
     <None Include="Rldx\RenderResources\Font\Consolas18.spritefont" />
     <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
@@ -174,32 +164,32 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_NoTextures.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Simple.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Three_Kingdoms.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Rldx\RenderResources\Shaders\PS_Troy.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
@@ -222,8 +212,8 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">I:\Coding\Repos\QtRenderingWidget_RPFM\Rldx\Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)Rldx\RenderResources\ShaderBin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -231,6 +221,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{81f17f00-4039-48d3-afbf-6168ffb0a9fb}</ProjectGuid>
     <RootNamespace>Rldx</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -325,7 +316,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies);$(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -349,7 +341,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>%(AdditionalDependencies);(SolutionDir)DirectXTK\Bin\Desktop_2019\$(Platform)\$(Configuration)\DirectXTK.lib;$(SolutionDir)DirectXMesh\DirectXMesh\Bin\Desktop_2022\$(Platform)\$(Configuration)\DirectXMesh.lib;$(SolutionDir)$(Platform)\$(Configuration)\CommonLibs.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -10,8 +10,8 @@ namespace rldx
 	/// <summary>
 	/// Template for storing a general CPU-side mesh
 	/// </summary>
-	/// <typeparam name="VERTEX_TYPE">Vertex type</typeparam>
-	/// <typeparam name="INDEX_TYPE">has to 2 or 4 byte uint</typeparam>
+	/// <typeparam m_nodeName="VERTEX_TYPE">Vertex type</typeparam>
+	/// <typeparam m_nodeName="INDEX_TYPE">has to 2 or 4 byte uint</typeparam>
 	template <typename VERTEX_TYPE, typename INDEX_TYPE>
 	struct TRawMeshData
 	{
@@ -22,8 +22,8 @@ namespace rldx
 	/// <summary>
 	/// For holding a general GPU-side mesh data, plus copy of original (for CPU-write access DX mesh buffers)
 	/// </summary>
-	/// <typeparam name="VertexType"></typeparam>
-	/// <typeparam name="IndexType"></typeparam>
+	/// <typeparam m_nodeName="VertexType"></typeparam>
+	/// <typeparam m_nodeName="IndexType"></typeparam>
 	template <typename VertexType, typename IndexType>
 	struct TDxMeshRenderData
 	{

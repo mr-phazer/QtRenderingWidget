@@ -4,6 +4,7 @@
 #include "..\Creators\MeshHeaderType3Creator.h"
 
 using namespace rmv2;
+using namespace utils;
 
 RigidModelFileCommon rmv2::RigidModelReader::Read(ByteStream& bytes)
 {

@@ -1,9 +1,12 @@
 #include "DxAmbientLightSource.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
-#include "..\..\ImportExport\Helpers\ByteStream.h"
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Rendering\DxTexture.h"
+#include "Utils\ByteStream.h"
+
+using namespace std;
+using namespace utils;
 
 namespace rldx
 {
@@ -55,10 +58,10 @@ namespace rldx
 													UINT startSlotSRV)
 	{
 		if (pathDiffuseMap.empty())
-			throw invalid_argument("path for IBL Diffuse cubemap is empty");
+			throw std::exception("path for IBL Diffuse cubemap is empty");
 
 		if (pathSpecularMap.empty())
-			throw invalid_argument("path for IBL Specular cubemap is empty");
+			throw std::exception("path for IBL Specular cubemap is empty");
 
 		m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap);
 		m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap);

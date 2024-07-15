@@ -2,71 +2,51 @@
 
 #include <exception>
 #include <string>
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
-#include "..\..\Rldx\Rldx\Tools\COMerrors.h"
+#include "..\Logger\Logger.h"
+#include "COMerrors.h"
 
-class ConLogException : public std::exception
-{
-	std::string m_message;
-
-public:
-	ConLogException(const std::string& message);
-	virtual const char* what() const throw();
-};
-
-class ConLogExceptionVerbose : public std::exception
-{
-	std::string m_message;
-
-public:
-	ConLogExceptionVerbose(const std::string& message);
-	virtual const char* what() const throw();
+// TODO: This needs a revision to ensure it works as expected.
+enum class COMExceptionFormatMode {
+	StandardNoLog,
+	StandardLog,
+	StandardLogVerbose,
+	COM
 };
 
 class COMException : public std::exception
 {
 	HRESULT m_hrResult;
 	std::string m_message;
+	COMExceptionFormatMode m_formatMode;
 
 public:
-	COMException(HRESULT hr) noexcept : m_hrResult(hr)
-	{
-		m_message = GetComErrorFormated(m_hrResult, "");
-	}
-
-	const char* what() const override {
-		return m_message.c_str();
-	}
-
-	HRESULT GetResult() const noexcept { return m_hrResult; }
+	COMException(const std::wstring& message, const COMExceptionFormatMode formatMode = COMExceptionFormatMode::StandardLog, const HRESULT hrResult = S_OK);
+	virtual const char* what() const throw();
+	HRESULT GetResult() const;
+	operator HRESULT() { return m_hrResult; };
 };
 
-class COMExceptionLog : public std::exception
-{
-	HRESULT m_hrResult = S_OK;
-	std::string m_message = "";
+#define ThrowAndLogIfAiled(message, formatMode, hrResult) \
+	if (!SUCCEEDED(hr)) throw COMException(message, formatMode, hrResult); \
+	else LogSucess(message) \
 
-public:
-	COMExceptionLog(HRESULT hr, const std::string& message) noexcept
-		:
-		m_hrResult(hr),
-		m_message(GetComErrorFormated(hr, message))
-	{
-		logging::LogActionError(what());
-	}
+#define COM_COND_THROW(HR) \
+if (!SUCCEEDED(HR)) throw COMException(HR); \
 
-	const char* what() const override
-	{
-		return m_message.c_str();
-	}
+#define LOADING_FILE(path) ("Loading: " + std::string(path))
 
-	HRESULT GetResult() const noexcept { return m_hrResult; }
-};
+#define COM_ASSERT_BOX(HR, op) comAssert_Box(HR, __FUNCTION__, op)
 
-#define ThrowAndLogIfAiled(hr, message) \
-	if (!SUCCEEDED(hr)) throw COMExceptionLog(hr, message); \
-	else \
-	logging::LogActionSuccess("CreateRenderTargetView().")
+#define COM_ASSERT(HR) comAssert_LogOnly(HR, __FUNCTION__)
+#define COM_ASSERT_OP(HR, op) comAssert_LogOnly(HR, __FUNCTION__, op)
+
+#define ComMessageBox(hr, _title, _op) \
+		auto message = std::wstring(ToWString(__FUNCTION__) + L"\r\n") \
+		+ L"Failed: " + std::wstring(_op) + _wstrPath + L"\r\n") \
+		+ L"HRESULT: " + std::to_wstring(hr) + L"\r\n" \
+		+ L"String: " + GetComError(hr) + L"\r\n"; \
+	MessageBox(NULL, message.c_str(), _title, MB_OK | MB_ICONERROR);\
 
 
+#define VERBOSE __FUNCTION__ ": " __FILE__ "(" + std::to_string(__LINE__) + ")"
 

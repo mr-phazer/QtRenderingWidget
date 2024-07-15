@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,13 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CustomExceptions\COMErrors.h" />
     <ClInclude Include="CustomExceptions\CustomExceptions.h" />
+    <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
+    <ClInclude Include="Utils\IOUtils.h" />
+    <ClInclude Include="Utils\MathUtils.h" />
+    <ClInclude Include="Utils\StrUtils.h" />
+    <ClInclude Include="Utils\ByteStream.h" />
     <ClInclude Include="Timer\SystemClockChecker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CustomExceptions\COMErrors.cpp" />
     <ClCompile Include="CustomExceptions\CustomExceptions.cpp" />
+    <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />
+    <ClCompile Include="Utils\IOUtils.cpp" />
+    <ClCompile Include="Utils\MathUtils.cpp" />
+    <ClCompile Include="Utils\StrUtils.cpp" />
+    <ClCompile Include="Utils\ByteStream.cpp" />
     <ClCompile Include="Timer\SystemClockChecker.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -52,7 +64,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -123,6 +135,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -143,6 +156,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <SupportJustMyCode>true</SupportJustMyCode>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>

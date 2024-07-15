@@ -1,34 +1,36 @@
 
 #include <windows.h>
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
-#include "..\Logging\Logging.h"
-#include "..\Tools\tools.h"
+#include "CustomExceptions/CustomExceptions.h"
 #include "DxDeviceManager.h"
+#include "Logger\Logger.h"
 
 
 
 using namespace rldx;
+using namespace logging;
+using namespace utils;
 
 std::unique_ptr<DxDeviceManager> DxDeviceManager::sm_spoInstance = nullptr;
 
 DxDeviceManager::PUnique rldx::DxDeviceManager::Create()
 {
-	logging::LogAction("Creating New Device Mangager");
+	Logger::LogAction(L"Creating New Device Mangager");
 	auto poNewInstance = std::unique_ptr<DxDeviceManager>(new DxDeviceManager);
 
-	logging::LogAction("Calling InitDirectd3d11..");
+	Logger::LogAction(L"Calling InitDirectd3d11..");
 	HRESULT hr = poNewInstance->InitDirect3d11();
 
 	if (!SUCCEEDED(hr)) {
-		logging::LogActionError("Init d3d 11 failed!");
+		Logger::LogActionError(L"Init d3d 11 failed!");
 		throw DirectX::com_exception(hr);
 	}
 
-	logging::LogAction("Create State Object..");
+	Logger::LogAction(L"Create State Object..");
 	// Create state objects.
 	poNewInstance->m_stateObjects = std::make_unique<DirectX::CommonStates>(poNewInstance->GetDevice());
 
-	logging::LogAction("Create Debug Text Writer..");
+	Logger::LogAction(L"Create Debug Text Writer..");
 	poNewInstance->m_upoDebugTextWriter = DxDebugTextWriter::Create(poNewInstance->GetDevice(), poNewInstance->GetDeviceContext());
 
 	return poNewInstance;
@@ -45,7 +47,7 @@ DxDeviceManager& rldx::DxDeviceManager::GetInstance()
 
 HRESULT rldx::DxDeviceManager::InitDirect3d11()
 {
-	logging::LogAction("Attempting to create Direct3d 11 Device...");
+	Logger::LogAction(L"Attempting to create Direct3d 11 Device...");
 
 	D3D_FEATURE_LEVEL featureLevels[] = {
 		D3D_FEATURE_LEVEL_11_1,
@@ -90,12 +92,11 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 			&m_cpoDeviceContext);
 #endif
 	}
-	catch (libtools::COMException& comException)
+	catch (COMException& comException)
 	{
 		_com_error err(comException);
 		LPCTSTR errMsg = err.ErrorMessage();
-		string strErrorMessage = libtools::wstring_to_string(errMsg);
-		logging::LogActionError("Direct3d 11 Device failed! HRESULT code: " + to_string(hr) + ": " + strErrorMessage);
+		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(std::to_string(hr)) + L": " + errMsg);
 
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
 	}
@@ -104,13 +105,12 @@ HRESULT rldx::DxDeviceManager::InitDirect3d11()
 	{
 		_com_error err(hr);
 		LPCTSTR errMsg = err.ErrorMessage();
-		string strErrorMessage = libtools::wstring_to_string(errMsg);
-		logging::LogActionError("Direct3d 11 Device failed! HRESULT code: " + to_string(hr) + ": " + strErrorMessage);
+		Logger::LogActionError(L"Direct3d 11 Device failed! HRESULT code: " + ToWString(std::to_string(hr)) + L": " + errMsg);
 
 		MessageBox(nullptr, errMsg, L"Come Error", MB_OK);
 	}
 
-	logging::LogActionSuccess("D3D11CreateDevice()...Finsihed");
+	Logger::LogActionSuccess(L"D3D11CreateDevice()...Finsihed");
 
 	return hr;
 }

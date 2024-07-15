@@ -1,14 +1,14 @@
 #pragma once
 
-#include <DirectXMath.h>
-#include <wrl\client.h>
 #include <d3d11.h>
 #include <DDSTextureLoader.h>
+#include <DirectXMath.h>
 #include <SimpleMath.h>
+#include <wrl\client.h>
 
+#include "..\..\rldx\Interfaces\IBindable.h"
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Interfaces\IResizable.h"
-#include "..\..\rldx\Interfaces\IBindable.h"
 
 #include <string>
 
@@ -26,54 +26,63 @@ namespace rldx {
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() = 0;
 		virtual ID3D11ShaderResourceView** getAddressOfShaderResourceView() = 0;
 		virtual ID3D11Texture2D** getGetAddressOfTexture() = 0;
-	};	
+	};
 
 	// TODO: make IBindable
 	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
 	{
-	public:		
+	public:
+		DxTexture()
+		{
+			SetType(ResourceTypeEnum::Texture);
+			SetTypeString(L"DxTexture");
+		}
+
+		DxTexture(const std::wstring& name)
+		{
+			DxTexture();
+			SetName(name);
+		}
 		virtual ~DxTexture() = default;
 
-		ResourceTypeEnum GetType() const override;
-		std::wstring GetTypeString() const override;
 
 		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight();
 		UINT GetWidth();
-		UINT GetSampleCount();		
+		UINT GetSampleCount();
 		float GetAspectRatio();
-		
+
 		bool IsLoaded() const
 		{
 			return (bool)m_cpoShaderResourceView;
 		}
 
-		
-		virtual ID3D11RenderTargetView* GetRenderTargetView() const /*override*/ { return m_cpoRenderTargetView.Get();};
-		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  /*override*/ { return m_cpoShaderResourceView.Get();};
+
+		virtual ID3D11RenderTargetView* GetRenderTargetView() const /*override*/ { return m_cpoRenderTargetView.Get(); };
+		virtual ID3D11ShaderResourceView* GetShaderResourceView() const  /*override*/ { return m_cpoShaderResourceView.Get(); };
 		virtual ID3D11RenderTargetView** GetAddressOfRenderTargetView() /*override*/ { return m_cpoRenderTargetView.GetAddressOf(); };
 		virtual ID3D11ShaderResourceView** GetAddressOfShaderResourceView()  /*override*/ { return m_cpoShaderResourceView.GetAddressOf(); };
 
-		virtual ID3D11Texture2D* GetTexture2D() const  /*override*/ { return m_cpoTexture.Get();};
+		virtual ID3D11Texture2D* GetTexture2D() const  /*override*/ { return m_cpoTexture.Get(); };
 		virtual ID3D11Texture2D** GetGetAddressOfTexture() /*override*/ { return m_cpoTexture.GetAddressOf(); };
-				
+
 		virtual Microsoft::WRL::ComPtr<ID3D11RenderTargetView>& GetComPtrRenderTargetView()  /*override*/ {
 			return m_cpoRenderTargetView;
 		};
 
-		virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetComPtrShaderResourceView() /*override*/{
+		virtual Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>& GetComPtrShaderResourceView() /*override*/ {
 			return m_cpoShaderResourceView;
 		};
 
-		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrDepthStencil() /*override*/{
+		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrDepthStencil() /*override*/ {
 			return m_cpoDepthStencilTexture;
-		};		
-		
-		virtual Microsoft::WRL::ComPtr<ID3D11DepthStencilView>& GetComPtrDepthStencilView() /*override*/{
+		};
+
+		virtual Microsoft::WRL::ComPtr<ID3D11DepthStencilView>& GetComPtrDepthStencilView() /*override*/ {
 			return m_cpoDepthStencilView;
 		};
 
-		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrTexture() /*override*/{
+		virtual Microsoft::WRL::ComPtr<ID3D11Texture2D>& GetComPtrTexture() /*override*/ {
 			return m_cpoTexture;
 		};
 
@@ -118,7 +127,7 @@ namespace rldx {
 				0);
 		}
 
-		bool LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");		
+		bool LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
 		bool LoadFileFromMemory(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName = "");
 
 		bool LoadCubeMap(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
@@ -155,7 +164,7 @@ namespace rldx {
 			depthTextureDesc.Usage = D3D11_USAGE_DEFAULT;
 
 			hr = poDevice->CreateTexture2D(&depthTextureDesc, NULL,
-				m_cpoDepthStencilTexture.GetAddressOf());
+										   m_cpoDepthStencilTexture.GetAddressOf());
 			assert(SUCCEEDED(hr));
 
 			//string szDepthTextureName = string("DepthTeX_") + std::to_string(sm_NextId);
@@ -178,7 +187,7 @@ namespace rldx {
 
 			// Create the shader resource view.
 			hr = poDevice->CreateShaderResourceView(m_cpoDepthStencilTexture.Get(),
-				&shaderResourceViewDesc, m_cpoDepthShaderResourceView.GetAddressOf());
+													&shaderResourceViewDesc, m_cpoDepthShaderResourceView.GetAddressOf());
 			assert(SUCCEEDED(hr));
 
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -199,7 +208,7 @@ namespace rldx {
 			dsvDesc.Texture2DArray.MipSlice = 0;
 
 			hr = poDevice->CreateDepthStencilView(m_cpoDepthStencilTexture.Get(), &dsvDesc,
-				m_cpoDepthStencilView.GetAddressOf());
+												  m_cpoDepthStencilView.GetAddressOf());
 			assert(SUCCEEDED(hr));
 
 			//////////////////////////////////////////////////////
@@ -208,7 +217,7 @@ namespace rldx {
 			dsvDesc.Flags = D3D11_DSV_READ_ONLY_DEPTH;
 			dsvDesc.Format = DXGI_FORMAT_D32_FLOAT; // DXGI_FORMAT_D24_UNORM_S8_UINT;
 			hr = poDevice->CreateDepthStencilView(m_cpoDepthStencilTexture.Get(), &dsvDesc,
-				m_cpoDepthStencilView_ReadOnly.GetAddressOf());
+												  m_cpoDepthStencilView_ReadOnly.GetAddressOf());
 			assert(SUCCEEDED(hr));
 
 			/************************
@@ -267,13 +276,13 @@ namespace rldx {
 		//HRESULT Create3dTextureBuffer(ID3D11Device* poD3DDevice, UINT width, UINT height, UINT depth, DXGI_FORMAT format, UINT sampleCount);
 		HRESULT CreateShaderResourceViewBuffer(ID3D11Device* poD3DDevice);
 		HRESULT CreateRenderTargetViewBuffer(ID3D11Device* poD3DDevice);
-		
+
 		bool PlaceResourceBuffer(ID3D11Resource* poTextureResource);
 
 		D3D11_TEXTURE2D_DESC& GetTextureDescRef() { return m_textureDesc; }
 
 	private:
-		D3D11_TEXTURE2D_DESC m_textureDesc = {0};  // Texture data descrtion 
+		D3D11_TEXTURE2D_DESC m_textureDesc = { 0 };  // Texture data descrtion 
 		D3D11_SHADER_RESOURCE_VIEW_DESC m_shaderResourceViewDesc = { DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM_SRGB, D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2D }; // For use in input in shader
 		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = { DXGI_FORMAT::DXGI_FORMAT_B8G8R8A8_UNORM_SRGB, D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2D }; // For use in input in shader; // Render Target
 
@@ -284,7 +293,7 @@ namespace rldx {
 		// Interfaces to use texture memory "render to/from"
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView>		m_cpoRenderTargetView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView>	m_cpoShaderResourceView;
-		
+
 		// Depth buffer/stencil interfaces
 		Microsoft::WRL::ComPtr<ID3D11Texture2D>				m_cpoDepthStencilTexture;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView>		m_cpoDepthStencilView;

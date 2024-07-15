@@ -186,7 +186,7 @@ float3 get_env_scaler()
 
 float3 get_environment_colour_UPDATED(in float3 direction, in float lod)
 {
-    return (tex_cube_specular.SampleLevel(s_anisotropic, texcoordEnvSwizzle(direction), lod) * get_env_scaler()).rgb;
+    return (tex_cube_specular.SampleLevel(s_anisotropic, texcoordEnvSwizzle(direction), lod).rgb * get_env_scaler()).rgb;
     //return texCUBElod(s_environment_map, float4(texcoordEnvSwizzle(direction), lod)).rgb;
 
 }
@@ -194,7 +194,7 @@ float3 get_environment_colour_UPDATED(in float3 direction, in float lod)
 float3 cube_ambient(in float3 N)
 {
     //return tex_cube_diffuse.SampleLevel(SamplerLinear, N, 0);
-    return (tex_cube_diffuse.SampleLevel(SamplerLinear, texcoordEnvSwizzle(N), 0) * get_env_scaler()).rgb;
+    return (tex_cube_diffuse.SampleLevel(SamplerLinear, texcoordEnvSwizzle(N), 0).rgb * get_env_scaler()).rgb;
     //return tex_cube_specular.Sample(SamplerLinear, N);
     //return texCUBE(s_ambient, texcoordEnvSwizzle(N)).rgb;
 }

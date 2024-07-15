@@ -10,9 +10,6 @@
     <ClCompile Include="Rldx\Interfaces\TIdentifiable.cpp">
       <Filter>Rldx\Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Logging\Logging.cpp">
-      <Filter>Rldx\Logging</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Managers\DxDebugTextWriter.cpp">
       <Filter>Rldx\Managers</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
     <ClCompile Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.cpp">
       <Filter>Rldx\ShaderLoadingHelpers</Filter>
     </ClCompile>
-    <ClCompile Include="Rldx\Tools\tools.cpp">
-      <Filter>Rldx\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="Rldx\Creators\DxSceneCreator.cpp">
       <Filter>Rldx\Creators</Filter>
     </ClCompile>
@@ -103,14 +97,12 @@
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.cpp" />
     <ClCompile Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\DxVmdManager.cpp">
       <Filter>Rldx\Managers</Filter>
     </ClCompile>
     <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
-    <ClCompile Include="Rldx\Tools\COMerrors.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -175,9 +167,6 @@
     </ClInclude>
     <ClInclude Include="Rldx\Interfaces\TIdentifiable.h">
       <Filter>Rldx\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Logging\Logging.h">
-      <Filter>Rldx\Logging</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Managers\DxDebugTextWriter.h">
       <Filter>Rldx\Managers</Filter>
@@ -263,12 +252,6 @@
     <ClInclude Include="Rldx\ShaderLoadingHelpers\ShaderLoadingHelpers.h">
       <Filter>Rldx\ShaderLoadingHelpers</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Tools\COMerrors.h">
-      <Filter>Rldx\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Tools\tools.h">
-      <Filter>Rldx\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxVariantMeshNode.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxMaterialInfoReader.h" />
@@ -288,7 +271,6 @@
     <ClInclude Include="Rldx\Animation\AnimPlayList.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h" />
     <ClInclude Include="Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h" />
     <ClInclude Include="Rldx\Animation\Helpers\timerHelper.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\DxVmdManager.h">
       <Filter>Rldx\Managers</Filter>
@@ -298,12 +280,6 @@
     <ClInclude Include="Rldx\Animation\Helpers\SkeletonHelpers.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Rldx\Logging\Inl\ConsoleColors.inl">
-      <Filter>Rldx\Logging\Inl</Filter>
-    </None>
-    <None Include="Rldx\Logging\Inl\WinConsoleColors.inl">
-      <Filter>Rldx\Logging\Inl</Filter>
-    </None>
     <None Include=".clang-tidy" />
     <None Include="Rldx\RenderResources\Shaders\include\Attila_Lib.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\layout.hlsli" />
@@ -340,9 +316,6 @@
     <Filter Include="Rldx\Interfaces">
       <UniqueIdentifier>{31266335-35fa-41bd-b26a-566f00d8766a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rldx\Logging">
-      <UniqueIdentifier>{159bb926-4f56-4d67-b6d1-a16f44f0ec32}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rldx\Managers">
       <UniqueIdentifier>{8bb83529-6be2-415a-b8ac-34199d8a1f1d}</UniqueIdentifier>
     </Filter>
@@ -375,9 +348,6 @@
     </Filter>
     <Filter Include="Rldx\Helpers">
       <UniqueIdentifier>{9387e0f2-8b76-465d-be52-f5942e5eae24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rldx\Logging\Inl">
-      <UniqueIdentifier>{302a7c32-0373-4ffe-a44c-3bb09cd6c8f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

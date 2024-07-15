@@ -3,10 +3,10 @@
 
 #include "..\..\..\FileFormats\XmMaterial\Readers\XmMaterialReader.h"
 #include "..\..\..\Helpers\CustomExceptions.h"
-#include "..\..\Rldx\Rldx\Tools\tools.h"
 
 using namespace std;
 using namespace rmv2;
+using namespace utils;
 
 WsModelData WsModelReader::Read(ByteStream& fileData)
 {

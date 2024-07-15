@@ -116,9 +116,9 @@ namespace skel_anim
 
 
 		return KeyFrameInterpolator::InterpolateLocalFrames(
-			m_currentAnim->anim.Sample(loopedTime + m_currentAnim->timeOffset),
-			m_nextAnim->anim.Sample(loopedTime + m_nextAnim->timeOffset),
-			GetInterPolationFactor(loopedTime + m_currentAnim->timeOffset));
+			m_currentAnim->anim.Sample((float)loopedTime + m_currentAnim->timeOffset),
+			m_nextAnim->anim.Sample((float)loopedTime + m_nextAnim->timeOffset),
+			GetInterPolationFactor((float)loopedTime + m_currentAnim->timeOffset));
 	}
 
 	float AnimQueue::GetLenth() const

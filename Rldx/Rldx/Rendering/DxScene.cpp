@@ -7,6 +7,7 @@
 #include "DxMeshRenderBucket.h"
 
 using namespace rldx;
+using namespace utils;
 
 void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 {
@@ -18,9 +19,16 @@ void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 
 	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
 
-	// diable depth buffer, while drawing 2d text
-	// TODO: do NOT create this in the render 
+	//  fetch mesh nodes from scenegraph
+	m_sceneGraph.FillRenderBucket(&m_renderQueue);
 
+	// -- update + set scene (per frame) constant buffer	
+	BindToDC(poDeviceContext);
+
+	m_renderQueue.Draw(poDeviceContext, m_poDefaultShaderProgram);
+
+	// diable depth buffer, while drawing 2d text
+// TODO: do NOT create this in the render 
 	poDeviceContext->OMSetDepthStencilState(m_upoCommonStates->DepthNone(), 0);
 
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->RenderText();
@@ -32,13 +40,6 @@ void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	// TODO: do NOT create this in the render loop
 	poDeviceContext->RSSetState(m_upoCommonStates->CullNone());
 
-	//  fetch mesh nodes from scenegraph
-	m_sceneGraph.FillRenderBucket(&m_renderQueue);
-
-	// -- update + set scene (per frame) constant buffer	
-	BindToDC(poDeviceContext);
-
-	m_renderQueue.Draw(poDeviceContext, m_poDefaultShaderProgram);
 
 	m_spoSwapChain->Present(poDeviceContext);
 }
@@ -59,6 +60,11 @@ void rldx::DxScene::SetGridState(DxBaseNode::DrawStateEnum drawState)
 DxMeshNode* rldx::DxScene::GetGridNode() const
 {
 	return m_poGridNode;
+}
+
+DxBaseNode* rldx::DxScene::GetAssetNode() const
+{
+	return m_poAssetNode;
 }
 
 // TODO: test this
@@ -129,7 +135,7 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_globalDirectionalLight.SetRotationScale(0.005f);
 	m_globalDirectionalLight.SetRotate(5.48f, 5.95f);
 
-	m_upoCommonStates = make_unique<DirectX::CommonStates>(poDevice);
+	m_upoCommonStates = std::make_unique<DirectX::CommonStates>(poDevice);
 
 	m_sceneFrameVSConstBuffer.Init(poDevice, "VS_PerFrame_CB");
 	m_sceneFramePSConstBuffer.Init(poDevice, "PS_PerFrame_CB");
@@ -152,7 +158,7 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 			iblLUTBinary
 		);
 
-	m_ambientLightSource.SetLightRadiance(0.7f);
+	m_ambientLightSource.SetLightRadiance(0.2f);
 	m_textureSamplers = DxTextureSamplers::Create(*m_upoCommonStates);
 }
 

@@ -1,12 +1,13 @@
 #include <string>
 
 #include <Timer\SystemClockChecker.h>
-#include "..\..\ImportExport\Helpers\ByteStream.h"
-#include "..\Logging\Logging.h"
-#include "..\Tools\tools.h"
 #include "DxDebugTextWriter.h"
+#include "Logger\Logger.h"
+#include "Utils\ByteStream.h"
 
 using namespace rldx;
+using namespace utils;
+using namespace logging;
 
 // TODO: keep or use create()?
 //rldx::DxDebugTextWriter::DxDebugTextWriter(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
@@ -33,7 +34,7 @@ using namespace rldx;
 
 std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext)
 {
-	logging::LogAction("DxDebugTextWriter::Create");
+	Logger::LogAction(L"DxDebugTextWriter::Create");
 
 	auto newInstance = std::make_unique<DxDebugTextWriter>();
 	ByteStream fontData(SPRITEFONT_PATH);
@@ -41,16 +42,16 @@ std::unique_ptr<DxDebugTextWriter> DxDebugTextWriter::Create(ID3D11Device* poDev
 	// TODO: handle exception where?		
 	if (!(newInstance->m_upoFont = std::make_unique<DirectX::SpriteFont>(poDevice, fontData.GetBufferPtr(), fontData.GetBufferSize())))
 	{
-		logging::LogActionError("Error Loading Font.");
+		Logger::LogActionError(L"Error Loading Font.");
 		throw std::exception("Error Loading Font.");
 	}
 
 	if (!(newInstance->m_upoSpriteBatch = std::make_unique<DirectX::SpriteBatch>(poDeviceContext))) {
-		logging::LogActionError("Error Loading Font.");
+		Logger::LogActionError(L"Error Loading Font.");
 		throw std::exception("Error Creating SpriteBatch.");
 	}
 
-	logging::LogActionSuccess("");
+	Logger::LogActionSuccess(L"");
 	return newInstance;
 }
 
@@ -71,7 +72,7 @@ void DxDebugTextWriter::AddString(const std::wstring& _string, DirectX::XMFLOAT4
 		m_stringExtQueue.clear();
 	}
 
-	//	m_stringExtQueue.push_back({ _string, color, timeOut });
+	m_stringExtQueue.push_back({ _string, color, timeOut });
 }
 
 void rldx::DxDebugTextWriter::SetStringRow(size_t row, const std::wstring& stringToDisplay, DirectX::XMFLOAT4 color, float timeOut)
@@ -84,8 +85,8 @@ void DxDebugTextWriter::RenderText()
 {
 	m_upoSpriteBatch->Begin();
 
-	//RenderStrings(m_stringExtQueue);
-	RenderStrings(m_stringRows);
+	RenderStrings(m_stringExtQueue);
+	//RenderStrings(m_stringRows);
 
 	m_upoSpriteBatch->End();
 

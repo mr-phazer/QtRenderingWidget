@@ -22,24 +22,24 @@ namespace rldx {
 			return std::move(newSceneManager);
 		}
 
-		void SetScene(DxScene::Uptr& newScene)
+		void SetScene(std::unique_ptr<DxScene>& newScene)
 		{
-			m_spoCurrentScene = std::move(newScene);
+			m_upoCurrentScene = std::move(newScene);
 		}
 
 		void MoveFrame()
 		{
-			if (m_spoCurrentScene && IsRenderRunning())
+			if (m_upoCurrentScene && IsRenderRunning())
 			{
-				m_spoCurrentScene->Update(m_systemClock.GetLocalTime());
+				m_upoCurrentScene->Update(m_systemClock.GetLocalTime());
 			}
 		}
 
 		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override
 		{
-			if (m_spoCurrentScene)
+			if (m_upoCurrentScene)
 			{
-				m_spoCurrentScene->Resize(poDevice, poDeviceContext, width, height);
+				m_upoCurrentScene->Resize(poDevice, poDeviceContext, width, height);
 			}
 		}
 
@@ -49,9 +49,9 @@ namespace rldx {
 		/// </summary>		
 		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
-			if (m_spoCurrentScene)
+			if (m_upoCurrentScene)
 			{
-				return m_spoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
+				return m_upoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
 			}
 
 			return false;
@@ -59,14 +59,14 @@ namespace rldx {
 
 		DxScene* GetCurrentScene()
 		{
-			return m_spoCurrentScene.get();
+			return m_upoCurrentScene.get();
 		}
 
 		bool IsRenderRunning() const { return m_bRenderingRunning; }
 		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
 
 	private:
-		DxScene::Uptr m_spoCurrentScene = nullptr;
+		std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
 		timer::SystemClockChecker m_systemClock;
 		bool m_bRenderingRunning = false;
 	};

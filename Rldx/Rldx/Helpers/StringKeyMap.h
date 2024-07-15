@@ -11,7 +11,7 @@
 ///  Map using  case insensitive strings as a keys
 /// For string
 /// </summary>
-/// <typeparam name="VALUE"></typeparam>
+/// <typeparam m_nodeName="VALUE"></typeparam>
 template <typename VALUE>
 using StringkeyMap
 =  std::unordered_map<
@@ -24,7 +24,7 @@ using StringkeyMap
 ///  Map using  case insensitive strings as a keys
 /// For wstring
 /// </summary>
-/// <typeparam name="VALUE"></typeparam>
+/// <typeparam m_nodeName="VALUE"></typeparam>
 template <typename VALUE>
 using WStringkeyMap = std::unordered_map<
 	std::wstring,

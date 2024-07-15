@@ -98,9 +98,9 @@ namespace skel_anim
 		}
 
 		return KeyFrameInterpolator::InterpolateLocalFrames(
-			m_currentAnim->Sample(loopedTime + m_currenOffest),
-			m_nextAnim->Sample(loopedTime + m_nextOffest),
-			GetInterPolationFactor(loopedTime));
+			m_currentAnim->Sample((float)loopedTime + m_currenOffest),
+			m_nextAnim->Sample((float)loopedTime + m_nextOffest),
+			GetInterPolationFactor((float)loopedTime));
 	}
 
 	float SkeletonAnimQueueBlendampler::GetLenth() const

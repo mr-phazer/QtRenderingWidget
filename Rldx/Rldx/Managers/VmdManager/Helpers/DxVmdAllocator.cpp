@@ -5,6 +5,8 @@
 #include "..\..\DxDeviceManager.h"
 #include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 
+using namespace utils;
+
 // TODO: remove?
 //void rldx::DxVmdNodeAllocator::AllocateDxBuffers(DxVmdNode* sceneVmdNode)
 //{
@@ -60,7 +62,7 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers(std::wstring& destSkeletonName,
 
 void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
 {
-	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdSting());
+	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
 	if (!gameShaderProgramCreator) {
 		throw std::exception("Error loadeing Game Shader Creator");
 	}
@@ -81,7 +83,7 @@ void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonNam
 
 	if (!std::string(parsedRmv2File.fileHeader.szSkeletonId).empty())
 	{
-		destSkeletonName = libtools::WidenString(parsedRmv2File.fileHeader.szSkeletonId);
+		destSkeletonName = ToWString(parsedRmv2File.fileHeader.szSkeletonId);
 	}
 
 	m_sceneVmdNode->SetModelData(rldx::DxDeviceManager::Device(), parsedRmv2File);

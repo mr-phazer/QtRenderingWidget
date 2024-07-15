@@ -6,29 +6,34 @@
 #include <Rldx\Animation\Helpers\AnimationRemapper.h>
 #include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h>
 #include <Rldx\Helpers\DxMeshCreatorHelper.h>
-#include <Rldx\Tools\tools.h>
 #include "..\..\Animation\Helpers\SkeletonHelpers.h"
 #include "..\..\Helpers\DxMeshCreatorHelper.h"
 #include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxShaderProgram.h"
-#include "..\..\Tools\tools.h"
+
+using namespace utils;
 
 namespace rldx
 {
-	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& name)
+	DxDeformerNode::~DxDeformerNode()
+	{
+		DxBaseNode::RemoveNode(this);
+	}
+
+	std::unique_ptr<DxDeformerNode> DxDeformerNode::Create(const std::wstring& m_nodeName)
 	{
 		auto newMeshNode = std::make_unique<DxDeformerNode>();
-		newMeshNode->SetName(name);
+
+		// TODO: remove?
 		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
-
 
 		return newMeshNode;
 	}
 
-	void DxDeformerNode::LoadBindPose(std::wstring m_animFilePath)
+	void DxDeformerNode::LoadBindPose(std::wstring animFilePath)
 	{
-		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
+		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(animFilePath);
 		auto animBindPoseFile = m_animFileReader.Read(animBindPoseBytes);
 
 		// For rome/Attila/ToB skeleton "rome_man_game" is needed to load certain "human" models / animations
@@ -41,7 +46,7 @@ namespace rldx
 			rldx::DxDeviceManager::Device(),
 			m_skeleton);
 
-		SetMeshData(skeletonMesh, L"Skeleton Mesh");
+		SetMeshData(skeletonMesh, L"Skeleton Mesh: " + m_skeleton.GetName());
 
 		// TODO: put this into a virtual void DxBaseNode::UpdateBoundingBox(DxCommonMeshData&)
 		DirectX::BoundingBox bbout;
@@ -84,7 +89,7 @@ namespace rldx
 
 	void DxDeformerNode::AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName)
 	{
-		auto index = m_skeleton.GetIndexFromBoneName(libtools::wstring_to_string(boneName));
+		auto index = m_skeleton.GetIndexFromBoneName(ToString(boneName));
 
 		if (index != -1)
 		{
@@ -111,14 +116,3 @@ namespace rldx
 		}
 	}
 }
-
-class SkeletonFileWithInfo
-{
-	std::string skeletonName;
-
-public:
-	std::wstring GetSkeletonName() const
-	{
-		return libtools::string_to_wstring(skeletonName);
-	}
-};

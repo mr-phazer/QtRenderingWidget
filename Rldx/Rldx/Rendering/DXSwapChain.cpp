@@ -1,8 +1,9 @@
-#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+#include <CustomExceptions\CustomExceptions.h>
 #include "d3d11.h"
 #include "DXSwapChain.h"
 
 using namespace rldx;
+using namespace logging;
 
 void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11DeviceContext* poPC)
 {
@@ -12,8 +13,6 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 		0,
 		__uuidof(ID3D11Texture2D),
 		(void**)&m_BackBufferTexture.GetComPtrTexture());
-
-
 
 	hr = poDevice->CreateRenderTargetView(
 		m_BackBufferTexture.GetComPtrTexture().Get(),
@@ -49,7 +48,7 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 		&m_BackBufferTexture.GetComPtrDepthStencilView()
 	);
 
-	ThrowAndLogIfAiled(hr, "Creating Depth Stencil...");
+	ThrowAndLogIfAiled(L"Creating Depth Stencil", COMExceptionFormatMode::StandardLog, hr);
 
 	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_BackBufferTexture.GetDescriptionRef().Height;
@@ -67,12 +66,12 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	// Get a factory2 interface from the device
 	IDXGIDevice2* pDXGIDevice = nullptr;
 	HRESULT hr = poDevice->QueryInterface(__uuidof(IDXGIDevice2), (void**)&pDXGIDevice);
-	ThrowAndLogIfAiled(hr, "Getting extended d3d 11 device");
+	ThrowAndLogIfAiled(L"Getting extended d3d 11 device", COMExceptionFormatMode::StandardLog, hr);
 
 	IDXGIAdapter* pDXGIAdapter = nullptr;;
 
 	hr = pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pDXGIAdapter);
-	ThrowAndLogIfAiled(hr, "Get device paranet");
+	ThrowAndLogIfAiled(L"Get device paranet", COMExceptionFormatMode::StandardLog, hr);
 
 	IDXGIFactory2* pIDXGIFactory = nullptr;;
 	pDXGIAdapter->GetParent(__uuidof(IDXGIFactory2), (void**)&pIDXGIFactory);
@@ -95,16 +94,16 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 
 	IDXGISwapChain1** p = &poNew->m_cpoSwapChain1;
 	hr = pIDXGIFactory->CreateSwapChainForHwnd(poDevice, hWindow, &poNew->m_SwapChainDescription, NULL, NULL, &poNew->m_cpoSwapChain1);
-	ThrowAndLogIfAiled(hr, "Getting extend d3d 11 interface...");
+	ThrowAndLogIfAiled(L"Getting extend d3d 11 interface...", COMExceptionFormatMode::StandardLog, hr);
 
 	// Get swap chain's back buffer, Store it in texture class
 	// TODO: create its renderQuad target view and set that view as renderQuad target (in the texture class)
 	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture2D()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
-	ThrowAndLogIfAiled(hr, "m_pSwapChain1->GetBuffer().");
+	ThrowAndLogIfAiled(L"m_pSwapChain1->GetBuffer().", COMExceptionFormatMode::StandardLog, hr);
 
 	//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
 	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture2D(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
-	ThrowAndLogIfAiled(hr, "CreateRenderTargetView()...");
+	ThrowAndLogIfAiled(L"CreateRenderTargetView()...", COMExceptionFormatMode::StandardLog, hr);
 
 	// TODO: any way to this more cleverly?
 	// Set the texture descriptor manually in backbuffer DxTexture, so it reports the right dimensions
@@ -113,7 +112,7 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
 	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
 
-	logging::LogActionSuccess("Finished making Swap Chain For Window");
+	Logger::LogActionSuccess(L"Finished making Swap Chain For Window");
 
 	return poNew;
 }

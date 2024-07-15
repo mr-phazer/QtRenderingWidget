@@ -1,8 +1,8 @@
 #pragma once
 
-#include "QtCore/qbytearray.h"
-#include "QtCore/qlist.h"
-#include "QtCore/qstring.h"
+#include "qtcore\qbytearray.h"
+#include "qtcore\qlist.h"
+#include "qtcore\qstring.h"
 
 /// <summary>
 /// Callback function, for asset loading
@@ -14,3 +14,5 @@
 /// </param>
 /// <returns></returns>
 typedef void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+
+typedef void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out);

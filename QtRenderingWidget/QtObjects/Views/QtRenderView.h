@@ -20,6 +20,8 @@
 #include "..\rldx\rldx\DataTypes\DxMeshData.h"
 #include "..\rldx\rldx\Rendering\DxShaderProgram.h"
 
+#include <QMimeData>
+
 class QtRenderWidgetView;
 
 class QtRenderController : public QObject
@@ -118,4 +120,16 @@ private:
 	QTimer* m_timer = nullptr;
 	float m_frameTime = 0;
 	QString m_gameIdString;
+
+	// only support drag+drog in debug mode
+
+#ifdef _DEBUG
+public:
+	void dragEnterEvent(QDragEnterEvent* event)
+	{
+		event->acceptProposedAction();
+	}
+
+	void dropEvent(QDropEvent* event);
+#endif
 };

@@ -15,13 +15,18 @@ namespace rldx
 	{
 	public:
 		size_t m_activeLod = 0;;
-		std::vector<std::vector<DxMeshNode::SharedPtr>> m_lods;
+		std::vector<std::vector<DxMeshNode::UniquePtr>> m_lods;
 	public:
-		using SharedPtr = std::shared_ptr<DxModelNode>;
+		using UniquePtr = std::unique_ptr<DxModelNode>;
 
 	public:
-		DxModelNode() : DxMeshNode(L"Unnamed DxMeshDeformerNode") {}
-		DxModelNode(const std::wstring& name) : DxMeshNode(name) {}
+		DxModelNode() : DxMeshNode(L"Unnamed DxModelNode")
+		{
+			SetType(SceneNodeTypeEnum::ModelNode);
+			SetTypeString(L"DxModelNode");
+		}
+
+		DxModelNode(const std::wstring& m_nodeName) : DxMeshNode(m_nodeName) {}
 
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);
 
@@ -31,7 +36,7 @@ namespace rldx
 		/// <summary>
 		/// Set the deformer for this node and all its children recursively
 		/// </summary>
-		/// <param name="poDeformerSourceNode"></param>
+		/// <param m_nodeName="poDeformerSourceNode"></param>
 
 
 		virtual void SetAttachBone(int32_t boneIndex) override;
@@ -59,9 +64,6 @@ namespace rldx
 				};
 			};
 		}
-
-		virtual SceneNodeTypeEnum GetType() const override { return SceneNodeTypeEnum::ModelNode; }
-		virtual std::wstring GetTypeString() const override { return L"DxModelNode"; };
 
 	private:
 		void SetSingleMesh(

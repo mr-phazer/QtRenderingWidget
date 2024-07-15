@@ -1,5 +1,4 @@
 #include <Rldx\Rendering\DxMeshRenderBucket.h>
-#include <Rldx\SceneGraph\SceneNodes\DxAnimatorServiceNode.h>
 #include "..\..\Animation\Helpers\SkeletonHelpers.h"
 #include "DxDeformerNode.h"
 #include "DxModelNode.h"
@@ -27,14 +26,29 @@ namespace rldx
 		DxDeformerNode* m_poDeformerNode = nullptr;
 
 	public:
-		DxVariantMeshNode() : DxModelNode(L"Unnamed DxVariantMeshNode") {}
+		DxVariantMeshNode()
+		{
+			SetType(SceneNodeTypeEnum::VariantMeshNode);
+			SetTypeString(L"DxVariantMeshNode");
+
+		}
+
+
+		virtual ~DxVariantMeshNode() {
+			auto DEBUG_BREAK = 1;
+		}
 
 		DxVariantMeshNode(const std::wstring& nodeName, DxDeformerNode* poDeformerNode)
 			:
 			m_poDeformerNode(poDeformerNode)
 		{
+			DxVariantMeshNode();
 			SetName(nodeName);
-			InitAnimation();
+
+			if (m_poDeformerNode)
+			{
+				InitAnimation();
+			}
 		};
 
 		void SetModels(const std::vector<DxModelNode*>& modelsIn)
@@ -47,7 +61,7 @@ namespace rldx
 	private:
 		void InitAnimation()
 		{
-			//LoadBindPose(skel_anim::GetPackPathFromSkeletonName(m_skeletonName));
+			// load the bind pose frame as animation, so the asset just stands still
 			m_poDeformerNode->LoadAnimClip(skel_anim::GetPackPathFromSkeletonName(m_poDeformerNode->GetSkeleton().GetName()));
 		}
 	};

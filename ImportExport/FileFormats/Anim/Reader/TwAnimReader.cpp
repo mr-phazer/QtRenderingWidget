@@ -4,8 +4,6 @@
 
 #include <Quantization\QuantTools.h>
 #include <SimpleMath.h>
-#include "..\..\..\..\Rldx\Rldx\Logging\Logging.h"
-#include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\RigidModel\Types\Common\MeshEnumsConstants.h"
 #include "..\Creators\AnimFileHeaderCreator.h"
 #include "..\Creators\BoneTableCreator.h"
@@ -14,6 +12,10 @@
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\QuantMetaTables.h"
 #include "..\Types\Common\TwAnimFile.h"
+#include "Logger\Logger.h"
+#include "Utils\ByteStream.h"
+
+using namespace utils;
 
 namespace anim_file
 {
@@ -45,7 +47,7 @@ namespace anim_file
 		auto fileHeader = ReadFileHeader(bytes);
 		bytes.SeekAbsolute(0); // reset file pointer
 
-		return libtools::WidenString(fileHeader.skeletonName);
+		return ToWString(fileHeader.skeletonName);
 	}
 
 	uint32_t TwAnimFileReader::GetAnimFileVersion(ByteStream& bytes)
@@ -82,7 +84,7 @@ namespace anim_file
 				return Anim_V8_HeaderFileCommonCreator().Create(inBytes);
 
 			default:
-				throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", to_string(version)).c_str());
+				throw std::exception(("TwAnimFileReader::ReadFileHeader(): ERROR: Not a supported TW ANIM file, unknown version numeric: ", std::to_string(version)).c_str());
 		}
 	}
 

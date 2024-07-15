@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\..\Helpers\ByteStream.h"
 #include "..\..\..\Libs\PugiXML\pugixml.hpp"
 #include "..\DataTypes\WsModelData.h"
+#include "Utils\ByteStream.h"
 
 namespace rmv2
 {
@@ -12,13 +12,13 @@ namespace rmv2
 		WsModelData m_wsmodelData;
 
 	public:
-		WsModelData Read(ByteStream& fileData);
+		WsModelData Read(utils::ByteStream& fileData);
 		//std::vector<TextureElement> GetTexturesFromXmlMaterial(size_t lodIndex, size_t partIndex);
 
 	private:
 		void ReadMaterialPaths(const pugi::xml_node& xmlModel);
 		void GetRMVPath(const pugi::xml_node& xmlModel);
-		void LoadXML(ByteStream& fileData);
+		void LoadXML(utils::ByteStream& fileData);
 		void ReadXMLMaterialFiles(XMLMaterialData& materialdata);
 	};
 }

@@ -11,8 +11,11 @@
 ////#include <DirectXMath.h>
 //
 
+#include "Utils\MathUtils.h"
+#include "Utils\StrUtils.h"
 
 using namespace rldx;
+using namespace utils;
 
 
 void DxCameraOrbital::SetFieldOfView(float value)
@@ -244,7 +247,8 @@ void rldx::DxCameraOrbital::RotateCamera()
 
 	//rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: (" + to_wstring(libtools::ToDegrees(m_geometryData.fPitch)) + L", " + to_wstring(libtools::ToDegrees(m_geometryData.fYaw)) + L")");
 
-	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(WidenStr("Pitch,Yaw,Roll): (" + std::to_string({ m_geometryData.fPitch, m_geometryData.fYaw, m_geometryData.fRoll }) + ")"));
+	auto radToDegFactor = (180.0f / DirectX::XM_PI);
+	rldx::DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"Rotate: " + F2ToWString({ m_geometryData.fPitch * radToDegFactor , m_geometryData.fYaw * radToDegFactor }));
 }
 
 void DxCameraOrbital::rotateCamera_Yaw(float angle)
@@ -481,18 +485,15 @@ void rldx::DxCameraOrbital::MoveLookAt()
 	MoveCameraRight(static_cast<float>(m_vMouseDelta.x) * m_fCameraLookAtMoveSpeed);// *0.1f * m_zoom * 1.0f);
 	MoveCameraUp(static_cast<float>(m_vMouseDelta.y) * m_fCameraLookAtMoveSpeed);// *0.1f * m_zoom * 1.0f);		
 	// TODO: reablke
-	//TextOutDebug::AddFadingString("Look-At: (" + std::to_string(m_geometryData.v3LookAt.x) + ", " + std::to_string(m_geometryData.v3LookAt.x) + " )");
+	rldx::DxDeviceManager::DebugTextWriter()->AddString(L"Look-At: (" + std::to_wstring(m_geometryData.v3LookAt.x) + L", " + std::to_wstring(m_geometryData.v3LookAt.x) + L" )");
 }
 
 void rldx::DxCameraOrbital::Zoom()
 {
-	//m_geometryData.m_zoom += -(static_cast<float>(m_nMouseWheelDelta) * 0.005f) * 0.1 * m_geometryData.m_zoom;
-
-	m_geometryData.fRadius -= static_cast<float>(m_nMouseWheelDelta) * m_geometryData.fRadius * 0.1f / 220.0f;
+	m_geometryData.fRadius -= static_cast<float>(m_nMouseWheelDelta) * m_geometryData.fRadius * m_fZoomScaler;
 	m_nMouseWheelDelta = 0;
 
-	// TODO: renable
-	//TextOutDebug::AddFadingString("Zoom: (" + std::to_string(m_geometryData.fRadius) + " )");
+	rldx::DxDeviceManager::DebugTextWriter()->AddString(L"Zoom Distance: (" + std::to_wstring(m_geometryData.fRadius) + L" )");
 }
 
 void DxCameraOrbital::UpdateMouseDelta()
@@ -597,6 +598,17 @@ void DxCameraOrbital::save_to_disk(const std::wstring& _path)
 
 }
 
+void DxCameraOrbital::MoveCameraForward(float amount)
+{
+	sm::Vector3 forward = m_geometryData.v3LookAt - m_geometryData.v3EyePosition;
+
+	forward.Normalize();
+	forward = forward.Cross(sm::Vector3::Up); //calculate the real FORWARD??? (is this right?)
+	forward.y = 0;
+	forward.Normalize();
+
+	m_geometryData.v3LookAt += forward * amount;
+};
 
 void rldx::DxCameraOrbital::MoveCameraRight(float amount)
 {
@@ -606,8 +618,6 @@ void rldx::DxCameraOrbital::MoveCameraRight(float amount)
 	right.y = 0;
 	right.Normalize();
 	m_geometryData.v3LookAt += (right * amount);
-
-
 }
 
 void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor, const DirectX::SimpleMath::Vector2& screenDims,
@@ -648,15 +658,6 @@ void rldx::DxCameraOrbital::RayCast(const DirectX::SimpleMath::Vector2& ptCursor
 	_ray = direction;
 	_origin = unprojectedFar;
 }
-
-
-void DxCameraOrbital::MoveCameraForward(float amount)
-{
-	sm::Vector3 forward = m_geometryData.v3LookAt - m_geometryData.v3EyePosition;
-	forward.Normalize();
-
-	m_geometryData.v3LookAt += forward * amount;
-};
 
 HRESULT DxCameraOrbital::HandleMessages(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {

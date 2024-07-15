@@ -1,12 +1,9 @@
-#include "..\..\Rldx\Rldx\Logging\Logging.h"
+#include "Logger\Logger.h"
 #include "QtTestAppView.h"
 
 int main(int argc, char* argv[])
 {
-
-	int  DEBUG_TEST = 1;
-
-	logging::LogAction("main(): Entry Point");
+	logging::LogAction(L"main(): Entry Point");
 	QApplication a(argc, argv);
 
 	QtMainWindowView w;
