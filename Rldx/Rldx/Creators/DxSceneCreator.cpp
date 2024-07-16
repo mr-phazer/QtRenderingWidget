@@ -5,6 +5,7 @@
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\Creators\DxGameShaderCreators.h"
 #include "..\Helpers\DxMeshCreatorHelper.h"
+#include "..\Rendering\DxMesh.h"
 #include "..\SceneGraph\SceneNodes\DxDeformerNode.h"
 #include "..\SceneGraph\SceneNodes\DxVmdNodes.h"
 #include "DxSceneCreator.h"
@@ -87,6 +88,7 @@ namespace rldx
 
 	void DxSceneCreator::AddGrid(ID3D11Device* poDevice, DxMeshShaderProgram* newSimpleShaderProgram)
 	{
+		using namespace DirectX;
 		// make grid node, mesh, fill node, set shaders
 		auto meshNodeGrid = std::make_unique<DxMeshNode>(L"Grid");
 		auto gridMeshData = DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
@@ -101,6 +103,7 @@ namespace rldx
 
 	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
+		//	DxResourceManager::FreeAll();
 		auto DEBUGING__assetNode = poScene->GetAssetNode();
 		poScene->GetVmdManager().LoadVariantMeshIntoNode(poScene->GetAssetNode(), fileData, gameIdString);
 		poScene->GetVmdManager().GenerateNewVariant();

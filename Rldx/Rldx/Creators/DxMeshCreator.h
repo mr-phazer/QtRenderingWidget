@@ -8,15 +8,14 @@ namespace rldx {
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
 	class DxMeshRenderDataCreator
 	{
+		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> m_poMeshBuffers;
 	public:
 		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> CreateDxMeshRenderData(ID3D11Device* _poDevice, const std::vector<VERTEX_TYPE>& vertices, const std::vector<INDEX_TYPE>& indices);
 
 	private:
 		bool FillIndexBuffer(ID3D11Device* _poDevice, uint32_t indexCount, const INDEX_TYPE* pIndices);
 		bool FillVertexBuffer(ID3D11Device* _poDevice, uint32_t vertexCount, const VERTEX_TYPE* pVertices);
-	private:
-		TDxMeshRenderData<VERTEX_TYPE, INDEX_TYPE> m_poMeshBuffers;
-
+		void GetPositionMinMax(uint32_t vertexCount, const VERTEX_TYPE* pVertices);
 	}; // class DxMeshCreatorHelper
 
 	template<typename VERTEX_TYPE, typename INDEX_TYPE>
@@ -73,6 +72,8 @@ namespace rldx {
 		if (vertexCount == 0)
 			return false;
 
+		GetPositionMinMax(vertexCount, pVertices);
+
 		// Setup the buffer descript for "vertex buffer"
 		D3D11_BUFFER_DESC vertexBufferDesc{};
 		vertexBufferDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
@@ -93,5 +94,22 @@ namespace rldx {
 		assert(SUCCEEDED(hr));
 
 		return SUCCEEDED(hr);
+	}
+	template<typename VERTEX_TYPE, typename INDEX_TYPE>
+	inline void DxMeshRenderDataCreator<VERTEX_TYPE, INDEX_TYPE>::GetPositionMinMax(uint32_t vertexCount, const VERTEX_TYPE* pVertices)
+	{
+		m_poMeshBuffers.min = { FLT_MAX, FLT_MAX, FLT_MAX };
+		m_poMeshBuffers.max = { FLT_MIN, FLT_MIN, FLT_MIN };
+
+		for (size_t i = 0; i < vertexCount; i++)
+		{
+			m_poMeshBuffers.min.x = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.x);
+			m_poMeshBuffers.min.y = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.y);
+			m_poMeshBuffers.min.z = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.z);
+
+			m_poMeshBuffers.max.x = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.x);
+			m_poMeshBuffers.max.y = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.y);
+			m_poMeshBuffers.max.z = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.z);
+		}
 	}
 }; // namespace rldx
