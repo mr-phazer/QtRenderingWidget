@@ -74,7 +74,7 @@ namespace logging {
 
 	void Logger::LogActionError(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"ERROR", BG_RED | FG_WHITE, BG_BLACK | FG_DARKRED);
+		DoLog(strMsg, L"ERROR", BG_BLACK | FG_RED, BG_BLACK | FG_DARKRED);
 	}
 
 	void Logger::LogActionSucess(const std::wstring& strMsg)
