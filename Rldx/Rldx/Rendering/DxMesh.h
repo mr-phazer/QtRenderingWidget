@@ -17,6 +17,19 @@ namespace rldx
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
 	public:
+		DxMesh(const std::wstring& meshName = L"UnnamesMesh")
+		{
+			SetName(meshName);
+			SetType(ResourceTypeEnum::Mesh);
+			SetTypeString(L"Resource:Mesh");
+		}
+
+		//virtual ~DxMesh()
+		//{
+		//	logging::LogAction(L"Type: " + GetTypeString() + L", name: " + GetName() + L". Destroyed.");
+		//}
+
+
 		void Draw(ID3D11DeviceContext* poDC) override;
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
