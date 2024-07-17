@@ -1,6 +1,7 @@
 #include <DirectXCollision.h>
 
 #include <CommonLibs\Logger\Logger.h>
+#include <CustomExceptions\CustomExceptions.h>
 #include "..\..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
 #include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\Creators\DxGameShaderCreators.h"
@@ -36,7 +37,6 @@ namespace rldx
 
 		// Create a separate "assset node", so assets can be deleted indepdently of grid
 		auto asssetNode = DxBaseNode::Create(L"Asset Node");
-
 		upoNewScene->m_poAssetNode = &upoNewScene->GetSceneRootNode()->AddChild(std::move(asssetNode));
 
 		return std::move(upoNewScene);
@@ -95,6 +95,7 @@ namespace rldx
 
 		meshNodeGrid->SetMeshData(gridMeshData, L"Grid Mesh");
 		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
+		meshNodeGrid->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 
 		m_upoNewScene->m_poGridNode = meshNodeGrid.get();
 
@@ -103,12 +104,13 @@ namespace rldx
 
 	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
-		//	DxResourceManager::FreeAll();
-		auto DEBUGING__assetNode = poScene->GetAssetNode();
+		poScene->GetSceneRootNode()->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+		poScene->GetAssetNode()->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 		poScene->GetVmdManager().LoadVariantMeshIntoNode(poScene->GetAssetNode(), fileData, gameIdString);
 		poScene->GetVmdManager().GenerateNewVariant();
-		poScene->GetSceneRootNode()->UpdateAllBoundBoxes();
 
+		// TODO: FIX issue: the largest loaded model leaves in a "top" bound volume
+		// so, after loading a big model, the camera never zooms in again, FIXXX
 		SetCameraAutoFit(poScene);
 	}
 
@@ -146,9 +148,13 @@ namespace rldx
 
 	void DxSceneCreator::SetCameraAutoFit(DxScene* poScene)
 	{
+
 		auto boundBox = poScene->GetRootBoundBox();
-		//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
-		//const float adjustBBExtend = 0.3f;
+
+		/*if (poScene->GetAssetNode() && sm::Vector3(poScene->GetAssetNode()->GetNodeBoundingBox().Extents).Length() > 0.01f)
+			boundBox = poScene->GetAssetNode()->GetNodeBoundingBox();*/
+			//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
+			//const float adjustBBExtend = 0.3f;
 		float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x))/* * (2.0f + adjustBBExtend)*/;
 		float fieldIOfView = poScene->GetCamera().GetFieldOfView();
 		auto DEBUG_CENTER = boundBox.Center;
