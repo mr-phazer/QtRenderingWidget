@@ -22,8 +22,8 @@ namespace rldx
 
 		void SetMeshData(const DxCommonMeshData& meshData);
 
-		DirectX::XMFLOAT3 GetMin();
-		DirectX::XMFLOAT3 GetMax();
+		const DirectX::XMFLOAT3& GetMin() const;
+		const DirectX::XMFLOAT3& GetMax() const;
 
 	private:
 		DxCommonMeshData m_poMeshBuffers;
