@@ -13,6 +13,8 @@ enum class COMExceptionFormatMode {
 	COM
 };
 
+// TODO: and change name to "LogException", keep rest. 
+// TODO: Edit this to fit C++ "convention", 
 class COMException : public std::exception
 {
 	HRESULT m_hrResult;
