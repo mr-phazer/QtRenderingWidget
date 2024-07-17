@@ -104,12 +104,12 @@ namespace rldx {
 		for (size_t i = 0; i < vertexCount; i++)
 		{
 			m_poMeshBuffers.min.x = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.x);
-			m_poMeshBuffers.min.y = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.y);
-			m_poMeshBuffers.min.z = std::min<float>(m_poMeshBuffers.min.x, pVertices[i].position.z);
+			m_poMeshBuffers.min.y = std::min<float>(m_poMeshBuffers.min.y, pVertices[i].position.y);
+			m_poMeshBuffers.min.z = std::min<float>(m_poMeshBuffers.min.z, pVertices[i].position.z);
 
 			m_poMeshBuffers.max.x = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.x);
-			m_poMeshBuffers.max.y = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.y);
-			m_poMeshBuffers.max.z = std::max<float>(m_poMeshBuffers.max.x, pVertices[i].position.z);
+			m_poMeshBuffers.max.y = std::max<float>(m_poMeshBuffers.max.y, pVertices[i].position.y);
+			m_poMeshBuffers.max.z = std::max<float>(m_poMeshBuffers.max.z, pVertices[i].position.z);
 		}
 	}
 }; // namespace rldx
