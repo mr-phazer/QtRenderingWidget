@@ -209,4 +209,19 @@ namespace rldx
 
 		return meshBuffer;
 	}
+
+	DxCommonMeshData Rmv2MeshCreator::CreateMesh(ID3D11Device* poDevice)
+	{
+		auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
+
+		std::vector<uint32_t> vecIndices32;
+		for (auto index : m_rmv2Mesh.meshData.indices) // convert indices from uint16 to uint32
+		{
+			vecIndices32.push_back(index);
+		}
+
+		auto hrResult = meshCreator.CreateDxMeshRenderData(poDevice, m_rmv2Mesh.meshData.vertices, vecIndices32);
+
+		return hrResult;
+	}
 }
