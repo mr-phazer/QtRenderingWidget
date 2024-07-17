@@ -13,6 +13,8 @@ namespace rldx
 {
 	void DxVmdManager::LoadVariantMeshIntoNode(DxBaseNode* poAssetRootNode, ByteStream& bytes, const std::wstring& gameIdString)
 	{
+
+		logging::LogAction(L"");
 		/*if (m_poVariantMeshNode)
 		{
 			m_poVariantMeshNode->RemoveTs();
