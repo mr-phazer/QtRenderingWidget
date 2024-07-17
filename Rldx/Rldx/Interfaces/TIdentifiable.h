@@ -35,6 +35,11 @@ namespace rldx {
 		TIdentifiable();
 		virtual ~TIdentifiable();
 
+		void WriteDestructMsg();
+		void WriteConstructMsg();
+
+
+
 		// TODO: Scrap these, and make the derived classes set Type Enum/Type description in the constructor
 		std::wstring GetName() const { return m_name; }
 		std::wstring GetTypeString() const { return m_typeString; }
@@ -47,7 +52,7 @@ namespace rldx {
 		void SetName(const std::wstring& name) { m_name = name; }
 
 	private:
-		std::wstring m_name = L"Unnamed_Object";
+		std::wstring m_name = L"no_name";
 		std::wstring m_typeString = L"TIdentifiable<T>";
 		KEY_TYPE m_nodeType;
 	};
@@ -58,7 +63,7 @@ namespace rldx {
 	{
 		// TODO: remove after debugging
 #if _DEBUG
-		logging::LogAction(GetTypeString() + L"# " + std::to_wstring(GetId()) + L": created.");
+		WriteConstructMsg();
 #endif
 	}
 
@@ -66,7 +71,20 @@ namespace rldx {
 	inline TIdentifiable<KEY_TYPE>::~TIdentifiable()
 	{
 #if _DEBUG
-		logging::LogAction(GetTypeString() + L"# " + std::to_wstring(GetId()) + L": deallocated.");
+		WriteDestructMsg();
 #endif
+	}
+
+
+	template<typename KEY_TYPE>
+	inline void TIdentifiable<KEY_TYPE>::WriteDestructMsg()
+	{
+		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Destroyed.", logging::BG_BLACK | logging::FG_GRAY);
+	}
+
+	template<typename KEY_TYPE>
+	inline void TIdentifiable<KEY_TYPE>::WriteConstructMsg()
+	{
+		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Constructed.", logging::BG_BLACK | logging::FG_DARKGRAY);
 	};
-};
+}
