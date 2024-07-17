@@ -12,6 +12,35 @@ namespace rldx
 	IntId IdCounterBase::sm_nextId;
 	std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
+	void DxResourceManager::FreeAll()
+	{
+		auto itr = Instance()->m_umapResourceSptrDataById.begin();
+		while (itr != Instance()->m_umapResourceSptrDataById.end())
+		{
+			if (itr->second) {
+				itr = Instance()->m_umapResourceSptrDataById.erase(itr);
+				break;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+
+		auto ItStringMap = Instance()->m_umapRawResourcePtrByString.begin();
+		while (ItStringMap != Instance()->m_umapRawResourcePtrByString.end())
+		{
+			if (ItStringMap->second)
+			{
+				ItStringMap = Instance()->m_umapRawResourcePtrByString.erase(ItStringMap);
+				break;
+			}
+			else
+			{
+				ItStringMap++;
+			}
+		}
+	}
 
 	TResourceHandle<DxTexture> DxResourceManager::MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file)
 	{
@@ -65,4 +94,39 @@ namespace rldx
 
 		return { INVALID_ID, nullptr };
 	}
+
+
+
+	void DxResourceManager::FreeMemoryByPtrFromIdMap(IDxResource* resource)
+	{
+		auto itr = Instance()->m_umapResourceSptrDataById.begin();
+		while (itr != Instance()->m_umapResourceSptrDataById.end())
+		{
+			if (itr->second.get() == resource) {
+				itr = Instance()->m_umapResourceSptrDataById.erase(itr);
+				break;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+	}
+
+	void DxResourceManager::FreeMemorByPtrFromStringMap(IDxResource* resource)
+	{
+		auto itr = Instance()->m_umapRawResourcePtrByString.begin();
+		while (itr != Instance()->m_umapRawResourcePtrByString.end())
+		{
+			if (itr->second == resource) {
+				itr = Instance()->m_umapRawResourcePtrByString.erase(itr);
+				break;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+	}
+
 }

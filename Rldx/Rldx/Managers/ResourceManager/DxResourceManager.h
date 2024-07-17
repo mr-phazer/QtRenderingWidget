@@ -66,6 +66,27 @@ namespace rldx {
 		std::wstring m_gameIdString = L"";
 
 	public:
+
+		static void FreeAll();
+
+		template <typename T>
+		static void FreeMemoryFromPtr(T* poResource)
+		{
+			static_assert(std::is_base_of_v<rldx::IDxResource, T>, "T must be derived from Base");
+
+			if (!poResource)
+				return;
+
+			auto poBasePtr = static_cast<rldx::IDxResource*> (poResource);
+			FreeMemorByPtrFromStringMap(poBasePtr); // string map first, as it contains non-owning porinters, would be invalidated.
+			FreeMemoryByPtrFromIdMap(poBasePtr);
+		}
+
+
+
+
+
+
 		/// <summary>
 		/// TODO: move this to ByteStream?
 		/// </summary>		
@@ -150,6 +171,9 @@ namespace rldx {
 
 
 	private:
+		static void FreeMemoryByPtrFromIdMap(IDxResource* resource);
+		static void FreeMemorByPtrFromStringMap(IDxResource* resource);
+
 		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName)
 		{
 			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
@@ -286,4 +310,6 @@ namespace rldx {
 
 		return nullptr;
 	}
+
+
 }; // namespace rldx
