@@ -23,7 +23,7 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           install-deps: 'true'
-          cache: 'false'
+          cache: 'true'
           setup-python: 'true'
           tools-only: 'false'
 
