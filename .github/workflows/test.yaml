@@ -21,11 +21,10 @@ jobs:
           arch: 'win64_msvc2019_64'
           cache: 'true'
 
-      - name: Set QTDIR and QtToolsPath
+      - name: Set QT_Includes
         shell: bash
         run: |
-          echo "QTDIR=$QT_ROOT_DIR" >> "$GITHUB_ENV"
-          echo "QtToolsPath=$QT_ROOT_DIR/bin" >> "$GITHUB_ENV"
+          echo "Qt_INCLUDEPATH_=$QT_ROOT_DIR/include" >> "$GITHUB_ENV"
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
