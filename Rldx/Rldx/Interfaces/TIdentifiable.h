@@ -35,8 +35,8 @@ namespace rldx {
 		TIdentifiable();
 		virtual ~TIdentifiable();
 
-		void WriteDestructMsg();
-		void WriteConstructMsg();
+		void WriteDebugDestructMsg();
+		void WriteDebugConstructMsg();
 
 
 
@@ -61,30 +61,34 @@ namespace rldx {
 	inline TIdentifiable<KEY_TYPE>::TIdentifiable()
 		: IdentifiableBase()
 	{
-		// TODO: remove after debugging
-#if _DEBUG
-		WriteConstructMsg();
-#endif
+		WriteDebugConstructMsg();
 	}
 
 	template<typename KEY_TYPE>
 	inline TIdentifiable<KEY_TYPE>::~TIdentifiable()
 	{
-#if _DEBUG
-		WriteDestructMsg();
+		WriteDebugDestructMsg();
+	}
+
+	/// <summary>
+	/// Writes construction message wiht id, id string, name, for help with debuggin potential memory leaks
+	/// </summary>	
+	template<typename KEY_TYPE>
+	inline void TIdentifiable<KEY_TYPE>::WriteDebugDestructMsg()
+	{
+#ifdef _DEBUG
+		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Destroyed.", logging::BG_BLACK | logging::FG_GRAY);
 #endif
 	}
 
-
+	/// <summary>
+	/// Writes destruction message wiht id, id string, name, for help with debuggin potential memory leaks
+	/// </summary>	
 	template<typename KEY_TYPE>
-	inline void TIdentifiable<KEY_TYPE>::WriteDestructMsg()
+	inline void TIdentifiable<KEY_TYPE>::WriteDebugConstructMsg()
 	{
-		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Destroyed.", logging::BG_BLACK | logging::FG_GRAY);
-	}
-
-	template<typename KEY_TYPE>
-	inline void TIdentifiable<KEY_TYPE>::WriteConstructMsg()
-	{
+#ifdef _DEBUG
 		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Constructed.", logging::BG_BLACK | logging::FG_DARKGRAY);
+#endif
 	};
 }
