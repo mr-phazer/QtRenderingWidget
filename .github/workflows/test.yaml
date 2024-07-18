@@ -33,4 +33,3 @@ jobs:
         shell: pwsh
         run: |
           MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Debug -p:Platform=x64
-          MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Release -p:Platform=x64
