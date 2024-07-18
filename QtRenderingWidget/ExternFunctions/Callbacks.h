@@ -1,8 +1,8 @@
 #pragma once
 
-#include <qbytearray.h>
-#include <qlist.h>
-#include <qstring.h>
+#include <QtCore\QByteArray>
+#include <QtCore\QList>
+#include <QtCore\QString>
 
 
 /// <summary>
