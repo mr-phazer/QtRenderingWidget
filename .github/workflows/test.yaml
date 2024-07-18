@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ master, develop, actions-fix ]
   pull_request:
     branches: [ master, develop ]
 
@@ -26,6 +26,12 @@ jobs:
           cache: 'false'
           setup-python: 'true'
           tools-only: 'false'
+
+      - name: Set QTDIR and QtToolsPath
+        shell: bash
+        run: |
+          echo "QTDIR=$QT_ROOT_DIR" >> "$GITHUB_ENV"
+          echo "QtToolsPath=$QT_ROOT_DIR/bin" >> "$GITHUB_ENV"
 
       - name: Build the lib in release mode
         shell: pwsh
