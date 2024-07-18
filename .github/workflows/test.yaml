@@ -10,10 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+      - uses: actions/checkout@v3
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -27,11 +24,14 @@ jobs:
           setup-python: 'true'
           tools-only: 'false'
 
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
       - name: Set QTDIR and QtToolsPath
         shell: bash
         run: |
-          echo "QTDIR=$QT_ROOT_DIR" >> "$GITHUB_ENV"
-          echo "QtToolsPath=$QT_ROOT_DIR/bin" >> "$GITHUB_ENV"
+          echo "QTDIR=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64" >> $GITHUB_ENV
+          echo "QtToolsPath=${{ runner.temp }}/Qt/${{ env.QT_VERSION }}/msvc2019_64/bin" >> $GITHUB_ENV
 
       - name: Build the lib in release mode
         shell: pwsh
