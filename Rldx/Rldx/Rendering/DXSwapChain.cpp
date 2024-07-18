@@ -136,7 +136,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 	m_cpoSwapChain1->Present(1, 0);
 }
 
-void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
+void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext)
 {
 	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
 

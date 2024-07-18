@@ -1,8 +1,9 @@
 #pragma once
 
-#include "qtcore\qbytearray.h"
-#include "qtcore\qlist.h"
-#include "qtcore\qstring.h"
+#include <qbytearray.h>
+#include <qlist.h>
+#include <qstring.h>
+
 
 /// <summary>
 /// Callback function, for asset loading

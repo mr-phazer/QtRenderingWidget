@@ -1,8 +1,5 @@
 #pragma once
 
-// qt
-#include <QtCore\qobject.h>
-
 // athour
 #include <Timer\SystemClockChecker.h>
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
