@@ -22,9 +22,9 @@ jobs:
           cache: 'true'
 
       - name: Set QT_Includes
-        shell: bash
+        shell: pwsh
         run: |
-          echo "Qt_INCLUDEPATH_=$QT_ROOT_DIR/include" >> "$GITHUB_ENV"
+          echo "QtInclude=$QT_ROOT_DIR/include" >> $env:GITHUB_ENV
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
