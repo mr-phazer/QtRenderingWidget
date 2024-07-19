@@ -12,10 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '3.1.x'
-
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -33,8 +29,13 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
 
+      - uses: nuget/setup-nuget@v2
+        with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.x'
+      - run: nuget restore QtRenderingWidget_RPFM.sln
+
       - name: Build the lib in release mode
         shell: pwsh
         run: |
-          dotnet restore
           MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Debug -p:Platform=x64
