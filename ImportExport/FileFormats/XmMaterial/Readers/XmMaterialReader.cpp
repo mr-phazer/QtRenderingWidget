@@ -20,6 +20,7 @@ bool CmpList(const std::wstring& in, const std::vector<std::wstring>& values)
 	return false;
 }
 
+// TODO: This is I think the last instance of ciclyc dependency with rldx. We need to see what to do with this.
 XMLMaterialData rmv2::XmMaterialReader::Read()
 {
 	if (!m_poMaterialData) {
