@@ -2,10 +2,9 @@
 
 #include <string>
 
-#include "..\CustomExceptions\CustomExceptions.h"
-#include "..\Logger\Logger.h"
-#include "IOUtils.h"
-#include "StrUtils.h"
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\IOUtils.h>
 
 namespace utils {
 	using namespace logging;

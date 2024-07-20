@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "..\Rldx\Rldx\Managers\DxDeviceManager.h"
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
 #include "AnimPlayList.h"
 #include "KeyFrameInterpolator.h"
 

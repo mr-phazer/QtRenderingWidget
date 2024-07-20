@@ -12,18 +12,22 @@
 #include <type_traits>
 
 // author heade
-#include <Logger/Logger.h>
-#include "..\..\Helpers\StringKeyMap.h"
-#include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\MapUtils.h>
 #include "IDxResource.h"
-#include "Utils\ByteStream.h"
-#include "Utils\IOUtils.h"
+#include <CommonLibs\Utils\ByteStream.h>
+#include <CommonLibs\Utils\IOUtils.h>
 
 namespace skel_anim {
 	struct SkeletonAnimation;
 }
 
 namespace rldx {
+
+	typedef void (*AssetFetchCallbackWrapper) (
+		std::vector<std::wstring>* filesToFetch,
+		std::vector<std::vector<unsigned char>>* outBinFiles
+	);
 
 	class DxMesh;
 	class DxTexture;
@@ -84,24 +88,25 @@ namespace rldx {
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
 		std::wstring GetGameIdString() const { return m_gameIdString; }
 
-		static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
+		//static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
 
-		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
-		static void CallAssetFetchCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
+		static void SetAssetFetchCallback(AssetFetchCallbackWrapper assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
+		static void CallAssetFetchCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 		static utils::ByteStream GetFile(const std::wstring& filePath)
 		{
+			std::wstring fileP = std::wstring(filePath);
 			if (utils::IsDiskFile(filePath))
 			{
 				return utils::ByteStream(filePath);
 			}
 			else {
 
-				return GetFileFromCallBack(filePath);
+				return GetFileFromCallBack(fileP);
 			}
 		}
 
 		// TODO: is this serving any purpose?
-		void AddMissingFile(const std::wstring& file) { m_qstrMissingFiles.push_back(QString::fromStdWString(file)); }
+		//void AddMissingFile(const std::wstring& file) { m_qstrMissingFiles.push_back(QString::fromStdWString(file)); }
 
 		// TODO: make work?
 		TResourceHandle<DxTexture> MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file);
@@ -150,19 +155,22 @@ namespace rldx {
 
 
 	private:
-		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName)
+		static utils::ByteStream GetFileFromCallBack(std::wstring& fileName)
 		{
-			QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
-			QList<QByteArray> destBinaries;
+			std::vector<std::wstring>* qstrMissingFiles = new std::vector<std::wstring>();
+			std::vector<std::vector<unsigned char>>* destBinaries = new std::vector<std::vector<unsigned char>>();
+
+			qstrMissingFiles->push_back(fileName);
 
 			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
 
-			if (destBinaries.size() != 1)
+			if (destBinaries->size() != 1)
 			{
 				throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 			}
 
-			if (destBinaries[0].isEmpty())
+			auto binary = destBinaries->at(0);
+			if (binary.empty())
 			{
 				// TODO: CLEAN UP
 				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
@@ -172,29 +180,29 @@ namespace rldx {
 			// TODO: CLEAN UP
 			//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
 
-			return utils::ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
+			return utils::ByteStream(binary.data(), binary.size(), fileName);
 		}
 
-		void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
+		void GetResourcesFromCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries)
 		{
 			if (!m_assetCallBack) {
 				throw std::exception("No asset callback function set");
 			}
 
-			m_assetCallBack(&qstrMissingFiles, &destBinaries);
+			m_assetCallBack(qstrMissingFiles, destBinaries);
 		}
 
 	private:
 		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
 
 		std::map<IntId, std::unique_ptr<IDxResource>> m_umapResourceSptrDataById;
-		WStringkeyMap<IDxResource*> m_umapRawResourcePtrByString;
+		utils::WStringkeyMap<IDxResource*> m_umapRawResourcePtrByString;
 
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;
 		std::wstring m_rooPathAssetPath = LR"(c:/temp/)";
-		std::function<void(QList<QString>*, QList<QByteArray>*)> m_assetCallBack;
-		std::function<void(QString*, QList<QString>*)> m_animPathsBySkeletonCallBack;
-		QVector<QString> m_qstrMissingFiles;
+		AssetFetchCallbackWrapper m_assetCallBack;
+		//std::function<void(QString*, QList<QString>*)> m_animPathsBySkeletonCallBack;
+		//QVector<QString> m_qstrMissingFiles;
 	};
 
 	template<typename Derived_t>

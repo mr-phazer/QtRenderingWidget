@@ -1,10 +1,10 @@
 #include "SkeletonHelpers.h"
 
 #include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
-#include <ImportExport\Helpers\ByteStream.h>
-#include <Utils/ByteStream.h>
+#include <CommonLibs\Utils\ByteStream.h>
+#include <CommonLibs/Utils/ByteStream.h>
 
-#include <Rldx\Managers\ResourceManager\DxResourceManager.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include <string>
 #include "..\..\Animation\DataTypes\Skeleton.h"
 

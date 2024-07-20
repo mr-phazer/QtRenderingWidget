@@ -1,6 +1,7 @@
-#include <CustomExceptions\CustomExceptions.h>
 #include "d3d11.h"
 #include "DXSwapChain.h"
+
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 
 using namespace rldx;
 using namespace logging;

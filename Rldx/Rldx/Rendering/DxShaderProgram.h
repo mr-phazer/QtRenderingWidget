@@ -16,7 +16,7 @@
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\ResourceManager\IDxResource.h"
 #include "..\ShaderLoadingHelpers\ShaderLoadingHelpers.h"
-#include "Logger\Logger.h"
+#include <CommonLibs\Logger\Logger.h>
 
 namespace rldx {
 

@@ -1,9 +1,9 @@
 #include "DxAmbientLightSource.h"
 
-#include "..\..\..\DXUT\Core\DXUTmisc.h"
-#include "..\Managers\ResourceManager\DxResourceManager.h"
-#include "..\Rendering\DxTexture.h"
-#include "Utils\ByteStream.h"
+#include <DXUT\Core\DXUTmisc.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
+#include <Rldx\Rldx\Rendering\DxTexture.h>
+#include <CommonLibs/Utils/ByteStream.h>
 
 using namespace std;
 using namespace utils;

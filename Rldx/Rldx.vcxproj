@@ -69,8 +69,6 @@
     <ClInclude Include="Rldx\DataTypes\ShaderFiles.h" />
     <ClInclude Include="Rldx\Creators\DxMeshCreator.h" />
     <ClInclude Include="Rldx\Creators\DxSceneCreator.h" />
-    <ClInclude Include="Rldx\Helpers\MathHelper.h" />
-    <ClInclude Include="Rldx\Helpers\StringKeyMap.h" />
     <ClInclude Include="Rldx\Interfaces\IBindable.h" />
     <ClInclude Include="Rldx\Interfaces\IDrawable.h" />
     <ClInclude Include="Rldx\Interfaces\IFlushable.h" />
@@ -86,7 +84,6 @@
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceManager.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\DxResourceByteStream.h" />
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h" />
-    <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h" />
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h" />
     <ClInclude Include="Rldx\Rendering\DxCameraOrbital.h" />
     <ClInclude Include="Rldx\Rendering\DxConstBuffer.h" />
@@ -269,10 +266,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -308,7 +305,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude);$(SolutionDir)CommonLibs</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -327,11 +324,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories);$(QtInclude);$(SolutionDir)CommonLibs</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <BrowseInformation>false</BrowseInformation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
     <Link>

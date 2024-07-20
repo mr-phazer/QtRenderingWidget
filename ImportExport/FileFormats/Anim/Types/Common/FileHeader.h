@@ -3,8 +3,7 @@
 #include <cstdint>
 #include <string>
 
-
-#include "..\..\ImportExport\GeneralTypes\IDataStructure.h"
+#include <ImportExport\GeneralTypes\IDataStructure.h>
 
 namespace anim_file
 {

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "..\..\DirectXTK\Inc\BufferHelpers.h"
-#include "..\..\DXUT\Core\DXUT.h"
+#include "DirectXTK\Inc\BufferHelpers.h"
+#include "DXUT\Core\DXUT.h"
 #include "..\Interfaces\IBindable.h"
 
 #include <d3d11.h>

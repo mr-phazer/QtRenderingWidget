@@ -1,6 +1,6 @@
 #include "SkeletonKeyFrame.h"
 
-#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
+#include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
 
 namespace skel_anim
 {

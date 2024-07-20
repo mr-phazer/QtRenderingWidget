@@ -2,7 +2,7 @@
 
 #include <CommonLibs\Logger\logger.h>
 #include "..\..\..\..\..\ImportExport\Helpers\Templates.h"
-#include "..\..\..\..\..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <CommonLibs\Utils\GameIdKeys.h>
 #include "..\..\..\SceneGraph\SceneNodes\DxVmdNodes.h"
 //#include "VmdNodeCreators.h"
 

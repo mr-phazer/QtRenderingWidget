@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\..\ImportExport\Helpers\Templates.h"
-#include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <ImportExport\Helpers\Templates.h>
+#include <CommonLibs\Utils\GameIdKeys.h>
 #include "..\Rendering\DxShaderProgram.h"
 
 namespace rldx

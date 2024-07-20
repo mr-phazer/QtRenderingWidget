@@ -1,26 +1,14 @@
 #pragma once
-#include <mouse.h>
+
 #include <qevent.h>
-#include <qmessagebox.h>
-#include <qstyle.h>
-#include <qstyleoption.h>
 #include <qtimer.h>											   
 #include <qwidget.h>
 
-#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
-
 #include "ui_QtRenderView.h"
-
 
 #include <Rldx\Creators\DxSceneCreator.h>
 #include <Rldx\Managers\DxDeviceManager.h>
 #include <Rldx\Managers\DxSceneManager.h>
-#include <Rldx\SceneGraph\SceneNodes\DxMeshNode.h>
-
-#include "..\rldx\rldx\DataTypes\DxMeshData.h"
-#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
-
-#include <QMimeData>
 
 class QtRenderWidgetView;
 

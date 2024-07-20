@@ -1,15 +1,15 @@
 #include "DxDeformerNode.h"
 
-#include <Rldx\Animation\DataTypes\SkeletonAnimation.h>
-#include <Rldx\Animation\FramePoseGenerator.h>
-#include <Rldx\Animation\Helpers\AnimationCreator.h>
-#include <Rldx\Animation\Helpers\AnimationRemapper.h>
-#include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h>
-#include <Rldx\Helpers\DxMeshCreatorHelper.h>
-#include "..\..\Animation\Helpers\SkeletonHelpers.h"
-#include "..\..\Helpers\DxMeshCreatorHelper.h"
-#include "..\..\Managers\DxDeviceManager.h"
-#include "..\..\Rendering\DxShaderProgram.h"
+#include <Rldx\Rldx\Animation\DataTypes\SkeletonAnimation.h>
+#include <Rldx\Rldx\Animation\FramePoseGenerator.h>
+#include <Rldx\Rldx\Animation\Helpers\AnimationCreator.h>
+#include <Rldx\Rldx\Animation\Helpers\AnimationRemapper.h>
+#include <Rldx\Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimContainer.h>
+#include <Rldx\Rldx\Helpers\DxMeshCreatorHelper.h>
+#include "Rldx\Rldx\Animation\Helpers\SkeletonHelpers.h"
+#include "Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
+#include "Rldx\Rldx\Managers\DxDeviceManager.h"
+#include "Rldx\Rldx\Rendering\DxShaderProgram.h"
 
 using namespace utils;
 

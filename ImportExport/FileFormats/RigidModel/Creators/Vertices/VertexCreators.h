@@ -3,7 +3,7 @@
 #include <CommonLibs\Utils\ByteStream.h>
 #include "..\..\..\..\Helpers\Templates.h"
 #include "..\..\Constants\Rmv2Constants.h"
-#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
+#include <Rldx\Rldx\DataTypes\CommonVertex.h>
 #include "..\..\Types\Common\MeshEnumsConstants.h"
 
 namespace rmv2 {

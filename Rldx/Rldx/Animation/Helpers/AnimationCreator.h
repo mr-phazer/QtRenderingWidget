@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils\StrUtils.h"
+#include <CommonLibs/Utils/StrUtils.h>
 
 namespace skel_anim
 {

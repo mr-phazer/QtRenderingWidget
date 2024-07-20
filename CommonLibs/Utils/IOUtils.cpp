@@ -1,6 +1,6 @@
 #include <fstream>
-#include "..\Logger\Logger.h"
-#include "ByteStream.h"
+
+#include <CommonLibs\Logger\Logger.h>
 #include "IOUtils.h"
 
 namespace utils {

@@ -1,6 +1,7 @@
-#include <Rldx\Managers\DxDeviceManager.h>
-#include "..\..\..\DataTypes\SkeletonKeyFrame.h"
-#include "..\..\..\KeyFrameInterpolator.h"
+#include <Rldx\Rldx\Animation\DataTypes\SkeletonKeyFrame.h>
+#include <Rldx\Rldx\Animation\KeyFrameInterpolator.h>
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
+
 #include "AnimContainer.h"
 #include "AnimQueue.h"
 

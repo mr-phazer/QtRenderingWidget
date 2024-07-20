@@ -11,8 +11,8 @@
 #include <memory>
 #include <string>
 
-#include "..\Timer\SystemClockChecker.h"
-#include "..\Utils\StrUtils.h"
+#include <CommonLibs\Timer\SystemClockChecker.h>
+#include <CommonLibs\Utils\StrUtils.h>
 
 namespace logging {
 

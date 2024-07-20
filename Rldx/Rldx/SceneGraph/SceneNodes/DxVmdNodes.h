@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
-#include "..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
-#include "..\..\ImportExport\Libs\PugiXML\pugixml.hpp"
+#include <ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h>
+#include <ImportExport\FileFormats\WsModel\Reader\WsModelReader.h>
+#include <ImportExport\Libs\PugiXML\pugixml.hpp>
 #include "DxModelNode.h"
 
 namespace rldx {

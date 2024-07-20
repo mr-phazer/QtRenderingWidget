@@ -2,8 +2,9 @@
 
 #include <map>
 #include <memory>
-#include "..\..\Rldx\Rldx\Helpers\StringKeyMap.h"
-#include "Utils\ByteStream.h"
+
+#include <CommonLibs\Utils\MapUtils.h>
+#include <CommonLibs\Utils\ByteStream.h>
 
 //////////////////////////////////////////////////////////////////////////
 namespace templates
@@ -59,7 +60,7 @@ namespace templates
 	template <typename BASE_TYPE>
 	class TFactoryStringKey
 	{
-		StringkeyMap<std::shared_ptr<BASE_TYPE>> m_map;
+		utils::StringkeyMap<std::shared_ptr<BASE_TYPE>> m_map;
 
 	public:
 		// TODO: remove is othre method is better
@@ -100,7 +101,7 @@ namespace templates
 	template <typename BASE_TYPE>
 	class TFactoryWStringKey
 	{
-		WStringkeyMap<std::shared_ptr<BASE_TYPE>> m_map;
+		utils::WStringkeyMap<std::shared_ptr<BASE_TYPE>> m_map;
 
 	public:
 		// TODO: remove is othre method is better

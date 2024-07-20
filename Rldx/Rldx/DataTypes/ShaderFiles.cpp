@@ -1,6 +1,6 @@
 #include "ShaderFiles.h"
 
-#include "..\..\DXUT\Core\DXUT.h"
+#include <DXUT\Core\DXUT.h>
 
 inline void VertexShaderFile::SetShader(ID3D11VertexShader* poShaderCode) {
 	m_cpoVertexShader = poShaderCode;

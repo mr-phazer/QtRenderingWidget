@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <CommonLibs\Utils\GameIdKeys.h>
 
 namespace test_app_data
 {

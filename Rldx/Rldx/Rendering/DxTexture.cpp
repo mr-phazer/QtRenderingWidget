@@ -1,20 +1,20 @@
 
 
 
-#include <CustomExceptions\CustomExceptions.h>
-#include "..\..\DirectXTK\Inc\DirectXHelpers.h"
-#include "..\..\DXUT\Core\DXUT.h"
+#include <DirectXTK\Inc\DirectXHelpers.h>
+#include <DirectXTK\Src\PlatformHelpers.h>
+#include <DXUT\Core\DXUT.h>
 #include "d3d11.h"
-#include "Logger\Logger.h"
 
-#include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+
 
 
 
 // Author
 #include "DxTexture.h"
 
-#include <DirectXHelpers.h>
 
 //#include "..\Managers\ResourceManager\DxResourceManager.h"
 

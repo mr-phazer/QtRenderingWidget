@@ -6,7 +6,7 @@
 
 #include <DirectXMath.h>
 #include <map>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <string>
 //#include "TextOutDebug.h"
 //#include "..\SystemLib\libtools.h"

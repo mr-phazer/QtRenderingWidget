@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "..\..\Rldx\Rldx\DataTypes\CommonVertex.h"
+#include "Rldx\Rldx\DataTypes\CommonVertex.h"
 #include "FileHeader.h"
 #include "LodHeader.h"
 #include "MaterialBlockCommon.h"

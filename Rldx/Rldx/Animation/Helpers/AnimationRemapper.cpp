@@ -1,5 +1,4 @@
 #include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
-#include <ImportExport\helpers\ByteStream.h>
 #include "AnimationRemapper.h"
 #include "SkeletonHelpers.h"
 

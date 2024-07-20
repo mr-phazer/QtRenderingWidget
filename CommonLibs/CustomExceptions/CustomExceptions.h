@@ -2,8 +2,8 @@
 
 #include <exception>
 #include <string>
-#include "..\Logger\Logger.h"
-#include "COMerrors.h"
+
+#include <CommonLibs\CustomExceptions\COMErrors.h>
 
 // TODO: This needs a revision to ensure it works as expected.
 enum class COMExceptionFormatMode {

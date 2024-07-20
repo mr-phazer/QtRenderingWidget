@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
-#include <GeneralTypes\IDataStructure.h>
+#include <ImportExport\GeneralTypes\IDataStructure.h>
 #include "MeshEnumsConstants.h"
 
 namespace rmv2

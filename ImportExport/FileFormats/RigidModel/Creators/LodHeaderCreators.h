@@ -3,7 +3,7 @@
 #include "..\..\..\Helpers\Templates.h"
 #include "..\Types\Common\FileHeader.h"
 #include "..\Types\Common\LodHeader.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 namespace rmv2 {
 

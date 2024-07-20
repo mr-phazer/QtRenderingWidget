@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <vector>
 
 namespace anim_file

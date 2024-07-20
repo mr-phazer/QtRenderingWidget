@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-#include "..\..\ImportExport\FileFormats\WsModel\DataTypes\WsModelData.h"
+#include <ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h>
+#include <ImportExport\FileFormats\WsModel\DataTypes\WsModelData.h>
 #include "DxMeshNode.h"
 
 namespace rldx

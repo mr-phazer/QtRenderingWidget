@@ -1,11 +1,11 @@
 #pragma once
 
 // TODO: Forward declare anything possible
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include "..\Types\Common\AnimFrameCommon.h"
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\TwAnimFile.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 namespace anim_file
 {

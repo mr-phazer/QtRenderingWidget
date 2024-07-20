@@ -1,5 +1,5 @@
-#include "..\..\..\Libs\PugiXML\pugixml.hpp"
-#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
+#include <ImportExport\Libs\PugiXML\pugixml.hpp>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include "XmMaterialReader.h"
 
 #include <map>

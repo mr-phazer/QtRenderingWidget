@@ -3,7 +3,7 @@
 #include <memory>
 #include <windows.h>
 
-#include <CommonStates.h>
+#include <DirectXTK\Inc\CommonStates.h>
 
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
@@ -22,7 +22,7 @@
 
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 
-#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+#include <ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h>
 
 // # forward decl
 namespace rldx {

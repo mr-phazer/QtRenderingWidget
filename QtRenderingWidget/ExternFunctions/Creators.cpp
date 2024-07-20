@@ -2,13 +2,83 @@
 
 #include <exception>
 
-#include <CommonLibs\Logger\logger.h>
-#include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
-#include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
-#include "..\QtObjects\Views\QtRenderView.h"
+#include <CommonLibs\Logger\Logger.h>
+
+#include <Rldx\Rldx\Creators\DxSceneCreator.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
+
+#include <QtRenderingWidget\QtObjects\Views\QtRenderView.h>
 
 using namespace logging;
 using namespace utils;
+
+static void (*AssetFetchCallBackStored) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles) = nullptr;
+
+void AssetFetchCallbackWrapper(
+	std::vector<std::wstring>* filesToFetch,
+	std::vector<std::vector<unsigned char>>* outBinFiles
+) {
+
+	// If we don't have callback, use the old debug mode.
+	if (AssetFetchCallBackStored == nullptr) {
+
+		// force list to be same size, maybe redundant
+		outBinFiles->clear();
+		outBinFiles->resize(filesToFetch->size());
+
+		for (const std::wstring& Asset : *filesToFetch) {
+
+			if (IsDiskFile(Asset)) {
+				throw std::exception("Cannot accept disk files");
+			}
+
+			// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
+			auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + Asset;
+			ByteStream newStream(filePath, false);
+
+
+			if (!newStream.IsValid())
+			{
+				std::vector<unsigned char> dest = std::vector<unsigned char>();
+				outBinFiles->push_back(dest);
+				continue;
+			}
+
+			// -- resize dest, buffer, and read whole file into it
+			std::vector<unsigned char> dest = std::vector<unsigned char>(newStream.GetBufferSize());
+			newStream.Read(dest.data(), dest.size());
+		}
+	}
+	
+	// If we have callback, use it for getting the files.
+	else {
+
+		QList<QString>* filesToFetchQt = new QList<QString>();
+		QList<QByteArray>* outBinFilesQt = new QList<QByteArray>();
+
+		for (const std::wstring& i : *filesToFetch) {
+			QString s = QString::fromWCharArray(i.c_str());
+			filesToFetchQt->push_back(s);
+		}
+
+		AssetFetchCallBackStored(filesToFetchQt, outBinFilesQt);
+	
+		filesToFetch->clear();
+
+		for (int i = 0; i < filesToFetchQt->count(); i++)
+		{
+			std::wstring s = filesToFetchQt->at(i).toStdWString();
+			filesToFetch->push_back(s);
+		}
+
+		for (int i = 0; i < outBinFilesQt->count(); i++)
+		{
+			auto item = outBinFilesQt->at(i);
+			std::vector<unsigned char> s(item.begin(), item.end());
+			outBinFiles->push_back(s);
+		}	
+	}
+}
 
 QWidget* CreateQRenderingWidget(
 	QWidget* parent,
@@ -17,13 +87,10 @@ QWidget* CreateQRenderingWidget(
 	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
 )
 {
-	// Conditional compilation for debug vs release, debugging used my "simulated" callback, release uses the actual callback
-#ifdef _DEBUG
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter);
-#else	
-	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallBack);
-	rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
-#endif	
+	AssetFetchCallBackStored = AssetFetchCallBack;
+
+	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallbackWrapper);
+	//rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
@@ -104,36 +171,6 @@ void ResumeRendering(QWidget* pQRenderWiget)
 {
 	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
 	renderWidget->ResumeRendering();
-}
-
-void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
-{
-
-	outBinFiles->clear();
-	for (size_t iAsset = 0; iAsset < missingFiles->size(); iAsset++)
-	{
-
-		if (IsDiskFile((*missingFiles)[iAsset].toStdWString())) {
-			throw std::exception("Cannot accept disk files");
-		}
-
-		// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
-		auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + (*missingFiles)[iAsset].toStdWString();
-		ByteStream newStream(filePath, false);
-
-		// force list to be same size, maybe redundant
-		*outBinFiles = QList<QByteArray>::fromVector(QVector<QByteArray>(missingFiles->size()));
-
-		if (!newStream.IsValid())
-		{
-			(*outBinFiles)[iAsset] = QByteArray();
-			continue;
-		}
-
-		// -- resize dest, buffer, and read whole file into it
-		(*outBinFiles)[iAsset].resize(newStream.GetBufferSize());
-		newStream.Read((*outBinFiles)[iAsset].data(), (*outBinFiles)[iAsset].size());
-	}
 }
 
 // TODO: remove, when everythig above works

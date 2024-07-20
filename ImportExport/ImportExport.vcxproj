@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath);$(SolutionDir)CommonLibs;$(SolutionDir)ImportExport;$(SolutionDir)DirectXTK\Inc;$(SolutionDir)rldx;$(SolutionDir)</IncludePath>
+    <IncludePath>$(SolutionDir);$(IncludePath);$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
@@ -137,12 +137,12 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc;$(QtInclude);$(QT_ROOT_DIR)\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <LanguageStandard>Default</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <SupportJustMyCode>true</SupportJustMyCode>
     </ClCompile>
     <Link>
@@ -208,7 +208,6 @@
     <ClCompile Include="FileFormats\Anim\Types\Common\QuantMetaTables.cpp" />
     <ClCompile Include="Libs\PugiXML\pugixml.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Material\IMaterialCommonCreators.cpp" />
-    <ClCompile Include="Helpers\ImportExport.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\MeshMaterialCreators.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\MeshHeaderType3Creator.cpp" />
     <ClCompile Include="FileFormats\RigidModel\Creators\Vertices\VertexCreators.cpp" />

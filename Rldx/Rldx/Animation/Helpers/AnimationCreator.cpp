@@ -1,9 +1,9 @@
-#include <FileFormats\Anim\Reader\TwAnimReader.h>
+#include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
 #include <memory>
 #include <string>
 #include "..\DataTypes\SkeletonAnimation.h"
-#include "..\Rldx\Rldx\Animation\DataTypes\Skeleton.h"
-#include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
+#include <Rldx\Rldx\Animation\DataTypes\Skeleton.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include "AnimationCreator.h"
 #include "SkeletonHelpers.h"
 

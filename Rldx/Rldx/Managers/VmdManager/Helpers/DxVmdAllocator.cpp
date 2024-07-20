@@ -3,7 +3,7 @@
 
 #include "..\..\..\Creators\DxGameShaderCreators.h"
 #include "..\..\DxDeviceManager.h"
-#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+#include <ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h>
 
 using namespace utils;
 

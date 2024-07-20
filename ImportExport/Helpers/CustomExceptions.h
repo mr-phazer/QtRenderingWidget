@@ -2,7 +2,8 @@
 
 #include <exception>
 #include <string>
-#include "..\Libs\PugiXML\pugixml.hpp"
+
+#include <ImportExport\Libs\PugiXML\pugixml.hpp>
 
 class XMLException : public std::exception
 {

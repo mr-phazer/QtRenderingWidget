@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IDxResource.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs/Utils/ByteStream.h>
 
 namespace rldx
 {

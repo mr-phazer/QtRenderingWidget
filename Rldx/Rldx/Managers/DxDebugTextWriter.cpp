@@ -1,9 +1,10 @@
 #include <string>
 
-#include <Timer\SystemClockChecker.h>
 #include "DxDebugTextWriter.h"
-#include "Logger\Logger.h"
-#include "Utils\ByteStream.h"
+
+#include <CommonLibs\Timer\SystemClockChecker.h>
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\ByteStream.h>
 
 using namespace rldx;
 using namespace utils;

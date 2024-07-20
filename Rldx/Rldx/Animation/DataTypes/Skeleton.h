@@ -1,8 +1,8 @@
 #pragma once
 
-#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
-#include <SimpleMath.h>
-#include "..\..\Rldx\Rldx\Managers\ResourceManager\IDxResource.h"
+#include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
+#include <DirectXTK\Inc\SimpleMath.h>
+#include <Rldx\Rldx\Managers\ResourceManager\IDxResource.h>
 #include "SkeletonKeyFrame.h"
 
 namespace skel_anim

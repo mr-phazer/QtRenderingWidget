@@ -1,15 +1,6 @@
 #include "QtRenderView.h"
 
-#include <qdir>
-
-#include "Logger\Logger.h"
-
-#ifdef _DEBUG
-#include "..\ExternFunctions\Creators.h"
-#endif
-//#include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
-
-//#include "..\RenderLib\Direct3d11Device.h"
+#include <CommonLibs\Logger\Logger.h>
 
 using namespace rldx;
 using namespace logging;

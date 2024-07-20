@@ -1,7 +1,7 @@
 #pragma once
 
-#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
-#include <SimpleMath.h>
+#include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <vector>
 #include "DataTypes\SkeletonAnimation.h"
 

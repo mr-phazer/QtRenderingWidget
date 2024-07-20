@@ -2,9 +2,9 @@
 
 // TODO: clean? are both math libs neeeded
 #include <DirectXMath.h>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 
-#include <Rldx\Managers\DxDeviceManager.h>
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
 #include "..\..\DataTypes\DxMeshData.h"
 #include "..\..\Rendering\DxMaterial.h"
 #include "..\..\Rendering\DxMeshRenderData.h"

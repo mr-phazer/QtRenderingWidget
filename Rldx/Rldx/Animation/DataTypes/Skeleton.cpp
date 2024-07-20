@@ -1,6 +1,6 @@
-#include <CustomExceptions\CustomExceptions.h>
-#include <Rldx\Animation\AnimationPlayer.h>
-#include <Rldx\Managers\ResourceManager\DxResourceManager.h>
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+#include <Rldx\Rldx\Animation\AnimationPlayer.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include "Skeleton.h"
 
 namespace skel_anim

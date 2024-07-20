@@ -11,8 +11,8 @@
 ////#include <DirectXMath.h>
 //
 
-#include "Utils\MathUtils.h"
-#include "Utils\StrUtils.h"
+#include <CommonLibs\Utils\MathUtils.h>
+#include <CommonLibs\Utils\StrUtils.h>
 
 using namespace rldx;
 using namespace utils;

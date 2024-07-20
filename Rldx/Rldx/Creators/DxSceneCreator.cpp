@@ -1,8 +1,8 @@
 #include <DirectXCollision.h>
 
 #include <CommonLibs\Logger\Logger.h>
-#include "..\..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
-#include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <ImportExport\FileFormats\WsModel\Reader\WsModelReader.h>
+#include <CommonLibs\Utils\GameIdKeys.h>
 #include "..\Creators\DxGameShaderCreators.h"
 #include "..\Helpers\DxMeshCreatorHelper.h"
 #include "..\SceneGraph\SceneNodes\DxDeformerNode.h"

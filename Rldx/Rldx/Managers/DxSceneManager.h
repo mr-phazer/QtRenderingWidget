@@ -1,8 +1,8 @@
 #pragma once
 
-// athour
-#include <Timer\SystemClockChecker.h>
-#include "..\..\..\DirectXTK\Inc\CommonStates.h"
+#include <DirectXTK\Inc\CommonStates.h>
+
+#include <CommonLibs\Timer\SystemClockChecker.h>
 #include "..\Rendering\DxScene.h"
 
 namespace rldx {

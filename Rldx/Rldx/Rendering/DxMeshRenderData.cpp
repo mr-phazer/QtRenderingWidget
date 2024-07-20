@@ -1,4 +1,4 @@
-#include "..\..\DXUT\Core\DXUT.h"
+#include <DXUT\Core\DXUT.h>
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "..\Interfaces\IRenderBucket.h"
 #include "..\SceneGraph\SceneNodes\DxDeformerNode.h"

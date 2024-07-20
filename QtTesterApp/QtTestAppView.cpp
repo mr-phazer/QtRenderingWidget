@@ -6,11 +6,11 @@
 #include <QFileInfo>
 #include <qlayout.h>
 
-#include "..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <CommonLibs\Utils\GameIdKeys.h>
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs/Utils/ByteStream.h>
 
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
@@ -76,7 +76,6 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
 	// Or really, the testerapp is not meant to run in Release anyway.
 	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter); // TODO: in release, this isn't set, for complex reasons
 
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
 	auto ptestData2 = &test_app_data::testData_WH3_WSMODEL_2;
@@ -96,13 +95,13 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString globalLogFolder = repoFolder + QString::fromStdWString(LR"(/log/)");
 	SetLogFolder(&globalLogFolder);
 
-	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!m_renderWidget1)	return;
 
-	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget2)	return;
 
-	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget3)	return;
 
 	ByteStream bytes(ptestData->filePath);

@@ -5,11 +5,11 @@
 
 #include <D3d11.h>
 
-#include <SimpleMath.h>
-#include <SpriteBatch.h>
-#include <SpriteFont.h>
+#include <DirectXTK\Inc\SimpleMath.h>
+#include <DirectXTK\Inc\SpriteBatch.h>
+#include <DirectXTK\Inc\SpriteFont.h>
 
-#include "Timer\SystemClockChecker.h"
+#include <CommonLibs\Timer\SystemClockChecker.h>
 
 namespace rldx {
 

@@ -1,6 +1,6 @@
 #include "..\Types\Common\MeshEnumsConstants.h"
 #include "LodHeaderCreators.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 #include "..\RawStructs\RawLodHeaders.h"
 

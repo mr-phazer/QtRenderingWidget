@@ -1,9 +1,9 @@
 #pragma once
 
 #include <d3d11.h>
-#include <DDSTextureLoader.h>
+#include <DirectXTK\Inc\DDSTextureLoader.h>
 #include <DirectXMath.h>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <wrl\client.h>
 
 #include "..\..\rldx\Interfaces\IBindable.h"
