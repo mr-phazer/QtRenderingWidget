@@ -7,8 +7,8 @@ namespace rldx
 
 	void VariantGenerator::GenerateVariant()
 	{
-		DisbaleAllNodes(m_vmdRootNode);
-		GenerateNewVariant(m_vmdRootNode);
+		DisbaleAllNodes(m_sceneRootNode);
+		GenerateNewVariant(m_sceneRootNode);
 	}
 
 	void VariantGenerator::DisbaleAllNodes(DxVmdNode* node)

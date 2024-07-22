@@ -39,7 +39,7 @@ namespace rldx
 		// TODO: convers the rmv2.file.header to "wstring" for consistency?
 		// TODO: is it ok that method both allocated, and fetches skeleton? (2 jobs for 1 methods)
 		void AllocateTreeDXBuffers(const std::wstring& gameIdString, WStringkeyMap<sm::Matrix>& preTransformMap);
-		void AllocateNodeDXBufferRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap);
+		void AllocateNodeDXBufferRecursive(DxVmdNode* m_sceneRootNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap);
 
 		/// <summary>
 		/// Loads the skeleton bind pose, etc

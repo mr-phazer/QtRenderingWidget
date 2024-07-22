@@ -16,7 +16,7 @@ namespace rldx {
 	public:
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
 
-		static DxSceneManager::UniquePtr Create(ID3D11Device* poDevice)
+		static DxSceneManager::UniquePtr CreateScene(ID3D11Device* poDevice)
 		{
 			auto newSceneManager = std::make_unique<DxSceneManager>();
 			return std::move(newSceneManager);
@@ -41,34 +41,31 @@ namespace rldx {
 			{
 				m_upoCurrentScene->Resize(poDevice, poDeviceContext, width, height);
 			}
-		}
 
-
-		/// <summary>
-		/// Send Native Window events to a DxScene, as the low-level camera impl needs them
-		/// </summary>		
-		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-		{
-			if (m_upoCurrentScene)
+			/// <summary>
+			/// Send Native Window events to a DxScene, as the low-level camera impl needs them
+			/// </summary>		
+			LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
-				return m_upoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
+				if (m_upoCurrentScene)
+				{
+					return m_upoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
+				}
+
+				return false;
 			}
 
-			return false;
-		}
+			DxScene* GetCurrentScene()
+			{
+				return m_upoCurrentScene.get();
+			}
 
-		DxScene* GetCurrentScene()
-		{
-			return m_upoCurrentScene.get();
-		}
+			bool IsRenderRunning() const { return m_bRenderingRunning; }
+			void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
+		private:
+			std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
+			timer::SystemClockChecker m_systemClock;
+			bool m_bRenderingRunning = false;
+		};
 
-		bool IsRenderRunning() const { return m_bRenderingRunning; }
-		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
-
-	private:
-		std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
-		timer::SystemClockChecker m_systemClock;
-		bool m_bRenderingRunning = false;
-	};
-
-}; // namespace rldx
+	}; // namespace rldx

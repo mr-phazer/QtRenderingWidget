@@ -14,11 +14,11 @@ namespace rldx
 	class VariantGenerator
 	{
 		std::vector<DxModelNode*>* m_poOutModels = nullptr;
-		DxVmdNode* m_vmdRootNode = nullptr;
+		DxVmdNode* m_sceneRootNode = nullptr;
 		timer::SystemClockChecker m_clock; // used to random seed
 	public:
 		VariantGenerator(DxVmdNode* rootNode, std::vector<DxModelNode*>* poOutModels)
-			: m_poOutModels(poOutModels), m_vmdRootNode(rootNode)
+			: m_poOutModels(poOutModels), m_sceneRootNode(rootNode)
 		{}
 
 		void GenerateVariant();

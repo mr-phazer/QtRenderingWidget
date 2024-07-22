@@ -125,7 +125,8 @@ namespace rldx
 		AllocateNodeDXBufferRecursive(m_vmdRootNode, newPbrShaderProgram, preTransformMap);
 	}
 
-	//DxVmdNode::UniquePtr& DxVmdManager::GetNode() { return m_vmdRootNode; }
+	// TODO: REMOVE?
+	//DxVmdNode::UniquePtr& DxVmdManager::GetNode() { return m_sceneRootNode; }
 
 	void DxVmdManager::SetMeshDeformation(DxBaseNode* node)
 	{
@@ -223,9 +224,9 @@ namespace rldx
 
 			// grow the bounding box to contain the child node bounding box
 			DirectX::BoundingBox::CreateMerged(
-				poVmdNode->GetNodeBoundingBox(),
-				poVmdNode->GetNodeBoundingBox(),
-				itVmdNode.get()->GetNodeBoundingBox());
+				poVmdNode->NodeBoundingBox(),
+				poVmdNode->NodeBoundingBox(),
+				itVmdNode.get()->NodeBoundingBox());
 		}
 	}
 } // end namespace rldx
