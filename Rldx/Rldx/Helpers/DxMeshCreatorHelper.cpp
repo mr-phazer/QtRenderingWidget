@@ -171,7 +171,7 @@ namespace rldx
 		};
 	}
 
-	DxCommonMeshData DxMeshCreatorHelper::MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb)
+	DxCommonMeshData DxMeshCreatorHelper::MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb, const sm::Color& color = { 1,1,1,1 })
 	{
 		auto vecPositions =
 		{
@@ -190,7 +190,7 @@ namespace rldx
 		{
 			CommonVertex newVertex;
 			newVertex.position = { pos.x, pos.y, pos.z, 0.0f };
-			newVertex.color = { 1.0f ,0.6f ,0.9f, 1.0f };
+			newVertex.color = color;
 
 			vecCommonVertices.push_back(newVertex);
 		}
