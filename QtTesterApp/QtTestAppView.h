@@ -15,9 +15,19 @@ public:
 	QtMainWindowView(QWidget* parent = nullptr);
 	~QtMainWindowView();
 
-	// TODO: Debugging code in here, clean up
-	void InitRenderView_DEBUG();
 
-protected:
+public:
+	void dragEnterEvent(QDragEnterEvent* event)
+	{
+		event->acceptProposedAction();
+	}
+
+	void dropEvent(QDropEvent* event);
+
+
+private:
+	QDockWidget* CreateDockWidget(QWidget* renderWidget, const QString& name);
+	// TODO: Debugging code in here, clean up
+	void DEBUG_InitRenderView();
 
 };

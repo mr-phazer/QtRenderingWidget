@@ -5,6 +5,7 @@
 #include <qdockwidget.h>
 #include <QFileInfo>
 #include <qlayout.h>
+#include <QMimeData>
 
 #include "..\QtRenderingWidget\Constants\GameIdKeys.h"
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
@@ -39,8 +40,10 @@ QtMainWindowView::QtMainWindowView(QWidget* parent)
 	logging::LogAction(L"Starting the program.");
 	setupUi(this);
 
+	setAcceptDrops(true);
+
 	// TODO: maybe not have this constructor !!!! even for test program
-	InitRenderView_DEBUG();
+	DEBUG_InitRenderView();
 
 	setWindowTitle("TWViewer 0.0.1a - Total War Viewing/Conversion Tool");
 
@@ -71,7 +74,7 @@ QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 }
 
 // TODO: REMOVE and cleanup 
-void QtMainWindowView::InitRenderView_DEBUG()
+void QtMainWindowView::DEBUG_InitRenderView()
 {
 	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
 	// Or really, the testerapp is not meant to run in Release anyway.
@@ -96,6 +99,9 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	QString globalLogFolder = repoFolder + QString::fromStdWString(LR"(/log/)");
 	SetLogFolder(&globalLogFolder);
 
+	return;
+
+
 	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
 	if (!m_renderWidget1)	return;
 
@@ -105,24 +111,64 @@ void QtMainWindowView::InitRenderView_DEBUG()
 	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
 	if (!renderWidget3)	return;
 
+
+
+
 	ByteStream bytes(ptestData->filePath);
 	QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
 	QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 	QString outErrorString;
 
-	QDockWidget* dockWidget = new QDockWidget(tr("Dock Widget"), this);
-	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
-								Qt::RightDockWidgetArea);
+	auto dockWidget1 = CreateDockWidget(renderWidget2, "Right");
+	auto dockWidget2 = CreateDockWidget(renderWidget3, "Left");
+	dockWidget1->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
+	dockWidget2->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
 
-	dockWidget->setWidget(renderWidget2);
-	addDockWidget(Qt::LeftDockWidgetArea, dockWidget);
-
-	dockWidget = new QDockWidget(tr("Dock Widget"), this);
-	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
-								Qt::RightDockWidgetArea);
-
-	dockWidget->setWidget(renderWidget3);
-	addDockWidget(Qt::RightDockWidgetArea, dockWidget);
+	addDockWidget(Qt::RightDockWidgetArea, dockWidget1);
+	addDockWidget(Qt::LeftDockWidgetArea, dockWidget2);
 
 	setCentralWidget(m_renderWidget1); // add widget as the central widget in the QMainWindow 
+}
+
+void QtMainWindowView::dropEvent(QDropEvent* event)
+{
+	// Handle drop event (e.g., process dropped file)
+	// TODO:: move this code to the CONTROLLER, emit "ItemDropped" and have the controller handle that event with this code
+	const QMimeData* mimeData = event->mimeData();
+	if (mimeData->hasUrls()) {
+		QList<QUrl> urls = mimeData->urls();
+		for (const QUrl& url : urls)
+		{
+			auto filePath = url.toLocalFile().toStdWString();
+
+			utils::ByteStream bytes(filePath);
+			QString fileName2 = QString::fromStdWString(filePath);
+			QByteArray qBytes2((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
+			QString outErrorString;
+
+			auto idString = QString::fromStdWString(game_id_keys::KEY_WARHAMMER_3);
+
+			auto newWidget = CreateQRenderingWidget(nullptr, &idString, &DEBUG_Callback_FileGetter, nullptr);
+			AddNewPrimaryAsset(newWidget, &fileName2, &qBytes2, &outErrorString);
+
+			setLayout(new QVBoxLayout());
+			layout()->addWidget(newWidget);
+
+			break; // only read one file, for now
+		}
+	}
+	event->acceptProposedAction();
+}
+
+QDockWidget* QtMainWindowView::CreateDockWidget(QWidget* renderWidget, const QString& name)
+{
+	auto dockWidget = new QDockWidget(name, this);
+	dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
+								Qt::RightDockWidgetArea);
+
+	dockWidget->setFeatures(QDockWidget::DockWidgetFeature::DockWidgetClosable);
+	dockWidget->setWidget(renderWidget);
+	renderWidget->setParent(dockWidget);
+
+	return dockWidget;
 }
