@@ -43,6 +43,14 @@ namespace rldx {
 
 	public:
 		DxMaterial() = default;
+		virtual ~DxMaterial()
+		{
+			for (auto& tex : m_textures)
+			{
+				DxResourceManager::FreeMemoryFromPtr(tex.second.pTexture);
+			}
+		}
+
 		static DxMaterial* Create(std::vector<rmv2::TextureElement>& textures);
 
 		void InitWithDefaulTextures();
