@@ -1,16 +1,23 @@
-#include "..\..\DXUT\Core\DXUT.h"
-#include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
-#include "..\Interfaces\IRenderBucket.h"
-#include "..\SceneGraph\SceneNodes\DxDeformerNode.h"
-
-#include "..\Rendering\DxShaderProgram.h"
-#include "DxMesh.h"
 #include "DxMeshRenderData.h"
+
+#include "..\Managers\DXdeviceManager.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
+#include "..\Rendering\DxShaderProgram.h"
+#include "..\SceneGraph\SceneNodes\DxDeformerNode.h"
+#include "DxMesh.h"
 
 namespace rldx {
 	DxMeshRenderingData::DxMeshRenderingData()
 	{
 		CreateConstBuffers(DxDeviceManager::Device());
+	}
+
+	DxMeshRenderingData::~DxMeshRenderingData()
+	{
+		logging::LogAction(L"Delaolocation material, mesh, shader, from mesh " + meshName);
+		DxResourceManager::FreeMemoryFromPtr(poMaterial);
+		DxResourceManager::FreeMemoryFromPtr(poMesh);
+		DxResourceManager::FreeMemoryFromPtr(poShaderProgram);
 	}
 
 	void DxMeshRenderingData::CreateConstBuffers(ID3D11Device* poDevice)
@@ -21,13 +28,8 @@ namespace rldx {
 		perMesh_PS_CB.Init(poDevice, "PS_PerMesh");
 	}
 
-	void DxMeshRenderingData::CreateConstBuffers_DOES_NOTHING__REMOVE(ID3D11Device* poDevice)
-	{
-	}
-
 	void DxMeshRenderingData::Update(float time)
 	{
-
 	}
 
 	void DxMeshRenderingData::Draw(ID3D11DeviceContext* pDeviceContext)
@@ -39,6 +41,9 @@ namespace rldx {
 	{
 		if (poMesh) poMesh->BindToDC(pDeviceContext);
 		if (poShaderProgram) poShaderProgram->BindToDC(pDeviceContext);
+		else {
+			auto DEBUG__BREAK_1 = 1;
+		}
 		if (poMaterial) poMaterial->BindToDC(pDeviceContext);
 
 
