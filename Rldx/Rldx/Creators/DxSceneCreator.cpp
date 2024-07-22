@@ -15,25 +15,19 @@ using namespace utils;
 
 namespace rldx
 {
-	std::unique_ptr<DxScene> DxSceneCreator::InitSceneDX(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& m_nodeName)
+	std::unique_ptr<DxScene> DxSceneCreator::CreateScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& m_nodeName)
 	{
-		auto upoNewScene = std::make_unique<DxScene>(m_nodeName);
-
-		// TODO: remove this mess? Setting the window size in win32 api?
-		//SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
-
 		RECT windowRect;
-		GetWindowRect(m_nativeWindowHandle, &windowRect);
+		GetClientRect(m_nativeWindowHandle, &windowRect); // get only the client area
 
 		UINT width = windowRect.right - windowRect.left;
 		UINT height = windowRect.bottom - windowRect.top;
 
 		// create swap chain
-		upoNewScene->GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, m_nativeWindowHandle, isSRGB, width, width);
-		upoNewScene->InitRenderView(poDevice);
+		auto newSwapChain = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, isSRGB, width, height);
 
-		// TODO: enable? Shouldn't it work on its own (multi windows)
-		upoNewScene->Resize(poDevice, poDeviceContext, width, width);
+		// create scene
+		auto upoNewScene = std::make_unique<DxScene>(m_nodeName, std::move(newSwapChain));
 
 		// Create a separate "assset node", so assets can be deleted indepdently of grid
 		auto asssetNode = DxBaseNode::Create(L"Asset Node");
@@ -59,7 +53,7 @@ namespace rldx
 			rgbMode = RGBModeEnum::SRGB_Mode;
 		}
 
-		m_upoNewScene = InitSceneDX(poDevice, poDeviceContext, rgbMode);
+		m_upoNewScene = CreateScene(poDevice, poDeviceContext, rgbMode);
 
 		// -- make default, fallback shaders
 		// for grid
@@ -95,7 +89,9 @@ namespace rldx
 
 		meshNodeGrid->SetMeshData(gridMeshData, L"Grid Mesh");
 		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
-		meshNodeGrid->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+
+		// TODO: change? sets the grid to be of no size, so it doesn't interfere with the camera
+		meshNodeGrid->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 
 		m_upoNewScene->m_poGridNode = meshNodeGrid.get();
 
@@ -104,10 +100,16 @@ namespace rldx
 
 	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
-		poScene->GetSceneRootNode()->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
-		poScene->GetAssetNode()->GetNodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+		poScene->GetSceneRootNode()->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+		poScene->GetAssetNode()->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 		poScene->GetVmdManager().LoadVariantMeshIntoNode(poScene->GetAssetNode(), fileData, gameIdString);
 		poScene->GetVmdManager().GenerateNewVariant();
+
+
+
+#ifdef _DEBUG
+		DxBaseNode::AllocateBoundingBoxMeshesRecursive(poScene->GetSceneRootNode());
+#endif
 
 		// TODO: FIX issue: the largest loaded model leaves in a "top" bound volume
 		// so, after loading a big model, the camera never zooms in again, FIXXX
@@ -148,14 +150,15 @@ namespace rldx
 
 	void DxSceneCreator::SetCameraAutoFit(DxScene* poScene)
 	{
-
 		auto boundBox = poScene->GetRootBoundBox();
 
-		/*if (poScene->GetAssetNode() && sm::Vector3(poScene->GetAssetNode()->GetNodeBoundingBox().Extents).Length() > 0.01f)
-			boundBox = poScene->GetAssetNode()->GetNodeBoundingBox();*/
-			//auto& boundBox = modelNodeRmv2->GetNodeBoundingBox(); // get the bounding box which is the "sum" of all its mesh BB's
-			//const float adjustBBExtend = 0.3f;
 		float bbSize = max(boundBox.Extents.z, max(boundBox.Extents.y, boundBox.Extents.x))/* * (2.0f + adjustBBExtend)*/;
+
+		if (bbSize < 0.000001f) // if nothing or something completely flat is in view set default zoom
+		{
+			bbSize = 2.0f;
+		}
+
 		float fieldIOfView = poScene->GetCamera().GetFieldOfView();
 		auto DEBUG_CENTER = boundBox.Center;
 		float cameraDistance = (bbSize / 2.0f) / tan(fieldIOfView / 2.0f);
@@ -174,6 +177,8 @@ namespace rldx
 		//poScene->GetCamera().SetRadius(std::max<float>(distanceVertical, distanceHorizontal));
 		poScene->GetCamera().SetEyePosition(sm::Vector3(0, 0, std::max<float>(distanceVertical, distanceHorizontal)));
 		poScene->GetCamera().SetLookAt(boundBox.Center); // bound box fomula doesn't take "look at" into account, so move up a bit
+
+		// TODO: renaable
 		poScene->GetCamera().SetRotate(-DirectX::XM_PI / 4.0f, -DirectX::XM_PI / 8.0f); // rotate the scene into a neat orientation
 	}
 }
