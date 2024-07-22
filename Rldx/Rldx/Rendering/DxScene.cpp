@@ -1,10 +1,14 @@
 #include "DxScene.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
+#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+#include "..\Creators\DxMeshCreator.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
+#include "..\SceneGraph\SceneNodes\DxModelNode.h"
 #include "DxMeshRenderBucket.h"
+
 
 using namespace rldx;
 using namespace utils;
@@ -129,6 +133,32 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
+rldx::DxScene::DxScene() {
+	SetType(DxSceneTypeEnum::Normal);
+	SetTypeString(L"Resource:DxScene");
+}
+
+rldx::DxScene::~DxScene() {
+	// TODO: REMOVE DEBUGGIN CODE
+	auto DEBUG_dxScene_constructor_break = 1;
+
+}
+
+rldx::DxScene::DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
+{
+	DxScene::DxScene();
+	DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
+	SetName(name);
+
+	// TODO: move more of the initializing into the constructor, RAII
+	m_spoSwapChain = std::move(upoSwapChain);
+
+	InitRenderView(DxDeviceManager::Device());
+
+	// TODO: enable? Shouldn't it work on its own (multi windows)
+	Resize(DxDeviceManager::Device(), DxDeviceManager::DeviceContext(), m_spoSwapChain->GetBackBuffer()->GetWidth(), m_spoSwapChain->GetBackBuffer()->GetHeight());
+}
+
 void DxScene::InitRenderView(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
@@ -225,7 +255,7 @@ void DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	m_textureSamplers.BindToDC(poDeviceContext);
 }
 
-inline void DxScene::DEBUGGING_SetViewAndPerspective()
+void DxScene::DEBUGGING_SetViewAndPerspective()
 {
 	// TODO: method full of crap, is it still useful/remove?
 	// Use DirectXMath to create view and perspective matrices, for debuggin purposes

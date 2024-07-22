@@ -7,12 +7,11 @@
 
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
-#include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
 #include "..\Managers\VmdManager\DxVmdManager.h"
 #include "..\SceneGraph\SceneGraph.h"
 #include "..\SceneGraph\SceneNodes\DxBaseNode.h"
-#include "..\SceneGraph\SceneNodes\DxModelNode.h"
+
 #include "DxAmbientLightSource.h"
 #include "DxCameraOrbital.h"
 #include "DxConstBuffer.h"
@@ -22,7 +21,7 @@
 
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 
-#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+
 
 // # forward decl
 namespace rldx {
@@ -50,18 +49,12 @@ namespace rldx {
 		friend class DxSceneCreator;
 
 	public:
-		DxScene() {
-			SetType(DxSceneTypeEnum::Normal);
-			SetTypeString(L"DxScene");
-		}
+		DxScene();
 
-		DxScene(const std::wstring& name = L"Unnamed Scene")
-		{
-			SetName(name);
+		virtual ~DxScene();
 
-			// TODO: move more of the initializing into the constructor, RAII
-			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
-		};
+		DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);;
+
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
 		virtual void InitRenderView(ID3D11Device* poDevice);
@@ -118,8 +111,25 @@ namespace rldx {
 		//		bindable->BindToDC(poDeviceContext);
 		//	}
 		//}
+		void ReadySwapChain(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, HWND m_nativeWindowHandle)
+		{
 
+			// TODO: remove this mess? Setting the window size in win32 api?
+			//SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
 
+			RECT windowRect;
+			GetWindowRect(m_nativeWindowHandle, &windowRect);
+
+			UINT width = windowRect.right - windowRect.left;
+			UINT height = windowRect.bottom - windowRect.top;
+
+			// create swap chain
+			GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, true, width, width);
+			InitRenderView(poDevice);
+
+			// TODO: enable? Shouldn't it work on its own (multi windows)
+			//Resize(poDevice, poDeviceContext, width, width);
+		}
 
 	private:
 		DxVmdManager m_vmdManager;
