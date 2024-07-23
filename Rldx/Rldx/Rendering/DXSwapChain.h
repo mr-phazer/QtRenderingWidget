@@ -2,37 +2,10 @@
 
 // --- Direct3d 11 Headers
 #include <d3d11.h>
-
-//#include <d3d11_1.h>
-//#include <D3Dcompiler.h>
-
-//
-////  WRL wrappers from COM Objects - smart pointers for Direct3d resources
-//#include <wrl/client.h>
-//#include <wrl/wrappers/corewrappers.h>
-//
-//// Standard lib headers
-//#include <assert.h>
-//#include <functional>
-#include <memory>
-//#include <stdexcept>
-//#include <vector>
-
-
-// qt headers
-#include <QtWidgets/qwidget.h>
-
 #include <DirectXMath.h>
+#include <memory>
 
-// author headers:
-#include "Logger\Logger.h"
-
-// TODO: use new or old?
-//#include "DxTextureView.h"
 #include "DxTexture.h"
-
-#include "..\..\rldx\Interfaces\IDrawable.h"
-
 
 namespace rldx
 {
@@ -75,7 +48,6 @@ namespace rldx
 			poPC->Flush();
 		}
 
-
 		void ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11DeviceContext* poPC);;
 
 
@@ -91,13 +63,13 @@ namespace rldx
 			return randomColor;
 		}
 
-		static Uptr CreateForHWND(ID3D11Device* poDevice, HWND hWindow, bool useSRGB, UINT width = 1024, UINT height = 1024);
+		static Uptr CreateForHWND(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, HWND hWindow, bool useSRGB, UINT width = 1024, UINT height = 1024);
 
 		const rldx::DxSwapChain::Uptr& GetExtendedFactory();
 		void Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
-		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView);
+		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, HWND hwnWindowHandle = NULL);
 
 		// TODO: should be in camera?		
 		D3D11_VIEWPORT m_viewPort;
@@ -108,9 +80,6 @@ namespace rldx
 		DxTexture m_BackBufferTexture;
 		DXGI_SWAP_CHAIN_DESC1 m_SwapChainDescription = { 0 };
 		DirectX::XMFLOAT4 m_backgroundColor;
-
-
-
 	};
 };
 

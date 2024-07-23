@@ -59,7 +59,7 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 	poPC->RSSetViewports(1, &m_viewPort);
 }
 
-DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND hWindow, bool useSRGB, UINT width, UINT height)
+DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, HWND hWindow, bool useSRGB, UINT width, UINT height)
 {
 	auto poNew = std::make_unique<DxSwapChain>();
 
@@ -105,12 +105,11 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, HWND 
 	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture2D(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
 	ThrowAndLogIfAiled(L"CreateRenderTargetView()...", COMExceptionFormatMode::StandardLog, hr);
 
-	// TODO: any way to this more cleverly?
-	// Set the texture descriptor manually in backbuffer DxTexture, so it reports the right dimensions
-	auto& textureDescriptor = poNew->m_BackBufferTexture.GetDescriptionRef();
-	textureDescriptor.Width = poNew->m_SwapChainDescription.Width;
-	textureDescriptor.Height = poNew->m_SwapChainDescription.Height;
-	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, width, height);
+	// -- create depth buffer
+	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, poNew->m_SwapChainDescription.Width, poNew->m_SwapChainDescription.Height);
+
+	// -- make sure buffers are same size
+	poNew->Resize(poDevice, poDeviceContext, poNew->m_SwapChainDescription.Width, poNew->m_SwapChainDescription.Height);
 
 	Logger::LogActionSuccess(L"Finished making Swap Chain For Window");
 
@@ -136,7 +135,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 	m_cpoSwapChain1->Present(1, 0);
 }
 
-void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, QWidget* _renderView)
+void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, HWND hwndWindow)
 {
 	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
 
