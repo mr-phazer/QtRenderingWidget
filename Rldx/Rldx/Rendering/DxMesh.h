@@ -5,9 +5,7 @@
 #include "..\DataTypes\DxMeshData.h"
 #include "..\Interfaces\IBindable.h"
 #include "..\Interfaces\IDrawable.h"
-#include "..\Managers\DxTypes.h"
 #include "..\Managers\ResourceManager\IDxResource.h"
-
 
 namespace rldx
 {
@@ -23,12 +21,6 @@ namespace rldx
 			SetType(ResourceTypeEnum::Mesh);
 			SetTypeString(L"Resource:Mesh");
 		}
-
-		//virtual ~DxMesh()
-		//{
-		//	logging::LogAction(L"Type: " + GetTypeString() + L", name: " + GetName() + L". Destroyed.");
-		//}
-
 
 		void Draw(ID3D11DeviceContext* poDC) override;
 		void BindToDC(ID3D11DeviceContext* poDC) override;
