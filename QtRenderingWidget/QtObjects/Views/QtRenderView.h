@@ -2,6 +2,7 @@
 #include <mouse.h>
 #include <qevent.h>
 #include <qmessagebox.h>
+#include <qmimedata.h>
 #include <qstyle.h>
 #include <qstyleoption.h>
 #include <qtimer.h>											   
@@ -34,7 +35,8 @@ public:
 	QtRenderController(QtRenderWidgetView* parentAndView);
 
 public slots:
-	void OnkeyPressed(QKeyEvent* keyEvent);
+	void OnKeyPressed(QKeyEvent* keyEvent);
+	void OnWindowClosing();
 };
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
@@ -48,6 +50,7 @@ private:
 private:
 	// overriden methods
 	void resizeEvent(QResizeEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
 
 	QPaintEngine* paintEngine() const override;
 	bool event(QEvent* event) override;
@@ -58,12 +61,16 @@ private:
 public:
 	QtRenderWidgetView(QWidget* parent, const QString& gameidString);
 
+	~QtRenderWidgetView()
+	{
+		TerminateRendering();
+		emit this->WindowClosing();
+	}
+
 	void SetGrideDrawState(rldx::DxBaseNode::DrawStateEnum state)
 	{
 		m_upoSceneManager->GetCurrentScene()->SetGridState(state);
 	}
-
-	bool InitRenderView();
 
 	void PauseRendering()
 	{
@@ -89,6 +96,7 @@ public:
 	}
 
 	void StartRendering(float _FPS = 60.0f);
+	void TerminateRendering();
 
 	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
 	QString GetGameIdString() const { return m_gameIdString; };
@@ -96,6 +104,7 @@ public:
 
 private:
 	void LoadExeResources(ID3D11Device* poDevice);
+	bool InitRenderView();
 
 protected:
 	virtual void focusInEvent(QFocusEvent* event) override;
@@ -103,12 +112,13 @@ protected:
 
 signals:
 	void resizeEventHappend(QResizeEvent* event);
-	void keyPressed(QKeyEvent*);
+	void KeyPressed(QKeyEvent*);
 	void mouseMoved(QMouseEvent*);
 	void mouseClicked(QMouseEvent*);
 	void mouseReleased(QMouseEvent*);
 	void doubleclicked();
 	void detachedWindowClose();
+	void WindowClosing();
 
 private:
 	void FrameTimeOutHandler();

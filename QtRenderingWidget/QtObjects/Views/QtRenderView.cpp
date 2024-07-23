@@ -19,13 +19,14 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 {
 	setupUi(this);
 
-	setAcceptDrops(true);
+	setAcceptDrops(false);
 
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::black);
 	setAutoFillBackground(true);
 	setPalette(pal);
 
+	// Qt windows DockWidget has a bug that makes it impossible to set focus to the widget
 	setFocusPolicy(Qt::StrongFocus);
 	setAttribute(Qt::WA_NativeWindow);
 
@@ -33,8 +34,10 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 	// tells Qt that we'll handle all drawing and updating the widget ourselves.
 	setAttribute(Qt::WA_PaintOnScreen);
 	setAttribute(Qt::WA_NoSystemBackground);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	SetGameIdString(gameidString);
+	InitRenderView();
 
 	/*this->setWindowTitle("QRenderenView (Testing) : Sence");
 
@@ -54,6 +57,13 @@ void QtRenderWidgetView::resizeEvent(QResizeEvent* event)
 		//m_timer->start();
 	}
 }
+
+void QtRenderWidgetView::closeEvent(QCloseEvent* event)
+{
+	/*TerminateRendering();
+	emit this->WindowClosing();*/
+}
+
 QPaintEngine* QtRenderWidgetView::paintEngine() const
 {
 	return Q_NULLPTR;
@@ -95,7 +105,7 @@ bool QtRenderWidgetView::event(QEvent* event)
 			}
 			break;
 		case QEvent::KeyPress:
-			emit keyPressed((QKeyEvent*)event);
+			emit KeyPressed((QKeyEvent*)event);
 			break;
 		case QEvent::MouseMove:
 			emit mouseMoved((QMouseEvent*)event);
@@ -141,7 +151,7 @@ bool QtRenderWidgetView::InitRenderView()
 	DxDeviceManager::Init();
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 
-	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
+	m_upoSceneManager = rldx::DxSceneManager::CreateScene(DxDeviceManager::GetInstance().GetDevice());
 
 	logging::LogAction(L"Retriving Default Textures from .exe");
 	LoadExeResources(poDevice);
@@ -179,6 +189,13 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 	m_frameTime = 1000.0f / framesPerSecond;
 	m_timer->setInterval(1000);
 	m_timer->start(m_frameTime);
+}
+
+void QtRenderWidgetView::TerminateRendering()
+{
+	PauseRendering();
+	m_timer->disconnect();
+	delete m_timer;
 }
 
 void QtRenderWidgetView::FrameTimeOutHandler()
@@ -239,7 +256,7 @@ void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
 	// TODO: set frame to the lower possible, to allow many views being open without lagging
 }
 
-void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
+void QtRenderController::OnKeyPressed(QKeyEvent* keyEvent)
 {
 	switch (keyEvent->key())
 	{
@@ -276,8 +293,18 @@ void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
 
 QtRenderController::QtRenderController(QtRenderWidgetView* parentAndView) : QObject(parentAndView), view(parentAndView)
 {
-	connect(view, &QtRenderWidgetView::keyPressed, this, &QtRenderController::OnkeyPressed);
-};
+	// connect "event observers"
+	connect(view, &QtRenderWidgetView::KeyPressed, this, &QtRenderController::OnKeyPressed);
+	connect(view, &QtRenderWidgetView::WindowClosing, this, &QtRenderController::OnWindowClosing);
+}
+
+void QtRenderController::OnWindowClosing()
+{
+	logging::LogAction(L"Destroying assets used by the scene");
+
+	// TODO: don't use this, as it will remove assets from ALL instances
+	///DxResourceManager::FreeAll();
+}
 
 #ifdef _DEBUG
 void QtRenderWidgetView::dropEvent(QDropEvent* event)
