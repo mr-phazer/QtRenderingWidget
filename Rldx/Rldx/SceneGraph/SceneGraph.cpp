@@ -4,7 +4,7 @@ namespace rldx
 {
 	DxBaseNode* DxSceneGraph::GetRootNode() const
 	{
-		return m_vmdRootNode.get();
+		return m_sceneRootNode.get();
 	}
 
 	/// <summary>
@@ -14,14 +14,18 @@ namespace rldx
 
 	DirectX::BoundingBox DxSceneGraph::GetRootBoundBox()
 	{
-		UpdateBoundBoxRecursive(GetRootNode());
+		// TODO: keep using?
+		return m_sceneRootNode->NodeBoundingBox();
 
-		return m_SceneBoundBox;
+		// TODO: remove?
+		/*UpdateBoundBoxRecursive(GetRootNode());
+
+		return m_SceneBoundBox;*/
 	}
 
 	void DxSceneGraph::UpdateNodes(float timeElapsed)
 	{
-		UpdateNodesRecursive(m_vmdRootNode.get(), timeElapsed);
+		UpdateNodesRecursive(m_sceneRootNode.get(), timeElapsed);
 	}
 
 	void DxSceneGraph::UpdateNodes(DxBaseNode* pNode, float timeElapsed)
@@ -31,7 +35,7 @@ namespace rldx
 
 	void DxSceneGraph::FillRenderBucket(IRenderBucket* pDestRenderBucket)
 	{
-		FillRenderBucketRecursive(m_vmdRootNode.get(), pDestRenderBucket);
+		FillRenderBucketRecursive(m_sceneRootNode.get(), pDestRenderBucket);
 	}
 
 	void DxSceneGraph::AddNodeToLinearIndexTable(DxBaseNode* node)
@@ -75,6 +79,6 @@ namespace rldx
 		DirectX::BoundingBox::CreateMerged(
 			m_SceneBoundBox,
 			m_SceneBoundBox,
-			node->GetNodeBoundingBox());
+			node->NodeBoundingBox());
 	}
 }

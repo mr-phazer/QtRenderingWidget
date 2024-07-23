@@ -14,7 +14,7 @@ namespace rldx {
 	{
 		// init to as little extend as possible, for the "merge to fix 2 boxes" thing
 		DirectX::BoundingBox m_SceneBoundBox = DirectX::BoundingBox({ -1,-1,-1 }, { 1,1,1 });
-		DxBaseNode::UniquePtr m_vmdRootNode = DxBaseNode::Create(L"RootNode");
+		DxBaseNode::UniquePtr m_sceneRootNode = DxBaseNode::Create(L"RootNode");
 
 		std::vector<DxBaseNode*> nodeLookUptable;
 

@@ -84,7 +84,6 @@
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdTreeBuilder.cpp" />
     <ClCompile Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.cpp" />
     <ClCompile Include="Rldx\Helpers\DxMeshCreatorHelper.cpp" />
-    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.cpp" />
     <ClCompile Include="Rldx\Animation\AnimationPlayer.cpp" />
     <ClCompile Include="Rldx\Animation\FramePoseGenerator.cpp" />
     <ClCompile Include="Rldx\Animation\DataTypes\Skeleton.cpp" />
@@ -103,6 +102,9 @@
     <ClCompile Include="Rldx\Animation\Helpers\AnimationRemapper.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\AnimationCreator.cpp" />
     <ClCompile Include="Rldx\Animation\Helpers\SkeletonHelpers.cpp" />
+    <ClCompile Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.cpp">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rldx\Creators\DxGameShaderCreators.h">
@@ -258,7 +260,6 @@
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\DxVmdAllocator.h" />
     <ClInclude Include="Rldx\Managers\VmdManager\Helpers\VariantGenerator.h" />
     <ClInclude Include="Rldx\Helpers\DxMeshCreatorHelper.h" />
-    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.h" />
     <ClInclude Include="Rldx\Animation\AnimationPlayer.h" />
     <ClInclude Include="Rldx\Animation\AnimTrackReader.h" />
     <ClInclude Include="Rldx\Animation\FramePoseGenerator.h" />
@@ -278,6 +279,9 @@
     <ClInclude Include="Rldx\Animation\Helpers\AnimationRemapper.h" />
     <ClInclude Include="Rldx\Animation\Helpers\AnimationCreator.h" />
     <ClInclude Include="Rldx\Animation\Helpers\SkeletonHelpers.h" />
+    <ClInclude Include="Rldx\SceneGraph\SceneNodes\DxDeformerNode.h">
+      <Filter>Rldx\SceneGraph\SceneNodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-tidy" />
