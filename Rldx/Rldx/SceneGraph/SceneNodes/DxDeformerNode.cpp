@@ -24,8 +24,6 @@ namespace rldx
 	{
 		auto newMeshNode = std::make_unique<DxDeformerNode>();
 
-		// TODO: remove?
-		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		newMeshNode->SetDeformerNode(newMeshNode.get(), -1); // the skeleton mesh is being deformed byt THIS deformedNode
 
 		return newMeshNode;
@@ -56,12 +54,10 @@ namespace rldx
 			(const DirectX::XMFLOAT3*)skeletonMesh.originalMeshData.vertices.data(),
 			sizeof(rldx::CommonVertex));
 
-		SetBoundingBox(bbout);
+		ResizeBoundBoxToContent();
 
 		auto simpleShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
 		SetShaderProgram(simpleShaderProgram);
-
-		m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
 
 		auto& invMatrices = m_skeleton.GetInverseBindPoseMatrices();
 		memcpy(&m_constBufferDerformerData_VS.inverseBindPoseMatrices, invMatrices.data(), sizeof(sm::Matrix) * invMatrices.size());

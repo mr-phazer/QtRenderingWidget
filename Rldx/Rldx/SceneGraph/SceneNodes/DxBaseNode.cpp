@@ -1,3 +1,4 @@
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\Rendering\DxMesh.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
@@ -8,46 +9,38 @@
 
 namespace rldx
 {
-	void DxBaseNode::SetBoundingBox(const DirectX::BoundingBox& inBB)
+	void DxBaseNode::AllocateBoundingBoxMesh(DxBaseNode* node)
 	{
-		GetNodeBoundingBox() = inBB;
+		if (!node) throw COMException(L"input node == nullptr");
 
-		auto newSimpleShaderProgram =
-			rldx::DxMeshShaderProgram::CreateFromDisk<rldx::DxMeshShaderProgram>(
-				rldx::DxDeviceManager::Device(),
-				LR"(VS_Simple.cso)",
-				LR"(PS_Simple.cso)"
-			);
-
-
-		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), GetNodeBoundingBox());
+		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), node->NodeBoundingBox(), node->boundBoxRenderColor);
 
 		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-		m_boundingBoxMesh.poMesh = newMeshHandle.GetPtr();
-		m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
-		//m_boundingBoxMesh.poShaderProgram = newSimpleShaderProgram;
-		m_boundingBoxMesh.poShaderProgram =
-			m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
-		m_boundingBoxMesh.meshName = L"BoundNox";
-		m_boundingBoxMesh.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
+
+		node->m_boundingBoxMesh.poMesh = newMeshHandle.GetPtr();
+		node->m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
+
+		node->m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
+		node->m_boundingBoxMesh.meshName = L"Mesh:BoundBox";
 	}
 
 	void DxBaseNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)
 	{
-		// does nothing here, as it has not mesh
+		// Does nothing here, as it has no mesh?
 	}
 
-	DirectX::BoundingBox& DxBaseNode::GetNodeBoundingBox()
+	DirectX::BoundingBox& DxBaseNode::NodeBoundingBox()
 	{
 		return m_BoundBox;
 	}
 
-	void DxBaseNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint)
+	// TODO: used? Remove?
+	void DxBaseNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff)
 	{
 		DirectX::XMVECTOR xmMin = DirectX::XMLoadFloat3(&minPoint);
 		DirectX::XMVECTOR xmMax = DirectX::XMLoadFloat3(&maxPoint);
 
-		DirectX::BoundingBox::CreateFromPoints(GetNodeBoundingBox(), xmMin, xmMax);
+		DirectX::BoundingBox::CreateFromPoints(NodeBoundingBox(), xmMin, xmMax);
 
 		auto newSimpleShaderProgram =
 			rldx::DxMeshShaderProgram::CreateFromDisk<rldx::DxMeshShaderProgram>(
@@ -56,15 +49,13 @@ namespace rldx
 				LR"(PS_Simple.cso)"
 			);
 
-		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), GetNodeBoundingBox());
+		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), NodeBoundingBox(), boundBoxRenderColor);
 
 		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
 		m_boundingBoxMesh.poMesh = newMeshHandle.GetPtr();
 		m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
-		//m_boundingBoxMesh.poShaderProgram = newSimpleShaderProgram;
 		m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
 		m_boundingBoxMesh.meshName = L"BoundNox";
-		m_boundingBoxMesh.CreateConstBuffers_DOES_NOTHING__REMOVE(rldx::DxDeviceManager::Device());
 	}
 
 	void DxBaseNode::SetDeformerNodeRecursive(const DxDeformerNode* poDeformerNode, int32_t boneIndex)
@@ -79,9 +70,7 @@ namespace rldx
 
 	DxBaseNode::UniquePtr DxBaseNode::Create(const std::wstring& name)
 	{
-		auto newInstance = std::make_unique<DxBaseNode>(name);
-
-		return std::move(newInstance);
+		return std::move(std::make_unique<DxBaseNode>(name));
 	}
 
 	// TODOD: should m_nodeName be here, when it derived from TIdentifiable that also has m_nodeName?
@@ -100,8 +89,6 @@ namespace rldx
 	{
 		return m_children.size();
 	}
-
-
 
 	void DxBaseNode::RemoveThis()
 	{
@@ -142,5 +129,4 @@ namespace rldx
 		// TODO: add small cube to renderqueue, cube for specifying node translation
 		// TODO: draw BoundBox
 	}
-
 } // namespace rldx

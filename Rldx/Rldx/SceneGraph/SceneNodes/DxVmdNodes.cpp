@@ -3,10 +3,9 @@
 
 namespace rldx
 {
-
 	rldx::DxVMDSlotNode::DxVMDSlotNode(const pugi::xml_node& xmlNode)
 	{
-		SetTypeString(L"DxVmdSlotNode");
+		SetTypeString(L"Node:DxVmdSlotNode");
 		vmdNodeData.tagType = VMDTagEnum::Slot;
 		vmdNodeData.tagName = xmlNode.attribute_no_case(VMDTagAttributes::Name).as_string();
 		vmdNodeData.slotData.attcachPointName = xmlNode.attribute(VMDTagAttributes::AttachPoint).as_string();
@@ -15,7 +14,7 @@ namespace rldx
 
 	rldx::DxVMDVariantMeshNode::DxVMDVariantMeshNode(const pugi::xml_node& xmlNode)
 	{
-		SetTypeString(L"DxVMDVariantMeshNode");
+		SetTypeString(L"Node:DxVMDVariantMeshNode");
 		vmdNodeData.tagType = VMDTagEnum::VariantMesh;
 		vmdNodeData.tagName = xmlNode.attribute_no_case(VMDTagAttributes::Name).as_string();
 		vmdNodeData.varintMeshData.modelPath = xmlNode.attribute_no_case(VMDTagAttributes::Model).value();

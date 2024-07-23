@@ -29,10 +29,8 @@ namespace rldx
 		DxVariantMeshNode()
 		{
 			SetType(SceneNodeTypeEnum::VariantMeshNode);
-			SetTypeString(L"DxVariantMeshNode");
-
+			SetTypeString(L"Node:DxVariantMeshNode");
 		}
-
 
 		virtual ~DxVariantMeshNode() {
 			auto DEBUG_BREAK = 1;

@@ -20,15 +20,30 @@ namespace rldx
 		using UniquePtr = std::unique_ptr<DxModelNode>;
 
 	public:
+		virtual ~DxModelNode()
+		{
+			WriteDebugDestructMsg();
+		}
+
 		DxModelNode() : DxMeshNode(L"Unnamed DxModelNode")
 		{
 			SetType(SceneNodeTypeEnum::ModelNode);
-			SetTypeString(L"DxModelNode");
+			SetTypeString(L"Node:DxModelNode");
 		}
+
+		//virtual ~DxModelNode()
+		//{
+		//	WriteDebugDestructMsg();
+		//	m_lods.clear();
+		//}
+
+
 
 		DxModelNode(const std::wstring& m_nodeName) : DxMeshNode(m_nodeName) {}
 
 		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);
+
+
 
 		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex) override;
@@ -68,11 +83,15 @@ namespace rldx
 	private:
 		void SetSingleMesh(
 			ID3D11Device* poDevice,
-			size_t iLod,
-			size_t iMesh,
+			DxMeshNode::UniquePtr& upoMesh,
 			const rmv2::LODHeaderCommon& lodHeader,
 			const rmv2::MeshHeaderType3& meshHeader,
 			const rmv2::MaterialHeaderType5& materialHeader,
 			const rmv2::MeshBlockCommon& rmr2MeshData);
+
+		/// <summary>
+		/// Resizes the bound box to fit all the meshes in the container
+		/// </summary>
+		virtual void ResizeBoundBoxToContent() override;
 	};
 };

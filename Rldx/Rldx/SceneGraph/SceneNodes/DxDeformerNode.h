@@ -47,8 +47,8 @@ namespace rldx
 	public:
 		DxDeformerNode()
 		{
-			SetType(SceneNodeTypeEnum::DeformerNode);
-			SetTypeString(L"DxDeformerNode");
+			SetType(SceneNodeTypeEnum::BaseNode);
+			SetTypeString(L"Node:DxDeformerNode");
 		}
 
 		DxDeformerNode(const std::wstring& name)
