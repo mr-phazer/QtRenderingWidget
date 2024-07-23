@@ -1,51 +1,26 @@
 #pragma once
-#include <mouse.h>
+
 #include <qevent.h>
-#include <qmessagebox.h>
 #include <qmimedata.h>
-#include <qstyle.h>
-#include <qstyleoption.h>
 #include <qtimer.h>											   
 #include <qwidget.h>
 
-#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
-
 #include "ui_QtRenderView.h"
-
 
 #include <Rldx\Creators\DxSceneCreator.h>
 #include <Rldx\Managers\DxDeviceManager.h>
 #include <Rldx\Managers\DxSceneManager.h>
-#include <Rldx\SceneGraph\SceneNodes\DxMeshNode.h>
+#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
 
-#include "..\rldx\rldx\DataTypes\DxMeshData.h"
-#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
-
-#include <QMimeData>
-
-class QtRenderWidgetView;
-
-class QtRenderController : public QObject
-{
-	Q_OBJECT;
-
-	QtRenderWidgetView* view;
-
-public:
-	QtRenderController(QtRenderWidgetView* parentAndView);
-
-public slots:
-	void OnKeyPressed(QKeyEvent* keyEvent);
-	void OnWindowClosing();
-};
+#include "..\Controllers\QtRenderWidgetController.h"
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
 private:
-	QtRenderController* m_controller = nullptr;
+	QtRenderWidgetController* m_controller = nullptr;
 
-	friend class QtRenderController;
+	friend class QtRenderWidgetController;
 
 private:
 	// overriden methods

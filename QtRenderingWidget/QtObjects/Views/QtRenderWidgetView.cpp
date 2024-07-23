@@ -1,21 +1,30 @@
-#include "QtRenderView.h"
+#include "QtRenderWidgetView.h"
+
+#ifdef DEBUG
+// for debugging I need to have access to this, for now
+#include "..\..\ExternFunctions\Creators.h" 
+#endif // DEBUG
+
+#include <qmessagebox.h>
+#include <mouse.h>
+#include <qstyle.h>
+#include <qstyleoption.h>
+
+#include <Rldx\SceneGraph\SceneNodes\DxMeshNode.h>
+#include "..\rldx\rldx\DataTypes\DxMeshData.h"
+#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
+
+#include <QMimeData>
 
 #include <qdir>
 
 #include "Logger\Logger.h"
 
-#ifdef _DEBUG
-#include "..\ExternFunctions\Creators.h"
-#endif
-//#include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
-
-//#include "..\RenderLib\Direct3d11Device.h"
-
 using namespace rldx;
 using namespace logging;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
-	: QWidget(parent), m_controller(new QtRenderController(this))
+	: QWidget(parent), m_controller(new QtRenderWidgetController(this))
 {
 	setupUi(this);
 
@@ -254,56 +263,6 @@ void QtRenderWidgetView::focusInEvent(QFocusEvent* event)
 void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
 {
 	// TODO: set frame to the lower possible, to allow many views being open without lagging
-}
-
-void QtRenderController::OnKeyPressed(QKeyEvent* keyEvent)
-{
-	switch (keyEvent->key())
-	{
-		case Qt::Key_G:
-		{
-			auto newState =
-				(view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
-				?
-				rldx::DxBaseNode::DrawStateEnum::DontDraw :
-				rldx::DxBaseNode::DrawStateEnum::Draw;
-			view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->SetDrawState(newState);
-			keyEvent->accept();
-		}
-		break;
-
-		case Qt::Key_A:
-		{
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GenerateNewVariant();
-		}
-		break;
-
-		case Qt::Key_Q:
-		{
-			auto newState =
-				(view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
-				?
-				rldx::DxBaseNode::DrawStateEnum::DontDraw :
-				rldx::DxBaseNode::DrawStateEnum::Draw;
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->SetDrawState(newState);
-			keyEvent->accept();
-		}
-	}
-}
-
-QtRenderController::QtRenderController(QtRenderWidgetView* parentAndView) : QObject(parentAndView), view(parentAndView)
-{
-	// connect "event observers"
-	connect(view, &QtRenderWidgetView::KeyPressed, this, &QtRenderController::OnKeyPressed);
-	connect(view, &QtRenderWidgetView::WindowClosing, this, &QtRenderController::OnWindowClosing);
-}
-
-void QtRenderController::OnWindowClosing()
-{
-	logging::LogAction(L"Destroying assets used by the scene");
-
-	// TODO: don't use this, as it will remove assets from ALL instances
-	///DxResourceManager::FreeAll();
 }
 
 #ifdef _DEBUG
