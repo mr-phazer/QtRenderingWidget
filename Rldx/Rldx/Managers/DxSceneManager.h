@@ -1,12 +1,7 @@
 #pragma once
-
-// qt
-#include <QtCore\qobject.h>
-
-// athour
-#include <Timer\SystemClockChecker.h>
-#include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\Rendering\DxScene.h"
+
+#include <Timer\SystemClockChecker.h>
 
 namespace rldx {
 
@@ -41,31 +36,32 @@ namespace rldx {
 			{
 				m_upoCurrentScene->Resize(poDevice, poDeviceContext, width, height);
 			}
+		}
 
-			/// <summary>
-			/// Send Native Window events to a DxScene, as the low-level camera impl needs them
-			/// </summary>		
-			LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		/// <summary>
+		/// Send Native Window events to a DxScene, as the low-level camera impl needs them
+		/// </summary>		
+		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		{
+			if (m_upoCurrentScene)
 			{
-				if (m_upoCurrentScene)
-				{
-					return m_upoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
-				}
-
-				return false;
+				return m_upoCurrentScene->ForwardNativeWindowEvent(hWnd, uMsg, wParam, lParam);
 			}
 
-			DxScene* GetCurrentScene()
-			{
-				return m_upoCurrentScene.get();
-			}
+			return false;
+		}
 
-			bool IsRenderRunning() const { return m_bRenderingRunning; }
-			void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
-		private:
-			std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
-			timer::SystemClockChecker m_systemClock;
-			bool m_bRenderingRunning = false;
-		};
+		DxScene* GetCurrentScene()
+		{
+			return m_upoCurrentScene.get();
+		}
 
-	}; // namespace rldx
+		bool IsRenderRunning() const { return m_bRenderingRunning; }
+		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
+	private:
+		std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
+		timer::SystemClockChecker m_systemClock;
+		bool m_bRenderingRunning = false;
+	};
+
+}; // namespace rldx
