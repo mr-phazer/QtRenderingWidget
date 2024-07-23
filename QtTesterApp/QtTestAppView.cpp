@@ -149,10 +149,11 @@ void QtMainWindowView::dropEvent(QDropEvent* event)
 			auto idString = QString::fromStdWString(game_id_keys::KEY_WARHAMMER_3);
 
 			auto newWidget = CreateQRenderingWidget(nullptr, &idString, &DEBUG_Callback_FileGetter, nullptr);
+
+			newWidget->setWindowFlag(Qt::WindowType::Window, true);  // make free window
+
 			AddNewPrimaryAsset(newWidget, &fileName2, &qBytes2, &outErrorString);
 
-			setLayout(new QVBoxLayout());
-			layout()->addWidget(newWidget);
 
 			break; // only read one file, for now
 		}
