@@ -64,12 +64,12 @@ namespace logging {
 
 	void Logger::LogActionInfo(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"INFO", BG_BLACK | FG_WHITE, BG_BLACK | FG_GRAY);
+		DoLog(strMsg, L"INFO", BG_BLACK | FG_BLUE, BG_BLACK | FG_DARKBLUE);
 	}
 
 	void Logger::LogActionWarning(const std::wstring& strMsg)
 	{
-		DoLog(strMsg, L"WARNING", BG_YELLOW | FG_WHITE, BG_BLACK | FG_DARKYELLOW);
+		DoLog(strMsg, L"WARNING", FG_YELLOW | BG_BLACK, BG_BLACK | FG_DARKYELLOW);
 	}
 
 	void Logger::LogActionError(const std::wstring& strMsg)
