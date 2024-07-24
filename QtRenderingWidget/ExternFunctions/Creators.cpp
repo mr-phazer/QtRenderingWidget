@@ -5,7 +5,7 @@
 #include <CommonLibs\Logger\logger.h>
 #include "..\..\Rldx\Rldx\Creators\DxSceneCreator.h"
 #include "..\..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
-#include "..\QtObjects\Views\QtRenderView.h"
+#include "..\QtObjects\Views\QtRenderWidgetView.h"
 
 using namespace logging;
 using namespace utils;

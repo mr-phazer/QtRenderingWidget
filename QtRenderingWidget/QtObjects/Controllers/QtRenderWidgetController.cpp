@@ -1,7 +1,6 @@
 #include "..\Views\QtRenderWidgetView.h"
 #include "QtRenderWidgetController.h"
 
-
 void QtRenderWidgetController::OnKeyPressed(QKeyEvent* keyEvent)
 {
 	switch (keyEvent->key())

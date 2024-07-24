@@ -3,7 +3,6 @@
 #include <qevent.h>
 #include <qobject.h>
 
-
 // -- Intentional circular dependency, as "controller" controls the "view", but also needs to be stored inside a QWdiget
 class QtRenderWidgetView;
 
@@ -11,6 +10,7 @@ class QtRenderWidgetController : public QObject
 {
 	Q_OBJECT;
 
+private:
 	QtRenderWidgetView* view;
 
 public:
