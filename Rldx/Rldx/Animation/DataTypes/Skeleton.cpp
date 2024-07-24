@@ -11,12 +11,13 @@ namespace skel_anim
 	{
 		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
+		// TODO: Is the needed?
 		// check if skeleton already exists
-		auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
-		if (pSkeleton) { return pSkeleton; }
+		/*auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
+		if (pSkeleton) { return pSkeleton; }*/
 
 		// allocate memmory for skeeton
-		pSkeleton = rldx::DxResourceManager::Instance()->AllocEmpty<Skeleton>(skeletonName).GetPtr();
+		auto pSkeleton = rldx::DxResourceManager::Instance()->AllocEmpty<Skeleton>(skeletonName).GetPtr();
 
 		// create skeleleton from ANIM file
 		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
