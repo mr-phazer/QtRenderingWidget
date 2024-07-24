@@ -49,6 +49,7 @@ namespace rldx {
 			{
 				DxResourceManager::FreeMemoryFromPtr(tex.second.pTexture);
 			}
+			m_textures.clear();
 		}
 
 		static DxMaterial* Create(std::vector<rmv2::TextureElement>& textures);
