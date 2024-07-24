@@ -7,10 +7,19 @@ namespace rldx {
 	using IntId = uint32_t;
 	static const IntId INVALID_ID = ~static_cast<IntId>(0);
 
+
+
+	class UniqueIdGenerator
+	{
+		static IntId sm_nextId;
+	public:
+		static IntId GetNextId() { return sm_nextId++; }
+	};
+
 	class IdentifiableBase
 	{
 	public:
-		IdentifiableBase() : m_id(GetNextId()) {}
+		IdentifiableBase() : m_id(UniqueIdGenerator::GetNextId()) {}
 		virtual ~IdentifiableBase() {};
 
 		IntId GetId() const { return m_id; }
@@ -28,6 +37,8 @@ namespace rldx {
 		static IntId sm_nextId;
 	};
 
+
+
 	template  <typename KEY_TYPE>
 	class TIdentifiable : public IdentifiableBase
 	{
@@ -37,8 +48,6 @@ namespace rldx {
 
 		void WriteDebugDestructMsg();
 		void WriteDebugConstructMsg();
-
-
 
 		// TODO: Scrap these, and make the derived classes set Type Enum/Type description in the constructor
 		std::wstring GetName() const { return m_name; }
@@ -53,7 +62,7 @@ namespace rldx {
 
 	private:
 		std::wstring m_name = L"no_name";
-		std::wstring m_typeString = L"TIdentifiable<T>";
+		std::wstring m_typeString = L"Tntifiable<T>";
 		KEY_TYPE m_nodeType;
 	};
 

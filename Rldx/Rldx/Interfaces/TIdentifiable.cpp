@@ -1,3 +1,8 @@
 #include "TIdentifiable.h"
 
-rldx::IntId rldx::IdentifiableBase::sm_nextId = 1;
+namespace rldx {
+
+	IntId IdentifiableBase::sm_nextId = 1;
+	IntId UniqueIdGenerator::sm_nextId = 1;
+
+} // namespace rldx
