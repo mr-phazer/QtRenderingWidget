@@ -13,27 +13,17 @@ namespace rldx
 {
 	void DxVmdManager::LoadVariantMeshIntoNode(DxBaseNode* poAssetRootNode, ByteStream& bytes, const std::wstring& gameIdString)
 	{
-
 		logging::LogAction(L"");
-		/*if (m_poVariantMeshNode)
-		{
-			m_poVariantMeshNode->RemoveTs();
-		}*/
 
 		m_deformerNode.reset(); // clear the deformer node, for new load
 
 		DxBaseNode::RemoveChildrenRecursive(poAssetRootNode);
-		//poAssetRootNode->RemoveChildren();
-
-		//m_deformerNode.reset(); // clear the deformer node, for new load		
 		m_sceneRootNode = poAssetRootNode;
 
-		//m_vmdRootNode = std::make_unique<DxVmdNode>(L"VMD Root Node");
-
-		// build tree from xml, without loadin any assets
+		// -- build tree from xml, without loading any assets
 		BuildTreeFromAssetFile(bytes);
 
-		// load assets		
+		// -- load assets		
 		WStringkeyMap<sm::Matrix> preTransformMap; // TODO: is this needed? Maybe it is as some RMV2 attach tabkes might contains non-indentity matrices
 		AllocateTreeDXBuffers(gameIdString, preTransformMap);
 

@@ -28,12 +28,10 @@ namespace rldx
 		std::vector<std::wstring> m_attachPointNames;
 
 	public:
-
 		void LoadVariantMeshIntoNode(DxBaseNode* poSceneNode, utils::ByteStream& bytes, const std::wstring& gameIdString);
 
 		void GenerateNewVariant();
 		DxDeformerNode* GetDerformer();
-		DxVmdNode::UniquePtr& GetNode();
 
 	private:
 		// TODO: convers the rmv2.file.header to "wstring" for consistency?
