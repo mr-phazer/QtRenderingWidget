@@ -40,7 +40,7 @@ namespace rldx
 			:
 			m_poDeformerNode(poDeformerNode)
 		{
-			DxVariantMeshNode();
+			DxVariantMeshNode::DxVariantMeshNode();
 			SetName(nodeName);
 
 			if (m_poDeformerNode)
