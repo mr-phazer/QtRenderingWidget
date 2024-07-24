@@ -48,7 +48,6 @@ void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_spoSwapChain->Present(poDeviceContext);
 }
 
-
 DxBaseNode* DxScene::GetSceneRootNode() const
 {
 	return m_sceneGraph.GetRootNode();
@@ -85,6 +84,11 @@ void DxScene::DeleteNode(DxBaseNode* node)
 	}
 
 	nodeResult->GetParent()->RemoveChild(nodeResult);
+}
+
+void DxScene::ClearRenderQueue()
+{
+	m_renderQueue.ClearItems();
 }
 
 //void DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
@@ -133,18 +137,34 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
-rldx::DxScene::DxScene() {
+DxScene::DxScene() {
 	SetType(DxSceneTypeEnum::Normal);
 	SetTypeString(L"Resource:DxScene");
 }
 
-rldx::DxScene::~DxScene() {
+DxScene::~DxScene() {
 	// TODO: REMOVE DEBUGGIN CODE
 	auto DEBUG_dxScene_constructor_break = 1;
 
+	m_renderQueue.ClearItems();
+
+
+
+
+	// TODO: make sure all these are deleted
+	/*
+
+	DxSceneGraph m_sceneGraph;
+	DxMeshRenderBucket m_renderQueue;
+	DxSwapChain::Uptr m_spoSwapChain; // back buffer
+	DxAmbientLightSource m_ambientLightSource;
+	DxTextureSamplers m_textureSamplers;
+
+	std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
+	*/
 }
 
-rldx::DxScene::DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
+DxScene::DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
 {
 	DxScene::DxScene();
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
@@ -153,13 +173,13 @@ rldx::DxScene::DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> up
 	// TODO: move more of the initializing into the constructor, RAII
 	m_spoSwapChain = std::move(upoSwapChain);
 
-	InitRenderView(DxDeviceManager::Device());
+	InitScene(DxDeviceManager::Device());
 
 	// TODO: enable? Shouldn't it work on its own (multi windows)
 	Resize(DxDeviceManager::Device(), DxDeviceManager::DeviceContext(), m_spoSwapChain->GetBackBuffer()->GetWidth(), m_spoSwapChain->GetBackBuffer()->GetHeight());
 }
 
-void DxScene::InitRenderView(ID3D11Device* poDevice)
+void DxScene::InitScene(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 	m_globalDirectionalLight.SetRotationScale(0.005f);
