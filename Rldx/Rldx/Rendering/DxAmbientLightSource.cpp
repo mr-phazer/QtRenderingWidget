@@ -63,8 +63,8 @@ namespace rldx
 		if (pathSpecularMap.empty())
 			throw std::exception("path for IBL Specular cubemap is empty");
 
-		m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap);
-		m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap);
+		m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap, pathDiffuseMap);
+		m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap, pathSpecularMap);
 
 		// TODO: if needed make an impl thata loads an LUT
 		/*if (!pathLUT.empty())
