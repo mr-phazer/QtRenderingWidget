@@ -28,7 +28,9 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 {
 	setupUi(this);
 
-	setAcceptDrops(false);
+#ifdef _DEBUG
+	setAcceptDrops(true); // only the debugging version has drag+drop loading
+#endif // _DEBUG	
 
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::black);
@@ -48,13 +50,7 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 	SetGameIdString(gameidString);
 	InitRenderView();
 
-	/*this->setWindowTitle("QRenderenView (Testing) : Sence");
-
-	setWindowFlag(Qt::Window, true);*/
-
 	show();
-
-	auto debug_1 = 1;
 }
 
 void QtRenderWidgetView::resizeEvent(QResizeEvent* event)
@@ -184,7 +180,7 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 
 		connect(m_timer, &QTimer::timeout, [&]()
 				{
-					FrameTimeOutHandler();
+					DrawFrameHandler();
 				}
 		);
 	}
@@ -203,13 +199,15 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 void QtRenderWidgetView::TerminateRendering()
 {
 	PauseRendering();
+	// TODO: clear
+	//m_upoSceneManager->GetCurrentScene()->Draw
 	m_timer->disconnect();
 	delete m_timer;
 }
 
-void QtRenderWidgetView::FrameTimeOutHandler()
+void QtRenderWidgetView::DrawFrameHandler()
 {
-	if (!m_upoSceneManager->IsRenderRunning())
+	if (!m_upoSceneManager->IsRenderRunning() || !m_upoSceneManager->GetCurrentScene())
 		return;
 
 	m_upoSceneManager->GetCurrentScene()->Draw(rldx::DxDeviceManager::GetInstance().GetDeviceContext());
@@ -249,9 +247,9 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 
 		// TODO: remove debuging code
 		auto DEBUG__rawPtr = DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
-		DEBUG__rawPtr->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+		DEBUG__rawPtr->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size(), fileName.toStdWString());
 
-		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size(), fileName.toStdWString());
 	}
 }
 
@@ -266,6 +264,11 @@ void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
 }
 
 #ifdef _DEBUG
+void QtRenderWidgetView::dragEnterEvent(QDragEnterEvent* event)
+{
+	event->acceptProposedAction();
+}
+
 void QtRenderWidgetView::dropEvent(QDropEvent* event)
 {
 	// Handle drop event (e.g., process dropped file)

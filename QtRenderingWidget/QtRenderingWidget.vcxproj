@@ -138,16 +138,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ExternFunctions\Creators.cpp" />
-    <ClCompile Include="QtObjects\Views\QtRenderView.cpp" />
+    <ClCompile Include="QtObjects\Views\QtRenderWidgetView.cpp" />
+    <ClCompile Include="QtObjects\Controllers\QtRenderWidgetController.cpp" />
     <ClInclude Include="Constants\GameIdKeys.h" />
     <ClInclude Include="ExternFunctions\Callbacks.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
+    <QtMoc Include="QtObjects\Controllers\QtRenderWidgetController.h" />
     <QtRcc Include="Resources\QtRenderView.qrc" />
-    <QtUic Include="QtObjects\Views\QtRenderView.ui" />
+    <QtUic Include="QtObjects\Views\QtRenderWidgetView.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\TSmartPointer.h" />
-    <QtMoc Include="QtObjects\Views\QtRenderView.h" />
+    <QtMoc Include="QtObjects\Views\QtRenderWidgetView.h" />
     <None Include="cpp.hint" />
     <None Include="Logging\Inl\ConsoleColors.inl" />
     <None Include="Logging\Inl\WinConsoleColors.inl" />

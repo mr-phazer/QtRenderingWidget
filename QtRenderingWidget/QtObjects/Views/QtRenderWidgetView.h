@@ -5,7 +5,7 @@
 #include <qtimer.h>											   
 #include <qwidget.h>
 
-#include "ui_QtRenderView.h"
+#include "ui_QtRenderWidgetView.h"
 
 #include <Rldx\Creators\DxSceneCreator.h>
 #include <Rldx\Managers\DxDeviceManager.h>
@@ -96,7 +96,7 @@ signals:
 	void WindowClosing();
 
 private:
-	void FrameTimeOutHandler();
+	void DrawFrameHandler();
 	void MakeConnections();
 
 private:
@@ -108,13 +108,10 @@ private:
 
 	// only support drag+drog in debug mode
 
-#ifdef _DEBUG
-public:
-	void dragEnterEvent(QDragEnterEvent* event)
-	{
-		event->acceptProposedAction();
-	}
 
+public:
+#ifdef _DEBUG
+	void dragEnterEvent(QDragEnterEvent* event);
 	void dropEvent(QDropEvent* event);
 #endif
 };
