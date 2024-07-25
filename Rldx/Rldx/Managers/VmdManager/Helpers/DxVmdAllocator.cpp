@@ -62,23 +62,13 @@ void rldx::DxVmdNodeAllocator::AllocateDxBuffers(std::wstring& destSkeletonName,
 
 void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonName, WStringkeyMap<sm::Matrix>& preTransformMap)
 {
-	auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
-	if (!gameShaderProgramCreator) {
-		throw std::exception("Error loadeing Game Shader Creator");
-	}
-
-	auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
-	if (!newPbrShaderProgram) {
-		throw std::exception("Error Creating Shader");
-	}
-
 	auto& vmdNodeData = m_sceneVmdNode->vmdNodeData;
 
 	if (vmdNodeData.varintMeshData.wsModelData.geometryPath.empty()) { // mTransForm "nesting <VariantMesh>, one per file?
 		return;
 	}
 
-	auto rmv2Bytes = DxResourceManager::GetFile(vmdNodeData.varintMeshData.wsModelData.geometryPath);
+	auto rmv2Bytes = m_resourceManager->GetFile(vmdNodeData.varintMeshData.wsModelData.geometryPath);
 	auto parsedRmv2File = rmv2::RigidModelReader().Read(rmv2Bytes);
 
 	if (!std::string(parsedRmv2File.fileHeader.szSkeletonId).empty())
@@ -86,8 +76,8 @@ void rldx::DxVmdNodeAllocator::AllocateVariantMesh(std::wstring& destSkeletonNam
 		destSkeletonName = ToWString(parsedRmv2File.fileHeader.szSkeletonId);
 	}
 
-	m_sceneVmdNode->SetModelData(rldx::DxDeviceManager::Device(), parsedRmv2File);
-	m_sceneVmdNode->LoadMaterialFromWSmodel(rldx::DxDeviceManager::Device(), vmdNodeData.varintMeshData.wsModelData);
+	m_sceneVmdNode->SetModelData(rldx::DxDeviceManager::Device(), *m_resourceManager, parsedRmv2File);
+	m_sceneVmdNode->LoadMaterialFromWSmodel(rldx::DxDeviceManager::Device(), *m_resourceManager, vmdNodeData.varintMeshData.wsModelData);
 	m_sceneVmdNode->SetShaderProgram(m_nodeShaderProgram);
 
 	for (auto& lod : parsedRmv2File.lods)

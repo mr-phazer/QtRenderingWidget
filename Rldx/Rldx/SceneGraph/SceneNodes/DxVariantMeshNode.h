@@ -30,13 +30,15 @@ namespace rldx
 		{
 			SetType(SceneNodeTypeEnum::VariantMeshNode);
 			SetTypeString(L"Node:DxVariantMeshNode");
+			SetName(L"Unnamed");
 		}
 
 		virtual ~DxVariantMeshNode() {
+			// TODO: REMOVE
 			auto DEBUG_BREAK = 1;
 		}
 
-		DxVariantMeshNode(const std::wstring& nodeName, DxDeformerNode* poDeformerNode)
+		DxVariantMeshNode(rldx::DxResourceManager& resourceManager, const std::wstring& nodeName, DxDeformerNode* poDeformerNode)
 			:
 			m_poDeformerNode(poDeformerNode)
 		{
@@ -45,7 +47,7 @@ namespace rldx
 
 			if (m_poDeformerNode)
 			{
-				InitAnimation();
+				InitAnimation(resourceManager);
 			}
 		};
 
@@ -57,10 +59,10 @@ namespace rldx
 		void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 
 	private:
-		void InitAnimation()
+		void InitAnimation(rldx::DxResourceManager& resourceManager)
 		{
-			// load the bind pose frame as animation, so the asset just stands still
-			m_poDeformerNode->LoadAnimClip(skel_anim::GetPackPathFromSkeletonName(m_poDeformerNode->GetSkeleton().GetName()));
+			// loads the bind pose frame as animation, so the asset just stands still
+			m_poDeformerNode->LoadAnimClip(resourceManager, skel_anim::GetPackPathFromSkeletonName(m_poDeformerNode->GetSkeleton().GetName()));
 		}
 	};
 } // namespace rldx

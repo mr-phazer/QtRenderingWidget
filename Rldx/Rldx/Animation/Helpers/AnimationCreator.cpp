@@ -29,14 +29,14 @@ namespace skel_anim
 		// dequantize m_animation, using bind pose
 		m_spoAnimationAnimFile = std::make_unique<anim_file::AnimFile>(anim_file::TwAnimFileReader().Read(animBytes, m_spoBindPoseAnimFile.get()));
 
-		m_animation = SkeletonAnimation::CreateFromAnimFile(*m_spoAnimationAnimFile);
+		m_animation = SkeletonAnimation::CreateFromAnimFile(*m_resourceManager, *m_spoAnimationAnimFile);
 	}
 
-	AnimationCreator::AnimationCreator(const std::wstring& m_animFilePath, const Skeleton& m_targetSkeleton)
+	AnimationCreator::AnimationCreator(rldx::DxResourceManager& resourceManager, const std::wstring& animFilePath, const Skeleton& targetSkeleton)
 		:
-		m_animFilePath(m_animFilePath),
-		m_targetSkeleton(&m_targetSkeleton)
-
+		m_resourceManager(&resourceManager),
+		m_animFilePath(animFilePath),
+		m_targetSkeleton(&targetSkeleton)
 	{
 		CreateAnimationFromFile();
 	}

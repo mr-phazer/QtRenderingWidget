@@ -15,12 +15,18 @@ namespace rldx
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
 	public:
-		DxMesh(const std::wstring& meshName = L"UnnamesMesh")
+		DxMesh()
 		{
-			SetName(meshName);
 			SetType(ResourceTypeEnum::Mesh);
 			SetTypeString(L"Resource:Mesh");
 		}
+
+		/*	DxMesh(const std::wstring& meshName)
+			{
+				SetName(meshName);
+				SetType(ResourceTypeEnum::Mesh);
+				SetTypeString(L"Resource:Mesh");
+			}*/
 
 		void Draw(ID3D11DeviceContext* poDC) override;
 		void BindToDC(ID3D11DeviceContext* poDC) override;

@@ -10,6 +10,7 @@ namespace rldx {
 	struct DxMeshRenderingData;
 	class DxMeshShaderProgram;
 
+	// TODO: rename to "queue" or somemore more descriptive
 	class DxMeshRenderBucket : public IRenderBucket
 	{
 		std::vector<DxMeshRenderingData*> m_renderItems;

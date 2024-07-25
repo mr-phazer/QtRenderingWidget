@@ -29,22 +29,22 @@ namespace rldx
 		return newMeshNode;
 	}
 
-	void DxDeformerNode::LoadBindPose(std::wstring animFilePath)
+	void DxDeformerNode::LoadBindPose(rldx::DxResourceManager& resourceManager, std::wstring animFilePath)
 	{
 		auto animBindPoseBytes = rldx::DxResourceManager::GetFile(animFilePath);
 		auto animBindPoseFile = m_animFileReader.Read(animBindPoseBytes);
 
 		// For rome/Attila/ToB skeleton "rome_man_game" is needed to load certain "human" models / animations
 		// The two skeletons are functionally identical, aside from extra bones in the hand and head				
-		ForceCorrectSkeleton(m_skeleton);
+		ForceCorrectSkeleton(m_skeleton, resourceManager);
 
-		m_skeleton = skel_anim::Skeleton(animBindPoseFile);
+		m_skeleton = skel_anim::Skeleton(resourceManager, animBindPoseFile);
 
 		auto skeletonMesh = rldx::DxSkeletonMeshCreator::Create(
 			rldx::DxDeviceManager::Device(),
 			m_skeleton);
 
-		SetMeshData(skeletonMesh, L"Skeleton Mesh: " + m_skeleton.GetName());
+		SetMeshData(resourceManager, skeletonMesh, L"Skeleton Mesh: " + m_skeleton.GetName());
 
 		// TODO: put this into a virtual void DxBaseNode::UpdateBoundingBox(DxCommonMeshData&)
 		DirectX::BoundingBox bbout;
@@ -56,7 +56,7 @@ namespace rldx
 
 		ResizeBoundBoxToContent();
 
-		auto simpleShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
+		auto simpleShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram(resourceManager);
 		SetShaderProgram(simpleShaderProgram);
 
 		auto& invMatrices = m_skeleton.GetInverseBindPoseMatrices();
@@ -65,17 +65,17 @@ namespace rldx
 		SetDeformerNode(this, -1);
 	}
 
-	void DxDeformerNode::LoadAnimClip(std::wstring m_animFilePath)
+	void DxDeformerNode::LoadAnimClip(rldx::DxResourceManager& resourceManager, std::wstring m_animFilePath)
 	{
 		// creates 1 animation from the 
-		skel_anim::AnimationCreator animCreateor(m_animFilePath, m_skeleton);
+		skel_anim::AnimationCreator animCreateor(resourceManager, m_animFilePath, m_skeleton);
 
 		auto sourceSkeletonName = animCreateor.GetSkeletonName();
 
 		if (CompareNoCase(L"rome_man_game", sourceSkeletonName))
 		{
 			// Performs a remap of the m_animation to the current skeleton, if needed
-			skel_anim::AnimationRemapper animRampper(sourceSkeletonName, m_skeleton.GetName());
+			skel_anim::AnimationRemapper animRampper(resourceManager, sourceSkeletonName, m_skeleton.GetName());
 			*animCreateor.GetAnimation() = animRampper.RemapAnimation(*animCreateor.GetAnimation());
 		}
 

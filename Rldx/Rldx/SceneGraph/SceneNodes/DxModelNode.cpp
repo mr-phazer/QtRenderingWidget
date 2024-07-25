@@ -17,7 +17,7 @@ namespace rldx {
 		};
 	}
 
-	void DxModelNode::SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
+	void DxModelNode::SetModelData(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const rmv2::RigidModelFileCommon& rmv2File)
 	{
 		// fills "model" with indivual meshes
 		m_lods.resize(rmv2File.fileHeader.wLodCount);
@@ -28,6 +28,7 @@ namespace rldx {
 			{
 				SetSingleMesh(
 					poDevice,
+					resourceManager,
 					m_lods[iLod][iMesh],
 					rmv2File.lodHeaders[iLod],
 					rmv2File.lods[iLod].meshBlocks[iMesh].meshHeader,
@@ -92,7 +93,7 @@ namespace rldx {
 		};
 	}
 
-	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, DxMeshNode::UniquePtr& upoMeshNode, const rmv2::LODHeaderCommon& lodHeader, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
+	void DxModelNode::SetSingleMesh(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, DxMeshNode::UniquePtr& upoMeshNode, const rmv2::LODHeaderCommon& lodHeader, const rmv2::MeshHeaderType3& meshHeader, const rmv2::MaterialHeaderType5& materialHeader, const rmv2::MeshBlockCommon& rmr2MeshData)
 	{
 		// TODO: maybe nodes to tree add to tree, for easier bound-box -> boundvolumne calculation
 		// TODO: or simply calculate the bounding volumen for parent
@@ -100,15 +101,15 @@ namespace rldx {
 
 		auto rm2MeshData = DxMeshCreatorHelper::CreateFromRmv2Mesh(poDevice, rmr2MeshData);
 
-		upoMeshNode->SetMeshData(rm2MeshData, ToWString(materialHeader.szMeshName));
+		upoMeshNode->SetMeshData(resourceManager, rm2MeshData, ToWString(materialHeader.szMeshName));
 		upoMeshNode->SetMeshPivot(materialHeader.transforms.vPivot);
 		upoMeshNode->SetMeshVisbilityDistance(lodHeader.fVisibilityDistance);
 		upoMeshNode->ResizeBoundBoxToContent();
-		DxBaseNode::AllocateBoundingBoxMesh(upoMeshNode.get());
+		DxBaseNode::AllocateBoundingBoxMesh(upoMeshNode.get(), resourceManager);
 
 	}
 
-	void DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File)
+	void DxModelNode::LoadMaterialDataFromRmv2(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const rmv2::RigidModelFileCommon& rmv2File)
 	{
 		size_t iLod = 0;
 		m_lods.resize(1);
@@ -116,12 +117,12 @@ namespace rldx {
 
 		for (size_t iMesh = 0; iMesh < m_lods[0].size(); iMesh++)
 		{
-			DxMaterial* material = MaterialCreatorRMV2Mesh(rmv2File.lods[iLod].meshBlocks[iMesh]).Create(poDevice);
+			DxMaterial* material = MaterialCreatorRMV2Mesh(rmv2File.lods[iLod].meshBlocks[iMesh]).Create(poDevice, resourceManager);
 			m_lods[iLod][iMesh]->SetMaterial(material);
 		}
 	}
 
-	void DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData)
+	void DxModelNode::LoadMaterialFromWSmodel(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, rmv2::WsModelData& wsModelData)
 	{
 		if (wsModelData.xmlMateriData.empty()) {
 			throw std::exception("lod_size == 0, unexpected!");
@@ -135,7 +136,7 @@ namespace rldx {
 
 		for (size_t iMesh = 0; iMesh < wsModelData.xmlMateriData[0].size(); iMesh++)
 		{
-			auto material = DxMaterial::Create(wsModelData.xmlMateriData[0][iMesh].textures);
+			auto material = DxMaterial::Create(wsModelData.xmlMateriData[0][iMesh].textures, resourceManager);
 			m_lods[0][iMesh]->SetMaterial(material);
 		}
 	}

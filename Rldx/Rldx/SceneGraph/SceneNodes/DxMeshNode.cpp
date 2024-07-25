@@ -33,10 +33,10 @@ namespace rldx
 		clone.perMeshDerformer_VS_CB.data = m_meshData.perMeshDerformer_VS_CB.data;
 	}
 
-	void DxMeshNode::SetMeshData(const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
+	void DxMeshNode::SetMeshData(DxResourceManager& resourceManager, const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
 	{
-		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-		m_meshData.poMesh = newMeshHandle.GetPtr();
+		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>();
+		m_meshData.poMesh = newMeshHandle;
 		m_meshData.poMesh->SetMeshData(meshData);
 		m_meshData.meshName = meshName;
 

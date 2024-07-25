@@ -24,8 +24,13 @@ namespace rldx
 	class DxMaterialInfoReader : public IDxMaterialInfoReader
 	{
 		VMDNodeData* m_pVmdModeData;
+		rldx::DxResourceManager* m_resourceManager;
+
 	public:
-		DxMaterialInfoReader(VMDNodeData* pVmdModeData) : m_pVmdModeData(pVmdModeData) {};
+		DxMaterialInfoReader(rldx::DxResourceManager& resourceManager, VMDNodeData* pVmdModeData)
+			:
+			m_resourceManager(&resourceManager), // TODO: simply pass game id string, and not the whole resource manager?
+			m_pVmdModeData(pVmdModeData) {};
 
 		void Parse()
 		{
@@ -73,7 +78,8 @@ namespace rldx
 					rmv2::XMLMaterialData meshMaterial;
 					meshMaterial.textures = Rmv2File.lods[iLod].meshBlocks[iMesh].materialBlock.textureElements; // copy RMV2 texture info into the material structure
 
-					if (DxResourceManager::Instance()->GetGameIdString() == game_id_keys::KEY_WARHAMMER_3)
+					// TODO: simply pass game id string, and not the whole resource manager?
+					if (m_resourceManager->GetGameIdString() == game_id_keys::KEY_WARHAMMER_3)
 					{
 						CorrectWH3TexturePaths(meshMaterial);
 					}

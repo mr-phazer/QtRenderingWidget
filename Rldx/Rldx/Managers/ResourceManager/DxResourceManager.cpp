@@ -9,7 +9,7 @@
 
 namespace rldx
 {
-	IntId IdCounterBase::sm_nextId;
+	/*IntId IdCounterBase::sm_nextId = 0;
 	std::unique_ptr<DxResourceManager> DxResourceManager::sm_spoInstance;
 
 	void DxResourceManager::FreeAll()
@@ -84,7 +84,7 @@ namespace rldx
 		return AllocEmpty<skel_anim::SkeletonAnimation>(strId);
 	}
 
-	TResourceHandle<DxTexture> DxResourceManager::GetTexture(const std::wstring& strId)
+	TResourceHandle<DxTexture> DxResourceManager::GetTexture_OLD(const std::wstring& strId)
 	{
 		auto it = m_umapRawResourcePtrByString.find(strId);
 
@@ -93,24 +93,6 @@ namespace rldx
 		}
 
 		return { INVALID_ID, nullptr };
-	}
-
-
-
-	void DxResourceManager::FreeMemoryByPtrFromIdMap(IDxResource* resource)
-	{
-		auto itr = Instance()->m_umapResourceSptrDataById.begin();
-		while (itr != Instance()->m_umapResourceSptrDataById.end())
-		{
-			if (itr->second.get() == resource) {
-				itr = Instance()->m_umapResourceSptrDataById.erase(itr);
-				break;
-			}
-			else
-			{
-				itr++;
-			}
-		}
 	}
 
 	void DxResourceManager::FreeMemorByPtrFromStringMap(IDxResource* resource)
@@ -129,4 +111,101 @@ namespace rldx
 		}
 	}
 
+	void DxResourceManager::FreeMemoryByPtrFromIdMap(IDxResource* resource)
+	{
+		auto itr = Instance()->m_umapResourceSptrDataById.begin();
+		while (itr != Instance()->m_umapResourceSptrDataById.end())
+		{
+			if (itr->second.get() == resource) {
+				itr = Instance()->m_umapResourceSptrDataById.erase(itr);
+				break;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+	}*/
+	std::function<void(QList<QString>*, QList<QByteArray>*)> DxResourceManager::sm_assetCallBack;
+	std::function<void(QString*, QList<QString>*)> DxResourceManager::sm_animPathsBySkeletonCallBack;
+
+	void DxResourceManager::DestroyAllResources()
+	{
+		m_umapResources.clear();
+
+		// TODO: REMOVE if above works!
+		/*auto itr = m_umapResources.begin();
+		while (itr != m_umapResources.end())
+		{
+			if (itr->second) {
+				itr = m_umapResources.erase(itr);
+			}
+			else
+			{
+				itr++;
+			}
+		}*/
+	}
+
+	void DxResourceManager::GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
+	{
+		if (!sm_assetCallBack) {
+			throw std::exception("No asset callback function set");
+		}
+
+		sm_assetCallBack(&qstrMissingFiles, &destBinaries);
+	}
+
+	utils::ByteStream DxResourceManager::GetFileFromCallBack(const std::wstring& fileName)
+	{
+		QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
+		QList<QByteArray> destBinaries;
+
+		GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
+
+		if (destBinaries.size() != 1)
+		{
+			throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+		}
+
+		if (destBinaries[0].isEmpty())
+		{
+			// TODO: CLEAN UP
+			//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
+			return utils::ByteStream();
+		}
+
+		// TODO: CLEAN UP
+		//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
+
+		return utils::ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
+	}
+
+	utils::ByteStream DxResourceManager::GetFile(const std::wstring& filePath)
+	{
+		auto bytes = GetFileFromCallBack(filePath); // fetch from callback
+		if (!bytes.IsValid()) // no file found, try to load from disk
+		{
+			return utils::ByteStream(filePath, false);
+		}
+
+		return bytes;
+	}
+	void DxResourceManager::RemoveResourceFromMap(IDxResource* resource)
+	{
+		auto itr = m_umapResources.begin();
+		while (itr != m_umapResources.end())
+		{
+			if (itr->second.get() == resource) {
+				itr = m_umapResources.erase(itr);
+				break;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+	}
+
+	std::wstring DxResourceManager::sm_rooPathAssetPath;
 }

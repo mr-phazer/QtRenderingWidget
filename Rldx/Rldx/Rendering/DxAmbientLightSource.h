@@ -11,6 +11,7 @@
 
 namespace rldx
 {
+	class DxResourceManager;
 	// TODO: maybe, make this base class of all buffers?
 	class IBuffer : public IBindable
 	{
@@ -69,7 +70,7 @@ namespace rldx
 		static DxAmbientLightSource Create(ID3D11Device* poDevice, DxTexture* diffuseCubemap, DxTexture* specularCubemap,
 										   DxTexture* lut = nullptr, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
-		static DxAmbientLightSource Create(ID3D11Device* poDevice, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
+		static DxAmbientLightSource Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
 										   utils::ByteStream& pathLUT, UINT startSlotConstBuf = 0, UINT startSlotSRV = 0);
 
 	private:
@@ -77,7 +78,7 @@ namespace rldx
 								  const std::wstring& pathSpecularMap, const std::wstring& pathLUT = L"",
 								  UINT startSlotSRV = 0);
 
-		void SetTexturesFromMemory(ID3D11Device* poDevice, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
+		void SetTexturesFromMemory(ID3D11Device* poDevice, DxResourceManager& resourceManager, utils::ByteStream& pathDiffuseMap, utils::ByteStream& pathSpecularMap,
 								   utils::ByteStream& pathLUT, UINT startSlotSRV = 0);
 	};
 }; // namespace rldx

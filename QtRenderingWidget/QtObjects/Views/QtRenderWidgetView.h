@@ -65,6 +65,7 @@ public:
 			sceneBuilder->Create((HWND)winId(),
 								 rldx::DxDeviceManager::GetInstance().GetDevice(),
 								 rldx::DxDeviceManager::GetInstance().GetDeviceContext(),
+								 m_upoSceneManager->GetResourceManager(),
 								 GetGameIdString().toStdWString());
 
 		m_upoSceneManager->SetScene(scene);
@@ -78,7 +79,7 @@ public:
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
 private:
-	void LoadExeResources(ID3D11Device* poDevice);
+	void LoadExeResources(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice);
 	bool InitRenderView();
 
 protected:

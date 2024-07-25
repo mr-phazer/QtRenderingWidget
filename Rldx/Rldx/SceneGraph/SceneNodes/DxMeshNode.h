@@ -67,7 +67,7 @@ namespace rldx {
 		// TODO: is needed? Remove?
 		void Clone(DxMeshRenderingData& clone) const;
 
-		void SetMeshData(const rldx::DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix = sm::Matrix::Identity);
+		void SetMeshData(DxResourceManager& resourceManager, const rldx::DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix = sm::Matrix::Identity);
 
 		void SetMeshPivot(const sm::Vector3& pivot) { m_meshData.pivot = pivot; }
 		void SetMeshWorldTransForm(const sm::Matrix& mWorld) { m_meshData.perMesh_VS_CB.data.mWeaponWorld = mWorld; }

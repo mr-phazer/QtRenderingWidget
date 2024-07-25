@@ -42,6 +42,7 @@ namespace rldx {
 	template  <typename KEY_TYPE>
 	class TIdentifiable : public IdentifiableBase
 	{
+
 	public:
 		TIdentifiable();
 		virtual ~TIdentifiable();
@@ -86,7 +87,7 @@ namespace rldx {
 	inline void TIdentifiable<KEY_TYPE>::WriteDebugDestructMsg()
 	{
 #ifdef _DEBUG
-		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Destroyed.", logging::BG_BLACK | logging::FG_GRAY);
+		//logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Destroyed.", logging::BG_BLACK | logging::FG_GRAY);
 #endif
 	}
 
@@ -97,7 +98,7 @@ namespace rldx {
 	inline void TIdentifiable<KEY_TYPE>::WriteDebugConstructMsg()
 	{
 #ifdef _DEBUG
-		logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Constructed.", logging::BG_BLACK | logging::FG_DARKGRAY);
+		//logging::Logger::LogSimpleWithColor(L"Object Id: " + std::to_wstring(GetId()) + L", Type: " + GetTypeString() + L", Name : " + GetName() + L", : Constructed.", logging::BG_BLACK | logging::FG_DARKGRAY);
 #endif
 	};
 }

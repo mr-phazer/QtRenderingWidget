@@ -20,7 +20,7 @@ void SetAttachPointName(DxVmdNode* node)
 	}
 }
 
-void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
+void rldx::DxVmdTreeBuilder::Build(rldx::DxResourceManager& resourceManager, DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
 	DxVmdNode* spoNewSceneChild = nullptr;
 
@@ -28,7 +28,7 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 	{
 		auto newVariantMeshNode = std::make_unique<DxVMDVariantMeshNode>(xmlNode);
 		spoNewSceneChild = &sceneGraphNode->AddChild(std::move(newVariantMeshNode));
-		DxMaterialInfoReader(&spoNewSceneChild->vmdNodeData).Parse(); // -- Load material info			
+		DxMaterialInfoReader(resourceManager, &spoNewSceneChild->vmdNodeData).Parse(); // -- Load material info			
 
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::Slot))
@@ -38,7 +38,7 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 	}
 	else if (CompareNoCase(xmlNode.name(), VMDTagStrings::VariantMeshReference))
 	{
-		LoadVariantMeshRerenceNode(sceneGraphNode, xmlNode);
+		LoadVariantMeshRerenceNode(resourceManager, sceneGraphNode, xmlNode);
 	}
 	else
 	{
@@ -50,12 +50,12 @@ void rldx::DxVmdTreeBuilder::Build(DxVmdNode* sceneGraphNode, const pugi::xml_no
 	for (auto& itXmlChild : xmlNode.children())
 	{
 		if (spoNewSceneChild) {
-			Build(spoNewSceneChild, itXmlChild);
+			Build(resourceManager, spoNewSceneChild, itXmlChild);
 		}
 	}
 }
 
-void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
+void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(rldx::DxResourceManager& resourceManager, DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode)
 {
 	std::wstring vmdFilePath = xmlNode.attribute_no_case(VMDTagAttributes::Definition).as_string();
 	auto vmdBytes = DxResourceManager::GetFile(vmdFilePath);
@@ -74,5 +74,5 @@ void rldx::DxVmdTreeBuilder::LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNod
 
 	sceneGraphNode->SetAttachBoneAsParent();
 
-	DxVmdTreeBuilder().Build(sceneGraphNode, xmlDoc.first_child());
+	DxVmdTreeBuilder().Build(resourceManager, sceneGraphNode, xmlDoc.first_child());
 }

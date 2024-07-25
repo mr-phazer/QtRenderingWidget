@@ -137,10 +137,12 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
-DxScene::DxScene() {
-	SetType(DxSceneTypeEnum::Normal);
-	SetTypeString(L"Resource:DxScene");
-}
+// TODO: remove? Or enabled setting types/names in another constructor
+//DxScene::DxScene()
+//{
+//	SetType(DxSceneTypeEnum::Normal);
+//	SetTypeString(L"Resource:DxScene");
+//}
 
 DxScene::~DxScene() {
 	// TODO: REMOVE DEBUGGIN CODE
@@ -164,9 +166,11 @@ DxScene::~DxScene() {
 	*/
 }
 
-DxScene::DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
+DxScene::DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
+	:
+	m_resourceManager(m_resourceManager),
+	m_vmdManager(m_resourceManager)
 {
-	DxScene::DxScene();
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
 	SetName(name);
 
@@ -203,6 +207,7 @@ void DxScene::InitScene(ID3D11Device* poDevice)
 	m_ambientLightSource =
 		DxAmbientLightSource::Create(
 			poDevice,
+			m_resourceManager,
 			iblDiffuseMapBinary,
 			iblSPecularMapBinary,
 			iblLUTBinary

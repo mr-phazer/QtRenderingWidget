@@ -19,5 +19,5 @@ std::vector<std::string::const_iterator> find_all2(const std::string& s, char c)
 	return res;
 }
 
-rldx::IntId rldx::DefaultShaderCreator::simpleShader = INVALID_ID;
-rldx::IntId rldx::DefaultShaderCreator::noTextureShader = INVALID_ID;
+rldx::DxMeshShaderProgram* rldx::DefaultShaderCreator::simpleShader = nullptr;
+rldx::DxMeshShaderProgram* rldx::DefaultShaderCreator::noTextureShader = nullptr;

@@ -34,12 +34,14 @@ namespace rldx
 		pDeviceContext->ClearRenderTargetView(m_cpoRenderTargetView.Get(), vColor);
 	}*/
 
+	// TODO: this one doesn't use the resource manager
+	// TODO: use resource manager
 	bool DxTexture::LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::wstring& objectName)
 	{
 		ID3D11Resource* poTextureResource = nullptr;
 		HRESULT hrTextureCreateResult = //DirectX::CreateDDSTextureFromFileEx(
 
-
+			// TODO: use resource manager
 			DirectX::CreateDDSTextureFromFileEx(
 				poD3DDevice,
 				fileName.c_str(),
@@ -240,11 +242,11 @@ namespace rldx
 		return hr;
 	}
 
-	DxTexture* DxTexture::GetTextureFromFile(const std::wstring& path)
+	DxTexture* DxTexture::GetTextureFromFile(rldx::DxResourceManager& resourcemanager, const std::wstring& path)
 	{
 		auto bytesTexture = rldx::DxResourceManager::GetFile(path);
 
-		auto textPtr = rldx::DxResourceManager::Instance()->AllocTexture(path, DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
+		auto textPtr = resourcemanager.CreateResouce<DxTexture>();
 		textPtr->LoadFileFromMemory(rldx::DxDeviceManager::Device(), bytesTexture.GetBufferPtr(), bytesTexture.GetBufferSize(), path);
 
 		textPtr->m_fileName = path;

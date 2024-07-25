@@ -14,10 +14,11 @@ namespace rldx {
 
 	DxMeshRenderingData::~DxMeshRenderingData()
 	{
-		logging::LogAction(L"Delaolocation material, mesh, shader, from mesh " + meshName);
+		// TODO: manual deallocate should not be needed
+		/*logging::LogAction(L"Delaolocation of: Material, Mesh, shader, from DxMeshRenderingData: " + meshName);
 		DxResourceManager::FreeMemoryFromPtr(poMaterial);
 		DxResourceManager::FreeMemoryFromPtr(poMesh);
-		DxResourceManager::FreeMemoryFromPtr(poShaderProgram);
+		DxResourceManager::FreeMemoryFromPtr(poShaderProgram);*/
 	}
 
 	void DxMeshRenderingData::CreateConstBuffers(ID3D11Device* poDevice)
@@ -76,6 +77,8 @@ namespace rldx {
 
 		// TODO: MOVE TO "Update()"!!!
 		perMeshDerformer_VS_CB.SetStartSlot(2);
+
+		// TODO: Change!! This causes MASSIVE lag
 		if (poDeformerSourceNode)
 		{
 			auto skeletonVSConstBufferData = poDeformerSourceNode->GetDeformerData();

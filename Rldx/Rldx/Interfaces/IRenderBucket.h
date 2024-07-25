@@ -5,6 +5,7 @@ namespace rldx {
 	// -- forward declarations
 	struct DxMeshRenderingData;
 
+	// TODO: rename to "queue" or somemore more descriptive
 	class IRenderBucket
 	{
 	public:

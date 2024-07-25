@@ -1,5 +1,8 @@
 #pragma once
 
+
+// TODO: clean up includes, do forward declartions as much as possible so includes can be in the cpp file
+
 #include <d3d11.h>
 #include <DDSTextureLoader.h>
 #include <DirectXMath.h>
@@ -12,7 +15,7 @@
 
 #include <string>
 
-#include "..\Managers\ResourceManager\IDxResource.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
 
 
 namespace rldx {
@@ -40,19 +43,20 @@ namespace rldx {
 			SetTypeString(L"DxTexture");
 		}
 
-		DxTexture(const std::wstring& name)
-		{
-			DxTexture();
-			SetName(name);
-		}
+		/*	DxTexture(const std::wstring& name)
+			{
+				SetType(ResourceTypeEnum::Texture);
+				SetTypeString(L"DxTexture");
+				SetName(name);
+			}*/
 
-		// TODO: use this intead of getfile
-		//DxTexture::DxTexture(ID3D11Device* poD3DDevice, const std::wstring& path);	
+			// TODO: use this intead of getfile
+			//DxTexture::DxTexture(ID3D11Device* poD3DDevice, const std::wstring& path);	
 
 		virtual ~DxTexture() = default;
 
 
-		static DxTexture* GetTextureFromFile(const std::wstring& path);
+		static DxTexture* GetTextureFromFile(rldx::DxResourceManager& resourcemanager, const std::wstring& path);
 
 		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
 		UINT GetHeight() const;

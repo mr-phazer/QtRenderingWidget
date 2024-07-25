@@ -369,19 +369,19 @@ namespace rldx {
 		virtual void SetDrawState(DrawStateEnum state) { m_drawState = state; }
 		DrawStateEnum GetDrawState() const { return m_drawState; }
 
-		static void AllocateBoundingBoxMeshesRecursive(DxBaseNode* node)
+		static void AllocateBoundingBoxMeshesRecursive(rldx::DxResourceManager& resourceManager, DxBaseNode* node)
 		{
-			AllocateBoundingBoxMesh(node);
+			AllocateBoundingBoxMesh(node, resourceManager);
 
 			for (auto& itChild : node->GetChildren())
 			{
-				AllocateBoundingBoxMeshesRecursive(itChild.get());
+				AllocateBoundingBoxMeshesRecursive(resourceManager, itChild.get());
 			}
 		}
 
 	protected:
-		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff);
-		static void AllocateBoundingBoxMesh(DxBaseNode* node);
+		void SetBoundingBox(DxResourceManager& resourcemanager, DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff);
+		static void AllocateBoundingBoxMesh(DxBaseNode* node, DxResourceManager& resourceManager);
 
 	private:
 		void SetParent(DxBaseNode* poParent)

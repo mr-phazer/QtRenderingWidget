@@ -150,16 +150,17 @@ LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 	return m_upoSceneManager->ForwardNativeWindowEvent(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
 }
 
+
 bool QtRenderWidgetView::InitRenderView()
 {
 	logging::LogAction(L"Make new Device Manager");
 	DxDeviceManager::Init();
 	auto poDevice = DxDeviceManager::GetInstance().GetDevice();
 
-	m_upoSceneManager = rldx::DxSceneManager::CreateScene(DxDeviceManager::GetInstance().GetDevice());
+	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
 	logging::LogAction(L"Retriving Default Textures from .exe");
-	LoadExeResources(poDevice);
+	LoadExeResources(m_upoSceneManager->GetResourceManager(), poDevice);
 
 	logging::LogAction(L"Create New Scene");
 	MakeScene();
@@ -199,8 +200,8 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 void QtRenderWidgetView::TerminateRendering()
 {
 	PauseRendering();
-	// TODO: clear
-	//m_upoSceneManager->GetCurrentScene()->Draw
+	m_upoSceneManager->GetResourceManager().DestroyAllResources();
+
 	m_timer->disconnect();
 	delete m_timer;
 }
@@ -218,7 +219,7 @@ void QtRenderWidgetView::MakeConnections()
 {
 }
 
-void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
+void QtRenderWidgetView::LoadExeResources(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice)
 {
 	Q_INIT_RESOURCE(QtRenderView);
 
@@ -245,11 +246,7 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 			throw std::exception((FULL_FUNC_INFO("Error loading internal resource: " + itRes.toStdString())).c_str());
 		}
 
-		// TODO: remove debuging code
-		auto DEBUG__rawPtr = DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
-		DEBUG__rawPtr->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size(), fileName.toStdWString());
-
-		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size(), fileName.toStdWString());
+		m_upoSceneManager->GetResourceManager().CreateResouce<DxTexture>();
 	}
 }
 

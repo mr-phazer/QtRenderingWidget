@@ -15,7 +15,7 @@ using namespace utils;
 
 namespace rldx
 {
-	std::unique_ptr<DxScene> DxSceneCreator::CreateScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, bool isSRGB, const std::wstring& m_nodeName)
+	std::unique_ptr<DxScene> DxSceneCreator::CreateScene(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, rldx::DxResourceManager& resourceManager, bool isSRGB, const std::wstring& m_nodeName)
 	{
 		RECT windowRect;
 		GetClientRect(m_nativeWindowHandle, &windowRect); // get only the client area
@@ -27,16 +27,13 @@ namespace rldx
 		auto newSwapChain = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, isSRGB, width, height);
 
 		// create scene
-		auto upoNewScene = std::make_unique<DxScene>(m_nodeName, std::move(newSwapChain));
+		auto upoNewScene = std::make_unique<DxScene>(resourceManager, m_nodeName, std::move(newSwapChain));
 
-		// Create a separate "assset node", so assets can be deleted indepdently of grid
-		auto asssetNode = DxBaseNode::Create(L"Asset Node");
-		upoNewScene->m_poAssetNode = &upoNewScene->GetSceneRootNode()->AddChild(std::move(asssetNode));
 
 		return std::move(upoNewScene);
 	}
 
-	std::unique_ptr<DxScene> DxSceneCreator::Create(HWND nativeWindHandle, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, const std::wstring& gameStringId)
+	std::unique_ptr<DxScene> DxSceneCreator::Create(HWND nativeWindHandle, ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, rldx::DxResourceManager& resourceManager, const std::wstring& gameStringId)
 	{
 		m_nativeWindowHandle = nativeWindHandle;
 
@@ -53,13 +50,26 @@ namespace rldx
 			rgbMode = RGBModeEnum::SRGB_Mode;
 		}
 
-		m_upoNewScene = CreateScene(poDevice, poDeviceContext, rgbMode);
+		m_upoNewScene = CreateScene(poDevice, poDeviceContext, resourceManager, rgbMode);
+
+		// TODO: remove?
+		//AddGrid(poDevice, newSimpleShaderProgram.GetPtr());
+
+		//SetCameraAutoFit(m_upoNewScene.get());
+
+		return std::move(m_upoNewScene);
+	}
+
+	void DxSceneCreator::AddGrid(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice)
+	{
+		using namespace DirectX;
 
 		// -- make default, fallback shaders
-		// for grid
+// for grid
 		auto newSimpleShaderProgram =
 			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
+				resourceManager,
 				LR"(VS_Simple.cso)",
 				LR"(PS_Simple.cso)"
 			);
@@ -69,25 +79,16 @@ namespace rldx
 		auto noTextures_ShaderProgram =
 			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
+				resourceManager,
 				LR"(VS_Simple.cso)",
 				LR"(PS_NoTextures.cso)"
 			);
 
-		AddGrid(poDevice, newSimpleShaderProgram.GetPtr());
-
-		SetCameraAutoFit(m_upoNewScene.get());
-
-		return std::move(m_upoNewScene);
-	}
-
-	void DxSceneCreator::AddGrid(ID3D11Device* poDevice, DxMeshShaderProgram* newSimpleShaderProgram)
-	{
-		using namespace DirectX;
 		// make grid node, mesh, fill node, set shaders
 		auto meshNodeGrid = std::make_unique<DxMeshNode>(L"Grid");
 		auto gridMeshData = DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
-		meshNodeGrid->SetMeshData(gridMeshData, L"Grid Mesh");
+		meshNodeGrid->SetMeshData(resourceManager, gridMeshData, L"Grid Mesh");
 		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 
 		// TODO: change? sets the grid to be of no size, so it doesn't interfere with the camera
@@ -98,17 +99,27 @@ namespace rldx
 		m_upoNewScene->GetSceneRootNode()->AddChild(std::move(meshNodeGrid));
 	}
 
-	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
+	void DxSceneCreator::AddVariantMesh(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
 	{
+		DxBaseNode::RemoveChildrenRecursive(poScene->GetSceneRootNode()); // TODO: should in theory delete whole scene
+
+		CreateNewGrid(resourceManager, poDevice, poScene);
+
+		auto asssetNode = DxBaseNode::Create(L"Asset Node");
+		poScene->m_poAssetNode = &poScene->GetSceneRootNode()->AddChild(std::move(asssetNode));
+
+
 		poScene->GetSceneRootNode()->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
 		poScene->GetAssetNode()->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+
+		// Create a separate "assset node", so assets can be deleted indepdently of grid
+
 		poScene->GetVmdManager().LoadVariantMeshIntoNode(poScene->GetAssetNode(), fileData, gameIdString);
 		poScene->GetVmdManager().GenerateNewVariant();
 
 
-
 #ifdef _DEBUG
-		DxBaseNode::AllocateBoundingBoxMeshesRecursive(poScene->GetSceneRootNode());
+		DxBaseNode::AllocateBoundingBoxMeshesRecursive(resourceManager, poScene->GetSceneRootNode());
 #endif
 
 		// TODO: FIX issue: the largest loaded model leaves in a "top" bound volume
@@ -116,37 +127,77 @@ namespace rldx
 		SetCameraAutoFit(poScene);
 	}
 
-	// TODO: remove? is this needed anymore, when "addvariantmesh" takes care of all cases??
-	void DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
+	void DxSceneCreator::CreateNewGrid(DxResourceManager& resourcemanager, ID3D11Device* poDevice, rldx::DxScene* poScene)
 	{
-		// TODO: REMOVE this line if everything works
-		//auto modelNodeRmv2 = DxNodeCreator::CreateNode<DxModelNode>(L"ModelNode RMV2");
-		auto modelNodeRmv2 = std::make_unique<DxModelNode>(L"ModelNode RMV2");
+		using namespace DirectX;
 
-		auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
-		if (!newPbrShaderCreator) {
-			throw std::exception("No shader program creator found for game");
-		}
+		// -- make default, fallback shaders
+		// for grid
+		auto newSimpleShaderProgram =
+			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
+				poDevice,
+				resourcemanager,
+				LR"(VS_Simple.cso)",
+				LR"(PS_Simple.cso)"
+			);
 
-		auto newPbrShaderProgram = newPbrShaderCreator->Create(poDevice);
-		if (!newPbrShaderProgram) {
-			throw std::exception("Error Creating Shader");
-		}
+		// TODO: I don't think this is ever used, it is needed, when there are are default matrerial? Maybe it IS needed as a fallback?
+		// for no textures
+		auto noTextures_ShaderProgram =
+			DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
+				poDevice,
+				resourcemanager,
+				LR"(VS_Simple.cso)",
+				LR"(PS_NoTextures.cso)"
+			);
 
-		// TODO: REMOVE?
-		//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
 
-		rmv2::RigidModelReader rigidModelFileReader;
-		auto rmv2File = rigidModelFileReader.Read(fileData);
-		modelNodeRmv2->SetModelData(poDevice, rmv2File);
-		modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, rmv2File);
-		modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+		// make grid node, mesh, fill node, set shaders
+		auto meshNodeGrid = std::make_unique<DxMeshNode>(L"Grid");
+		auto gridMeshData = DxMeshCreatorHelper::MakeGrid(poDevice, 40, 0.1f);
 
-		// TODO:: create in place and edit now-owning pointer
-		poScene->GetSceneRootNode()->AddChild(std::move(modelNodeRmv2));
+		meshNodeGrid->SetMeshData(resourcemanager, gridMeshData, L"Grid Mesh");
+		meshNodeGrid->SetShaderProgram(newSimpleShaderProgram);
 
-		SetCameraAutoFit(poScene);
+		// TODO: change? sets the grid to be of no size, so it doesn't interfere with the camera
+		meshNodeGrid->NodeBoundingBox() = DirectX::BoundingBox({ 0,0,0 }, { 0E-7, 0E-7, 0E-7 });
+
+		poScene->m_poGridNode = meshNodeGrid.get();
+
+		poScene->GetSceneRootNode()->AddChild(std::move(meshNodeGrid));
 	}
+
+	// TODO: remove? is this needed anymore, when "addvariantmesh" takes care of all cases??
+	//void DxSceneCreator::AddModel(ID3D11Device* poDevice, DxScene* poScene, ByteStream& fileData, const std::wstring& gameIdString)
+	//{
+	//	// TODO: REMOVE this line if everything works
+	//	//auto modelNodeRmv2 = DxNodeCreator::CreateNode<DxModelNode>(L"ModelNode RMV2");
+	//	auto modelNodeRmv2 = std::make_unique<DxModelNode>(L"ModelNode RMV2");
+
+	//	auto newPbrShaderCreator = GameShaderProgramCreatorFactory().Get(gameIdString);
+	//	if (!newPbrShaderCreator) {
+	//		throw std::exception("No shader program creator found for game");
+	//	}
+
+	//	auto newPbrShaderProgram = newPbrShaderCreator->Create(poDevice, poScene->GetResourceManager());
+	//	if (!newPbrShaderProgram) {
+	//		throw std::exception("Error Creating Shader");
+	//	}
+
+	//	// TODO: REMOVE?
+	//	//poScene->SetDefaultShaderProgram(newPbrShaderProgram);
+
+	//	rmv2::RigidModelReader rigidModelFileReader;
+	//	auto rmv2File = rigidModelFileReader.Read(fileData);
+	//	modelNodeRmv2->SetModelData(poDevice, poScene->GetResourceManager(), rmv2File);
+	//	modelNodeRmv2->LoadMaterialDataFromRmv2(poDevice, poScene->GetResourceManager(), rmv2File);
+	//	modelNodeRmv2->SetShaderProgram(newPbrShaderProgram);
+
+	//	// TODO:: create in place and edit now-owning pointer
+	//	poScene->GetSceneRootNode()->AddChild(std::move(modelNodeRmv2));
+
+	//	SetCameraAutoFit(poScene);
+	//}
 
 	void DxSceneCreator::SetCameraAutoFit(DxScene* poScene)
 	{

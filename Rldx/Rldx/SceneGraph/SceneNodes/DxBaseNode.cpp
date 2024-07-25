@@ -9,18 +9,18 @@
 
 namespace rldx
 {
-	void DxBaseNode::AllocateBoundingBoxMesh(DxBaseNode* node)
+	void DxBaseNode::AllocateBoundingBoxMesh(DxBaseNode* node, DxResourceManager& resourceManager)
 	{
 		if (!node) throw COMException(L"input node == nullptr");
 
 		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), node->NodeBoundingBox(), node->boundBoxRenderColor);
 
-		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
+		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>();
 
-		node->m_boundingBoxMesh.poMesh = newMeshHandle.GetPtr();
+		node->m_boundingBoxMesh.poMesh = newMeshHandle;
 		node->m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
 
-		node->m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
+		node->m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram(resourceManager);
 		node->m_boundingBoxMesh.meshName = L"Mesh:BoundBox";
 	}
 
@@ -35,7 +35,7 @@ namespace rldx
 	}
 
 	// TODO: used? Remove?
-	void DxBaseNode::SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff)
+	void DxBaseNode::SetBoundingBox(DxResourceManager& resourcemanager, DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff)
 	{
 		DirectX::XMVECTOR xmMin = DirectX::XMLoadFloat3(&minPoint);
 		DirectX::XMVECTOR xmMax = DirectX::XMLoadFloat3(&maxPoint);
@@ -45,17 +45,18 @@ namespace rldx
 		auto newSimpleShaderProgram =
 			rldx::DxMeshShaderProgram::CreateFromDisk<rldx::DxMeshShaderProgram>(
 				rldx::DxDeviceManager::Device(),
+				resourcemanager,
 				LR"(VS_Simple.cso)",
 				LR"(PS_Simple.cso)"
 			);
 
 		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), NodeBoundingBox(), boundBoxRenderColor);
 
-		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-		m_boundingBoxMesh.poMesh = newMeshHandle.GetPtr();
+		auto newMeshHandle = resourcemanager.CreateResouce<DxMesh>();
+		m_boundingBoxMesh.poMesh = newMeshHandle;
 		m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
-		m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram();
-		m_boundingBoxMesh.meshName = L"BoundNox";
+		m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram(resourcemanager);
+		m_boundingBoxMesh.meshName = L"BoundBox";
 	}
 
 	void DxBaseNode::SetDeformerNodeRecursive(const DxDeformerNode* poDeformerNode, int32_t boneIndex)

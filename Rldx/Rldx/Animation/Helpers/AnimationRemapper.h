@@ -10,7 +10,7 @@ namespace skel_anim
 		Skeleton m_targetSkeleton;
 
 	public:
-		AnimationRemapper(const std::wstring& sourceSkeletonPath, const std::wstring& targetSkeletonPath);
+		AnimationRemapper(rldx::DxResourceManager& resourceManager, const std::wstring& sourceSkeletonPath, const std::wstring& targetSkeletonPath);
 		SkeletonAnimation RemapAnimation(const SkeletonAnimation& source);
 
 	private:

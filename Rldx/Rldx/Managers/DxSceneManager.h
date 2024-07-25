@@ -7,11 +7,15 @@ namespace rldx {
 
 	class DxSceneManager : public IResizable
 	{
+		DxResourceManager m_localResourceManager;
+		std::unique_ptr<DxScene> m_upoCurrentScene;
+		timer::SystemClockChecker m_systemClock;
+		bool m_bRenderingRunning = false;
 
 	public:
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
 
-		static DxSceneManager::UniquePtr CreateScene(ID3D11Device* poDevice)
+		static DxSceneManager::UniquePtr Create(ID3D11Device* poDevice)
 		{
 			auto newSceneManager = std::make_unique<DxSceneManager>();
 			return std::move(newSceneManager);
@@ -56,12 +60,13 @@ namespace rldx {
 			return m_upoCurrentScene.get();
 		}
 
+		rldx::DxResourceManager& GetResourceManager()
+		{
+			return m_localResourceManager;
+		}
+
 		bool IsRenderRunning() const { return m_bRenderingRunning; }
 		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
-	private:
-		std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
-		timer::SystemClockChecker m_systemClock;
-		bool m_bRenderingRunning = false;
 	};
 
 }; // namespace rldx

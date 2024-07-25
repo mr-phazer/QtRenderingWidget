@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\Managers\ResourceManager\IDxResource.h"
+#include "..\..\Managers\ResourceManager\DxResourceManager.h"
 #include "Skeleton.h"
 #include "SkeletonKeyFrame.h"
 
@@ -24,8 +24,11 @@ namespace skel_anim
 	struct SkeletonAnimation : public rldx::IDxResource
 	{
 		SkeletonAnimation() = default;
-		SkeletonAnimation(const std::wstring& name) :
-			rldx::IDxResource(rldx::ResourceTypeEnum::Animation, L"SkeletonAnimation", name)
+		SkeletonAnimation(const std::wstring& name)
+
+			// TODO: corred back if IDxResource gets a new constructor
+			// :
+			//rldx::IDxResource(rldx::ResourceTypeEnum::Animation, L"SkeletonAnimation", name)
 		{};
 
 		std::wstring m_skeletonName; // m_nodeName of the skeleton used by animation
@@ -37,7 +40,7 @@ namespace skel_anim
 		float keysPerSecond = 0.0f;
 
 	public:
-		static SkeletonAnimation* CreateFromAnimFile(const anim_file::AnimFile& in);
-	};
+		static SkeletonAnimation* CreateFromAnimFile(rldx::DxResourceManager& resoureceMangager, const anim_file::AnimFile& inAnimFile);
 
+	};
 } // namespace skel_anim

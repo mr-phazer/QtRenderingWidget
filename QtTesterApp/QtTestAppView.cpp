@@ -78,7 +78,7 @@ void QtMainWindowView::DEBUG_InitRenderView()
 {
 	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
 	// Or really, the testerapp is not meant to run in Release anyway.
-	auto instance = rldx::DxResourceManager::Instance(); // instantate "global" resource manager
+
 	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter); // TODO: in release, this isn't set, for complex reasons
 
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;

@@ -8,6 +8,7 @@
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
 #include "..\Managers\DxDeviceManager.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\VmdManager\DxVmdManager.h"
 #include "..\SceneGraph\SceneGraph.h"
 #include "..\SceneGraph\SceneNodes\DxBaseNode.h"
@@ -49,11 +50,8 @@ namespace rldx {
 		friend class DxSceneCreator;
 
 	public:
-		DxScene();
-
+		DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);
 		virtual ~DxScene();
-
-		DxScene(const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);;
 
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
@@ -74,7 +72,7 @@ namespace rldx {
 		void ClearRenderQueue();
 
 		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }
-		DxSwapChain::Uptr& GetRefSwapChain() { return m_spoSwapChain; }
+		DxSwapChain::Uptr& SwapChain() { return m_spoSwapChain; }
 
 		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
@@ -125,7 +123,7 @@ namespace rldx {
 			UINT height = windowRect.bottom - windowRect.top;
 
 			// create swap chain
-			GetRefSwapChain() = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, true, width, width);
+			SwapChain() = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, true, width, width);
 			InitScene(poDevice);
 
 			// TODO: enable? Shouldn't it work on its own (multi windows)
@@ -133,6 +131,7 @@ namespace rldx {
 		}
 
 	private:
+		rldx::DxResourceManager& m_resourceManager;
 		DxVmdManager m_vmdManager;
 		DxSceneGraph m_sceneGraph;
 		DxMeshRenderBucket m_renderQueue;
@@ -141,10 +140,6 @@ namespace rldx {
 		DxTextureSamplers m_textureSamplers;
 
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
-
-		// TODO: iterate over these, call IResizable::Resize(width, height)
-//		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized
-//		std::vector<IBindable*> m_bindableObjects; // buffers/etc, that need to be resized when the window is resized
 
 		DxCameraOrbital m_globalCamera;
 		DxCameraOrbital m_globalDirectionalLight;
@@ -157,8 +152,6 @@ namespace rldx {
 
 		DxMeshShaderProgram* m_poDefaultShaderProgram = nullptr;
 		DxMeshNode* m_poGridNode = nullptr;
-
-	private:
 		DxBaseNode* m_poAssetNode = nullptr;
 
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);

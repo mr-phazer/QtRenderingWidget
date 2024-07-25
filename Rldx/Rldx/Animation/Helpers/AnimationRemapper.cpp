@@ -5,10 +5,10 @@
 
 namespace skel_anim
 {
-	AnimationRemapper::AnimationRemapper(const std::wstring& sourceSkeletonPath, const std::wstring& targetSkeletonPath)
+	AnimationRemapper::AnimationRemapper(rldx::DxResourceManager& resourceManager, const std::wstring& sourceSkeletonPath, const std::wstring& targetSkeletonPath)
 	{
-		m_sourceSkeleton = GetAnimFromFile(sourceSkeletonPath);
-		m_targetSkeleton = GetAnimFromFile(targetSkeletonPath);
+		m_sourceSkeleton = GetAnimFromFile(resourceManager, sourceSkeletonPath);
+		m_targetSkeleton = GetAnimFromFile(resourceManager, targetSkeletonPath);
 	}
 
 	SkeletonAnimation AnimationRemapper::RemapAnimation(const SkeletonAnimation& sourceAnim)

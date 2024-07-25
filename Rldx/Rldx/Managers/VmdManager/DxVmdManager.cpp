@@ -29,7 +29,7 @@ namespace rldx
 
 		InitDeformation();
 
-		auto upoNewVariantMeshNode = std::make_unique<DxVariantMeshNode>(L"VMD TEMP node", m_deformerNode.get());
+		auto upoNewVariantMeshNode = std::make_unique<DxVariantMeshNode>(*m_resourceManager, L"VMD TEMP node", m_deformerNode.get());
 		m_poVariantMeshNode = &m_sceneRootNode->AddChild(std::move(upoNewVariantMeshNode));
 	}
 
@@ -53,7 +53,7 @@ namespace rldx
 		}
 
 		m_deformerNode = DxDeformerNode::Create();
-		m_deformerNode->LoadBindPose(skel_anim::GetPackPathFromSkeletonName(m_skeletonName));
+		m_deformerNode->LoadBindPose(*m_resourceManager, skel_anim::GetPackPathFromSkeletonName(m_skeletonName));
 
 		SetMeshDeformation(m_vmdRootNode);
 		SetAttachPointsRecursive(m_vmdRootNode);
@@ -107,12 +107,12 @@ namespace rldx
 			throw std::exception("No shader program creator found for game");
 		}
 
-		auto newPbrShaderProgram = newPbrShaderCreator->Create(DxDeviceManager::Device());
+		auto newPbrShaderProgram = newPbrShaderCreator->Create(DxDeviceManager::Device(), *m_resourceManager);
 		if (!newPbrShaderProgram) {
 			throw std::exception("Error Creating Shader");
 		}
 
-		AllocateNodeDXBufferRecursive(m_vmdRootNode, newPbrShaderProgram, preTransformMap);
+		AllocateNodeDXBufferRecursive(*m_resourceManager, m_vmdRootNode, newPbrShaderProgram, preTransformMap);
 	}
 
 	// TODO: REMOVE?
@@ -143,18 +143,8 @@ namespace rldx
 		}
 	}
 
-	void DxVmdManager::LoadFromRigidModel(ByteStream& bytes) {
-
-		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
-		if (!gameShaderProgramCreator) {
-			throw std::exception("Error loadeinfGame Shader");
-		}
-
-		auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
-		if (!newPbrShaderProgram) {
-			throw std::exception("Error Creating Shader");
-		}
-
+	void DxVmdManager::LoadFromRigidModel(ByteStream& bytes)
+	{
 		auto upoNewVmdRootNode = std::make_unique<DxVmdNode>(L"VMD Root Node");
 		m_vmdRootNode = &m_sceneRootNode->AddChild(std::move(upoNewVmdRootNode));
 
@@ -162,21 +152,11 @@ namespace rldx
 		nodeTagData.tagType = VMDTagEnum::VariantMesh; // add the RMV2 as
 		nodeTagData.varintMeshData.modelPath = bytes.GetPath();
 		nodeTagData.varintMeshData.imposterModelPath = L"";
-		DxMaterialInfoReader(&nodeTagData).Parse();
+		DxMaterialInfoReader(*m_resourceManager, &nodeTagData).Parse();
 	}
 
 	void DxVmdManager::LoadFromWsmodelXML(ByteStream& bytes)
 	{
-		auto gameShaderProgramCreator = GameShaderProgramCreatorFactory().Get(DxResourceManager::Instance()->GetGameIdString());
-		if (!gameShaderProgramCreator) {
-			throw std::exception("Error loadeinfGame Shader");
-		}
-
-		auto newPbrShaderProgram = gameShaderProgramCreator->Create(DxDeviceManager::Device());
-		if (!newPbrShaderProgram) {
-			throw std::exception("Error Creating Shader");
-		}
-
 		auto upoNewVmdRootNode = std::make_unique<DxVmdNode>(L"VMD Root Node");
 		m_vmdRootNode = &m_sceneRootNode->AddChild(std::move(upoNewVmdRootNode));
 
@@ -185,8 +165,9 @@ namespace rldx
 		newData.varintMeshData.modelPath = bytes.GetPath();
 		newData.varintMeshData.imposterModelPath = L"";
 
-		DxMaterialInfoReader(&newData).Parse();
+		DxMaterialInfoReader(*m_resourceManager, &newData).Parse();
 	}
+
 
 	void DxVmdManager::LoadFromVmdXML(ByteStream& bytes)
 	{
@@ -200,17 +181,17 @@ namespace rldx
 		m_vmdRootNode = &m_sceneRootNode->AddChild(std::move(upoNewVmdRootNode));
 
 		m_vmdRootNode->vmdNodeData.tagType = VMDTagEnum::Slot;
-		m_treeBuilder.Build(m_vmdRootNode, m_xmlDoc.first_child());
+		m_treeBuilder.Build(*m_resourceManager, m_vmdRootNode, m_xmlDoc.first_child());
 	}
 
-	void DxVmdManager::AllocateNodeDXBufferRecursive(DxVmdNode* poVmdNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap)
+	void DxVmdManager::AllocateNodeDXBufferRecursive(rldx::DxResourceManager& resourceManager, DxVmdNode* poVmdNode, DxMeshShaderProgram* shaderProgram, WStringkeyMap<sm::Matrix>& preTransformMap)
 	{
 		m_skeletonName = L""; // reset skeleton m_nodeName;
-		DxVmdNodeAllocator(poVmdNode, shaderProgram).AllocateDxBuffers(m_skeletonName, preTransformMap);
+		DxVmdNodeAllocator(resourceManager, poVmdNode, shaderProgram).AllocateDxBuffers(m_skeletonName, preTransformMap);
 
 		for (auto& itVmdNode : poVmdNode->GetChildren())
 		{
-			AllocateNodeDXBufferRecursive(static_cast<DxVmdNode*>(itVmdNode.get()), shaderProgram, preTransformMap);
+			AllocateNodeDXBufferRecursive(resourceManager, static_cast<DxVmdNode*>(itVmdNode.get()), shaderProgram, preTransformMap);
 
 			// grow the bounding box to contain the child node bounding box
 			DirectX::BoundingBox::CreateMerged(

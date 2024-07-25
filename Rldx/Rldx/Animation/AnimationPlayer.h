@@ -33,7 +33,7 @@ namespace skel_anim
 			return *this;
 		};
 
-		void CreateBindPose(const anim_file::AnimFile& animFile)
+		void CreateBindPose(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& animFile)
 		{
 			// TODO: put in error checking
 
@@ -43,7 +43,7 @@ namespace skel_anim
 			//FramePoseMatrices bindposeMatrices;
 			//FramePoseGenerator(m_skeleton).GenerateMatrices(m_animation->frameData.frames[0], bindposeMatrices);
 			//m_skeleton.m_bindposeMatrices = bindposeMatrices;
-			m_skeleton = Skeleton(animFile);
+			m_skeleton = Skeleton(resourceManager, animFile);
 
 			// TODO: remove if above works
 			//// make inverse bindpose matrices
@@ -55,9 +55,10 @@ namespace skel_anim
 			//}
 		}
 
-		void SetAnimation(const anim_file::AnimFile& animFile)
+		// TODO: rename, to "Load"/similar, "set" sounds like the input only need to be copied
+		void SetAnimation(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& animFile)
 		{
-			auto m_animation = SkeletonAnimation::CreateFromAnimFile(animFile);
+			auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, animFile);
 			m_animationSamplers->SetAnimation(m_animation);
 		}
 
