@@ -127,6 +127,8 @@ namespace rldx
 		}
 	}*/
 
+	AssetFetchCallbackWrapper DxResourceManager::sm_assetCallBack;
+
 	void DxResourceManager::DestroyAllResources()
 	{
 		m_umapResources.clear();
