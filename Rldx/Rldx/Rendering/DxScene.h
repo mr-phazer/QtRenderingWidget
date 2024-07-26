@@ -7,12 +7,12 @@
 
 #include "..\..\rldx\Interfaces\IDrawable.h"
 #include "..\..\rldx\Rendering\DxShaderProgram.h"
-#include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "..\Managers\VmdManager\DxVmdManager.h"
 #include "..\SceneGraph\SceneGraph.h"
 #include "..\SceneGraph\SceneNodes\DxBaseNode.h"
-#include "..\SceneGraph\SceneNodes\DxModelNode.h"
+
 #include "DxAmbientLightSource.h"
 #include "DxCameraOrbital.h"
 #include "DxConstBuffer.h"
@@ -21,6 +21,7 @@
 #include "DxTextureSamplers.h"
 
 #include "..\DataTypes\ConstBuffers\CPUConstBuffers.h"
+
 
 #include <ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h>
 
@@ -50,21 +51,12 @@ namespace rldx {
 		friend class DxSceneCreator;
 
 	public:
-		DxScene() {
-			SetType(DxSceneTypeEnum::Normal);
-			SetTypeString(L"DxScene");
-		}
+		DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);
+		virtual ~DxScene();
 
-		DxScene(const std::wstring& name = L"Unnamed Scene")
-		{
-			SetName(name);
-
-			// TODO: move more of the initializing into the constructor, RAII
-			DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
-		};
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }
 
-		virtual void InitRenderView(ID3D11Device* poDevice);
+		virtual void InitScene(ID3D11Device* poDevice);
 		virtual void Update(float timeElapsed) override;
 		virtual void Draw(ID3D11DeviceContext* poDeviceContext) override;
 		virtual void Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height) override;
@@ -78,23 +70,24 @@ namespace rldx {
 		DxBaseNode* GetAssetNode() const;
 
 		void DeleteNode(DxBaseNode* node);
+		void ClearRenderQueue();
 
 		const DxSwapChain* GetSwapChain() const { return m_spoSwapChain.get(); }
-		DxSwapChain::Uptr& GetRefSwapChain() { return m_spoSwapChain; }
+		DxSwapChain::Uptr& SwapChain() { return m_spoSwapChain; }
 
 		LRESULT WINAPI ForwardNativeWindowEvent(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 		// TODO: remove?
-		void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
+		/*void SetDefaultShaderProgram(DxMeshShaderProgram* shaderProgram)
 		{
 			m_poDefaultShaderProgram = shaderProgram;
-		};
+		};*/
 
 		// TODO: remove?
-		DxMeshShaderProgram* GeDefaultShaderProgram() const
-		{
-			return m_poDefaultShaderProgram;
-		}
+		//DxMeshShaderProgram* GeDefaultShaderProgram() const
+		//{
+		//	return m_poDefaultShaderProgram;
+		//}
 
 		DxCameraOrbital& GetCamera() { return m_globalCamera; };
 		DxSceneGraph& GetSceneGraph() { return m_sceneGraph; };
@@ -118,20 +111,36 @@ namespace rldx {
 		//		bindable->BindToDC(poDeviceContext);
 		//	}
 		//}
+		void ReadySwapChain(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, HWND m_nativeWindowHandle)
+		{
 
+			// TODO: remove this mess? Setting the window size in win32 api?
+			//SetWindowPos(m_nativeWindowHandle, nullptr, 0, 0, 2000, 1024, SWP_NOOWNERZORDER);
 
+			RECT windowRect;
+			GetWindowRect(m_nativeWindowHandle, &windowRect);
+
+			UINT width = windowRect.right - windowRect.left;
+			UINT height = windowRect.bottom - windowRect.top;
+
+			// create swap chain
+			SwapChain() = DxSwapChain::CreateForHWND(poDevice, poDeviceContext, m_nativeWindowHandle, true, width, width);
+			InitScene(poDevice);
+
+			// TODO: enable? Shouldn't it work on its own (multi windows)
+			//Resize(poDevice, poDeviceContext, width, width);
+		}
 
 	private:
+		rldx::DxResourceManager& m_resourceManager;
 		DxVmdManager m_vmdManager;
 		DxSceneGraph m_sceneGraph;
 		DxMeshRenderBucket m_renderQueue;
 		DxSwapChain::Uptr m_spoSwapChain; // back buffer	
+		DxAmbientLightSource m_ambientLightSource;
+		DxTextureSamplers m_textureSamplers;
 
 		std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
-
-		// TODO: iterate over these, call IResizable::Resize(width, height)
-		std::vector<IResizable*> m_resizableObjects; // buffers/etc, that need to be resized when the window is resized
-		std::vector<IBindable*> m_bindableObjects; // buffers/etc, that need to be resized when the window is resized
 
 		DxCameraOrbital m_globalCamera;
 		DxCameraOrbital m_globalDirectionalLight;
@@ -141,12 +150,9 @@ namespace rldx {
 		TDxVSShaderConstBuffer<VS_PerScene_ConstantBuffer> m_sceneFrameVSConstBuffer;
 		TDxPSShaderConstBuffer<PS_Light_ConstBuffer> m_sceneFramePSConstBuffer;
 
-		DxAmbientLightSource m_ambientLightSource;
-		DxTextureSamplers m_textureSamplers;
+
 		DxMeshShaderProgram* m_poDefaultShaderProgram = nullptr;
 		DxMeshNode* m_poGridNode = nullptr;
-
-	private:
 		DxBaseNode* m_poAssetNode = nullptr;
 
 		HWND m_hwndNativeWindowHandle = static_cast<HWND>(0);

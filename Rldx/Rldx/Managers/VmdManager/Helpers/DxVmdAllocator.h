@@ -10,10 +10,15 @@ namespace rldx
 	{
 		DxVmdNode* m_sceneVmdNode = nullptr;
 		DxMeshShaderProgram* m_nodeShaderProgram = nullptr;
+		rldx::DxResourceManager* m_resourceManager;
 
 	public:
 		DxVmdNodeAllocator() = delete;
-		DxVmdNodeAllocator(DxVmdNode* in, DxMeshShaderProgram* nodeShaderProgram) : m_sceneVmdNode(in), m_nodeShaderProgram(nodeShaderProgram) {};
+		DxVmdNodeAllocator(rldx::DxResourceManager& resourceManager, DxVmdNode* in, DxMeshShaderProgram* nodeShaderProgram)
+			:
+			m_resourceManager(&resourceManager),
+			m_sceneVmdNode(in),
+			m_nodeShaderProgram(nodeShaderProgram) {};
 
 		void AllocateDxBuffers(std::wstring & destSkeletonName, utils::WStringkeyMap<sm::Matrix>& preTransformMap);
 

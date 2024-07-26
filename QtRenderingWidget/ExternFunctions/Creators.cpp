@@ -5,9 +5,8 @@
 #include <CommonLibs\Logger\Logger.h>
 
 #include <Rldx\Rldx\Creators\DxSceneCreator.h>
-#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 
-#include <QtRenderingWidget\QtObjects\Views\QtRenderView.h>
+#include <QtRenderingWidget\QtObjects\Views\QtRenderWidgetView.h>
 
 using namespace logging;
 using namespace utils;
@@ -97,8 +96,8 @@ QWidget* CreateQRenderingWidget(
 	try {
 		poNewRenderingWidget = new QtRenderWidgetView(parent, *gameIdString); // nullptr = no parent, free floating window			
 		poNewRenderingWidget->hide();
-		poNewRenderingWidget->InitRenderView();
-		rldx::DxResourceManager::Instance()->SetGameIdSting(gameIdString->toStdWString()); // TODO: maybe ONLY store it here?
+
+		poNewRenderingWidget->GetSceneManager()->GetResourceManager().SetGameIdSting(gameIdString->toStdWString()); // TODO: maybe ONLY store it here?		
 	}
 	catch (std::exception& e)
 	{
@@ -127,11 +126,12 @@ bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray
 	renderWidget->PauseRendering();
 	auto gameIdString = renderWidget->GetGameIdString();
 	auto currentScene = renderWidget->GetSceneManager()->GetCurrentScene();
+	auto& resoureceManager = renderWidget->GetSceneManager()->GetResourceManager();
 
 	try {
 
 		ByteStream fileDataStream(assetData->data(), assetData->size(), assetFolder->toStdWString());
-		rldx::DxSceneCreator::AddVariantMesh(rldx::DxDeviceManager::Device(), currentScene, fileDataStream, gameIdString.toStdWString());
+		rldx::DxSceneCreator::AddVariantMesh(rldx::DxDeviceManager::Device(), resoureceManager, currentScene, fileDataStream, gameIdString.toStdWString());
 	}
 	catch (std::exception& e)
 	{

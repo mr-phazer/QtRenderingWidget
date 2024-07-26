@@ -5,9 +5,7 @@
 #include "..\DataTypes\DxMeshData.h"
 #include "..\Interfaces\IBindable.h"
 #include "..\Interfaces\IDrawable.h"
-#include "..\Managers\DxTypes.h"
 #include "..\Managers\ResourceManager\IDxResource.h"
-
 
 namespace rldx
 {
@@ -17,13 +15,26 @@ namespace rldx
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
 	public:
+		DxMesh()
+		{
+			SetType(ResourceTypeEnum::Mesh);
+			SetTypeString(L"Resource:Mesh");
+		}
+
+		/*	DxMesh(const std::wstring& meshName)
+			{
+				SetName(meshName);
+				SetType(ResourceTypeEnum::Mesh);
+				SetTypeString(L"Resource:Mesh");
+			}*/
+
 		void Draw(ID3D11DeviceContext* poDC) override;
 		void BindToDC(ID3D11DeviceContext* poDC) override;
 
 		void SetMeshData(const DxCommonMeshData& meshData);
 
-		DirectX::XMFLOAT3 GetMin();
-		DirectX::XMFLOAT3 GetMax();
+		const DirectX::XMFLOAT3& GetMin() const;
+		const DirectX::XMFLOAT3& GetMax() const;
 
 	private:
 		DxCommonMeshData m_poMeshBuffers;

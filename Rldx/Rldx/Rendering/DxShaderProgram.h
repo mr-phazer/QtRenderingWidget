@@ -48,9 +48,9 @@ namespace rldx {
 
 	public:
 		template <typename SHADER_TYPE>
-		static auto CreateFromMemoery(ID3D11Device* poDevice, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
+		static auto CreateFromMemoery(ID3D11Device* poDevice, DxResourceManager& resourcemanager, std::pair<uint8_t*, size_t> vertexShaderMem, std::pair<uint8_t*, size_t> pixelShaderMem)
 		{
-			auto newShaderHandle = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>("shader01");
+			auto newShaderHandle = resourcemanager.CreateResouce<SHADER_TYPE>();
 
 			if (vertexShaderMem.first != nullptr && vertexShaderMem.second > 0)
 				newShaderHandle.GetPtr()->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromMemory(poDevice, vertexShaderMem.first, vertexShaderMem.second);
@@ -58,43 +58,43 @@ namespace rldx {
 			if (pixelShaderMem.first != nullptr && pixelShaderMem.second > 0)
 				newShaderHandle.GetPtr()->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromMemory(poDevice, pixelShaderMem.first, pixelShaderMem.second);
 
-			newShaderHandle.GetPtr()->m_pixelShaderConstBuffer.Create(poDevice);
-			newShaderHandle.GetPtr()->m_vertexShaderConstBuffer.Create(poDevice);
+			newShaderHandle->m_pixelShaderConstBuffer.Create(poDevice);
+			newShaderHandle->m_vertexShaderConstBuffer.Create(poDevice);
 
 			return newShaderHandle;
 		};
 
 		template <typename SHADER_TYPE>
-		static auto CreateFromDisk(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
+		static SHADER_TYPE* CreateFromDisk(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::wstring& vertexShaderPath, const std::wstring& pixelShaderPath, const std::wstring& name = L"ShaderProgra")
 		{
 			logging::LogAction(L"Creating Shaders...");
 
 			if (vertexShaderPath.empty() || pixelShaderPath.empty()) {
-				return rldx::TResourceHandle<SHADER_TYPE>();
+				return nullptr;
 			}
 
-			auto newShaderHandle = rldx::DxResourceManager::Instance()->AllocShaderProgram<SHADER_TYPE>(L"shader01");
+			auto newShaderPtr = resourceManager.CreateResouce<SHADER_TYPE>();
 
 			if (!vertexShaderPath.empty())
 			{
 				logging::LogAction(L"Loading vertex shader: " + vertexShaderPath);
-				newShaderHandle.GetPtr()->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, vertexShaderPath);
+				newShaderPtr->m_vertexShaderFile = VertexShaderLoader::CreateVertexShaderFromDisk(poDevice, vertexShaderPath);
 			}
 
 			if (!pixelShaderPath.empty())
 			{
 				logging::LogAction(L"Loading pixel shader: " + pixelShaderPath);
-				newShaderHandle.GetPtr()->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
+				newShaderPtr->m_pixelShaderFile = PixelShaderLoader::CreatePixelShaderFromDisk(poDevice, pixelShaderPath);
 			}
 
 			logging::LogAction(L"D3D Call: Create Shader(s): ");
-			newShaderHandle.GetPtr()->m_pixelShaderConstBuffer.Create(poDevice);
-			newShaderHandle.GetPtr()->m_vertexShaderConstBuffer.Create(poDevice);
+			newShaderPtr->m_pixelShaderConstBuffer.Create(poDevice);
+			newShaderPtr->m_vertexShaderConstBuffer.Create(poDevice);
 
-			newShaderHandle.GetPtr()->m_pixelShaderPath = pixelShaderPath;
-			newShaderHandle.GetPtr()->m_vertexShaderPath = vertexShaderPath;
+			newShaderPtr->m_pixelShaderPath = pixelShaderPath;
+			newShaderPtr->m_vertexShaderPath = vertexShaderPath;
 
-			return newShaderHandle;
+			return newShaderPtr;
 		}
 
 		virtual ID3D11VertexShader* GetVertexShader()  override {
@@ -127,7 +127,7 @@ namespace rldx {
 		{
 			auto newShaderInstance = TDxShaderProgram<VS_MeshConstantBuffer, PS_PerMesh_ConstBuffer>::Create(poDevice, vertexShaderPath, pixelShaderPath);
 
-			auto newShaderHandle = rldx::DxResourceManager::GetInstance()->GetShaderManager()->AddResource(newShaderInstance, "shader01");
+			auto newShaderPtr = rldx::DxResourceManager::GetInstance()->GetShaderManager()->AddResource(newShaderInstance, "shader01");
 
 			auto resource = rldx::DxResourceManager::GetInstance()->GetShaderManager()->GetResourceById(0);
 
@@ -142,51 +142,47 @@ namespace rldx {
 			deviceContext->PSSetShader(GetPixelShader(), nullptr, 0);
 			deviceContext->VSSetShader(GetVertexShader(), nullptr, 0);
 
-			// TODO: should that be here ? It logically belong with the mesh data, but it ubtain from the vertex shader:(
+			// TODO: should that be here ? It logically belong with the mesh data, but it ubtain from the vertex poShader:(
 			deviceContext->IASetInputLayout(GetInputLayout());
 		};
 	};
 
+
+	// TODO: MAYBE make it so is only loads one instance of the shader, ? AFTER Asset cleanup too?
 	class DefaultShaderCreator
 	{
-		static IntId simpleShader;
-		static IntId noTextureShader;
+		static DxMeshShaderProgram* simpleShader;
+		static DxMeshShaderProgram* noTextureShader;
 
 	public:
-		static DxMeshShaderProgram* GetSimpleShaderProgram()
+		static DxMeshShaderProgram* GetSimpleShaderProgram(rldx::DxResourceManager& resourceManager)
 		{
-			if (simpleShader == INVALID_ID)
-			{
-				auto newSimpleShaderProgram =
-					DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
-						DxDeviceManager::Device(),
-						LR"(VS_Simple.cso)",
-						LR"(PS_Simple.cso)");
+			auto newSimpleShaderProgram =
+				DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
+					DxDeviceManager::Device(),
+					resourceManager,
+					LR"(VS_Simple.cso)",
+					LR"(PS_Simple.cso)",
+					L"ShaderProgram:Simple"
+				);
 
-				simpleShader = newSimpleShaderProgram.GetId();
-				return newSimpleShaderProgram.GetPtr();
-			}
-
-			return DxResourceManager::Instance()->GetResourceById<DxMeshShaderProgram>(simpleShader);
+			return newSimpleShaderProgram;
 		}
 
-		static DxMeshShaderProgram* GetNoTextureShaderProgram()
+		static DxMeshShaderProgram* GetNoTextureShaderProgram(rldx::DxResourceManager& resourceManager)
 		{
-			if (noTextureShader == INVALID_ID)
-			{
-				auto noTexturesShaderProgram =
-					DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
-						DxDeviceManager::Device(),
-						LR"(VS_Simple.cso)",
-						LR"(PS_NoTextures.cso)"
-					);
+			auto noTexturesShaderProgram =
+				DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
+					DxDeviceManager::Device(),
+					resourceManager,
+					LR"(VS_Simple.cso)",
+					LR"(PS_NoTextures.cso)"
+				);
 
-				noTextureShader = noTexturesShaderProgram.GetId();
-				return noTexturesShaderProgram.GetPtr();
-			}
-
-			return DxResourceManager::Instance()->GetResourceById<DxMeshShaderProgram>(noTextureShader);
+			return noTexturesShaderProgram;
 		}
 	};
+
+
 }; // namespace rldx
 

@@ -11,9 +11,9 @@ namespace skel_anim
 {
 	using namespace utils;
 
-	SkeletonAnimation* SkeletonAnimation::CreateFromAnimFile(const anim_file::AnimFile& inAnimFile)
+	SkeletonAnimation* SkeletonAnimation::CreateFromAnimFile(rldx::DxResourceManager& resoureceMangager, const anim_file::AnimFile& inAnimFile)
 	{
-		auto newAnim = rldx::DxResourceManager::Instance()->AllocAnim().GetPtr();
+		auto newAnim = resoureceMangager.CreateResouce<SkeletonAnimation>();
 
 		newAnim->m_skeletonName = ToWString(inAnimFile.fileHeader.skeletonName);
 		newAnim->lastKeyTime = inAnimFile.fileHeader.fLastKeyTime;

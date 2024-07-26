@@ -21,7 +21,7 @@ namespace rldx {
 		/// <summary>
 		/// Wraps GPU data buffer (MS DirectXTK class
 		/// </summary>
-		std::shared_ptr<DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE>> buffer;
+		DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE> buffer;
 
 	public:
 		// TOD: make this pointer?
@@ -34,13 +34,12 @@ namespace rldx {
 	public:
 		void Init(ID3D11Device* poDevice, std::string debugName)
 		{
-			buffer = std::make_shared<DirectX::ConstantBuffer<CONST_BUF_DATA_TYPE>>();
-			buffer->Create(poDevice);
-			DXUT_SetDebugName(buffer->GetBuffer(), debugName.c_str());
+			buffer.Create(poDevice);
+			DXUT_SetDebugName(buffer.GetBuffer(), debugName.c_str());
 		}
 
 		// Looks up the underlying D3D constant buffer.
-		ID3D11Buffer* GetBuffer() const noexcept { return buffer->GetBuffer(); }
+		ID3D11Buffer* GetBuffer() const noexcept { return buffer.GetBuffer(); }
 
 		/// <summary>
 		/// Copiesw the internal data to the CPU
@@ -48,12 +47,12 @@ namespace rldx {
 		/// <param m_nodeName="poDeviceContext"></param>
 		virtual void RefreshGPUData(ID3D11DeviceContext* poDeviceContext)
 		{
-			buffer->SetData(poDeviceContext, data);
+			buffer.SetData(poDeviceContext, data);
 		}
 
 		virtual void RefreshGPUData(ID3D11DeviceContext* poDeviceContext, const CONST_BUF_DATA_TYPE& value)
 		{
-			buffer->SetData(poDeviceContext, value);
+			buffer.SetData(poDeviceContext, value);
 		}
 
 	};
@@ -68,7 +67,6 @@ namespace rldx {
 		UINT m_startSlot = 0;
 
 	public:
-
 
 		void SetStartSlot(UINT slot)
 		{
@@ -99,6 +97,8 @@ namespace rldx {
 		UINT m_startSlot = 0;
 
 	public:
+
+
 		void SetStartSlot(UINT slot)
 		{
 			m_startSlot = slot;

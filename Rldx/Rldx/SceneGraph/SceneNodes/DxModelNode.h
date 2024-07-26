@@ -20,15 +20,30 @@ namespace rldx
 		using UniquePtr = std::unique_ptr<DxModelNode>;
 
 	public:
+		virtual ~DxModelNode()
+		{
+			WriteDebugDestructMsg();
+		}
+
 		DxModelNode() : DxMeshNode(L"Unnamed DxModelNode")
 		{
 			SetType(SceneNodeTypeEnum::ModelNode);
-			SetTypeString(L"DxModelNode");
+			SetTypeString(L"Node:DxModelNode");
 		}
+
+		//virtual ~DxModelNode()
+		//{
+		//	WriteDebugDestructMsg();
+		//	m_lods.clear();
+		//}
+
+
 
 		DxModelNode(const std::wstring& m_nodeName) : DxMeshNode(m_nodeName) {}
 
-		void SetModelData(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);
+		void SetModelData(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const rmv2::RigidModelFileCommon& rmv2File);
+
+
 
 		virtual void SetShaderProgram(DxMeshShaderProgram* shaderProgram) override;
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex) override;
@@ -42,10 +57,10 @@ namespace rldx
 		virtual void SetAttachBone(int32_t boneIndex) override;
 		virtual void SetAttachBoneAsParent() override;
 		// TODO add support for (parsed) WSMODEL
-		void LoadMaterialDataFromRmv2(ID3D11Device* poDevice, const rmv2::RigidModelFileCommon& rmv2File);;
+		void LoadMaterialDataFromRmv2(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const rmv2::RigidModelFileCommon& rmv2File);;
 
 		// TODO: TEEEEESST
-		void LoadMaterialFromWSmodel(ID3D11Device* poDevice, rmv2::WsModelData& wsModelData);
+		void LoadMaterialFromWSmodel(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, rmv2::WsModelData& wsModelData);
 
 		virtual void FlushToRenderBucket(IRenderBucket* pRenderQueue) override;
 		void FlushModelMeshesToRenderBucked(IRenderBucket* pRenderQueue);
@@ -66,13 +81,19 @@ namespace rldx
 		}
 
 	private:
+		// TODO: rename to "load"/"allocate"/"createDxBuffersfrom", as "set" sounds like it just a simple copying
 		void SetSingleMesh(
 			ID3D11Device* poDevice,
-			size_t iLod,
-			size_t iMesh,
+			rldx::DxResourceManager& resourceManager,
+			DxMeshNode::UniquePtr& upoMesh,
 			const rmv2::LODHeaderCommon& lodHeader,
 			const rmv2::MeshHeaderType3& meshHeader,
 			const rmv2::MaterialHeaderType5& materialHeader,
 			const rmv2::MeshBlockCommon& rmr2MeshData);
+
+		/// <summary>
+		/// Resizes the bound box to fit all the meshes in the container
+		/// </summary>
+		virtual void ResizeBoundBoxToContent() override;
 	};
 };

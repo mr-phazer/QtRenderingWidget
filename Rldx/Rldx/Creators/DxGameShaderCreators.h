@@ -12,41 +12,45 @@ namespace rldx
 	class IShaderProgramCreator
 	{
 	public:
-		virtual DxMeshShaderProgram* Create(ID3D11Device* poDevice) = 0;
+		virtual DxMeshShaderProgram* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager) = 0;
 	};
 
 	class Troy_ShaderProgramCreator : public IShaderProgramCreator
 	{
-		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
+		DxMeshShaderProgram* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager) override
 		{
 			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
+				resourceManager,
 				LR"(VS_Weighted4.cso)",
-				LR"(PS_Troy.cso)").GetPtr();
+				LR"(PS_Troy.cso)"
+				L"Troy/WH/WH2 Shader Program");
 		};
 	};
 
 	class Attila_ShaderProgramCreator : public IShaderProgramCreator
 	{
-		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
+		DxMeshShaderProgram* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager) override
 		{
 			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
 				poDevice,
+				resourceManager,
 				LR"(VS_Weighted4.cso)",
-				LR"(PS_Attila_Weigted.cso)").GetPtr();
+				LR"(PS_Attila_Weigted.cso)"
+			);
 		};
 	};
 
 	class WH3_ShaderProgramCreator : public IShaderProgramCreator
 	{
-		DxMeshShaderProgram* Create(ID3D11Device* poDevice) override
+		DxMeshShaderProgram* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager) override
 		{
-			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>
-				(
-					poDevice,
-					LR"(VS_Weighted4.cso)",
-					LR"(PS_Three_Kingdoms.cso)"
-				).GetPtr();
+			return DxMeshShaderProgram::CreateFromDisk<DxMeshShaderProgram>(
+				poDevice,
+				resourceManager,
+				LR"(VS_Weighted4.cso)",
+				LR"(PS_Three_Kingdoms.cso)"
+			);
 		};
 	};
 

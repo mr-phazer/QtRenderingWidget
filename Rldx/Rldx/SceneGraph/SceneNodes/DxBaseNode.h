@@ -1,13 +1,15 @@
 #pragma once
 
-#include <stack>
+#include <memory>
 #include <vector>
+
+#include "..\..\Rendering\DxMeshRenderData.h"
 
 #include "..\..\Interfaces\IFlushable.h"
 #include "..\..\Interfaces\IUpdateable.h"
 #include "..\..\Interfaces\TIdentifiable.h"
 
-#include "..\..\Rendering\DxMeshRenderData.h"
+
 #include "..\NodeTransform\NodeTransform.h"
 
 namespace rldx {
@@ -43,7 +45,6 @@ namespace rldx {
 		}
 	};
 
-
 	class DxBaseNode : public TIdentifiable<SceneNodeTypeEnum>, public IUpdateable/*, public IFlushable*/
 	{
 	public:
@@ -52,10 +53,12 @@ namespace rldx {
 
 	private:
 		DrawStateEnum m_drawState = DrawStateEnum::Draw;
-		DrawStateEnum m_BoundingBoxDrawState = DrawStateEnum::Draw;
+		DrawStateEnum m_BoundingBoxDrawState = DrawStateEnum::DontDraw;
 
 		DxMeshRenderingData m_boundingBoxMesh;
 		DxMeshRenderingData m_nodeMesh;
+
+		sm::Color boundBoxRenderColor = { 1.0f, 0.6f, 0.9f, 1.0f };
 
 		// Tree structure 
 		std::vector<std::unique_ptr<DxBaseNode>> m_children;
@@ -72,8 +75,12 @@ namespace rldx {
 	public:
 		DxBaseNode()
 		{
+#ifdef _DEBUG
+			DrawStateEnum m_BoundingBoxDrawState = DrawStateEnum::Draw;
+#endif
 			SetType(SceneNodeTypeEnum::MeshNode);
-			SetTypeString(L"DxMeshNode");
+			SetTypeString(L"Node:DxMeshNode");
+			WriteDebugConstructMsg();
 		}
 
 		DxBaseNode(const std::wstring& name)
@@ -82,19 +89,20 @@ namespace rldx {
 			SetName(name);
 		}
 
-		virtual ~DxBaseNode() = default;
+		virtual ~DxBaseNode()
+		{
+			WriteDebugDestructMsg();
+		}
 
 		template<typename T>
 		static std::unique_ptr<T> TCreateTreeNode(std::wstring nodeName);
 
 	public:
 		// TODO: make constructor, to force derived classes to set NodeType Enum / Type Description String
-		// TODO: make: "DxBaseNode(SceneNodeTypeEnum type, std::wstring Name)
+		// TODO: make: "DxBaseNode(SceneNodeTypeEnum type, const std::wstring& typeString, const std::wstring& name)
 
-		DirectX::BoundingBox& GetNodeBoundingBox();
+		DirectX::BoundingBox& NodeBoundingBox();
 
-		void SetBoundingBox(DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint);
-		void SetBoundingBox(const DirectX::BoundingBox& inBB);
 
 		virtual void SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex);;
 		virtual void SetDeformerNodeRecursive(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex);
@@ -110,14 +118,6 @@ namespace rldx {
 		const DxBaseNode* GetParent() const;
 
 		size_t GetChildCount() const;
-
-		// TODO: check that this shit actually work, calling the over overload and not itself
-		/*template <typename T>
-		T* AddChild(std::unique_ptr<T>&& spoChild)
-		{
-			return AddChild(static_cast<std::unique_ptr<T>&>(spoChild));
-		}*/
-
 
 		/// <summary>
 		/// Adds a child to tree, takes ownership of incoming node, previous instances will be invalid
@@ -162,16 +162,17 @@ namespace rldx {
 			return m_children[index].get();
 		}
 
-		template<typename CONST_BUF_DATA_TYPE, bool bDynamicCasting = true>
-		inline CONST_BUF_DATA_TYPE* GetThisAs()
+		// TODO: is this used/needed?
+		template<typename T, bool bDynamicCasting = true>
+		inline T* GetThisAs()
 		{
 			if (bDynamicCasting)
 			{
-				return dynamic_cast<CONST_BUF_DATA_TYPE*>(this);
+				return dynamic_cast<T*>(this);
 			}
 			else
 			{
-				return static_cast<CONST_BUF_DATA_TYPE*>(this);
+				return static_cast<T*>(this);
 			}
 		}
 
@@ -284,30 +285,67 @@ namespace rldx {
 			return poCurrentNode;
 		}
 
+		virtual void ResizeBoundBoxToContent()
+		{
+			// does nothing here, as there is no mesh to fit
+		}
+
+		// TODO: is this used/needed
 		virtual void UpdateAllBoundBoxes()
 		{
 			auto poRootNode = GetTreeRootNode();
 
-			if (poRootNode == nullptr) return
-				UpdateBoundBoxesRecursive(poRootNode);
+			if (poRootNode == nullptr) return;
+
+			UpdateBoundBoxesRecursive(poRootNode);
 		}
 
-		virtual void FitChildBoundBox(DxBaseNode* node)
+		// TODO: is this used/needed
+		virtual void ResizeBoundBoxToFitChild(DxBaseNode* node)
 		{
 			DirectX::BoundingBox::CreateMerged(
-				this->GetNodeBoundingBox(),
-				this->GetNodeBoundingBox(),
-				node->GetNodeBoundingBox());
+				this->NodeBoundingBox(),
+				this->NodeBoundingBox(),
+				node->NodeBoundingBox());
 		}
 
+		/// <summary>
+		/// Resize the parent node's bound box, to fit children
+		/// </summary>
+		virtual void ResizeBoundBoxToFitChildren()
+		{
+			for (auto& itChild : GetChildren())
+			{
+				DirectX::BoundingBox::CreateMerged(
+					NodeBoundingBox(),
+					NodeBoundingBox(),
+					itChild->NodeBoundingBox());
+			}
+		}
+
+		/// <summary>
+		/// Resizes parent bound boxes to fit children, 
+		/// </summary>
+		virtual void UpdateParentBoundBoxesTraverseUp()
+		{
+			auto parent = GetParent();
+
+			while (parent)
+			{
+				parent->ResizeBoundBoxToFitChildren();
+				parent = parent->GetParent();
+			}
+		}
+
+		// TODO: needed? Remove?
 		virtual void UpdateBoundBoxesRecursive(DxBaseNode* node)
 		{
-			FitChildBoundBox(node);
+			//ResizeBoundBoxToFitChild(node);
 
-			for (auto& itChild : node->GetChildren())
-			{
-				UpdateBoundBoxesRecursive(itChild.get());
-			}
+			//for (auto& itChild : node->GetChildren())
+			//{
+			//	UpdateBoundBoxesRecursive(itChild.get());
+			//}
 		}
 
 		void UpdateGlobalTransform(float elapsetTime = 0.0f)
@@ -330,6 +368,20 @@ namespace rldx {
 
 		virtual void SetDrawState(DrawStateEnum state) { m_drawState = state; }
 		DrawStateEnum GetDrawState() const { return m_drawState; }
+
+		static void AllocateBoundingBoxMeshesRecursive(rldx::DxResourceManager& resourceManager, DxBaseNode* node)
+		{
+			AllocateBoundingBoxMesh(node, resourceManager);
+
+			for (auto& itChild : node->GetChildren())
+			{
+				AllocateBoundingBoxMeshesRecursive(resourceManager, itChild.get());
+			}
+		}
+
+	protected:
+		void SetBoundingBox(DxResourceManager& resourcemanager, DirectX::XMFLOAT3 minPoint, DirectX::XMFLOAT3 maxPoint, float stuff);
+		static void AllocateBoundingBoxMesh(DxBaseNode* node, DxResourceManager& resourceManager);
 
 	private:
 		void SetParent(DxBaseNode* poParent)

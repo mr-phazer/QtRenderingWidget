@@ -47,8 +47,8 @@ namespace rldx
 	public:
 		DxDeformerNode()
 		{
-			SetType(SceneNodeTypeEnum::DeformerNode);
-			SetTypeString(L"DxDeformerNode");
+			SetType(SceneNodeTypeEnum::BaseNode);
+			SetTypeString(L"Node:DxDeformerNode");
 		}
 
 		DxDeformerNode(const std::wstring& name)
@@ -60,8 +60,8 @@ namespace rldx
 		virtual ~DxDeformerNode();
 		static std::unique_ptr<DxDeformerNode> Create(const std::wstring& m_nodeName = L"");
 
-		virtual void LoadBindPose(std::wstring m_animFilePath);
-		virtual void LoadAnimClip(std::wstring animFile);
+		virtual void LoadBindPose(rldx::DxResourceManager& resourceManager, std::wstring animFilePath);
+		virtual void LoadAnimClip(rldx::DxResourceManager& resourceManager, std::wstring m_animFilePath);
 		virtual void AttachWeapon(rldx::DxMeshNode* nodeWeapon, const std::wstring& boneName);
 		virtual void Update(float time) override;
 

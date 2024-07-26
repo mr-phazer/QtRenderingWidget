@@ -7,6 +7,8 @@ namespace rldx {
 
 	enum class ResourceTypeEnum
 	{
+		NOT_SET,
+		Mesh,
 		MeshRenderData,
 		ShaderProgram,
 		Texture,
@@ -19,7 +21,13 @@ namespace rldx {
 	class IDxResource : public TIdentifiable<ResourceTypeEnum>
 	{
 	public:
-		IDxResource() = default;
+		IDxResource()
+		{
+			SetType(ResourceTypeEnum::NOT_SET);
+			SetTypeString(L"IDxResouce:Base");
+			SetName(L"Unnamed");
+		}
+
 		IDxResource(ResourceTypeEnum type, const std::wstring& typeString, const std::wstring& name)
 		{
 			SetType(type);

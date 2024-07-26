@@ -14,9 +14,9 @@ namespace rldx {
 		//pugi::xml_document m_xmldoc;
 
 	public:
-		void Build(DxVmdNode* sceneGraphRoot, const pugi::xml_node& xmlNode);
+		void Build(rldx::DxResourceManager& resourceManager, DxVmdNode* sceneGraphRoot, const pugi::xml_node& xmlNode);
 	private:
-		void LoadVariantMeshRerenceNode(DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode);
+		void LoadVariantMeshRerenceNode(rldx::DxResourceManager& resourceManager, DxVmdNode* sceneGraphNode, const pugi::xml_node& xmlNode);
 	};
 
 

@@ -9,6 +9,10 @@ namespace rldx {
 
 	class DxSceneManager : public IResizable
 	{
+		DxResourceManager m_localResourceManager;
+		std::unique_ptr<DxScene> m_upoCurrentScene;
+		timer::SystemClockChecker m_systemClock;
+		bool m_bRenderingRunning = false;
 
 	public:
 		using UniquePtr = std::unique_ptr<DxSceneManager>;
@@ -40,7 +44,6 @@ namespace rldx {
 			}
 		}
 
-
 		/// <summary>
 		/// Send Native Window events to a DxScene, as the low-level camera impl needs them
 		/// </summary>		
@@ -59,13 +62,13 @@ namespace rldx {
 			return m_upoCurrentScene.get();
 		}
 
+		rldx::DxResourceManager& GetResourceManager()
+		{
+			return m_localResourceManager;
+		}
+
 		bool IsRenderRunning() const { return m_bRenderingRunning; }
 		void SetRenderRunningState(bool state) { m_bRenderingRunning = state; }
-
-	private:
-		std::unique_ptr<DxScene> m_upoCurrentScene = nullptr;
-		timer::SystemClockChecker m_systemClock;
-		bool m_bRenderingRunning = false;
 	};
 
 }; // namespace rldx

@@ -11,16 +11,13 @@
 #include <string>
 #include <type_traits>
 
+#include "IDxResource.h"
+
 // author heade
 #include <CommonLibs\Logger\Logger.h>
 #include <CommonLibs\Utils\MapUtils.h>
-#include "IDxResource.h"
 #include <CommonLibs\Utils\ByteStream.h>
 #include <CommonLibs\Utils\IOUtils.h>
-
-namespace skel_anim {
-	struct SkeletonAnimation;
-}
 
 namespace rldx {
 
@@ -29,269 +26,79 @@ namespace rldx {
 		std::vector<std::vector<unsigned char>>* outBinFiles
 	);
 
-	class DxMesh;
-	class DxTexture;
-	class DxMaterial;
-	class IDxShaderProgram;
-	class DxMeshShaderProgram;
-
-	template <typename RESOURCE_TYPE>
-	class TResourceHandle
+	class DxResourceManager
 	{
-	public:
-		TResourceHandle() = default;
-		TResourceHandle(IntId id, RESOURCE_TYPE* poResource, std::wstring stringID = L"") : m_id(id), m_poResource(poResource), m_stringId(stringID) {};
+		std::map<uint32_t, std::unique_ptr<rldx::IDxResource>> m_umapResources;
 
-		IntId GetId() const { return m_id; };
-		RESOURCE_TYPE* GetPtr() const { return m_poResource; };
-		std::wstring* GetStringKey() const { return m_stringId; };
-
-	private:
-		std::wstring m_stringId = L"";  // pointer to string key
-		IntId m_id = INVALID_ID;
-		RESOURCE_TYPE* m_poResource = nullptr;
-	};
-
-	// non-template parent, SHOULD? make sure that the static id is unique per instantiation?
-	class IdCounterBase
-	{
-	protected:
-		IntId GetNextId() const { return sm_nextId++; }
-
-	private:
-		static IntId sm_nextId;
-	};
-
-	class DxResourceManager : public IdCounterBase
-	{
-	public:
-		enum class AllocTypeEnum { AttempReuseIdForNew, MakeNew, AttempUseExisting };
+		// TODO: Does this belong here? Maybe move to a separate class? Like a "FileLoader" class? Alongside with "GetFile"?
+		static std::wstring sm_rooPathAssetPath;// = LR"(c:/temp/)";
 
 		std::wstring m_gameIdString = L"";
 
 	public:
-		/// <summary>
-		/// TODO: move this to ByteStream?
-		/// </summary>		
-		static void SetGameAssetFolder(const std::wstring& path) { Instance()->m_rooPathAssetPath = path; }
-
-		/// <summary>
-		/// TODO: move this to ByteStream?
-		/// </summary>		
-		static std::wstring GetGameAssetFolder() { return Instance()->m_rooPathAssetPath; }
-
-		/// <summary>
-		/// TODO: move this to ByteStream?
-		/// </summary>		
-		static std::wstring GetDefaultAssetFolder() { return utils::GetExePath(); }
-
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
 		std::wstring GetGameIdString() const { return m_gameIdString; }
 
-		//static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { Instance()->m_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
-
-		static void SetAssetFetchCallback(AssetFetchCallbackWrapper assetCallBackFunc) { Instance()->m_assetCallBack = assetCallBackFunc; }
-		static void CallAssetFetchCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries) { Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
-		static utils::ByteStream GetFile(const std::wstring& filePath)
-		{
-			std::wstring fileP = std::wstring(filePath);
-			if (utils::IsDiskFile(filePath))
-			{
-				return utils::ByteStream(filePath);
-			}
-			else {
-
-				return GetFileFromCallBack(fileP);
-			}
-		}
-
-		// TODO: is this serving any purpose?
-		//void AddMissingFile(const std::wstring& file) { m_qstrMissingFiles.push_back(QString::fromStdWString(file)); }
-
-		// TODO: make work?
-		TResourceHandle<DxTexture> MakeCubemapResource(ID3D11Device* poDevice, const std::wstring& file);
-
-		void SetDefaultShaderProgram(DxMeshShaderProgram* newShaderProgram);
-		DxMeshShaderProgram* GetDefaultShaderProgram() const { return m_defaultShaderProgram; }
-
-		~DxResourceManager()
-		{
-			// TODO: REMOVE
-			auto DEBUG_1 = 1;
-		}
-
-		static DxResourceManager* Instance();
-
 		template<typename Derived_t>
-		TResourceHandle<Derived_t> Create(const std::wstring& stringId = L"");
+		Derived_t* CreateResouce();
 
-		template<typename Derived_t>
-		TResourceHandle<Derived_t> AllocEmpty(const std::wstring& stringId, AllocTypeEnum allotype = AllocTypeEnum::AttempUseExisting);
+		template <typename T>
+		void DestroyResource(T* poResource);
 
-		template<typename Derived_t>
-		TResourceHandle<Derived_t> Alloc(const std::wstring& stringId = L"");
+		void DestroyAllResources();
 
-		template <typename Derived_t>
-		Derived_t* GetResourceByString(const std::wstring& strId) const;
+		static void GetResourcesFromCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries);
 
-		template <typename Derived_t>
-		Derived_t* GetResourceById(IntId id) const;
+		// TODO: Move to a separate class? like a new class "FileLoader" / similar?
+		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName);
+		static utils::ByteStream GetFile(const std::wstring& filePath);
 
-		template <typename SHADER_TYPE>
-		TResourceHandle<SHADER_TYPE> AllocShaderProgram(const std::wstring& strId)
-		{
-			return AllocEmpty<SHADER_TYPE>(strId);
-		};
+		//static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { sm_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
+		static void SetAssetFetchCallback(AssetFetchCallbackWrapper assetCallBackFunc) { sm_assetCallBack = assetCallBackFunc; }
+		static void CallAssetFetchCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries) { GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 
-		TResourceHandle<DxTexture> AllocTexture(const std::wstring& strId, AllocTypeEnum allocType = AllocTypeEnum::AttempUseExisting);
-		TResourceHandle<DxMaterial> AllocMaterial(const std::wstring& strId = L"");;
-		TResourceHandle<DxMesh> AllocMesh(const std::wstring& strId = L"");
-		TResourceHandle<skel_anim::SkeletonAnimation> AllocAnim(const std::wstring& strId = L"");
+		static void SetGameAssetFolder(const std::wstring& path) { sm_rooPathAssetPath = path; }
+		static const std::wstring& GetGameAssetFolder() { return sm_rooPathAssetPath; }
 
-		/// <summary>
-		/// Get texture resource handle is it exists, or {INVALID_HANDLE, nullptr} if it does not
-		/// </summary>		
-		TResourceHandle<DxTexture> GetTexture(const std::wstring& strId = L"");
-
-
+		static AssetFetchCallbackWrapper sm_assetCallBack;
+		//static std::function<void(QString*, QList<QString>*)> sm_animPathsBySkeletonCallBack;
 	private:
-		static utils::ByteStream GetFileFromCallBack(std::wstring& fileName)
-		{
-			std::vector<std::wstring>* qstrMissingFiles = new std::vector<std::wstring>();
-			std::vector<std::vector<unsigned char>>* destBinaries = new std::vector<std::vector<unsigned char>>();
-
-			qstrMissingFiles->push_back(fileName);
-
-			Instance()->GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
-
-			if (destBinaries->size() != 1)
-			{
-				throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
-			}
-
-			auto binary = destBinaries->at(0);
-			if (binary.empty())
-			{
-				// TODO: CLEAN UP
-				//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
-				return utils::ByteStream();
-			}
-
-			// TODO: CLEAN UP
-			//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
-
-			return utils::ByteStream(binary.data(), binary.size(), fileName);
-		}
-
-		void GetResourcesFromCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries)
-		{
-			if (!m_assetCallBack) {
-				throw std::exception("No asset callback function set");
-			}
-
-			m_assetCallBack(qstrMissingFiles, destBinaries);
-		}
-
-	private:
-		DxMeshShaderProgram* m_defaultShaderProgram = nullptr;
-
-		std::map<IntId, std::unique_ptr<IDxResource>> m_umapResourceSptrDataById;
-		utils::WStringkeyMap<IDxResource*> m_umapRawResourcePtrByString;
+		void RemoveResourceFromMap(IDxResource* resource);
 
 		static std::unique_ptr<DxResourceManager> sm_spoInstance;
-		std::wstring m_rooPathAssetPath = LR"(c:/temp/)";
-		AssetFetchCallbackWrapper m_assetCallBack;
-		//std::function<void(QString*, QList<QString>*)> m_animPathsBySkeletonCallBack;
-		//QVector<QString> m_qstrMissingFiles;
 	};
 
 	template<typename Derived_t>
-	inline TResourceHandle<Derived_t> DxResourceManager::Create(const std::wstring& stringId)
-	{
-		auto pResource = GetResourceByString<Derived_t>(stringId);
-		if (pResource) {
-			return { pResource->GetId(), pResource };
-		}
-
-		return TResourceHandle<Derived_t>();
-	}
-
-	/// <summary>
-	/// Create a new resource of the specified type and stores it in the resource manager.
-	/// </summary>
-	/// <typeparam m_nodeName="Derived_t">The resource, hase to be Derived from IDxResource</typeparam>
-	/// <param m_nodeName="stringId">String Id - Optional</param>
-	/// <returns>returns a handle that contains both the pointer to the new resourec, and its global ID</returns>
-	template<typename Derived_t>
-	inline TResourceHandle<Derived_t> DxResourceManager::AllocEmpty(const std::wstring& stringId, AllocTypeEnum allocType)
+	inline Derived_t* DxResourceManager::CreateResouce()
 	{
 		static_assert(std::is_base_of<IDxResource, Derived_t>::value, "Error: 'Derived_t' is not derived from `IDxResource`");
 
-		// TODO: DEBUGGING CODE: makes every alloc "always make New" as before. Make the out-commented code work if possible
-		//if ((allocType == AllocTypeEnum::AttempUseExisting || allocType == AllocTypeEnum::AttempReuseIdForNew) && !stringId.empty())
-		//{
-		//	auto itExistingResource = m_umapRawResourcePtrByString.find(stringId);
-		//	if (itExistingResource != m_umapRawResourcePtrByString.end()) // is resource alreadyd loaded
-		//	{
-		//		auto tempResourceId = itExistingResource->second->GetId();
-
-		//		if (allocType == AllocTypeEnum::AttempUseExisting) // return existing resource			
-		//		{
-		//			return TResourceHandle<Derived_t>(tempResourceId, static_cast<Derived_t*>(itExistingResource->second), stringId);
-		//		}
-
-		//		if (allocType == AllocTypeEnum::AttempReuseIdForNew)
-		//		{
-		//			auto upoDerived = std::make_unique<Derived_t>(); // allocate new resource mem				
-
-		//			// update the maps with the new resource reusing the keys
-		//			auto poRawResource = upoDerived.get();
-		//			m_umapRawResourcePtrByString[stringId] = poRawResource;
-		//			m_umapResourceSptrDataById[tempResourceId] = std::move(upoDerived);
-
-		//			return TResourceHandle<Derived_t>(tempResourceId, static_cast<Derived_t*>(poRawResource), stringId);
-		//		}
-		//	}
-		//}
-
-		// TODO: move "GetNextId()", and its "static IntId sm_NextId" to IDxResource, makes much more sense
-		// create new resource
-		auto resourceId = GetNextId();
 		auto upoNewResource = std::make_unique<Derived_t>();
-		upoNewResource->SetId(resourceId); // manually set resource interal id to be = the global id just generated
-
 		auto poRawResource = upoNewResource.get();
-		m_umapResourceSptrDataById[resourceId] = std::move(upoNewResource);
 
-		if (!stringId.empty()) { // associate raw ptr with string id
+		// TODO: maybe change this, so the id used it not from the resourece, in case it is changed/not set
+		auto resourceid = poRawResource->GetId();
 
-			auto it = m_umapRawResourcePtrByString.insert(std::make_pair(stringId, poRawResource));
+		if (m_umapResources.find(resourceid) != m_umapResources.end()) {
+			throw std::exception("FATAL Error: Resource with id already exists");
 		}
 
-		return TResourceHandle<Derived_t>(resourceId, static_cast<Derived_t*>(poRawResource), stringId);
+		// adding resource to map, the object is now managing its lifetime
+		m_umapResources[resourceid] = std::move(upoNewResource);
+
+		return poRawResource;
 	}
 
-	template<typename Derived_t>
-	inline Derived_t* DxResourceManager::GetResourceByString(const::std::wstring& strId) const
+	template<typename T>
+	inline void DxResourceManager::DestroyResource(T* poResource)
 	{
-		auto it = m_umapRawResourcePtrByString.find(strId);
-		if (it != m_umapRawResourcePtrByString.end()) {
+		static_assert(std::is_base_of_v<rldx::IDxResource, T>, "T must be derived from Base");
 
-			return static_cast<Derived_t*>(it->second);
-		}
+		if (!poResource)
+			return;
 
-		return nullptr;
-	}
+		auto poBasePtr = static_cast<rldx::IDxResource*> (poResource);
 
-	template<typename Derived_t>
-	inline Derived_t* DxResourceManager::GetResourceById(IntId id) const
-	{
-		auto it = m_umapResourceSptrDataById.find(id);
-		if (it != m_umapResourceSptrDataById.end()) {
-
-			return static_cast<Derived_t*>(it->second.get());
-		}
-
-		return nullptr;
+		RemoveResourceFromMap(poBasePtr);
 	}
 }; // namespace rldx

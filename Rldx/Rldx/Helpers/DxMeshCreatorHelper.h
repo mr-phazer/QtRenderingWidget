@@ -19,7 +19,25 @@ namespace rldx
 		static DxCommonMeshData MakeTestCubeMesh(ID3D11Device* poDevice);
 		static DxCommonMeshData MakeGrid(ID3D11Device* poDevice, int linesPerAxis = 10, float spacing = 0.01f);
 		static DxCommonMeshData CreateFromRmv2Mesh(ID3D11Device* poDevice, const rmv2::MeshBlockCommon& rmv2Mesh);
-		static DxCommonMeshData MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb);
+		static DxCommonMeshData MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb, const sm::Color& color);
+	};
+
+	class IDxMeshCreator
+	{
+		virtual DxCommonMeshData CreateMesh(ID3D11Device* poDevice) = 0;
+	};
+
+	class Rmv2MeshCreator : IDxMeshCreator
+	{
+		const rmv2::MeshBlockCommon& m_rmv2Mesh;
+
+	public:
+		Rmv2MeshCreator(const rmv2::MeshBlockCommon& rmv2Mesh)
+			:
+			m_rmv2Mesh(rmv2Mesh)
+		{}
+
+		DxCommonMeshData CreateMesh(ID3D11Device* poDevice) override;
 	};
 
 	class DxSkeletonMeshCreator

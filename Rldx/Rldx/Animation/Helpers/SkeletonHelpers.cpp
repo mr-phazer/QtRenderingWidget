@@ -20,25 +20,25 @@ namespace skel_anim
 		return	packSkeletonsPath + skeletonName + packSkeletonExtention;
 	}
 
-	Skeleton GetAnimFromFile(const std::wstring& skeletonName)
+	Skeleton GetAnimFromFile(rldx::DxResourceManager& resourceManager, const std::wstring& skeletonName)
 	{
 		ByteStream skeletonFileBinary(rldx::DxResourceManager::GetFile(GetPackPathFromSkeletonName(skeletonName)));
 		auto animFileSkeleton = anim_file::TwAnimFileReader().Read(skeletonFileBinary);
 
-		return Skeleton(animFileSkeleton);
+		return Skeleton(resourceManager, animFileSkeleton);
 	}
 
 	/// <summary>
 	/// For Rome2/Atilla/ToB, has 2 versions of the same skeleton, we dorrect the skeleton to most detailed version, to support all anims
 	/// </summary>
 	/// <param m_nodeName="inOutSkeleton"></param>
-	void ForceCorrectSkeleton(skel_anim::Skeleton& inOutSkeleton)
+	void ForceCorrectSkeleton(skel_anim::Skeleton& inOutSkeleton, rldx::DxResourceManager& resourceManager)
 	{
 		if (CompareNoCase(inOutSkeleton.GetName(), L"rome_man_game"))
 		{
 			ByteStream animSkeletonBinaryData(LR"(animations/skeletons/rome_man.anim")");
 			auto animSkeletonFile = anim_file::TwAnimFileReader().Read(animSkeletonBinaryData);
-			inOutSkeleton = skel_anim::Skeleton(animSkeletonFile);
+			inOutSkeleton = skel_anim::Skeleton(resourceManager, animSkeletonFile);
 		}
 	}
 

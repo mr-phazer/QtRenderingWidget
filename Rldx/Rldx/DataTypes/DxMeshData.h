@@ -36,11 +36,9 @@ namespace rldx
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	cpoIndexBuffer;
 		Microsoft::WRL::ComPtr<ID3D11Buffer>	cpoVertexBuffer;
 
+		DirectX::XMFLOAT3 min, max;
 		TRawMeshData<VertexType, IndexType>	originalMeshData;
 	};
 
 	using DxCommonMeshData = TDxMeshRenderData<CommonVertex, uint32_t>;
-
-
-
 };

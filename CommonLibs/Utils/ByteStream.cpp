@@ -38,33 +38,36 @@ namespace utils {
 	}
 
 	ByteStream::ByteStream(const std::wstring& fileName, bool doThrow)
-		: m_currentFilePath(fileName)
 	{
-		if (DoesFileExist(m_currentFilePath)) // .exe folder + path ?
+		if (DoesFileExist(fileName)) // .exe folder + path ?
 		{
+			m_currentFilePath = fileName;
 			ReadFileToVector(m_currentFilePath, m_data);
 			return;
 		}
 		else if (DoesFileExist(sm_searchFolder + fileName)) // search folder + path?
 		{
-			auto tempDiskPath = sm_searchFolder + m_currentFilePath;
-			ReadFileToVector(tempDiskPath, m_data);
+			m_currentFilePath = sm_searchFolder + fileName;
+			ReadFileToVector(m_currentFilePath, m_data);
 			return;
 		}
 
 		if (doThrow)
 			throw COMException(std::wstring(L"ByteStream::ByteStream: '" + fileName + L"', file does not exist."));
 		else
-			m_data.clear();  // TODO: redundant?
+			logging::LogWarning(L"ByteStream::ByteStream: '" + fileName + L"', file does not exist.");
+		m_data.clear();  // TODO: redundant?
 		return;
 	}
 
 	void ByteStream::SetSearchFolder(const std::wstring& path) // TODO: static for now, easiest, maybe change to fancier?
 	{
+		// TODO: FIX/REMOVE, should slash be added if missing or not?
 		sm_searchFolder = path;
-		if (sm_searchFolder[sm_searchFolder.size() - 1] != L'\\') // make sure search folder ends with slash to avoid incorent paths
+		auto lastChar = sm_searchFolder[sm_searchFolder.size() - 1];
+		if (lastChar != L'\\' && lastChar != L'/') // make sure search folder ends with slash to avoid incorent paths
 		{
-			sm_searchFolder += L'\\';
+			sm_searchFolder += L'/';
 		}
 	}
 

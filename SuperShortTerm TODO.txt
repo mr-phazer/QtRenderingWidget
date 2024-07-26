@@ -1,4 +1,7 @@
 FIX
+- Make sure all assets are deleted when QRenderingWidget is delete
+- Make sure that AddVariantMesh Works on existing QRenderingWidget
+
 - Clean up the DxVariantMeshNode class. It inherits from DxDeformerNode, 
  and overrides its almost all its methods, maybe make just ONE DxDeformerNode class
 

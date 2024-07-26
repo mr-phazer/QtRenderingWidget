@@ -1,41 +1,32 @@
 #pragma once
 
 #include <qevent.h>
+#include <qmimedata.h>
 #include <qtimer.h>											   
 #include <qwidget.h>
 
-#include "ui_QtRenderView.h"
+#include "ui_QtRenderWidgetView.h"
 
 #include <Rldx\Creators\DxSceneCreator.h>
 #include <Rldx\Managers\DxDeviceManager.h>
 #include <Rldx\Managers\DxSceneManager.h>
 
-class QtRenderWidgetView;
+#include "DirectXTK\Inc\SpriteFont.h"
 
-class QtRenderController : public QObject
-{
-	Q_OBJECT;
-
-	QtRenderWidgetView* view;
-
-public:
-	QtRenderController(QtRenderWidgetView* parentAndView);
-
-public slots:
-	void OnkeyPressed(QKeyEvent* keyEvent);
-};
+#include "..\Controllers\QtRenderWidgetController.h"
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
 private:
-	QtRenderController* m_controller = nullptr;
+	QtRenderWidgetController* m_controller = nullptr;
 
-	friend class QtRenderController;
+	friend class QtRenderWidgetController;
 
 private:
 	// overriden methods
 	void resizeEvent(QResizeEvent* event) override;
+	void closeEvent(QCloseEvent* event) override;
 
 	QPaintEngine* paintEngine() const override;
 	bool event(QEvent* event) override;
@@ -46,12 +37,16 @@ private:
 public:
 	QtRenderWidgetView(QWidget* parent, const QString& gameidString);
 
+	~QtRenderWidgetView()
+	{
+		TerminateRendering();
+		emit this->WindowClosing();
+	}
+
 	void SetGrideDrawState(rldx::DxBaseNode::DrawStateEnum state)
 	{
 		m_upoSceneManager->GetCurrentScene()->SetGridState(state);
 	}
-
-	bool InitRenderView();
 
 	void PauseRendering()
 	{
@@ -71,19 +66,22 @@ public:
 			sceneBuilder->Create((HWND)winId(),
 								 rldx::DxDeviceManager::GetInstance().GetDevice(),
 								 rldx::DxDeviceManager::GetInstance().GetDeviceContext(),
+								 m_upoSceneManager->GetResourceManager(),
 								 GetGameIdString().toStdWString());
 
 		m_upoSceneManager->SetScene(scene);
 	}
 
 	void StartRendering(float _FPS = 60.0f);
+	void TerminateRendering();
 
 	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
 	QString GetGameIdString() const { return m_gameIdString; };
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
 
 private:
-	void LoadExeResources(ID3D11Device* poDevice);
+	void LoadExeResources(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice);
+	bool InitRenderView();
 
 protected:
 	virtual void focusInEvent(QFocusEvent* event) override;
@@ -91,15 +89,16 @@ protected:
 
 signals:
 	void resizeEventHappend(QResizeEvent* event);
-	void keyPressed(QKeyEvent*);
+	void KeyPressed(QKeyEvent*);
 	void mouseMoved(QMouseEvent*);
 	void mouseClicked(QMouseEvent*);
 	void mouseReleased(QMouseEvent*);
 	void doubleclicked();
 	void detachedWindowClose();
+	void WindowClosing();
 
 private:
-	void FrameTimeOutHandler();
+	void DrawFrameHandler();
 	void MakeConnections();
 
 private:
@@ -111,13 +110,10 @@ private:
 
 	// only support drag+drog in debug mode
 
-#ifdef _DEBUG
-public:
-	void dragEnterEvent(QDragEnterEvent* event)
-	{
-		event->acceptProposedAction();
-	}
 
+public:
+#ifdef _DEBUG
+	void dragEnterEvent(QDragEnterEvent* event);
 	void dropEvent(QDropEvent* event);
 #endif
 };

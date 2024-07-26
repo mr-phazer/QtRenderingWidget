@@ -1,23 +1,21 @@
 // TODO: clean up includes
 
 #include "..\..\DataTypes\DxMeshData.h"
-#include "..\..\Managers\DxDeviceManager.h"
-
 #include "..\..\Interfaces\IRenderBucket.h"
+#include "..\..\Managers\DxDeviceManager.h"
 #include "..\..\Rendering\DxMesh.h"
-
+#include "..\..\Rendering\DxShaderProgram.h"
 #include "DxMeshNode.h"
-
 
 namespace rldx
 {
 	DxMeshNode::UniquePtr DxMeshNode::Create(const std::wstring& name)
 	{
 		auto newMeshNode = std::make_unique<DxMeshNode>(name);
-		newMeshNode->m_meshData.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
 		return std::move(newMeshNode);
 	}
 
+	// TODO: is needed? Remove?
 	void DxMeshNode::Clone(DxMeshRenderingData& clone) const {
 		//DxMeshRenderingData clone;
 
@@ -30,19 +28,29 @@ namespace rldx
 
 		clone.attachPoint = m_meshData.attachPoint;
 
-		clone.CreateConstBuffers_DOES_NOTHING__REMOVE(DxDeviceManager::Device());
-
 		clone.perMesh_VS_CB.data = m_meshData.perMesh_VS_CB.data;
 		clone.perMesh_PS_CB.data = m_meshData.perMesh_PS_CB.data;
 		clone.perMeshDerformer_VS_CB.data = m_meshData.perMeshDerformer_VS_CB.data;
 	}
 
-	void DxMeshNode::SetMeshData(const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
+	void DxMeshNode::SetMeshData(DxResourceManager& resourceManager, const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
 	{
-		auto newMeshHandle = DxResourceManager::Instance()->AllocMesh();
-		m_meshData.poMesh = newMeshHandle.GetPtr();
+		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>();
+		m_meshData.poMesh = newMeshHandle;
 		m_meshData.poMesh->SetMeshData(meshData);
 		m_meshData.meshName = meshName;
+
+		DxMeshNode::ResizeBoundBoxToContent();
+	}
+
+	void DxMeshNode::ResizeBoundBoxToContent()
+	{
+		// Make node bound box that fits the new mesh data
+		DirectX::BoundingBox::CreateFromPoints(
+			NodeBoundingBox(),
+			DirectX::XMLoadFloat3(&m_meshData.poMesh->GetMin()),
+			DirectX::XMLoadFloat3(&m_meshData.poMesh->GetMax())
+		);
 	}
 
 	void DxMeshNode::SetDeformerNode(const rldx::DxDeformerNode* poDeformerNode, int32_t boneIndex)

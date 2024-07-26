@@ -1,5 +1,8 @@
 #pragma once
 
+
+// TODO: clean up includes, do forward declartions as much as possible so includes can be in the cpp file
+
 #include <d3d11.h>
 #include <DirectXTK\Inc\DDSTextureLoader.h>
 #include <DirectXMath.h>
@@ -12,7 +15,7 @@
 
 #include <string>
 
-#include "..\Managers\ResourceManager\IDxResource.h"
+#include "..\Managers\ResourceManager\DxResourceManager.h"
 
 
 namespace rldx {
@@ -31,6 +34,8 @@ namespace rldx {
 	// TODO: make IBindable
 	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
 	{
+		std::wstring m_fileName;
+
 	public:
 		DxTexture()
 		{
@@ -38,19 +43,26 @@ namespace rldx {
 			SetTypeString(L"DxTexture");
 		}
 
-		DxTexture(const std::wstring& name)
-		{
-			DxTexture();
-			SetName(name);
-		}
+		/*	DxTexture(const std::wstring& name)
+			{
+				SetType(ResourceTypeEnum::Texture);
+				SetTypeString(L"DxTexture");
+				SetName(name);
+			}*/
+
+			// TODO: use this intead of getfile
+			//DxTexture::DxTexture(ID3D11Device* poD3DDevice, const std::wstring& path);	
+
 		virtual ~DxTexture() = default;
 
 
+		static DxTexture* GetTextureFromFile(rldx::DxResourceManager& resourcemanager, const std::wstring& path);
+
 		virtual void Resize(ID3D11Device* _poDevice, ID3D11DeviceContext* _poDeviceContext, unsigned int width, unsigned int height) override;
-		UINT GetHeight();
-		UINT GetWidth();
-		UINT GetSampleCount();
-		float GetAspectRatio();
+		UINT GetHeight() const;
+		UINT GetWidth() const;
+		UINT GetSampleCount() const;
+		float GetAspectRatio() const;
 
 		bool IsLoaded() const
 		{
@@ -127,8 +139,8 @@ namespace rldx {
 				0);
 		}
 
-		bool LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
-		bool LoadFileFromMemory(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName = "");
+		bool LoadFileFromDisk(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::wstring& objectName);
+		bool LoadFileFromMemory(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::wstring& objectName);
 
 		bool LoadCubeMap(ID3D11Device* poD3DDevice, const std::wstring& fileName, const std::string& objectName = "");
 		bool LoadCubeMap(ID3D11Device* poD3DDevice, const uint8_t* pbinarFileData, size_t dataSize, const std::string& objectName = "");
@@ -175,7 +187,7 @@ namespace rldx {
 													 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 													 // Create Depth  SHADER RESOURCE VIEW
 													 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-			D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+			D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc{};
 			shaderResourceViewDesc.Format = DXGI_FORMAT_R32_FLOAT; //DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 			shaderResourceViewDesc.ViewDimension =
 				(sampleCount > 1) ?

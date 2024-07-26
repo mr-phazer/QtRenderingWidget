@@ -1,4 +1,4 @@
-#include "QtRenderView.h"
+#include "QtRenderWidgetView.h"
 
 #include <CommonLibs\Logger\Logger.h>
 
@@ -6,17 +6,20 @@ using namespace rldx;
 using namespace logging;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
-	: QWidget(parent), m_controller(new QtRenderController(this))
+	: QWidget(parent), m_controller(new QtRenderWidgetController(this))
 {
 	setupUi(this);
 
-	setAcceptDrops(true);
+#ifdef _DEBUG
+	setAcceptDrops(true); // only the debugging version has drag+drop loading
+#endif // _DEBUG	
 
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::black);
 	setAutoFillBackground(true);
 	setPalette(pal);
 
+	// Qt windows DockWidget has a bug that makes it impossible to set focus to the widget
 	setFocusPolicy(Qt::StrongFocus);
 	setAttribute(Qt::WA_NativeWindow);
 
@@ -24,16 +27,12 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 	// tells Qt that we'll handle all drawing and updating the widget ourselves.
 	setAttribute(Qt::WA_PaintOnScreen);
 	setAttribute(Qt::WA_NoSystemBackground);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	SetGameIdString(gameidString);
-
-	/*this->setWindowTitle("QRenderenView (Testing) : Sence");
-
-	setWindowFlag(Qt::Window, true);*/
+	InitRenderView();
 
 	show();
-
-	auto debug_1 = 1;
 }
 
 void QtRenderWidgetView::resizeEvent(QResizeEvent* event)
@@ -45,6 +44,13 @@ void QtRenderWidgetView::resizeEvent(QResizeEvent* event)
 		//m_timer->start();
 	}
 }
+
+void QtRenderWidgetView::closeEvent(QCloseEvent* event)
+{
+	/*TerminateRendering();
+	emit this->WindowClosing();*/
+}
+
 QPaintEngine* QtRenderWidgetView::paintEngine() const
 {
 	return Q_NULLPTR;
@@ -86,7 +92,7 @@ bool QtRenderWidgetView::event(QEvent* event)
 			}
 			break;
 		case QEvent::KeyPress:
-			emit keyPressed((QKeyEvent*)event);
+			emit KeyPressed((QKeyEvent*)event);
 			break;
 		case QEvent::MouseMove:
 			emit mouseMoved((QMouseEvent*)event);
@@ -126,6 +132,7 @@ LRESULT WINAPI QtRenderWidgetView::ForwardNativeWindowEvent(MSG* pMsg)
 	return m_upoSceneManager->ForwardNativeWindowEvent(pMsg->hwnd, pMsg->message, pMsg->wParam, pMsg->lParam);
 }
 
+
 bool QtRenderWidgetView::InitRenderView()
 {
 	logging::LogAction(L"Make new Device Manager");
@@ -135,7 +142,7 @@ bool QtRenderWidgetView::InitRenderView()
 	m_upoSceneManager = rldx::DxSceneManager::Create(DxDeviceManager::GetInstance().GetDevice());
 
 	logging::LogAction(L"Retriving Default Textures from .exe");
-	LoadExeResources(poDevice);
+	LoadExeResources(m_upoSceneManager->GetResourceManager(), poDevice);
 
 	logging::LogAction(L"Create New Scene");
 	MakeScene();
@@ -156,7 +163,7 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 
 		connect(m_timer, &QTimer::timeout, [&]()
 				{
-					FrameTimeOutHandler();
+					DrawFrameHandler();
 				}
 		);
 	}
@@ -172,9 +179,18 @@ void QtRenderWidgetView::StartRendering(float framesPerSecond)
 	m_timer->start(m_frameTime);
 }
 
-void QtRenderWidgetView::FrameTimeOutHandler()
+void QtRenderWidgetView::TerminateRendering()
 {
-	if (!m_upoSceneManager->IsRenderRunning())
+	PauseRendering();
+	m_upoSceneManager->GetResourceManager().DestroyAllResources();
+
+	m_timer->disconnect();
+	delete m_timer;
+}
+
+void QtRenderWidgetView::DrawFrameHandler()
+{
+	if (!m_upoSceneManager->IsRenderRunning() || !m_upoSceneManager->GetCurrentScene())
 		return;
 
 	m_upoSceneManager->GetCurrentScene()->Draw(rldx::DxDeviceManager::GetInstance().GetDeviceContext());
@@ -185,7 +201,7 @@ void QtRenderWidgetView::MakeConnections()
 {
 }
 
-void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
+void QtRenderWidgetView::LoadExeResources(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice)
 {
 	Q_INIT_RESOURCE(QtRenderView);
 
@@ -212,11 +228,7 @@ void QtRenderWidgetView::LoadExeResources(ID3D11Device* poDevice)
 			throw std::exception((FULL_FUNC_INFO("Error loading internal resource: " + itRes.toStdString())).c_str());
 		}
 
-		// TODO: remove debuging code
-		auto DEBUG__rawPtr = DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr();
-		DEBUG__rawPtr->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
-
-		DxResourceManager::Instance()->AllocTexture(fileName.toStdWString(), DxResourceManager::AllocTypeEnum::AttempReuseIdForNew).GetPtr()->LoadFileFromMemory(poDevice, (uint8_t*)bytes.constData(), bytes.size());
+		m_upoSceneManager->GetResourceManager().CreateResouce<DxTexture>();
 	}
 }
 
@@ -230,47 +242,12 @@ void QtRenderWidgetView::focusOutEvent(QFocusEvent* event)
 	// TODO: set frame to the lower possible, to allow many views being open without lagging
 }
 
-void QtRenderController::OnkeyPressed(QKeyEvent* keyEvent)
+#ifdef _DEBUG
+void QtRenderWidgetView::dragEnterEvent(QDragEnterEvent* event)
 {
-	switch (keyEvent->key())
-	{
-		case Qt::Key_G:
-		{
-			auto newState =
-				(view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
-				?
-				rldx::DxBaseNode::DrawStateEnum::DontDraw :
-				rldx::DxBaseNode::DrawStateEnum::Draw;
-			view->m_upoSceneManager->GetCurrentScene()->GetGridNode()->SetDrawState(newState);
-			keyEvent->accept();
-		}
-		break;
-
-		case Qt::Key_A:
-		{
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GenerateNewVariant();
-		}
-		break;
-
-		case Qt::Key_Q:
-		{
-			auto newState =
-				(view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->GetDrawState() == rldx::DxBaseNode::DrawStateEnum::Draw)
-				?
-				rldx::DxBaseNode::DrawStateEnum::DontDraw :
-				rldx::DxBaseNode::DrawStateEnum::Draw;
-			view->m_upoSceneManager->GetCurrentScene()->GetVmdManager().GetDerformer()->SetDrawState(newState);
-			keyEvent->accept();
-		}
-	}
+	event->acceptProposedAction();
 }
 
-QtRenderController::QtRenderController(QtRenderWidgetView* parentAndView) : QObject(parentAndView), view(parentAndView)
-{
-	connect(view, &QtRenderWidgetView::keyPressed, this, &QtRenderController::OnkeyPressed);
-};
-
-#ifdef _DEBUG
 void QtRenderWidgetView::dropEvent(QDropEvent* event)
 {
 	// Handle drop event (e.g., process dropped file)

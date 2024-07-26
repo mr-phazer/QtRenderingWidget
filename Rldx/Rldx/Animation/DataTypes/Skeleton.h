@@ -2,7 +2,7 @@
 
 #include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include <DirectXTK\Inc\SimpleMath.h>
-#include <Rldx\Rldx\Managers\ResourceManager\IDxResource.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 #include "SkeletonKeyFrame.h"
 
 namespace skel_anim
@@ -38,8 +38,9 @@ namespace skel_anim
 
 	public:
 		Skeleton() = default;
-		static Skeleton* Create(const anim_file::AnimFile& inputFile); // constructor, calls SetBoneTable
-		Skeleton(const anim_file::AnimFile& inputFile);
+		Skeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile);
+		static Skeleton* Create(const anim_file::AnimFile& inputFile, rldx::DxResourceManager& resourceManager); // constructor, calls SetBoneTable
+
 		std::wstring GetName() const; // used to get the m_nodeName of the skeleton
 
 		//Skeleton& operator=(const Skeleton& copyFrom); // copy constructor		

@@ -171,7 +171,7 @@ namespace rldx
 		};
 	}
 
-	DxCommonMeshData DxMeshCreatorHelper::MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb)
+	DxCommonMeshData DxMeshCreatorHelper::MakeBoundingBoxMesh(ID3D11Device* poDevice, const DirectX::BoundingBox& bb, const sm::Color& color = { 1,1,1,1 })
 	{
 		auto vecPositions =
 		{
@@ -190,7 +190,7 @@ namespace rldx
 		{
 			CommonVertex newVertex;
 			newVertex.position = { pos.x, pos.y, pos.z, 0.0f };
-			newVertex.color = { 1.0f ,0.6f ,0.9f, 1.0f };
+			newVertex.color = color;
 
 			vecCommonVertices.push_back(newVertex);
 		}
@@ -208,5 +208,20 @@ namespace rldx
 		meshBuffer.primitiveTopology = D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 
 		return meshBuffer;
+	}
+
+	DxCommonMeshData Rmv2MeshCreator::CreateMesh(ID3D11Device* poDevice)
+	{
+		auto meshCreator = DxMeshRenderDataCreator<CommonVertex, uint32_t>();
+
+		std::vector<uint32_t> vecIndices32;
+		for (auto index : m_rmv2Mesh.meshData.indices) // convert indices from uint16 to uint32
+		{
+			vecIndices32.push_back(index);
+		}
+
+		auto hrResult = meshCreator.CreateDxMeshRenderData(poDevice, m_rmv2Mesh.meshData.vertices, vecIndices32);
+
+		return hrResult;
 	}
 }

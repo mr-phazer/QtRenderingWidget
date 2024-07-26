@@ -28,8 +28,6 @@ namespace rldx
 	/// </summary>
 	class DxDeviceManager
 	{
-
-
 		DxDeviceManager() {};
 		static std::unique_ptr<DxDeviceManager> sm_spoInstance;
 	public:

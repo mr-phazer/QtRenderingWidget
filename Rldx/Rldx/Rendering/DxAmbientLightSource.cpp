@@ -39,13 +39,13 @@ namespace rldx
 		return oNewInstance;
 	}
 
-	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, ByteStream& pathDiffuseMap,
+	DxAmbientLightSource DxAmbientLightSource::Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, ByteStream& pathDiffuseMap,
 													  ByteStream& pathSpecularMap, ByteStream& pathLUT, UINT startSlotSRV,
 													  UINT startSlotConstBuf)
 	{
 		DxAmbientLightSource oNewInstance;
 
-		oNewInstance.SetTexturesFromMemory(poDevice, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);
+		oNewInstance.SetTexturesFromMemory(poDevice, resourceManager, pathDiffuseMap, pathSpecularMap, pathLUT, startSlotSRV);
 
 		oNewInstance.m_oPSConstBuffer.Init(poDevice, "PS_DxAmbientLight_CB");
 		DXUT_SetDebugName(oNewInstance.m_oPSConstBuffer.GetBuffer(), psConstBufferName);
@@ -63,25 +63,23 @@ namespace rldx
 		if (pathSpecularMap.empty())
 			throw std::exception("path for IBL Specular cubemap is empty");
 
-		m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap);
-		m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap);
+		m_poDiffuseMap->LoadFileFromDisk(poDevice, pathDiffuseMap, pathDiffuseMap);
+		m_poSpecularMap->LoadFileFromDisk(poDevice, pathSpecularMap, pathSpecularMap);
 
 		// TODO: if needed make an impl thata loads an LUT
 		/*if (!pathLUT.empty())
 			m_poLUT->LoadFileFromDisk(poDevice, pathLUT);*/
 	}
 
-	void DxAmbientLightSource::SetTexturesFromMemory(ID3D11Device* poDevice, ByteStream& streamDiffuseMap,
+	void DxAmbientLightSource::SetTexturesFromMemory(ID3D11Device* poDevice, DxResourceManager& resourceManager, ByteStream& streamDiffuseMap,
 													 ByteStream& streamSpecularMap, ByteStream& pathLUT, UINT startSlotSRV)
 	{
-		m_poDiffuseMap = DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"DiffuseIBL").GetPtr();
-		;
-		m_poSpecularMap = DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"SpecularIBL").GetPtr();
-		;
+		m_poDiffuseMap = resourceManager.CreateResouce<DxTexture>();
+		m_poSpecularMap = resourceManager.CreateResouce<DxTexture>();
 
-		// TODO: this is used in some shaders so find a way to condintionally load it in neat way
-		// m_poLUT =
-		//	DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"LUT").GetPtr();;
+		// TODO: NOT USED BY CA SHADERS. Onlyt for other "brands"
+		// this is used in some shaders so find a way to condintionally load it in neat way
+		// m_poLUT = DxResourceManager::Instance()->AllocEmpty<DxTexture>(L"LUT").GetPtr();;
 
 		m_poSpecularMap->LoadCubeMap(poDevice, streamSpecularMap.GetBufferPtr(), streamSpecularMap.GetBufferSize(),
 									 "IBL CubeMap Specular");

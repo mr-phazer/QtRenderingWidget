@@ -23,15 +23,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="QtObjects\Views\QtRenderView.ui">
+    <QtRcc Include="Resources\QtRenderView.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="QtObjects\Views\QtRenderWidgetView.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="QtObjects\Views\QtRenderView.cpp">
+    <ClCompile Include="QtObjects\Views\QtRenderWidgetView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExternFunctions\Creators.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtObjects\Controllers\QtRenderWidgetController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -55,7 +61,10 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="QtObjects\Views\QtRenderView.h">
+    <QtMoc Include="QtObjects\Views\QtRenderWidgetView.h">
+      <Filter>Form Files\Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtObjects\Controllers\QtRenderWidgetController.h">
       <Filter>Form Files\Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -14,6 +14,9 @@
 #include "DxTexture.h"
 
 namespace rldx {
+
+	class IDxShaderProgram;
+
 	// for texture loading, maybe not needed
 	struct InputTextureElement
 	{
@@ -43,20 +46,30 @@ namespace rldx {
 
 	public:
 		DxMaterial() = default;
-		static DxMaterial* Create(std::vector<rmv2::TextureElement>& textures);
+		virtual ~DxMaterial()
+		{
+			for (auto& tex : m_textures)
+			{
+				// TODO: manuel deallocation should not be neeeded
+				//DxResourceManager::FreeMemoryFromPtr(tex.second.pTexture);
+			}
+			m_textures.clear();
+		}
 
-		void InitWithDefaulTextures();
+		static DxMaterial* Create(std::vector<rmv2::TextureElement>& textures, rldx::DxResourceManager& resourceManager);
+
+		void InitWithDefaulTextures(rldx::DxResourceManager& resourceManager);
 		bool operator==(const DxMaterial& other) const;
-		void SetTextures(ID3D11Device* poDevice, const std::vector<rmv2::TextureElement>& inTex);
+		void SetTextures(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::vector<rmv2::TextureElement>& inTex);
 
 		std::string& PathHash() { return m_pathHash; };
-		static DxMaterial* Create(ID3D11Device* poDevice, const std::vector<InputTextureElement>& textures =
+		static DxMaterial* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::vector<InputTextureElement>& textures =
 								  // TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
 								  {
 									  {0, L"default_texture.dds"},
 								  });
 
-		void AddTexture(ID3D11Device* poDevice, UINT slot, const std::wstring& path);
+		void AddTexture(ID3D11Device* poDevice, DxResourceManager& resourceManager, UINT slot, const std::wstring& path);
 
 
 		// Bind texture to DC, for doing a drawcall
@@ -67,7 +80,7 @@ namespace rldx {
 		int GetTextureStartSlot();
 
 	private:
-		DxTexture* LoadDefaultTexture(ID3D11Device* poDevice, UINT slot);
+		DxTexture* LoadDefaultTexture(rldx::DxResourceManager& resourceManager, ID3D11Device* poDevice, UINT slot);
 	private:
 		bool m_bIsValid = true;
 
@@ -85,7 +98,7 @@ namespace rldx {
 	class IMaterialCreator
 	{
 	public:
-		virtual DxMaterial* Create(ID3D11Device* poDevice) = 0;
+		virtual DxMaterial* Create(ID3D11Device* poDevice, DxResourceManager& resourceManager) = 0;
 	};
 
 	class MaterialCreatorRMV2Mesh : public IMaterialCreator
@@ -94,18 +107,18 @@ namespace rldx {
 	public:
 		MaterialCreatorRMV2Mesh(const rmv2::MeshBlockCommon& data) : data(&data) {};
 
-		DxMaterial* Create(ID3D11Device* poDevice) override
+		DxMaterial* Create(ID3D11Device* poDevice, DxResourceManager& resourceManager) override
 		{
-			auto newMaterial = DxResourceManager::Instance()->AllocMaterial().GetPtr();
+			auto newMaterial = resourceManager.CreateResouce<DxMaterial>();
 
-			newMaterial->InitWithDefaulTextures();
+			newMaterial->InitWithDefaulTextures(resourceManager);
 
 			std::string hash = "";
 			for (auto& tex : data->materialBlock.textureElements)
 			{
 				// TODO: clean up this "is material loaded right"-check
 				auto diskPath = utils::ToWString(tex.texturePath);
-				newMaterial->AddTexture(poDevice, tex.textureType, diskPath);
+				newMaterial->AddTexture(poDevice, resourceManager, tex.textureType, diskPath);
 				newMaterial->PathHash() += std::string(tex.texturePath);
 			};
 

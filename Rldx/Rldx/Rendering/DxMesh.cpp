@@ -7,30 +7,14 @@ namespace rldx
 		poDC->DrawIndexed(m_poMeshBuffers.indexCount, 0, 0);
 	}
 
-	DirectX::XMFLOAT3 DxMesh::GetMin()
+	const DirectX::XMFLOAT3& DxMesh::GetMin() const
 	{
-		DirectX::XMFLOAT3 v3Min(FLT_MAX, FLT_MAX, FLT_MAX);
-		for (const auto& vertex : m_poMeshBuffers.originalMeshData.vertices)
-		{
-			v3Min.x = std::min<float>(v3Min.x, vertex.position.x);
-			v3Min.y = std::min<float>(v3Min.y, vertex.position.y);
-			v3Min.z = std::min<float>(v3Min.z, vertex.position.z);
-		}
-
-		return v3Min;
+		return m_poMeshBuffers.min;
 	}
 
-	DirectX::XMFLOAT3 DxMesh::GetMax()
+	const DirectX::XMFLOAT3& DxMesh::GetMax() const
 	{
-		DirectX::XMFLOAT3 v3Max(FLT_MIN, FLT_MIN, FLT_MIN);
-		for (const auto& vertex : m_poMeshBuffers.originalMeshData.vertices)
-		{
-			v3Max.x = std::max<float>(v3Max.x, vertex.position.x);
-			v3Max.y = std::max<float>(v3Max.y, vertex.position.y);
-			v3Max.z = std::max<float>(v3Max.z, vertex.position.z);
-		}
-
-		return v3Max;
+		return m_poMeshBuffers.max;
 	}
 
 	void DxMesh::SetMeshData(const DxCommonMeshData& meshData)

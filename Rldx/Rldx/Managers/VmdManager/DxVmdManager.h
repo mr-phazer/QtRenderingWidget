@@ -13,6 +13,7 @@ namespace rldx
 	/// </summary>
 	class DxVmdManager
 	{
+		rldx::DxResourceManager* m_resourceManager;
 		std::wstring m_skeletonName;
 		DxVmdNode* m_vmdRootNode = nullptr;
 		DxBaseNode* m_sceneRootNode = nullptr;
@@ -29,17 +30,18 @@ namespace rldx
 
 	public:
 
+		DxVmdManager(rldx::DxResourceManager& resourceManager) : m_resourceManager(&resourceManager) {}
+
 		void LoadVariantMeshIntoNode(DxBaseNode* poSceneNode, utils::ByteStream& bytes, const std::wstring& gameIdString);
 
 		void GenerateNewVariant();
 		DxDeformerNode* GetDerformer();
-		DxVmdNode::UniquePtr& GetNode();
 
 	private:
 		// TODO: convers the rmv2.file.header to "wstring" for consistency?
 		// TODO: is it ok that method both allocated, and fetches skeleton? (2 jobs for 1 methods)
 		void AllocateTreeDXBuffers(const std::wstring& gameIdString, utils::WStringkeyMap<sm::Matrix>& preTransformMap);
-		void AllocateNodeDXBufferRecursive(DxVmdNode* m_vmdRootNode, DxMeshShaderProgram* shaderProgram, utils::WStringkeyMap<sm::Matrix>& preTransformMap);
+		void AllocateNodeDXBufferRecursive(rldx::DxResourceManager& resourceManager, DxVmdNode* m_sceneRootNode, DxMeshShaderProgram* shaderProgram, utils::WStringkeyMap<sm::Matrix>& preTransformMap);
 
 		/// <summary>
 		/// Loads the skeleton bind pose, etc

@@ -1,10 +1,14 @@
 #include "DxScene.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
+#include "ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+#include "..\Creators\DxMeshCreator.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
 #include "..\SceneGraph\Helpers\SceneGraphParser.h"
+#include "..\SceneGraph\SceneNodes\DxModelNode.h"
 #include "DxMeshRenderBucket.h"
+
 
 using namespace rldx;
 using namespace utils;
@@ -44,7 +48,6 @@ void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	m_spoSwapChain->Present(poDeviceContext);
 }
 
-
 DxBaseNode* DxScene::GetSceneRootNode() const
 {
 	return m_sceneGraph.GetRootNode();
@@ -81,6 +84,11 @@ void DxScene::DeleteNode(DxBaseNode* node)
 	}
 
 	nodeResult->GetParent()->RemoveChild(nodeResult);
+}
+
+void DxScene::ClearRenderQueue()
+{
+	m_renderQueue.ClearItems();
 }
 
 //void DxScene::MakeSceneSwapChain(ID3D11Device* poDevice, HWND nativeWindowHandle)
@@ -129,7 +137,53 @@ void DxScene::Update(float timeElapsed)
 	m_sceneGraph.UpdateNodes(timeElapsed);
 }
 
-void DxScene::InitRenderView(ID3D11Device* poDevice)
+// TODO: remove? Or enabled setting types/names in another constructor
+//DxScene::DxScene()
+//{
+//	SetType(DxSceneTypeEnum::Normal);
+//	SetTypeString(L"Resource:DxScene");
+//}
+
+DxScene::~DxScene() {
+	// TODO: REMOVE DEBUGGIN CODE
+	auto DEBUG_dxScene_constructor_break = 1;
+
+	m_renderQueue.ClearItems();
+
+
+
+
+	// TODO: make sure all these are deleted
+	/*
+
+	DxSceneGraph m_sceneGraph;
+	DxMeshRenderBucket m_renderQueue;
+	DxSwapChain::Uptr m_spoSwapChain; // back buffer
+	DxAmbientLightSource m_ambientLightSource;
+	DxTextureSamplers m_textureSamplers;
+
+	std::unique_ptr<DirectX::CommonStates> m_upoCommonStates;
+	*/
+}
+
+DxScene::DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain)
+	:
+	m_resourceManager(m_resourceManager),
+	m_vmdManager(m_resourceManager)
+{
+	DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
+	SetName(name);
+
+	// TODO: move more of the initializing into the constructor, RAII
+	m_spoSwapChain = std::move(upoSwapChain);
+
+	InitScene(DxDeviceManager::Device());
+
+	// TODO: enable? Shouldn't it work on its own (multi windows)
+	Resize(DxDeviceManager::Device(), DxDeviceManager::DeviceContext(), m_spoSwapChain->GetBackBuffer()->GetWidth(), m_spoSwapChain->GetBackBuffer()->GetHeight());
+}
+
+void DxScene::InitScene(ID3D11Device* poDevice)
 {
 	m_globalCamera.SetProjParams(DirectX::XM_PI / 4, m_spoSwapChain->GetBackBuffer()->GetAspectRatio(), 0.01f, 100.0f);;
 	m_globalDirectionalLight.SetRotationScale(0.005f);
@@ -153,6 +207,7 @@ void DxScene::InitRenderView(ID3D11Device* poDevice)
 	m_ambientLightSource =
 		DxAmbientLightSource::Create(
 			poDevice,
+			m_resourceManager,
 			iblDiffuseMapBinary,
 			iblSPecularMapBinary,
 			iblLUTBinary
@@ -225,7 +280,7 @@ void DxScene::BindToDC(ID3D11DeviceContext* poDeviceContext)
 	m_textureSamplers.BindToDC(poDeviceContext);
 }
 
-inline void DxScene::DEBUGGING_SetViewAndPerspective()
+void DxScene::DEBUGGING_SetViewAndPerspective()
 {
 	// TODO: method full of crap, is it still useful/remove?
 	// Use DirectXMath to create view and perspective matrices, for debuggin purposes

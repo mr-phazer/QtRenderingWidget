@@ -7,19 +7,20 @@ namespace skel_anim
 {
 	using namespace utils;
 
-	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile)
+	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile, rldx::DxResourceManager& resourceManager)
 	{
 		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
+		// TODO: Is the needed?
 		// check if skeleton already exists
-		auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
-		if (pSkeleton) { return pSkeleton; }
+		/*auto pSkeleton = rldx::DxResourceManager::Instance()->GetResourceByString<Skeleton>(skeletonName);
+		if (pSkeleton) { return pSkeleton; }*/
 
 		// allocate memmory for skeeton
-		pSkeleton = rldx::DxResourceManager::Instance()->AllocEmpty<Skeleton>(skeletonName).GetPtr();
+		auto pSkeleton = resourceManager.CreateResouce<Skeleton>();
 
 		// create skeleleton from ANIM file
-		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+		auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, inputFile);
 		pSkeleton->SetBoneTable(inputFile);
 
 		FramePoseGenerator(*pSkeleton).GenerateMatrices(m_animation->frameData.frames[0], pSkeleton->m_bindposeMatrices);
@@ -34,12 +35,12 @@ namespace skel_anim
 	}
 
 
-	Skeleton::Skeleton(const anim_file::AnimFile& inputFile)
+	Skeleton::Skeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile)
 	{
 		// set skeleton m_nodeName
 		m_skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
-		auto m_animation = SkeletonAnimation::CreateFromAnimFile(inputFile);
+		auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, inputFile);
 
 		if (m_animation->frameData.frames.empty()) {
 			throw COMException(L"No frames i bind pose anim file", COMExceptionFormatMode::StandardLogVerbose, 0);
