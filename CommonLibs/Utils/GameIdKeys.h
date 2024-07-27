@@ -2,6 +2,7 @@
 
 namespace game_id_keys
 {
+	static constexpr auto KEY_PHARAOH_DYNASTIES = L"pharaoh_dynasties";
 	static constexpr auto KEY_PHARAOH = L"pharaoh";
 	static constexpr auto KEY_WARHAMMER_3 = L"warhammer_3";
 	static constexpr auto KEY_TROY = L"troy";
