@@ -52,27 +52,27 @@ void AssetFetchCallbackWrapper(
 	// If we have callback, use it for getting the files.
 	else {
 
-		QList<QString>* filesToFetchQt = new QList<QString>();
-		QList<QByteArray>* outBinFilesQt = new QList<QByteArray>();
+		QList<QString> filesToFetchQt;
+		QList<QByteArray> outBinFilesQt;
 
 		for (const std::wstring& i : *filesToFetch) {
 			QString s = QString::fromWCharArray(i.c_str());
-			filesToFetchQt->push_back(s);
+			filesToFetchQt.push_back(s);
 		}
 
-		AssetFetchCallBackStored(filesToFetchQt, outBinFilesQt);
+		AssetFetchCallBackStored(&filesToFetchQt, &outBinFilesQt);
 	
 		filesToFetch->clear();
 
-		for (int i = 0; i < filesToFetchQt->count(); i++)
+		for (int i = 0; i < filesToFetchQt.count(); i++)
 		{
-			std::wstring s = filesToFetchQt->at(i).toStdWString();
+			std::wstring s = filesToFetchQt.at(i).toStdWString();
 			filesToFetch->push_back(s);
 		}
 
-		for (int i = 0; i < outBinFilesQt->count(); i++)
+		for (int i = 0; i < outBinFilesQt.count(); i++)
 		{
-			auto item = outBinFilesQt->at(i);
+			auto item = outBinFilesQt.at(i);
 			std::vector<unsigned char> s(item.begin(), item.end());
 			outBinFiles->push_back(s);
 		}	
