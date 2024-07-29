@@ -15,16 +15,16 @@
 
 // author heade
 #include <CommonLibs\Logger\Logger.h>
-#include <CommonLibs\Utils\MapUtils.h>
 #include <CommonLibs\Utils\ByteStream.h>
 #include <CommonLibs\Utils\IOUtils.h>
+#include <CommonLibs\Utils\MapUtils.h>
 
 namespace rldx {
 
 	typedef void (*AssetFetchCallbackWrapper) (
 		std::vector<std::wstring>* filesToFetch,
 		std::vector<std::vector<unsigned char>>* outBinFiles
-	);
+		);
 
 	class DxResourceManager
 	{

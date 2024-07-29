@@ -5,6 +5,7 @@
 #include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include <CommonLibs\Logger\Logger.h>
 #include <CommonLibs\Utils\IOUtils.h>
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
 
 namespace utils {
 	using namespace logging;
@@ -42,6 +43,12 @@ namespace utils {
 		if (DoesFileExist(fileName)) // .exe folder + path ?
 		{
 			m_currentFilePath = fileName;
+			ReadFileToVector(m_currentFilePath, m_data);
+			return;
+		}
+		else if (DoesFileExist(rldx::DxResourceManager::GetGameAssetFolder() + fileName)) // search folder + path?
+		{
+			m_currentFilePath = rldx::DxResourceManager::GetGameAssetFolder() + fileName;
 			ReadFileToVector(m_currentFilePath, m_data);
 			return;
 		}

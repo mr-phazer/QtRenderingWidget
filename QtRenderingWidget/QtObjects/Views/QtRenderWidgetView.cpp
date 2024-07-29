@@ -2,8 +2,14 @@
 
 #include <CommonLibs\Logger\Logger.h>
 
+#ifdef _DEBUG
+#include "..\ExternFunctions\Creators.h"
+#endif
+
 using namespace rldx;
 using namespace logging;
+
+size_t QtRenderWidgetView::sm_DEBUG__widgetcCounter;
 
 QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
 	: QWidget(parent), m_controller(new QtRenderWidgetController(this))
@@ -32,8 +38,13 @@ QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidStr
 	SetGameIdString(gameidString);
 	InitRenderView();
 
+	sm_DEBUG__widgetcCounter++;
+	logging::Logger::DoLog(L"QRenderingWidget Created: object count = " + std::to_wstring(sm_DEBUG__widgetcCounter), L"",
+						   logging::BG_DARKBLUE | logging::BG_DARKYELLOW, logging::BG_BLUE | logging::FG_YELLOW);
 	show();
+
 }
+
 
 void QtRenderWidgetView::resizeEvent(QResizeEvent* event)
 {
@@ -248,6 +259,7 @@ void QtRenderWidgetView::dragEnterEvent(QDragEnterEvent* event)
 	event->acceptProposedAction();
 }
 
+
 void QtRenderWidgetView::dropEvent(QDropEvent* event)
 {
 	// Handle drop event (e.g., process dropped file)
@@ -272,3 +284,5 @@ void QtRenderWidgetView::dropEvent(QDropEvent* event)
 	event->acceptProposedAction();
 }
 #endif
+
+

@@ -11,7 +11,7 @@
 using namespace logging;
 using namespace utils;
 
-static void (*AssetFetchCallBackStored) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles) = nullptr;
+static void (*g_setFetchCallBackStored) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles) = nullptr;
 
 void AssetFetchCallbackWrapper(
 	std::vector<std::wstring>* filesToFetch,
@@ -19,21 +19,21 @@ void AssetFetchCallbackWrapper(
 ) {
 
 	// If we don't have callback, use the old debug mode.
-	if (AssetFetchCallBackStored == nullptr) {
+	if (g_setFetchCallBackStored == nullptr) {
 
 		// force list to be same size, maybe redundant
 		outBinFiles->clear();
 		outBinFiles->resize(filesToFetch->size());
 
-		for (const std::wstring& Asset : *filesToFetch) {
+		for (const std::wstring& assetFileName : *filesToFetch) {
 
-			if (IsDiskFile(Asset)) {
+			if (IsDiskFile(assetFileName)) {
 				throw std::exception("Cannot accept disk files");
 			}
 
 			// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
-			auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + Asset;
-			ByteStream newStream(filePath, false);
+//			auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + assetFileName;
+			ByteStream newStream(assetFileName, false);
 
 
 			if (!newStream.IsValid())
@@ -48,7 +48,7 @@ void AssetFetchCallbackWrapper(
 			newStream.Read(dest.data(), dest.size());
 		}
 	}
-	
+
 	// If we have callback, use it for getting the files.
 	else {
 
@@ -60,8 +60,8 @@ void AssetFetchCallbackWrapper(
 			filesToFetchQt.push_back(s);
 		}
 
-		AssetFetchCallBackStored(&filesToFetchQt, &outBinFilesQt);
-	
+		g_setFetchCallBackStored(&filesToFetchQt, &outBinFilesQt);
+
 		filesToFetch->clear();
 
 		for (int i = 0; i < filesToFetchQt.count(); i++)
@@ -72,22 +72,21 @@ void AssetFetchCallbackWrapper(
 
 		for (int i = 0; i < outBinFilesQt.count(); i++)
 		{
-			auto item = outBinFilesQt.at(i);
+			auto& item = outBinFilesQt.at(i);
 			std::vector<unsigned char> s(item.begin(), item.end());
 			outBinFiles->push_back(s);
-		}	
+		}
 	}
 }
 
 QWidget* CreateQRenderingWidget(
 	QWidget* parent,
 	QString* gameIdString,
-	void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles),
-	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
+	void (*assetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles),
+	void (*animPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
 )
 {
-	AssetFetchCallBackStored = AssetFetchCallBack;
-
+	g_setFetchCallBackStored = assetFetchCallBack;
 	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallbackWrapper);
 	//rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 

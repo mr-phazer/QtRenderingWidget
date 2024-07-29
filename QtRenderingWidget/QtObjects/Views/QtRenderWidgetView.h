@@ -13,12 +13,16 @@
 
 #include "DirectXTK\Inc\SpriteFont.h"
 
+#include <CommonLibs\Logger\Logger.h>
+
 #include "..\Controllers\QtRenderWidgetController.h"
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
 private:
+	static size_t sm_DEBUG__widgetcCounter;
+
 	QtRenderWidgetController* m_controller = nullptr;
 
 	friend class QtRenderWidgetController;
@@ -41,6 +45,10 @@ public:
 	{
 		TerminateRendering();
 		emit this->WindowClosing();
+
+		sm_DEBUG__widgetcCounter--;
+		logging::Logger::DoLog(L"QRenderingWidget Destroued: object count = " + std::to_wstring(sm_DEBUG__widgetcCounter), L"",
+							   logging::BG_DARKBLUE | logging::BG_DARKYELLOW, logging::BG_BLUE | logging::FG_YELLOW);
 	}
 
 	void SetGrideDrawState(rldx::DxBaseNode::DrawStateEnum state)

@@ -170,7 +170,7 @@ namespace rldx
 			throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 		}
 
-		auto binary = destBinaries.at(0);
+		auto& binary = destBinaries.at(0);
 		if (binary.empty())
 		{
 			// TODO: CLEAN UP
