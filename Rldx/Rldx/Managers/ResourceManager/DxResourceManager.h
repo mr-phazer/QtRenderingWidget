@@ -47,7 +47,7 @@ namespace rldx {
 
 		void DestroyAllResources();
 
-		static void GetResourcesFromCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries);
+		static void GetResourcesFromCallBack(std::vector<std::wstring>& qstrMissingFiles, std::vector<std::vector<unsigned char>>& destBinaries);
 
 		// TODO: Move to a separate class? like a new class "FileLoader" / similar?
 		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName);
@@ -55,7 +55,7 @@ namespace rldx {
 
 		//static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { sm_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
 		static void SetAssetFetchCallback(AssetFetchCallbackWrapper assetCallBackFunc) { sm_assetCallBack = assetCallBackFunc; }
-		static void CallAssetFetchCallBack(std::vector<std::wstring>* qstrMissingFiles, std::vector<std::vector<unsigned char>>* destBinaries) { GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
+		static void CallAssetFetchCallBack(std::vector<std::wstring>& qstrMissingFiles, std::vector<std::vector<unsigned char>>& destBinaries) { GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 
 		static void SetGameAssetFolder(const std::wstring& path) { sm_rooPathAssetPath = path; }
 		static const std::wstring& GetGameAssetFolder() { return sm_rooPathAssetPath; }
