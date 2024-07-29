@@ -2,8 +2,8 @@
 
 #include "TwAnimReader.h"
 
-#include <Quantization\QuantTools.h>
-#include <SimpleMath.h>
+#include <CommonLibs\Quantization\QuantTools.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include "..\..\RigidModel\Types\Common\MeshEnumsConstants.h"
 #include "..\Creators\AnimFileHeaderCreator.h"
 #include "..\Creators\BoneTableCreator.h"
@@ -12,8 +12,8 @@
 #include "..\Types\Common\FrameHeaders.h"
 #include "..\Types\Common\QuantMetaTables.h"
 #include "..\Types\Common\TwAnimFile.h"
-#include "Logger\Logger.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\ByteStream.h>
 
 using namespace utils;
 

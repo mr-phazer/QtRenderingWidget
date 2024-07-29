@@ -1,7 +1,10 @@
 #pragma once
 
 // TODO: clean? are both math libs neeeded
-#include <SimpleMath.h>
+#include <DirectXMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
+
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
 #include "..\..\DataTypes\DxMeshData.h"
 #include "..\..\Rendering\DxMaterial.h"
 #include "DxBaseNode.h"

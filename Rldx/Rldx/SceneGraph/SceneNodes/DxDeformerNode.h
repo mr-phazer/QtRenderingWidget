@@ -3,9 +3,9 @@
 #include <string>
 
 // TODO: make as many forward declarations as possible
-#include <FileFormats\Anim\Reader\TwAnimReader.h>
-#include <Rldx\Animation\DataTypes\Skeleton.h>
-#include <Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h>
+#include <ImportExport\FileFormats\Anim\Reader\TwAnimReader.h>
+#include <Rldx\Rldx\Animation\DataTypes\Skeleton.h>
+#include <Rldx\Rldx\Animation\Managers\AnimatorService\AnimContainer\AnimQueue.h>
 
 #include "..\..\DataTypes\ConstBuffers\CPUConstBuffers.h"
 #include "DxMeshNode.h"

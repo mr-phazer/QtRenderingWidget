@@ -48,12 +48,6 @@
     <ClInclude Include="ExternFunctions\Creators.h">
       <Filter>Form Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExternFunctions\Callbacks.h">
-      <Filter>Form Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants\GameIdKeys.h">
-      <Filter>Form Files\Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Logging\Inl\WinConsoleColors.inl">
@@ -77,5 +71,10 @@
   <ItemGroup>
     <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLDiffuse.dds" />
     <Image Include="Rldx\RenderResources\Textures\CubeMaps\CubemapIBLSpecular.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resources\QtRenderView.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include <GeneralTypes\IDataStructure.h>
+#include <ImportExport\GeneralTypes\IDataStructure.h>
 #include <math.h>
 
 namespace rmv2 {

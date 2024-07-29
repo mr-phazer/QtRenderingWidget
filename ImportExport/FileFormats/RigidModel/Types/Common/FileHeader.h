@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 #include "..\..\Constants\Rmv2Constants.h"
 #include "..\..\Types\Common\MeshEnumsConstants.h"
 
-#include <GeneralTypes\IDataStructure.h>
+#include <ImportExport\GeneralTypes\IDataStructure.h>
 
 namespace rmv2 {
 

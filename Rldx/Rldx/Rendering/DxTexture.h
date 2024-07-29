@@ -4,9 +4,9 @@
 // TODO: clean up includes, do forward declartions as much as possible so includes can be in the cpp file
 
 #include <d3d11.h>
-#include <DDSTextureLoader.h>
+#include <DirectXTK\Inc\DDSTextureLoader.h>
 #include <DirectXMath.h>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <wrl\client.h>
 
 #include "..\..\rldx\Interfaces\IBindable.h"

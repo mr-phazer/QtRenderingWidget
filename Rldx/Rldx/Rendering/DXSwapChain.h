@@ -69,7 +69,7 @@ namespace rldx
 		void Resize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT width, UINT height);
 		void Present(ID3D11DeviceContext* poDXDeviceContext);
 		DxTexture* GetBackBuffer() { return &m_BackBufferTexture; };
-		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, HWND hwnWindowHandle = NULL);
+		void UpdateViewPort(ID3D11DeviceContext* _pDeviceContext);
 
 		// TODO: should be in camera?		
 		D3D11_VIEWPORT m_viewPort;

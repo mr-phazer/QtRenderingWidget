@@ -1,24 +1,6 @@
 #include "QtRenderWidgetView.h"
 
-#ifdef DEBUG
-// for debugging I need to have access to this, for now
-#include "..\..\ExternFunctions\Creators.h" 
-#endif // DEBUG
-
-#include <qmessagebox.h>
-#include <mouse.h>
-#include <qstyle.h>
-#include <qstyleoption.h>
-
-#include <Rldx\SceneGraph\SceneNodes\DxMeshNode.h>
-#include "..\rldx\rldx\DataTypes\DxMeshData.h"
-#include "..\rldx\rldx\Rendering\DxShaderProgram.h"
-
-#include <QMimeData>
-
-#include <qdir>
-
-#include "Logger\Logger.h"
+#include <CommonLibs\Logger\Logger.h>
 
 using namespace rldx;
 using namespace logging;

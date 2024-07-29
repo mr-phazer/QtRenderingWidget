@@ -1,6 +1,7 @@
 #include "COMerrors.h"
-#include "..\Utils\StrUtils.h"
-#include "..\Logger\Logger.h"
+
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\StrUtils.h>
 
 using namespace utils;
 

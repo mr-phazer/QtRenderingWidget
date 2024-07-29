@@ -1,6 +1,7 @@
-#include <CustomExceptions\CustomExceptions.h>
 #include "d3d11.h"
 #include "DXSwapChain.h"
+
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
 
 using namespace rldx;
 using namespace logging;
@@ -135,7 +136,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 	m_cpoSwapChain1->Present(1, 0);
 }
 
-void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext, HWND hwndWindow)
+void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext)
 {
 	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
 

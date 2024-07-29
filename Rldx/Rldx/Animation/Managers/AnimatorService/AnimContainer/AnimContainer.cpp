@@ -1,5 +1,5 @@
-#include <rldx/Animation/Helpers/timerHelper.h>
-#include <rldx/Animation/KeyFrameInterpolator.h>
+#include <Rldx/Rldx/Animation/Helpers/timerHelper.h>
+#include <Rldx/Rldx/Animation/KeyFrameInterpolator.h>
 
 #include "AnimContainer.h"
 

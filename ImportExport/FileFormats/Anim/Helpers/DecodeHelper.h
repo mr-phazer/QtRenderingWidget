@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SimpleMath.h>
-#include "Utils\ByteStream.h"
+#include <DirectXTK\Inc\SimpleMath.h>
+#include <CommonLibs\Utils\ByteStream.h>
 
 namespace anim_file
 {

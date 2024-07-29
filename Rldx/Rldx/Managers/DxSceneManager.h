@@ -1,7 +1,9 @@
 #pragma once
-#include "..\Rendering\DxScene.h"
 
-#include <Timer\SystemClockChecker.h>
+#include <DirectXTK\Inc\CommonStates.h>
+
+#include <CommonLibs\Timer\SystemClockChecker.h>
+#include "..\Rendering\DxScene.h"
 
 namespace rldx {
 

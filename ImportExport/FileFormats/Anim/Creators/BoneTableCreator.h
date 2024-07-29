@@ -1,7 +1,7 @@
 #pragma once
 
 #include "..\Types\Common\BoneTable.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 namespace anim_file
 {

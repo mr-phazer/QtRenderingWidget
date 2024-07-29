@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Timer\SystemClockChecker.h>
+#include <CommonLibs\Timer\SystemClockChecker.h>
 #include "AnimPlayList.h"
 #include "DataTypes\Skeleton.h"
 #include "SkeletonKeyFrameSampler.h"
 
-#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
+#include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
 #include "FramePoseGenerator.h"
 
 namespace skel_anim

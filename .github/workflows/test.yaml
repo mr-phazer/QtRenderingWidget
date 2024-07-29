@@ -10,10 +10,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
+      - uses: actions/checkout@v3
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -22,12 +19,25 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          install-deps: 'true'
-          cache: 'false'
-          setup-python: 'true'
-          tools-only: 'false'
+          cache: 'true'
+
+      - name: Set QT_Includes
+        shell: pwsh
+        run: |
+          echo "QtToolsPath=D:\a\QtRenderingWidget\Qt\5.15.2\msvc2019_64\bin" >> $env:GITHUB_ENV
+          echo "QtInclude=D:\a\QtRenderingWidget\Qt\5.15.2\msvc2019_64\include" >> $env:GITHUB_ENV
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+
+      - uses: nuget/setup-nuget@v2
+        with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.x'
+      - run: nuget restore QtRenderingWidget_RPFM.sln
 
       - name: Build the lib in release mode
         shell: pwsh
         run: |
+          MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Debug -p:Platform=x64
           MSBuild.exe QtRenderingWidget_RPFM.sln -m -t:Build -p:Configuration=Release -p:Platform=x64

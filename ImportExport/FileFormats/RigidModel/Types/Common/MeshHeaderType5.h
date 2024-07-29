@@ -2,8 +2,8 @@
 
 #include <cstdint>
 #include <DirectXMath.h>
-#include <GeneralTypes\IDataStructure.h>
-#include "Utils\ByteStream.h"
+#include <ImportExport\GeneralTypes\IDataStructure.h>
+#include <CommonLibs\Utils\ByteStream.h>
 #include "MeshEnumsConstants.h"
 
 namespace rmv2

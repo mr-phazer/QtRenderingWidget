@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXMath.h>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 
 #include "..\Interfaces\IBindable.h"
 #include "..\Interfaces\IUpdateable.h"

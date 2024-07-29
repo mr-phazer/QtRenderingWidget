@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CommonStates.h>
+#include <DirectXTK\Inc\CommonStates.h>
 #include <vector>
 
 #include "..\Interfaces\IBindable.h"

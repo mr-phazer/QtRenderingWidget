@@ -16,7 +16,7 @@
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
-    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\..\QtMsBuild</QtMsBuild>
     <ProjectName>QtRenderingWidget</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -75,7 +75,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(Qt_INCLUDEPATH_)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
@@ -94,7 +94,7 @@
     <ClCompile />
     <ClCompile />
     <ClCompile>
-      <AdditionalIncludeDirectories>$(QT_ROOT_DIR)\include;$(Qt_INCLUDEPATH_);$(SolutionDir)DirectXTK\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(Qt_INCLUDEPATH_)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>Default</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -128,7 +128,7 @@
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -140,8 +140,6 @@
     <ClCompile Include="ExternFunctions\Creators.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderWidgetView.cpp" />
     <ClCompile Include="QtObjects\Controllers\QtRenderWidgetController.cpp" />
-    <ClInclude Include="Constants\GameIdKeys.h" />
-    <ClInclude Include="ExternFunctions\Callbacks.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
     <QtMoc Include="QtObjects\Controllers\QtRenderWidgetController.h" />
     <QtRcc Include="Resources\QtRenderView.qrc" />

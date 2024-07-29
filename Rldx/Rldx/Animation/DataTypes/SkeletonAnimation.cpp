@@ -1,7 +1,9 @@
-#include <FileFormats\Anim\Types\Common\TwAnimFile.h>
-#include <Rldx\Managers\ResourceManager\DxResourceManager.h>
-#include <Utils\StrUtils.h>
-#include "..\..\Animation\DataTypes\SkeletonAnimation.h"
+#include "Rldx\Rldx\Animation\DataTypes\SkeletonAnimation.h"
+#include <Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h>
+
+#include <ImportExport\FileFormats\Anim\Types\Common\TwAnimFile.h>
+#include <CommonLibs\Utils\StrUtils.h>
+
 #include "Skeleton.h"
 #include "SkeletonAnimation.h"
 

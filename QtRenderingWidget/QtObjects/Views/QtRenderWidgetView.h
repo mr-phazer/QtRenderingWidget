@@ -7,10 +7,11 @@
 
 #include "ui_QtRenderWidgetView.h"
 
-#include <Rldx\Creators\DxSceneCreator.h>
-#include <Rldx\Managers\DxDeviceManager.h>
-#include <Rldx\Managers\DxSceneManager.h>
-#include "..\..\..\DirectXTK\Inc\SpriteFont.h"
+#include <Rldx\Rldx\Creators\DxSceneCreator.h>
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
+#include <Rldx\Rldx\Managers\DxSceneManager.h>
+
+#include "DirectXTK\Inc\SpriteFont.h"
 
 #include "..\Controllers\QtRenderWidgetController.h"
 

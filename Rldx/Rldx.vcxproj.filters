@@ -140,12 +140,6 @@
     <ClInclude Include="Rldx\Creators\DxSceneCreator.h">
       <Filter>Rldx\Creators</Filter>
     </ClInclude>
-    <ClInclude Include="Rldx\Helpers\MathHelper.h">
-      <Filter>Rldx\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\StringKeyMap.h">
-      <Filter>Rldx\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Rldx\Interfaces\IBindable.h">
       <Filter>Rldx\Interfaces</Filter>
     </ClInclude>
@@ -190,9 +184,6 @@
     </ClInclude>
     <ClInclude Include="Rldx\Managers\ResourceManager\IDxResource.h">
       <Filter>Rldx\Managers\ResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Rldx\Helpers\NoCaseUMapCompare.h">
-      <Filter>Rldx\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Rldx\Rendering\DxAmbientLightSource.h">
       <Filter>Rldx\Rendering</Filter>
@@ -344,14 +335,8 @@
     <Filter Include="Rldx\ShaderLoadingHelpers">
       <UniqueIdentifier>{b7f033d7-00d8-47de-8f5f-acf7f653d092}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rldx\Tools">
-      <UniqueIdentifier>{bea07d4d-90bb-44c2-85a4-8b353e86e1ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Rldx\DataTypes\ConstBuffers">
       <UniqueIdentifier>{611f5bbf-cd87-4eff-b9a0-0fa33b0e1267}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rldx\Helpers">
-      <UniqueIdentifier>{9387e0f2-8b76-465d-be52-f5942e5eae24}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

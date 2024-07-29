@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\ImportExport\Helpers\Templates.h"
-#include "..\Managers\VmdManager\DxVmdManager.h"
-#include "..\Rendering\DxScene.h"
+#include <ImportExport\Helpers\Templates.h>
+#include <Rldx\Rldx\Managers\VmdManager\DxVmdManager.h>
+#include <Rldx\Rldx\Rendering\DxScene.h>
 
 namespace rldx {
 

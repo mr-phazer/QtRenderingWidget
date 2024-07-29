@@ -1,7 +1,7 @@
 #pragma once
 
 #include <DirectXPackedVector.h>
-#include <SimpleMath.h>
+#include <DirectXTK\Inc\SimpleMath.h>
 #include <vector>
 
 #include "..\..\..\..\GeneralTypes\IDataStructure.h"

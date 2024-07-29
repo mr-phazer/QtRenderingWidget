@@ -2,7 +2,7 @@
 
 
 #include "..\..\..\FileFormats\XmMaterial\Readers\XmMaterialReader.h"
-#include "..\..\..\Helpers\CustomExceptions.h"
+#include <ImportExport/Helpers/CustomExceptions.h>
 
 using namespace std;
 using namespace rmv2;

@@ -23,7 +23,7 @@
 #include <limits.h>
 
 // phazer added
-#include "Utils\StrUtils.h"
+#include <CommonLibs\Utils\StrUtils.h>
 
 
 #ifdef PUGIXML_WCHAR_MODE

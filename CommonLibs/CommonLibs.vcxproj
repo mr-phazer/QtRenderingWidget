@@ -22,7 +22,9 @@
     <ClInclude Include="CustomExceptions\COMErrors.h" />
     <ClInclude Include="CustomExceptions\CustomExceptions.h" />
     <ClInclude Include="Logger\Logger.h" />
+    <ClInclude Include="Utils\MapUtils.h" />
     <ClInclude Include="Quantization\QuantTools.h" />
+    <ClInclude Include="Utils\GameIdKeys.h" />
     <ClInclude Include="Utils\IOUtils.h" />
     <ClInclude Include="Utils\MathUtils.h" />
     <ClInclude Include="Utils\StrUtils.h" />
@@ -33,6 +35,7 @@
     <ClCompile Include="CustomExceptions\COMErrors.cpp" />
     <ClCompile Include="CustomExceptions\CustomExceptions.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
+    <ClCompile Include="Utils\MapUtils.cpp" />
     <ClCompile Include="Quantization\QuantTools.cpp" />
     <ClCompile Include="Utils\IOUtils.cpp" />
     <ClCompile Include="Utils\MathUtils.cpp" />
@@ -134,7 +137,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -153,8 +156,8 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)DirectXTK\Inc</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
       <SupportJustMyCode>true</SupportJustMyCode>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>

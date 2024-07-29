@@ -126,8 +126,8 @@ namespace rldx
 			}
 		}
 	}*/
-	std::function<void(QList<QString>*, QList<QByteArray>*)> DxResourceManager::sm_assetCallBack;
-	std::function<void(QString*, QList<QString>*)> DxResourceManager::sm_animPathsBySkeletonCallBack;
+
+	AssetFetchCallbackWrapper DxResourceManager::sm_assetCallBack;
 
 	void DxResourceManager::DestroyAllResources()
 	{
@@ -147,7 +147,7 @@ namespace rldx
 		}*/
 	}
 
-	void DxResourceManager::GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries)
+	void DxResourceManager::GetResourcesFromCallBack(std::vector<std::wstring>& qstrMissingFiles, std::vector<std::vector<unsigned char>>& destBinaries)
 	{
 		if (!sm_assetCallBack) {
 			throw std::exception("No asset callback function set");
@@ -158,8 +158,10 @@ namespace rldx
 
 	utils::ByteStream DxResourceManager::GetFileFromCallBack(const std::wstring& fileName)
 	{
-		QList<QString> qstrMissingFiles = { QString::fromStdWString(fileName) };
-		QList<QByteArray> destBinaries;
+		std::vector<std::wstring> qstrMissingFiles;
+		std::vector<std::vector<unsigned char>> destBinaries;
+
+		qstrMissingFiles.push_back(fileName);
 
 		GetResourcesFromCallBack(qstrMissingFiles, destBinaries); // fetch from callback
 
@@ -168,7 +170,8 @@ namespace rldx
 			throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
 		}
 
-		if (destBinaries[0].isEmpty())
+		auto binary = destBinaries.at(0);
+		if (binary.empty())
 		{
 			// TODO: CLEAN UP
 			//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
@@ -178,7 +181,7 @@ namespace rldx
 		// TODO: CLEAN UP
 		//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
 
-		return utils::ByteStream(destBinaries[0].data(), destBinaries[0].size(), fileName);
+		return utils::ByteStream(binary.data(), binary.size(), fileName);
 	}
 
 	utils::ByteStream DxResourceManager::GetFile(const std::wstring& filePath)
@@ -191,6 +194,7 @@ namespace rldx
 
 		return bytes;
 	}
+
 	void DxResourceManager::RemoveResourceFromMap(IDxResource* resource)
 	{
 		auto itr = m_umapResources.begin();

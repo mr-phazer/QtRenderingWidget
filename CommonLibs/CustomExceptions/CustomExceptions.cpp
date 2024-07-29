@@ -1,5 +1,7 @@
 #include "CustomExceptions.h"
 
+#include <CommonLibs\Logger\Logger.h>
+
 using namespace logging;
 using namespace utils;
 

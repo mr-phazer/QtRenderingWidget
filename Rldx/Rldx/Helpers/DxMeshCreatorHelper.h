@@ -2,11 +2,11 @@
 
 
 #include <vector>
-#include "..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
+#include <ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h>
 #include "..\Creators\DxMeshCreator.h"
 #include "..\DataTypes\DxMeshData.h"
 
-#include "..\Rldx\Rldx\Animation\DataTypes\Skeleton.h"
+#include <Rldx\Rldx\Animation\DataTypes\Skeleton.h>
 
 namespace rldx
 {

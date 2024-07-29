@@ -1,6 +1,6 @@
 #include "..\Managers\ResourceManager\DxResourceManager.h"
 #include "ShaderLoadingHelpers.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 #include <d3dcompiler.h>
 //#include <exception>

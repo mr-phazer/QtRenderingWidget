@@ -1,5 +1,5 @@
-#include "Logger\Logger.h"
-#include "QtTestAppView.h"
+#include <CommonLibs\Logger\Logger.h>
+#include <QtTesterApp\QtTestAppView.h>
 
 int main(int argc, char* argv[])
 {

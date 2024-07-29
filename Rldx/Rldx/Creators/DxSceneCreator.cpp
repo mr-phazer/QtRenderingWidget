@@ -1,9 +1,8 @@
 #include <DirectXCollision.h>
 
 #include <CommonLibs\Logger\Logger.h>
-#include <CustomExceptions\CustomExceptions.h>
-#include "..\..\..\ImportExport\FileFormats\WsModel\Reader\WsModelReader.h"
-#include "..\..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <CommonLibs\Utils\GameIdKeys.h>
+#include <ImportExport\FileFormats\WsModel\Reader\WsModelReader.h>
 #include "..\Creators\DxGameShaderCreators.h"
 #include "..\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rendering\DxMesh.h"

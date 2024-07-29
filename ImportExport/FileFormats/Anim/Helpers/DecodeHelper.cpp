@@ -1,5 +1,5 @@
-#include <Quantization\QuantTools.h>
-#include <Utils\ByteStream.h>
+#include <CommonLibs/Quantization/QuantTools.h>
+#include <CommonLibs/Utils/ByteStream.h>
 #include "..\Types\Common\QuantMetaTables.h"
 #include "DecodeHelper.h"
 

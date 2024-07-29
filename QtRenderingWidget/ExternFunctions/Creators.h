@@ -1,10 +1,6 @@
 #pragma once
 
-class QWidget;
-class QString;
-class Vector;
-
-#include "Callbacks.h"
+#include <QtWidgets/qwidget.h>
 
 /// <summary>
 /// Widget Creation, call the method to get a new Widget
@@ -53,9 +49,3 @@ extern "C" void PauseRendering(QWidget * pQRendeeWiget);
 /// </summary>
 /// <param name="pQRendeeWiget"></param>
 extern "C" void ResumeRendering(QWidget * pQRendeeWiget);
-
-/// <summary>
-/// For debugging 
-/// Stand-in callback, search disk path where all the .pack files of a game have beene extracted
-/// </summary>
-extern void DEBUG_Callback_FileGetter(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs\Utils\ByteStream.h>
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\TextureElement.h"

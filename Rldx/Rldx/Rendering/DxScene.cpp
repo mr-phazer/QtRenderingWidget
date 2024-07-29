@@ -1,7 +1,7 @@
 #include "DxScene.h"
 
 #include "..\..\..\DXUT\Core\DXUTmisc.h"
-#include "..\..\ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
+#include "ImportExport\FileFormats\RigidModel\Readers\RigidModelReader.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\Creators\DxMeshCreator.h"
 #include "..\Managers\DxDeviceManager.h"
@@ -21,7 +21,7 @@ void DxScene::Draw(ID3D11DeviceContext* poDeviceContext)
 	// TODO: set color conditional on "game ID", as older games in RGB, newer in sRGB, so the BG color will look very different
 	m_spoSwapChain->GetBackBuffer()->ClearPixelsAndDepthBuffer(poDeviceContext, { 0.1f, 0.1f, 0.1f, 1.0f });
 
-	m_spoSwapChain->UpdateViewPort(poDeviceContext, nullptr);
+	m_spoSwapChain->UpdateViewPort(poDeviceContext);
 
 	//  fetch mesh nodes from scenegraph
 	m_sceneGraph.FillRenderBucket(&m_renderQueue);

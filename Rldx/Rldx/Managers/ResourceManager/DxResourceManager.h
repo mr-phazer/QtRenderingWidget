@@ -11,15 +11,20 @@
 #include <string>
 #include <type_traits>
 
-// author heade
-#include <Logger/Logger.h>
-#include "..\..\Helpers\StringKeyMap.h"
-#include "..\..\QtRenderingWidget\ExternFunctions\Callbacks.h"
 #include "IDxResource.h"
-#include "Utils\ByteStream.h"
-#include "Utils\IOUtils.h"
+
+// author heade
+#include <CommonLibs\Logger\Logger.h>
+#include <CommonLibs\Utils\MapUtils.h>
+#include <CommonLibs\Utils\ByteStream.h>
+#include <CommonLibs\Utils\IOUtils.h>
 
 namespace rldx {
+
+	typedef void (*AssetFetchCallbackWrapper) (
+		std::vector<std::wstring>* filesToFetch,
+		std::vector<std::vector<unsigned char>>* outBinFiles
+	);
 
 	class DxResourceManager
 	{
@@ -42,26 +47,25 @@ namespace rldx {
 
 		void DestroyAllResources();
 
-		static void GetResourcesFromCallBack(QList<QString>& qstrMissingFiles, QList<QByteArray>& destBinaries);
+		static void GetResourcesFromCallBack(std::vector<std::wstring>& qstrMissingFiles, std::vector<std::vector<unsigned char>>& destBinaries);
 
 		// TODO: Move to a separate class? like a new class "FileLoader" / similar?
 		static utils::ByteStream GetFileFromCallBack(const std::wstring& fileName);
 		static utils::ByteStream GetFile(const std::wstring& filePath);
 
-		static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { sm_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
-		static void SetAssetFetchCallback(AssetFetchCallBack assetCallBackFunc) { sm_assetCallBack = assetCallBackFunc; }
+		//static void SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack animPathsBySkeletonCallBackFunc) { sm_animPathsBySkeletonCallBack = animPathsBySkeletonCallBackFunc; }
+		static void SetAssetFetchCallback(AssetFetchCallbackWrapper assetCallBackFunc) { sm_assetCallBack = assetCallBackFunc; }
+		static void CallAssetFetchCallBack(std::vector<std::wstring>& qstrMissingFiles, std::vector<std::vector<unsigned char>>& destBinaries) { GetResourcesFromCallBack(qstrMissingFiles, destBinaries); };
 
 		static void SetGameAssetFolder(const std::wstring& path) { sm_rooPathAssetPath = path; }
 		static const std::wstring& GetGameAssetFolder() { return sm_rooPathAssetPath; }
 
-		// TODO: callbacks static or not?
-		static std::function<void(QList<QString>*, QList<QByteArray>*)> sm_assetCallBack;
-		static std::function<void(QString*, QList<QString>*)> sm_animPathsBySkeletonCallBack;
-
-		QVector<QString> m_qstrMissingFiles;
-
+		static AssetFetchCallbackWrapper sm_assetCallBack;
+		//static std::function<void(QString*, QList<QString>*)> sm_animPathsBySkeletonCallBack;
 	private:
 		void RemoveResourceFromMap(IDxResource* resource);
+
+		static std::unique_ptr<DxResourceManager> sm_spoInstance;
 	};
 
 	template<typename Derived_t>

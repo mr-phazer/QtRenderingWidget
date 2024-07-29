@@ -1,9 +1,9 @@
 #include <CommonLibs\CustomExceptions\CustomExceptions.h>
 #include "..\..\Interfaces\IRenderBucket.h"
 #include "..\..\Rendering\DxMesh.h"
-#include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
-#include "..\Rldx\Rldx\Managers\DxDeviceManager.h"
-#include "..\Rldx\Rldx\Rendering\DxShaderProgram.h"
+#include <Rldx\Rldx\Helpers\DxMeshCreatorHelper.h>
+#include <Rldx\Rldx\Managers\DxDeviceManager.h>
+#include <Rldx\Rldx\Rendering\DxShaderProgram.h>
 #include "DxBaseNode.h"
 
 

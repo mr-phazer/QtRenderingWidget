@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Timer\SystemClockChecker.h>
+#include <CommonLibs\Timer\SystemClockChecker.h>
 #include "SkeletonKeyFrameSampler.h"
 
 namespace skel_anim

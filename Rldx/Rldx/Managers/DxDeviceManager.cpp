@@ -1,9 +1,10 @@
 
 #include <windows.h>
 #include "..\..\..\DirectXTK\Src\PlatformHelpers.h"
-#include "CustomExceptions/CustomExceptions.h"
 #include "DxDeviceManager.h"
-#include "Logger\Logger.h"
+
+#include <CommonLibs\CustomExceptions\CustomExceptions.h>
+#include <CommonLibs\Logger\Logger.h>
 
 
 

@@ -7,11 +7,11 @@
 #include <qlayout.h>
 #include <QMimeData>
 
-#include "..\QtRenderingWidget\Constants\GameIdKeys.h"
+#include <CommonLibs\Utils\GameIdKeys.h>
 #include "..\QtRenderingWidget\ExternFunctions\Creators.h"
 #include "..\Rldx\Rldx\Helpers\DxMeshCreatorHelper.h"
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceByteStream.h"
-#include "Utils\ByteStream.h"
+#include <CommonLibs/Utils/ByteStream.h>
 
 #include "..\Rldx\Rldx\Managers\ResourceManager\DxResourceManager.h"
 
@@ -76,11 +76,6 @@ QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 // TODO: REMOVE and cleanup 
 void QtMainWindowView::DEBUG_InitRenderView()
 {
-	// TODO: DOESN't WORK, get set to null, as the release version is called, make better debugging code, that doesn't affect the widget, maybe
-	// Or really, the testerapp is not meant to run in Release anyway.
-
-	rldx::DxResourceManager::SetAssetFetchCallback(&DEBUG_Callback_FileGetter); // TODO: in release, this isn't set, for complex reasons
-
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
 	auto ptestData2 = &test_app_data::testData_WH3_WSMODEL_2;
 
@@ -102,13 +97,13 @@ void QtMainWindowView::DEBUG_InitRenderView()
 	return;
 
 
-	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!m_renderWidget1)	return;
 
-	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget2)	return;
 
-	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, &DEBUG_Callback_FileGetter, nullptr);
+	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget3)	return;
 
 
@@ -148,7 +143,7 @@ void QtMainWindowView::dropEvent(QDropEvent* event)
 
 			auto idString = QString::fromStdWString(game_id_keys::KEY_WARHAMMER_3);
 
-			auto newWidget = CreateQRenderingWidget(nullptr, &idString, &DEBUG_Callback_FileGetter, nullptr);
+			auto newWidget = CreateQRenderingWidget(nullptr, &idString, nullptr, nullptr);
 
 			newWidget->setWindowFlag(Qt::WindowType::Window, true);  // make free window
 
