@@ -129,6 +129,12 @@ namespace rldx
 
 	AssetFetchCallbackWrapper DxResourceManager::sm_assetCallBack;
 
+	DxResourceManager::~DxResourceManager()
+	{
+		DestroyAllResources();
+	
+	}
+
 	void DxResourceManager::DestroyAllResources()
 	{
 		m_umapResources.clear();
@@ -167,11 +173,12 @@ namespace rldx
 
 		if (destBinaries.size() != 1)
 		{
-			throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+			// TODO: to throw or not to throw? It ios caught so?
+			//throw std::exception(std::string(FULL_FUNC_INFO("ERROR: File count mismatch (should be 1)")).c_str());
+			logging::LogWarning(L"File count mismatch (should be 1), but is " + std::to_wstring(destBinaries.size()));
 		}
-
-		auto binary = destBinaries.at(0);
-		if (binary.empty())
+		
+		if ( destBinaries.empty() || destBinaries.at(0).empty())
 		{
 			// TODO: CLEAN UP
 			//throw std::exception(string(FULL_FUNC_INFO("ERROR: File: '" + libtools::wstring_to_string(fileName) + "', is empty or couldn't be found")).c_str());
@@ -181,7 +188,7 @@ namespace rldx
 		// TODO: CLEAN UP
 		//			Logger::LogActionSuccess(L"Found packed file (through callback): " + fileName);
 
-		return utils::ByteStream(binary.data(), binary.size(), fileName);
+		return utils::ByteStream(destBinaries.at(0).data(), destBinaries.at(0).size(), fileName);
 	}
 
 	utils::ByteStream DxResourceManager::GetFile(const std::wstring& filePath)

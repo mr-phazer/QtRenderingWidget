@@ -13,39 +13,50 @@ using namespace utils;
 
 static void (*AssetFetchCallBackStored) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles) = nullptr;
 
+
+class CalllBackHelper
+{
+	void GetAssetsFromClient(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+	void GetAssetFromDisk(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+public:
+	void GetAssets(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
+	{
+		if (AssetFetchCallBackStored != nullptr) {
+			GetAssetsFromClient(missingFiles, outBinFiles);
+		}
+		else {
+			GetAssetFromDisk(missingFiles, outBinFiles);
+		}
+	}
+};
+
 void AssetFetchCallbackWrapper(
 	std::vector<std::wstring>* filesToFetch,
-	std::vector<std::vector<unsigned char>>* outBinFiles
+	std::vector<std::vector<unsigned char>>* outputBinaryFiles
 ) {
-
 	// If we don't have callback, use the old debug mode.
 	if (AssetFetchCallBackStored == nullptr) {
 
 		// force list to be same size, maybe redundant
-		outBinFiles->clear();
-		outBinFiles->resize(filesToFetch->size());
+		outputBinaryFiles->clear();
+		
 
-		for (const std::wstring& Asset : *filesToFetch) {
+		for (const std::wstring& assetPath : *filesToFetch) {
 
-			if (IsDiskFile(Asset)) {
-				throw std::exception("Cannot accept disk files");
-			}
+			auto diskFilePath = (IsDiskFile(assetPath)) ? assetPath : rldx::DxResourceManager::GetGameAssetFolder() + assetPath;			
+			
+			ByteStream assetStream(diskFilePath, false);
 
-			// TODO: the "GetGameAssetFolder" is only for "local callback" debuggin
-			auto filePath = rldx::DxResourceManager::GetGameAssetFolder() + Asset;
-			ByteStream newStream(filePath, false);
-
-
-			if (!newStream.IsValid())
-			{
-				std::vector<unsigned char> dest = std::vector<unsigned char>();
-				outBinFiles->push_back(dest);
+			if (!assetStream.IsValid())
+			{			
+				logging::LogWarning(L"Byte stream is not valid. Nothing added to outpout.");
 				continue;
 			}
+						
+			std::vector<unsigned char> assetBinaryBuffer = std::vector<unsigned char>(assetStream.GetBufferSize());
+			assetStream.Read(assetBinaryBuffer.data(), assetBinaryBuffer.size());
 
-			// -- resize dest, buffer, and read whole file into it
-			std::vector<unsigned char> dest = std::vector<unsigned char>(newStream.GetBufferSize());
-			newStream.Read(dest.data(), dest.size());
+			outputBinaryFiles->push_back(assetBinaryBuffer);
 		}
 	}
 	
@@ -74,7 +85,7 @@ void AssetFetchCallbackWrapper(
 		{
 			auto item = outBinFilesQt.at(i);
 			std::vector<unsigned char> s(item.begin(), item.end());
-			outBinFiles->push_back(s);
+			outputBinaryFiles->push_back(s);
 		}	
 	}
 }
@@ -121,7 +132,8 @@ QWidget* CreateQRenderingWidget(
 
 bool AddNewPrimaryAsset(QWidget* pQRenderWiget, QString* assetFolder, QByteArray* assetData, QString* outErrorString)
 {
-	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);
+	auto renderWidget = static_cast<QtRenderWidgetView*>(pQRenderWiget);	
+	renderWidget->GetController()->LoadNewAsset(renderWidget, assetFolder, assetData, outErrorString);
 
 	renderWidget->PauseRendering();
 	auto gameIdString = renderWidget->GetGameIdString();

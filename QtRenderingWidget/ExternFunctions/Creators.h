@@ -11,8 +11,8 @@
 /// <returns>Newly create Rendering Widget</returns>
 extern "C" QWidget * CreateQRenderingWidget(
 	QWidget * parent,
-	QString * gameIdString,
-	void (*AssetFetchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles),
+	QString * gameeIdString,
+	void (*AssetFtchCallBack) (QList<QString>*missingFiles, QList<QByteArray>*outBinFiles),
 	void (*AnimPathsBySkeletonCallBack) (QString * skeletonName, QList<QString>*out) = nullptr
 );
 

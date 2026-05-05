@@ -145,8 +145,8 @@ bool QtRenderWidgetView::InitRenderView()
 	LoadExeResources(m_upoSceneManager->GetResourceManager(), poDevice);
 
 	logging::LogAction(L"Create New Scene");
-	MakeScene();
 
+	MakeScene();
 	// TODO: remove
 	//m_upoSceneManager->Resize(rldx::DxDeviceManager::GetInstance().GetDevice(), rldx::DxDeviceManager::GetInstance().GetDeviceContext(), 1024, 1024);
 
@@ -250,25 +250,11 @@ void QtRenderWidgetView::dragEnterEvent(QDragEnterEvent* event)
 
 void QtRenderWidgetView::dropEvent(QDropEvent* event)
 {
-	// Handle drop event (e.g., process dropped file)
-	// TODO:: move this code to the CONTROLLER, emit "ItemDropped" and have the controller handle that event with this code
+	// Handle drop event (e.g., process dropped file)	
 	const QMimeData* mimeData = event->mimeData();
-	if (mimeData->hasUrls()) {
-		QList<QUrl> urls = mimeData->urls();
-		for (const QUrl& url : urls)
-		{
-			auto filePath = url.toLocalFile().toStdWString();
-
-			utils::ByteStream bytes(filePath);
-			QString fileName2 = QString::fromStdWString(filePath);
-			QByteArray qBytes2((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
-			QString outErrorString;
-
-			AddNewPrimaryAsset(this, &fileName2, &qBytes2, &outErrorString);
-
-			break; // only read one file, for now
-		}
-	}
+	m_controller->ProcessMimeData(mimeData);
 	event->acceptProposedAction();
 }
+
+
 #endif

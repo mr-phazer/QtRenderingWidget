@@ -71,9 +71,7 @@ QStringList DEBUG_GetAllFiles(const QString& path, const QString& extension)
 	};
 
 	return listPaths;
-}
-
-// TODO: REMOVE and cleanup 
+} 
 void QtMainWindowView::DEBUG_InitRenderView()
 {
 	auto ptestData = &test_app_data::testData_WH3_VMD_brt_ch_king_louen;
@@ -92,35 +90,29 @@ void QtMainWindowView::DEBUG_InitRenderView()
 	SetAssetFolder(&globalAssetFolder);
 
 	QString globalLogFolder = repoFolder + QString::fromStdWString(LR"(/log/)");
-	SetLogFolder(&globalLogFolder);
-
-	return;
-
+	SetLogFolder(&globalLogFolder);	
 
 	m_renderWidget1 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!m_renderWidget1)	return;
 
-	auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
+	/*auto renderWidget2 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
 	if (!renderWidget2)	return;
 
 	auto renderWidget3 = CreateQRenderingWidget(this, &gameIdString, nullptr, nullptr);
-	if (!renderWidget3)	return;
-
-
-
+	if (!renderWidget3)	return;*/
 
 	ByteStream bytes(ptestData->filePath);
 	QString fileName = QString::fromStdWString(bytes.GetPath().c_str());
 	QByteArray qBytes((char*)bytes.GetBufferPtr(), bytes.GetBufferSize());
 	QString outErrorString;
 
-	auto dockWidget1 = CreateDockWidget(renderWidget2, "Right");
+	/*auto dockWidget1 = CreateDockWidget(renderWidget2, "Right");
 	auto dockWidget2 = CreateDockWidget(renderWidget3, "Left");
 	dockWidget1->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
-	dockWidget2->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);
+	dockWidget2->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose);*/
 
-	addDockWidget(Qt::RightDockWidgetArea, dockWidget1);
-	addDockWidget(Qt::LeftDockWidgetArea, dockWidget2);
+	//addDockWidget(Qt::RightDockWidgetArea, dockWidget1);
+	//addDockWidget(Qt::LeftDockWidgetArea, dockWidget2);
 
 	setCentralWidget(m_renderWidget1); // add widget as the central widget in the QMainWindow 
 }

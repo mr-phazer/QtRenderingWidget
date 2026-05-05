@@ -52,9 +52,9 @@ namespace rldx
 		m_upoNewScene = CreateScene(poDevice, poDeviceContext, resourceManager, rgbMode);
 
 		// TODO: remove?
-		//AddGrid(poDevice, newSimpleShaderProgram.GetPtr());
+		AddGrid(resourceManager, poDevice);
 
-		//SetCameraAutoFit(m_upoNewScene.get());
+		SetCameraAutoFit(m_upoNewScene.get());
 
 		return std::move(m_upoNewScene);
 	}

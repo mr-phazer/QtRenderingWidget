@@ -6,9 +6,9 @@
 namespace test_app_data
 {
 
-	const std::wstring assetFolder_WH3 = LR"(H:\Modding\WH3\)";
+	const std::wstring assetFolder_WH3 = LR"(K:\Modding\UnPacked TW\WH3\)";
 	const std::wstring assetFolder_Attila = LR"(I:\Modding\Attila\)";
-	const std::wstring assetFolder_WH2 = LR"(k:\Modding\WH2)";
+	const std::wstring assetFolder_WH2 = LR"(k:\Modding\WH2\)";
 
 	/// <summary>
 	/// Debugging data struct, made to unclutter the code
@@ -139,7 +139,7 @@ namespace test_app_data
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(H:\modding\WH3\variantmeshes/variantmeshdefinitions/brt_ch_king_louen_leoncoeur.variantmeshdefinition)"
+		assetFolder_WH3 + LR"(variantmeshes\variantmeshdefinitions\brt_ch_king_louen_leoncoeur.variantmeshdefinition)"
 	};
 
 	TestData testData_WH3_RMV2_lzd_coatl
@@ -153,7 +153,7 @@ namespace test_app_data
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(H:\modding\WH3\variantmeshes\wh_variantmodels\hc3\bst\bst_jabberslythe\bst_jabberslythe_01.rigid_model_v2)"
+		assetFolder_WH3 + LR"(variantmeshes\wh_variantmodels\hc3\bst\bst_jabberslythe\bst_jabberslythe_01.rigid_model_v2)"
 	};
 
 	TestData testData_WH3_RMV2_KARL
@@ -174,7 +174,7 @@ namespace test_app_data
 	{
 		assetFolder_WH3,
 		game_id_keys::KEY_WARHAMMER_3,
-		LR"(H:\Modding\WH3\variantmeshes\wh_variantmodels\hu1\brt\brt_grail_knights\head\brt_grail_knights_helmet_01.wsmodel)"
+		assetFolder_WH3 + LR"(variantmeshes\wh_variantmodels\hu1\brt\brt_grail_knights\head\brt_grail_knights_helmet_01.wsmodel)"
 	};
 
 	TestData WH2_battlePilgrims_VMD =

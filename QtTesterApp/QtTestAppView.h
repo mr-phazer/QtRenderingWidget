@@ -24,9 +24,9 @@ public:
 
 	void dropEvent(QDropEvent* event);
 
-
 private:
 	QDockWidget* CreateDockWidget(QWidget* renderWidget, const QString& name);
+	
 	// TODO: Debugging code in here, clean up
 	void DEBUG_InitRenderView();
 

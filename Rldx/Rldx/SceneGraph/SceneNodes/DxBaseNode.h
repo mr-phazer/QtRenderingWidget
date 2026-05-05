@@ -84,8 +84,8 @@ namespace rldx {
 		}
 
 		DxBaseNode(const std::wstring& name)
-		{
-			DxBaseNode();
+			: DxBaseNode()
+		{			
 			SetName(name);
 		}
 

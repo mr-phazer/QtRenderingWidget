@@ -28,6 +28,7 @@ namespace rldx {
 
 	class DxResourceManager
 	{
+		// TODO: use shared_ptr<T> to avoid having to manage the lifetime of the resources, and also to avoid having to worry about dangling pointers, and also to allow for easy sharing of resources between different parts of the code (like different scenes, etc)
 		std::map<uint32_t, std::unique_ptr<rldx::IDxResource>> m_umapResources;
 
 		// TODO: Does this belong here? Maybe move to a separate class? Like a "FileLoader" class? Alongside with "GetFile"?
@@ -36,6 +37,7 @@ namespace rldx {
 		std::wstring m_gameIdString = L"";
 
 	public:
+		virtual ~DxResourceManager();
 		void SetGameIdSting(const std::wstring& id) { m_gameIdString = id; }
 		std::wstring GetGameIdString() const { return m_gameIdString; }
 

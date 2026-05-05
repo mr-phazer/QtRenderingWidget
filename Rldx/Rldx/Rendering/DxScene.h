@@ -42,8 +42,18 @@ namespace rldx {
 		Normal
 	};
 
+	// TODO: something like this
+	//class DxSceneRenderer
+	//{	
+	//public:
+	//	void DrawScene(DxDeviceManager& devManager, const DxScene& scene, ....)
+	//};
+
+	// TODO: A scene class should not be responsible for rendering itself, but rather "hold" the data, and then a "renderer" class sho
+	// TODO: make a "SceneRenderer" class, and move the rendering code there, and then the scene will just be a "data holder" for the renderer to render, and then the renderer can be more easily swapped out for different rendering techniques (forward, deferred, etc)
 	class DxScene : public TIdentifiable<DxSceneTypeEnum>, public IResizable, public IDrawable, public IUpdateable, public IBindable
 	{
+	
 		friend class DxSceneGraph;
 
 	public:
@@ -51,7 +61,7 @@ namespace rldx {
 		friend class DxSceneCreator;
 
 	public:
-		DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);
+		DxScene(rldx::DxResourceManager& resourceManager, const std::wstring& name, std::unique_ptr<DxSwapChain> upoSwapChain);
 		virtual ~DxScene();
 
 		DxVmdManager& GetVmdManager() { return m_vmdManager; }

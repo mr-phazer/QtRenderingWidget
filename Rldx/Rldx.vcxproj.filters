@@ -288,6 +288,7 @@
     <None Include="Rldx\RenderResources\Shaders\include\util.hlsli" />
     <None Include="Rldx\RenderResources\Shaders\include\VS_ConstBuffers.hlsli" />
     <None Include="Rldx\RenderResources\Font\Consolas18.spritefont" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Rldx">

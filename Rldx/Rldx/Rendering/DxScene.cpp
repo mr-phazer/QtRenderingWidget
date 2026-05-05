@@ -174,6 +174,7 @@ DxScene::DxScene(rldx::DxResourceManager& m_resourceManager, const std::wstring&
 	DxDeviceManager::GetInstance().GetDebugTextWriter()->AddString(L"QtRenderingWidget for RPFM version 0.0.1a.", { 1,1,1,1 }, 6.0f);
 	SetName(name);
 
+	// TODO: put the swap chaing in the "window" class
 	// TODO: move more of the initializing into the constructor, RAII
 	m_spoSwapChain = std::move(upoSwapChain);
 

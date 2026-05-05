@@ -25,6 +25,7 @@ namespace rldx
 {
 	/// <summary>
 	/// singleton only 1 device per .exe
+	/// TODO: only 1 immediate device context?
 	/// </summary>
 	class DxDeviceManager
 	{

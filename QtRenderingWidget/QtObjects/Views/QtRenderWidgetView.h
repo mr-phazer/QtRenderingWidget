@@ -14,17 +14,31 @@
 #include "DirectXTK\Inc\SpriteFont.h"
 
 #include "..\Controllers\QtRenderWidgetController.h"
+#include <d3d11.h>
+#include <Windows.h>
+#include <memory>
+#include <qbytearray.h>
+#include <qcoreevent.h>
+#include <qobjectdefs.h>
+#include <qstring.h>
+#include <qpaintdevice.h>
+#include <qwindowdefs_win.h>
+#include <Rldx/Managers/ResourceManager/DxResourceManager.h>
+#include <Rldx/SceneGraph/SceneNodes/DxBaseNode.h>
 
 class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 {
 	Q_OBJECT
 private:
-	QtRenderWidgetController* m_controller = nullptr;
+	QtRenderWidgetController* m_controller = nullptr; // 
+	rldx::DxSceneManager::UniquePtr m_upoSceneManager; // TODO: rename to DxSceneCotainer
+
+	QTimer* m_timer = nullptr;
+	float m_frameTime = 0;
+	QString m_gameIdString;
 
 	friend class QtRenderWidgetController;
 
-private:
-	// overriden methods
 	void resizeEvent(QResizeEvent* event) override;
 	void closeEvent(QCloseEvent* event) override;
 
@@ -75,6 +89,8 @@ public:
 	void StartRendering(float _FPS = 60.0f);
 	void TerminateRendering();
 
+	QtRenderWidgetController* GetController() { return m_controller; }
+
 	rldx::DxSceneManager* GetSceneManager() { return m_upoSceneManager.get(); }
 	QString GetGameIdString() const { return m_gameIdString; };
 	void SetGameIdString(const QString& gameIdString) { m_gameIdString = gameIdString; }
@@ -100,20 +116,14 @@ signals:
 private:
 	void DrawFrameHandler();
 	void MakeConnections();
-
-private:
-	rldx::DxSceneManager::UniquePtr m_upoSceneManager;
-
-	QTimer* m_timer = nullptr;
-	float m_frameTime = 0;
-	QString m_gameIdString;
+	
 
 	// only support drag+drog in debug mode
-
-
 public:
 #ifdef _DEBUG
 	void dragEnterEvent(QDragEnterEvent* event);
 	void dropEvent(QDropEvent* event);
 #endif
 };
+
+

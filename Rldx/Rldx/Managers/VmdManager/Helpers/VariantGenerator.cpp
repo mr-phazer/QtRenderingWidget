@@ -3,8 +3,6 @@
 
 namespace rldx
 {
-
-
 	void VariantGenerator::GenerateVariant()
 	{
 		DisbaleAllNodes(m_sceneRootNode);
