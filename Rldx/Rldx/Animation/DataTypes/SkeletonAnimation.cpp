@@ -11,9 +11,9 @@ namespace skel_anim
 {
 	using namespace utils;
 
-	SkeletonAnimation* SkeletonAnimation::CreateFromAnimFile(rldx::DxResourceManager& resoureceMangager, const anim_file::AnimFile& inAnimFile)
+	SkeletonAnimation* AnimationLoader::CreateFromAnimFile(rldx::DxResourceManager& resoureceMangager, const anim_file::AnimFile& inAnimFile)
 	{
-		auto newAnim = resoureceMangager.CreateResouce<SkeletonAnimation>();
+		auto newAnim = resoureceMangager.CreateResouce<SkeletonAnimation>(ToWString(inAnimFile.fileHeader.skeletonName));
 
 		newAnim->m_skeletonName = ToWString(inAnimFile.fileHeader.skeletonName);
 		newAnim->lastKeyTime = inAnimFile.fileHeader.fLastKeyTime;
@@ -24,7 +24,7 @@ namespace skel_anim
 			newAnim->frameData.frames.push_back(SkeletonKeyFrame::CreateFromCommonFrame(frame));
 			newAnim->frameData.boneBlendWeights.push_back(1.0f);
 			newAnim->frameData.boneSpliceMask.push_back(true);
-		}
+		} 
 
 		return newAnim;
 	};

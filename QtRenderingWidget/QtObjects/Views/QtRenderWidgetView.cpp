@@ -2,11 +2,17 @@
 
 #include <CommonLibs\Logger\Logger.h>
 
+
+
 using namespace rldx;
 using namespace logging;
 
-QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString)
-	: QWidget(parent), m_controller(new QtRenderWidgetController(this))
+QtRenderWidgetView::QtRenderWidgetView(QWidget* parent, const QString& gameidString, CallBackFuncPtr callback)
+	: 
+	QWidget(parent),
+	m_controller(new QtRenderWidgetController(this)),
+	m_model(new QtRenderWidgetModel(this))
+
 {
 	setupUi(this);
 

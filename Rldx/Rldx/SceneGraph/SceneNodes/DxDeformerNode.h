@@ -36,7 +36,7 @@ namespace rldx
 		// TODO: remove: make private
 
 	protected:
-		skel_anim::Skeleton m_skeleton;
+		skel_anim::Skeleton* m_skeleton;
 		skel_anim::AnimQueue m_animQueue;
 		anim_file::TwAnimFileReader m_animFileReader; // TODO: Refactor: should this really be stored here?
 

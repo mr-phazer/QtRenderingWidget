@@ -219,4 +219,30 @@ namespace rldx
 	}
 
 	std::wstring DxResourceManager::sm_rooPathAssetPath;
+
+
+
+	//class IRawDataFactory
+	//{
+	//public:
+	//	virtual	utils::ByteStream CreateByteStream(const std::wstring& filePath) = 0;
+	//};
+
+
+	//class CallbackRawDataFactory : public IRawDataFactory
+	//{
+	//public:
+	//	CallbackRawDataFactory(AssetFetchCallbackWrapper assetCallBackFunc)
+	//		: sm_assetCallBack(assetCallBackFunc) {}
+
+	//	virtual	utils::ByteStream CreateByteStream(const std::wstring& filePath)
+	//	{
+	//		return DxResourceManager::GetFileFromCallBack(filePath);
+	//	}
+	//
+	//private:
+	//	AssetFetchCallbackWrapper sm_assetCallBack = ;
+	//}
 }
+
+

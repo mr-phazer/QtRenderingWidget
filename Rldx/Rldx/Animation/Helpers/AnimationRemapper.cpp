@@ -12,7 +12,7 @@ namespace skel_anim
 
 	SkeletonAnimation AnimationRemapper::RemapAnimation(const SkeletonAnimation& sourceAnim)
 	{
-		SkeletonAnimation targetAnim;
+		SkeletonAnimation targetAnim(L"Temp:Remapped");
 		// resize the targetAnim m_animation to match the targetAnim skeleton
 		targetAnim.frameData.frames.resize(sourceAnim.frameData.frames.size());
 
@@ -22,7 +22,7 @@ namespace skel_anim
 			targetAnim.frameData.frames[i] = RemapFrame(sourceAnim.frameData.frames[i]);
 		}
 
-		return targetAnim;
+		return targetAnim;							
 	}
 
 	SkeletonKeyFrame AnimationRemapper::RemapFrame(const SkeletonKeyFrame& sourceFrame)

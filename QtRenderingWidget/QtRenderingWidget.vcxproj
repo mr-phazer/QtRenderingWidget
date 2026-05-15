@@ -74,7 +74,7 @@
     <ClCompile />
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir);$(Qt_INCLUDEPATH_)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions);DEBUG</PreprocessorDefinitions>
@@ -97,7 +97,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir);$(Qt_INCLUDEPATH_)</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>$(Qt_DEFINES_);RENDER_RESOURCES_DIRECTORY=LR"($(ProjectDir)Rldx\RenderResources)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
@@ -137,10 +137,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DataManager\DataLoader.cpp" />
     <ClCompile Include="ExternFunctions\Creators.cpp" />
+    <ClCompile Include="QtObjects\Models\QtRenderWidgetModel.cpp" />
     <ClCompile Include="QtObjects\Views\QtRenderWidgetView.cpp" />
     <ClCompile Include="QtObjects\Controllers\QtRenderWidgetController.cpp" />
+    <ClInclude Include="DataManager\DataLoader.h" />
     <ClInclude Include="ExternFunctions\Creators.h" />
+    <QtMoc Include="QtObjects\Models\QtRenderWidgetModel.h" />
     <QtMoc Include="QtObjects\Controllers\QtRenderWidgetController.h" />
     <QtRcc Include="Resources\QtRenderView.qrc" />
     <QtUic Include="QtObjects\Views\QtRenderWidgetView.ui" />

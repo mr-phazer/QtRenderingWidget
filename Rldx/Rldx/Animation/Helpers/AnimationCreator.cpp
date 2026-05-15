@@ -14,7 +14,7 @@ namespace skel_anim
 	void skel_anim::AnimationCreator::CreateAnimationFromFile() {
 
 		// get anim file data bytes
-		auto animBytes = rldx::DxResourceManager::GetFile(m_animFilePath);
+		auto animBytes = rldx::DxResourceManager::GetFile(m_animFilePath);					
 
 		// TODO: Static method for "GetSkeletonName"?
 		// fetch skeleton m_nodeName from anim file
@@ -24,12 +24,12 @@ namespace skel_anim
 		auto bindPoseBytes = rldx::DxResourceManager::GetFile(skel_anim::GetPackPathFromSkeletonName(skeletonName));
 
 		// fill create bind pose field
-		m_spoBindPoseAnimFile = std::make_unique<anim_file::AnimFile>(anim_file::TwAnimFileReader().Read(bindPoseBytes));
+		m_animdPoseAnimFile = anim_file::TwAnimFileReader().Read(bindPoseBytes);
 
 		// dequantize m_animation, using bind pose
-		m_spoAnimationAnimFile = std::make_unique<anim_file::AnimFile>(anim_file::TwAnimFileReader().Read(animBytes, m_spoBindPoseAnimFile.get()));
+		m_animationAnimFile = anim_file::TwAnimFileReader().Read(animBytes, &m_animdPoseAnimFile);
 
-		m_animation = SkeletonAnimation::CreateFromAnimFile(*m_resourceManager, *m_spoAnimationAnimFile);
+		m_animation = AnimationLoader::CreateFromAnimFile(*m_resourceManager, m_animationAnimFile);
 	}
 
 	AnimationCreator::AnimationCreator(rldx::DxResourceManager& resourceManager, const std::wstring& animFilePath, const Skeleton& targetSkeleton)
@@ -37,7 +37,6 @@ namespace skel_anim
 		m_resourceManager(&resourceManager),
 		m_animFilePath(animFilePath),
 		m_targetSkeleton(&targetSkeleton)
-	{
-		CreateAnimationFromFile();
+	{	
 	}
 } // namespace skel_anim

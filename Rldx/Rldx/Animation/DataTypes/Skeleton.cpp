@@ -7,7 +7,7 @@ namespace skel_anim
 {
 	using namespace utils;
 
-	Skeleton* Skeleton::Create(const anim_file::AnimFile& inputFile, rldx::DxResourceManager& resourceManager)
+	Skeleton* SkeletonCreator::CreateSkeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile)	
 	{
 		auto skeletonName = ToWString(inputFile.fileHeader.skeletonName);
 
@@ -17,41 +17,34 @@ namespace skel_anim
 		if (pSkeleton) { return pSkeleton; }*/
 
 		// allocate memmory for skeeton
-		auto pSkeleton = resourceManager.CreateResouce<Skeleton>();
+		auto pSkeleton = resourceManager.CreateResouce<Skeleton>(skeletonName);
 
 		// create skeleleton from ANIM file
-		auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, inputFile);
+		auto animation = AnimationLoader::CreateFromAnimFile(resourceManager, inputFile);
 		pSkeleton->SetBoneTable(inputFile);
 
-		FramePoseGenerator(*pSkeleton).GenerateMatrices(m_animation->frameData.frames[0], pSkeleton->m_bindposeMatrices);
+		FramePoseGenerator(*pSkeleton).GenerateMatrices(animation->frameData.frames[0], pSkeleton->m_bindposeMatrices);		
 
 		for (auto& m : pSkeleton->m_bindposeMatrices) {
 			pSkeleton->m_inverseBindPoseMatrices.push_back(m.Invert());
 		}
+
+		// TODO: do this instead
+		//pSkeleton->m_inverseBindPoseMatrices = pSkeleton->m_bindposeMatrices;
+		//for (auto& m : pSkeleton->m_bindposeMatrices) {
+		//	m.Invert();
+		//}
+
 
 		pSkeleton->m_skeletonName = skeletonName;
 
 		return pSkeleton;
 	}
 
-
-	Skeleton::Skeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile)
+	Skeleton::Skeleton(const std::wstring& name) : IDxResource(name)
 	{
-		// set skeleton m_nodeName
-		m_skeletonName = ToWString(inputFile.fileHeader.skeletonName);
-
-		auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, inputFile);
-
-		if (m_animation->frameData.frames.empty()) {
-			throw COMException(L"No frames i bind pose anim file", COMExceptionFormatMode::StandardLogVerbose, 0);
-		}
-
-		SetBoneTable(inputFile);
-		FramePoseGenerator(*this).GenerateMatrices(m_animation->frameData.frames[0], m_bindposeMatrices);
-
-		for (auto& m : m_bindposeMatrices) {
-			m_inverseBindPoseMatrices.push_back(m.Invert());
-		}
+		SetType(rldx::ResourceTypeEnum::Skeleton);
+		SetTypeString(L"Skeleton");
 	}
 
 	std::wstring Skeleton::GetName() const
@@ -125,4 +118,7 @@ namespace skel_anim
 	{
 		return m_bindposeMatrices;
 	}
+
+
+	
 } // namespace skel_anim

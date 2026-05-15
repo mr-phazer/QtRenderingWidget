@@ -14,13 +14,15 @@ namespace rldx
 	/// </summary>
 	class DxMesh : public IDxResource, public IDrawable, public IBindable
 	{
-	public:
+		friend class ResourceManager;
+	
 		DxMesh()
+			: IDxResource(L"Asset:Mesh")
 		{
 			SetType(ResourceTypeEnum::Mesh);
 			SetTypeString(L"Resource:Mesh");
 		}
-
+	public:
 		/*	DxMesh(const std::wstring& meshName)
 			{
 				SetName(meshName);

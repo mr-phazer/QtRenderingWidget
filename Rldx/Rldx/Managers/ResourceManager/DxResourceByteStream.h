@@ -7,6 +7,7 @@ namespace rldx
 {
 	class DxResourceByteStream : public IDxResource
 	{
+		friend class ResourceManager;
 	public:
 		utils::ByteStream byteStream;
 	};

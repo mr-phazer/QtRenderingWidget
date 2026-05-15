@@ -14,6 +14,7 @@
 #include "DirectXTK\Inc\SpriteFont.h"
 
 #include "..\Controllers\QtRenderWidgetController.h"
+#include "..\Models\QtRenderWidgetModel.h"
 #include <d3d11.h>
 #include <Windows.h>
 #include <memory>
@@ -31,6 +32,8 @@ class QtRenderWidgetView : public QWidget, public Ui::QtRenderingViewWidgetClass
 	Q_OBJECT
 private:
 	QtRenderWidgetController* m_controller = nullptr; // 
+	QtRenderWidgetModel* m_model = nullptr; // 
+
 	rldx::DxSceneManager::UniquePtr m_upoSceneManager; // TODO: rename to DxSceneCotainer
 
 	QTimer* m_timer = nullptr;
@@ -49,7 +52,7 @@ private:
 	LRESULT WINAPI ForwardNativeWindowEvent(MSG* pMsg);
 
 public:
-	QtRenderWidgetView(QWidget* parent, const QString& gameidString);
+	QtRenderWidgetView(QWidget* parent, const QString& gameidString, CallBackFuncPtr callback);
 
 	~QtRenderWidgetView()
 	{
@@ -72,6 +75,7 @@ public:
 		m_upoSceneManager->SetRenderRunningState(true);
 	}
 
+	// TODO: code like does not belong in VIEW
 	void MakeScene()
 	{
 		// TODO: use abstract factor, based on incoming game ID

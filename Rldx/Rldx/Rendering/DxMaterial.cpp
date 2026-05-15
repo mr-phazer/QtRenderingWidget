@@ -7,9 +7,33 @@
 using namespace utils;
 using namespace rldx;
 
+std::wstring GetMaterialHashString(const std::vector<InputTextureElement>& textures)
+{
+	std::wstring materialHashString = L":MaterialHash:";
+	for (auto& tex : textures)
+	{
+		materialHashString +=
+			L"TypeId-" + std::to_wstring(tex.type) + L"/" + tex.path + L"\r";
+	}
+
+	return materialHashString;
+}
+
+std::wstring GetMaterialHashString(const std::vector<rmv2::TextureElement>& textures)
+{
+	std::wstring materialHashString = L":MaterialHash:";
+	for (auto& tex : textures)
+	{
+		materialHashString +=
+			L"TypeId-" + std::to_wstring(tex.textureType) + L"/" + ToWString(tex.texturePath) + L"\r";
+	}
+
+	return materialHashString;
+}
+
 DxMaterial* rldx::DxMaterial::Create(std::vector<rmv2::TextureElement>& textures, rldx::DxResourceManager& resourceManager)
 {
-	auto newMaterial = resourceManager.CreateResouce<DxMaterial>();
+	auto newMaterial = resourceManager.CreateResouce<DxMaterial>(GetMaterialHashString(textures));
 	newMaterial->InitWithDefaulTextures(resourceManager); // fill with default textures first, so if any texures are missing, the model will sill draw
 
 	newMaterial->SetTextures(DxDeviceManager::Device(), resourceManager, textures);
@@ -43,16 +67,20 @@ void rldx::DxMaterial::SetTextures(ID3D11Device* poDevice, rldx::DxResourceManag
 	}
 }
 
+
+
 DxMaterial* DxMaterial::Create(ID3D11Device* poDevice, DxResourceManager& resourceManager, const std::vector<InputTextureElement>& textures)
 {
-	auto newMaterial = resourceManager.CreateResouce<DxMaterial>();
+	// TODO: maybe unify hashmaterial, so that only ONE TextureElement type is neeeded
+
+	auto newMaterial = resourceManager.CreateResouce<DxMaterial>(GetMaterialHashString(textures));
 
 	for (auto& tex : textures)
 	{
 		newMaterial->AddTexture(poDevice, resourceManager, tex.type, tex.path);
 	};
 
-	return new DxMaterial();
+	return newMaterial;
 }
 
 inline bool IsDDSTextureFile(char* bin)
@@ -73,9 +101,7 @@ inline bool IsTextureCriticalForMaterial(const std::wstring& filePath)
 
 void DxMaterial::AddTexture(ID3D11Device* poDevice, DxResourceManager& resourceManager, UINT slot, const std::wstring& path)
 {
-	DxTexture* textPtr = nullptr;
-
-	textPtr = resourceManager.CreateResouce<DxTexture>();
+	auto textPtr = resourceManager.CreateResouce<DxTexture>(path);
 
 	logging::LogAction(L"DEBUG: attempting to get 1 file from CALLBACK: " + path);
 

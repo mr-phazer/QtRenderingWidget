@@ -30,16 +30,17 @@ namespace skel_anim
 	/// </summary>
 	class Skeleton : public rldx::IDxResource
 	{
+		friend class SkeletonCreator;
+
 		std::wstring m_skeletonName; // m_nodeName of the skeleton
 		FramePoseMatrices m_inverseBindPoseMatrices; // used to transform vertices from model space to bone space
 		FramePoseMatrices m_bindposeMatrices; // used to make the bind pose of the skeleton "stick figure", and others
 
 		std::vector<SkeletonBoneNode> boneTable; // linear array of bones, used in the m_animation system
 
-	public:
-		Skeleton() = default;
-		Skeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile);
-		static Skeleton* Create(const anim_file::AnimFile& inputFile, rldx::DxResourceManager& resourceManager); // constructor, calls SetBoneTable
+	public:			
+		// TODO: Is there a need for this?
+		Skeleton* Create(rldx::DxResourceManager& resourceManagerm, const anim_file::AnimFile& inputFile); // constructor, calls SetBoneTable
 
 		std::wstring GetName() const; // used to get the m_nodeName of the skeleton
 
@@ -55,6 +56,15 @@ namespace skel_anim
 		void SetBoneTable(const anim_file::AnimFile& inputFile); // used to fill the boneTable field
 		void AddChildren(); // used to fill the "children" field of of each bone
 		void FillBoneTable(const anim_file::AnimFile& inputFile);
+	private:
+		Skeleton(const std::wstring& name);		
 	};
+
+	class SkeletonCreator
+	{
+	public:
+		static Skeleton* CreateSkeleton(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& inputFile);
+	};
+
 
 } // namespace skel_anim

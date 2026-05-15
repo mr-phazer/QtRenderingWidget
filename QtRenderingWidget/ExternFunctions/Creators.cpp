@@ -1,111 +1,55 @@
 #include "Creators.h"
 
 #include <exception>
-
 #include <CommonLibs\Logger\Logger.h>
-
-#include <Rldx\Rldx\Creators\DxSceneCreator.h>
 
 #include <QtRenderingWidget\QtObjects\Views\QtRenderWidgetView.h>
 
 using namespace logging;
 using namespace utils;
 
-static void (*AssetFetchCallBackStored) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles) = nullptr;
 
 
-class CalllBackHelper
-{
-	void GetAssetsFromClient(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
-	void GetAssetFromDisk(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
-public:
-	void GetAssets(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
-	{
-		if (AssetFetchCallBackStored != nullptr) {
-			GetAssetsFromClient(missingFiles, outBinFiles);
-		}
-		else {
-			GetAssetFromDisk(missingFiles, outBinFiles);
-		}
-	}
-};
 
-void AssetFetchCallbackWrapper(
-	std::vector<std::wstring>* filesToFetch,
-	std::vector<std::vector<unsigned char>>* outputBinaryFiles
-) {
-	// If we don't have callback, use the old debug mode.
-	if (AssetFetchCallBackStored == nullptr) {
 
-		// force list to be same size, maybe redundant
-		outputBinaryFiles->clear();
-		
-
-		for (const std::wstring& assetPath : *filesToFetch) {
-
-			auto diskFilePath = (IsDiskFile(assetPath)) ? assetPath : rldx::DxResourceManager::GetGameAssetFolder() + assetPath;			
-			
-			ByteStream assetStream(diskFilePath, false);
-
-			if (!assetStream.IsValid())
-			{			
-				logging::LogWarning(L"Byte stream is not valid. Nothing added to outpout.");
-				continue;
-			}
-						
-			std::vector<unsigned char> assetBinaryBuffer = std::vector<unsigned char>(assetStream.GetBufferSize());
-			assetStream.Read(assetBinaryBuffer.data(), assetBinaryBuffer.size());
-
-			outputBinaryFiles->push_back(assetBinaryBuffer);
-		}
-	}
-	
-	// If we have callback, use it for getting the files.
-	else {
-
-		QList<QString> filesToFetchQt;
-		QList<QByteArray> outBinFilesQt;
-
-		for (const std::wstring& i : *filesToFetch) {
-			QString s = QString::fromWCharArray(i.c_str());
-			filesToFetchQt.push_back(s);
-		}
-
-		AssetFetchCallBackStored(&filesToFetchQt, &outBinFilesQt);
-	
-		filesToFetch->clear();
-
-		for (int i = 0; i < filesToFetchQt.count(); i++)
-		{
-			std::wstring s = filesToFetchQt.at(i).toStdWString();
-			filesToFetch->push_back(s);
-		}
-
-		for (int i = 0; i < outBinFilesQt.count(); i++)
-		{
-			auto item = outBinFilesQt.at(i);
-			std::vector<unsigned char> s(item.begin(), item.end());
-			outputBinaryFiles->push_back(s);
-		}	
-	}
-}
+//class CalllBackHelper
+//{
+//	void GetAssetsFromClient(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+//	void GetAssetFromDisk(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
+//public:
+//	void GetAssets(QList<QString>* missingFiles, QList<QByteArray>* outBinFiles)
+//	{
+//		AssetFetchCallBackFuncPtr* AssetFetchCallBackStored = nullptr; // TODO: maybe store it somewhere else? or pass it as parameter? or make this whole class static and store it in static variable?
+//
+//		if (AssetFetchCallBackStored != nullptr) {
+//			GetAssetsFromClient(missingFiles, outBinFiles);
+//		}
+//		else {
+//			GetAssetFromDisk(missingFiles, outBinFiles);
+//		}
+//	}
+//};
+//
 
 QWidget* CreateQRenderingWidget(
 	QWidget* parent,
 	QString* gameIdString,
-	void (*AssetFetchCallBack) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles),
+	CallBackFuncPtr assetFetchCallBack,
 	void (*AnimPathsBySkeletonCallBack) (QString* skeletonName, QList<QString>* out)
 )
 {
-	AssetFetchCallBackStored = AssetFetchCallBack;
+	
+	//setFetchCallBackStored = AssetFetchCallBack;
+	  
+	//szOID_RDN_TCG_PLATFORM_MODEL->
 
-	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallbackWrapper);
+//	rldx::DxResourceManager::SetAssetFetchCallback(AssetFetchCallbackWrapper);
 	//rldx::DxResourceManager::SetAnimPathsBySkeletonCallBack(AnimPathsBySkeletonCallBack);
 
 	QtRenderWidgetView* poNewRenderingWidget = nullptr;
 
 	try {
-		poNewRenderingWidget = new QtRenderWidgetView(parent, *gameIdString); // nullptr = no parent, free floating window			
+		poNewRenderingWidget = new QtRenderWidgetView(parent, *gameIdString, assetFetchCallBack); // nullptr = no parent, free floating window			
 		poNewRenderingWidget->hide();
 
 		poNewRenderingWidget->GetSceneManager()->GetResourceManager().SetGameIdSting(gameIdString->toStdWString()); // TODO: maybe ONLY store it here?		
@@ -126,6 +70,8 @@ QWidget* CreateQRenderingWidget(
 	poNewRenderingWidget->setWindowTitle("QtRenderingWidget");// "QRenderingWidget (testing, with various stuff in layout, for testin.");
 	poNewRenderingWidget->show();
 	poNewRenderingWidget->StartRendering();
+
+	
 
 	return poNewRenderingWidget;
 }

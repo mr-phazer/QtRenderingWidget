@@ -35,7 +35,7 @@ namespace rldx
 
 	void DxMeshNode::SetMeshData(DxResourceManager& resourceManager, const DxCommonMeshData& meshData, std::wstring meshName, sm::Matrix mWeaponMatrix)
 	{
-		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>();
+		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>(meshName);
 		m_meshData.poMesh = newMeshHandle;
 		m_meshData.poMesh->SetMeshData(meshData);
 		m_meshData.meshName = meshName;

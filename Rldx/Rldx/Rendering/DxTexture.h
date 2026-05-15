@@ -32,17 +32,21 @@ namespace rldx {
 	};
 
 	// TODO: make IBindable
-	class DxTexture : public IResizable, /*public IBindable, */public IDxResource
-	{
-		std::wstring m_fileName;
+	class DxTexture : public IResizable, /*public IBindable, */public IDxResource 
+	{ 
+		friend class ResourceManager;
 
-	public:
+		std::wstring m_fileName;
+		
+	
 		DxTexture()
+			: IDxResource(L"Asset:Texture")
 		{
 			SetType(ResourceTypeEnum::Texture);
 			SetTypeString(L"DxTexture");
 		}
-
+	
+	public:
 		/*	DxTexture(const std::wstring& name)
 			{
 				SetType(ResourceTypeEnum::Texture);

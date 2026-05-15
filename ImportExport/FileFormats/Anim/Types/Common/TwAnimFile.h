@@ -10,6 +10,7 @@
 
 namespace anim_file
 {
+	
 	struct AnimFile : IDataStructure
 	{
 		bool IsContentValid() override

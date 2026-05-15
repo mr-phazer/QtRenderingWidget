@@ -74,8 +74,8 @@ namespace rldx
 	void DxAmbientLightSource::SetTexturesFromMemory(ID3D11Device* poDevice, DxResourceManager& resourceManager, ByteStream& streamDiffuseMap,
 													 ByteStream& streamSpecularMap, ByteStream& pathLUT, UINT startSlotSRV)
 	{
-		m_poDiffuseMap = resourceManager.CreateResouce<DxTexture>();
-		m_poSpecularMap = resourceManager.CreateResouce<DxTexture>();
+		m_poDiffuseMap = resourceManager.CreateResouce<DxTexture>(L"DDS:CubeMap_Diffuse");
+		m_poSpecularMap = resourceManager.CreateResouce<DxTexture>(L"DDS:Cubemap_Specular");
 
 		// TODO: NOT USED BY CA SHADERS. Onlyt for other "brands"
 		// this is used in some shaders so find a way to condintionally load it in neat way

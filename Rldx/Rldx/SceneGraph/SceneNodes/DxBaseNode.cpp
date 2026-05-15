@@ -15,7 +15,7 @@ namespace rldx
 
 		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), node->NodeBoundingBox(), node->boundBoxRenderColor);
 
-		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>();
+		auto newMeshHandle = resourceManager.CreateResouce<DxMesh>(L"BoundingBoxMesh");
 
 		node->m_boundingBoxMesh.poMesh = newMeshHandle;
 		node->m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
@@ -52,7 +52,7 @@ namespace rldx
 
 		auto bbdMeshData = rldx::DxMeshCreatorHelper::MakeBoundingBoxMesh(rldx::DxDeviceManager::Device(), NodeBoundingBox(), boundBoxRenderColor);
 
-		auto newMeshHandle = resourcemanager.CreateResouce<DxMesh>();
+		auto newMeshHandle = resourcemanager.CreateResouce<DxMesh>(L"BoundingBoxMesh");
 		m_boundingBoxMesh.poMesh = newMeshHandle;
 		m_boundingBoxMesh.poMesh->SetMeshData(bbdMeshData);
 		m_boundingBoxMesh.poShaderProgram = DefaultShaderCreator::GetSimpleShaderProgram(resourcemanager);

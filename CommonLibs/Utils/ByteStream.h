@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-namespace utils {
 
+
+namespace utils {						
 	using ByteVector = std::vector<uint8_t>;
-
 
 	/// <summary>
 	/// Implementation of IByteStream that reads from memory

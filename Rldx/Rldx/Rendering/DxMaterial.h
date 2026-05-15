@@ -6,6 +6,7 @@
 
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\RigidModelFile.h"
 #include <CommonLibs\Utils\ByteStream.h>
+#include <CommonLibs\Utils\StrUtils.h>
 
 #include "..\..\..\DirectXTK\Inc\CommonStates.h"
 #include "..\..\..\ImportExport\FileFormats\RigidModel\Types\Common\TextureElement.h"
@@ -37,6 +38,8 @@ namespace rldx {
 	/// </summary>
 	class DxMaterial : public IDxResource, public IBindable
 	{
+		friend class ResourceManager;
+
 		IDxShaderProgram* m_pShaderProgram = nullptr;
 
 		std::map<TextureTypeEnum, RenderTextureElement> m_textures;
@@ -45,7 +48,9 @@ namespace rldx {
 		std::string m_pathHash; // TODO: All the texture paths conceated to able to compared materials with operator==
 
 	public:
-		DxMaterial() = default;
+		DxMaterial()
+			: IDxResource(L"Asset:Material") {}
+
 		virtual ~DxMaterial()
 		{
 			for (auto& tex : m_textures)
@@ -60,9 +65,8 @@ namespace rldx {
 
 		void InitWithDefaulTextures(rldx::DxResourceManager& resourceManager);
 		bool operator==(const DxMaterial& other) const;
-		void SetTextures(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::vector<rmv2::TextureElement>& inTex);
+		void SetTextures(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::vector<rmv2::TextureElement>& inTex);		
 
-		std::string& PathHash() { return m_pathHash; };
 		static DxMaterial* Create(ID3D11Device* poDevice, rldx::DxResourceManager& resourceManager, const std::vector<InputTextureElement>& textures =
 								  // TODO: "make sure, that the each 3 shaders have enough textureS to draw, no matter how many are missing, use deault textures"
 								  {
@@ -109,7 +113,13 @@ namespace rldx {
 
 		DxMaterial* Create(ID3D11Device* poDevice, DxResourceManager& resourceManager) override
 		{
-			auto newMaterial = resourceManager.CreateResouce<DxMaterial>();
+			std::wstring materialHashString = L"/MaterialHash/";
+			for (auto& tex : data->materialBlock.textureElements)
+			{
+				materialHashString += utils::ToWString(tex.texturePath) + L"\r";
+			}
+
+			auto newMaterial = resourceManager.CreateResouce<DxMaterial>(materialHashString);
 
 			newMaterial->InitWithDefaulTextures(resourceManager);
 
@@ -119,7 +129,7 @@ namespace rldx {
 				// TODO: clean up this "is material loaded right"-check
 				auto diskPath = utils::ToWString(tex.texturePath);
 				newMaterial->AddTexture(poDevice, resourceManager, tex.textureType, diskPath);
-				newMaterial->PathHash() += std::string(tex.texturePath);
+				
 			};
 
 			return newMaterial;

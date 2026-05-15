@@ -6,28 +6,57 @@
 using namespace rldx;
 using namespace logging;
 
+void rldx::DxSwapChain::ReleaseBackBuffer(ID3D11DeviceContext* poPC)
+{
+	HRESULT hr = S_OK;
+
+	// Release the render target view based on the back buffer:
+	//m_pRenderTarget.Reset();
+	m_BackBufferTexture->GetComPtrRenderTargetView().Reset();
+
+
+	// Release the back buffer itself:
+	//pBackBuffer.Reset();
+	m_BackBufferTexture->GetComPtrTexture().Reset();
+
+	// The depth stencil will need to be resized, so release it (and view):
+	//m_pDepthStencilView.Reset();
+	m_BackBufferTexture->GetComPtrDepthStencilView().Reset();
+
+	//m_pDepthStencil.Reset();
+	m_BackBufferTexture->GetComPtrDepthStencil().Reset();
+
+
+	// After releasing references to these resources, we need to call Flush() to 
+	// ensure that Direct3D also releases any references it might still have to
+	// the same resources - such as pipeline bindings.
+	poPC->Flush();
+}
+
 void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11DeviceContext* poPC)
 {
 	HRESULT hr = S_OK;
 
+	m_BackBufferTexture = std::make_unique<DxTexture>(L"DxSwapChain::BackBufferTexture");
+
 	hr = m_cpoSwapChain1->GetBuffer(
 		0,
 		__uuidof(ID3D11Texture2D),
-		(void**)&m_BackBufferTexture.GetComPtrTexture());
+		(void**)&m_BackBufferTexture->GetComPtrTexture());
 
 	hr = poDevice->CreateRenderTargetView(
-		m_BackBufferTexture.GetComPtrTexture().Get(),
+		m_BackBufferTexture->GetComPtrTexture().Get(),
 		nullptr,
-		m_BackBufferTexture.GetComPtrRenderTargetView().GetAddressOf()
+		m_BackBufferTexture->GetComPtrRenderTargetView().GetAddressOf()
 	);
 
-	m_BackBufferTexture.GetComPtrTexture()->GetDesc(&m_BackBufferTexture.GetDescriptionRef());
+	m_BackBufferTexture->GetComPtrTexture()->GetDesc(&m_BackBufferTexture->GetDescriptionRef());
 
 	// Create a depth-stencil view for use with 3D rendering if needed.
 	CD3D11_TEXTURE2D_DESC depthStencilDesc(
 		DXGI_FORMAT_D24_UNORM_S8_UINT,
-		static_cast<UINT> (m_BackBufferTexture.GetDescriptionRef().Width),
-		static_cast<UINT> (m_BackBufferTexture.GetDescriptionRef().Height),
+		static_cast<UINT> (m_BackBufferTexture->GetDescriptionRef().Width),
+		static_cast<UINT> (m_BackBufferTexture->GetDescriptionRef().Height),
 		1, // This depth stencil view has only one texture.
 		1, // Use a single mipmap level.
 		D3D11_BIND_DEPTH_STENCIL
@@ -38,22 +67,22 @@ void rldx::DxSwapChain::ConfigureBackBuffer(ID3D11Device* poDevice, ID3D11Device
 	poDevice->CreateTexture2D(
 		&depthStencilDesc,
 		nullptr,
-		&m_BackBufferTexture.GetComPtrDepthStencil()
+		&m_BackBufferTexture->GetComPtrDepthStencil()
 	);
 
 	CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
 
 	hr = poDevice->CreateDepthStencilView(
-		m_BackBufferTexture.GetComPtrDepthStencil().Get(),
+		m_BackBufferTexture->GetComPtrDepthStencil().Get(),
 		&depthStencilViewDesc,
-		&m_BackBufferTexture.GetComPtrDepthStencilView()
+		&m_BackBufferTexture->GetComPtrDepthStencilView()
 	);
 
 	ThrowAndLogIfAiled(L"Creating Depth Stencil", COMExceptionFormatMode::StandardLog, hr);
 
 	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
-	m_viewPort.Height = (float)m_BackBufferTexture.GetDescriptionRef().Height;
-	m_viewPort.Width = (float)m_BackBufferTexture.GetDescriptionRef().Width;
+	m_viewPort.Height = (float)m_BackBufferTexture->GetDescriptionRef().Height;
+	m_viewPort.Width = (float)m_BackBufferTexture->GetDescriptionRef().Width;
 	m_viewPort.MinDepth = 0;
 	m_viewPort.MaxDepth = 1;
 
@@ -99,15 +128,15 @@ DxSwapChain::Uptr rldx::DxSwapChain::CreateForHWND(ID3D11Device* poDevice, ID3D1
 
 	// Get swap chain's back buffer, Store it in texture class
 	// TODO: create its renderQuad target view and set that view as renderQuad target (in the texture class)
-	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture.GetTexture2D()), (void**)&poNew->m_BackBufferTexture.GetComPtrTexture());
+	hr = poNew->m_cpoSwapChain1->GetBuffer(0, __uuidof(*poNew->m_BackBufferTexture->GetTexture2D()), (void**)&poNew->m_BackBufferTexture->GetComPtrTexture());
 	ThrowAndLogIfAiled(L"m_pSwapChain1->GetBuffer().", COMExceptionFormatMode::StandardLog, hr);
 
 	//hr = m_cpoDevice->CreateRenderTargetView(po->m_oBackBuffer.getTexture(), nullptr, po->m_oBackBuffer.m_cpoRenderTargetView.ReleaseAndGetAddressOf());
-	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture.GetTexture2D(), nullptr, poNew->m_BackBufferTexture.GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
+	hr = poDevice->CreateRenderTargetView(poNew->m_BackBufferTexture->GetTexture2D(), nullptr, poNew->m_BackBufferTexture->GetComPtrRenderTargetView().ReleaseAndGetAddressOf());
 	ThrowAndLogIfAiled(L"CreateRenderTargetView()...", COMExceptionFormatMode::StandardLog, hr);
 
 	// -- create depth buffer
-	poNew->m_BackBufferTexture.InitDepthStencilView(poDevice, poNew->m_SwapChainDescription.Width, poNew->m_SwapChainDescription.Height);
+	poNew->m_BackBufferTexture->InitDepthStencilView(poDevice, poNew->m_SwapChainDescription.Width, poNew->m_SwapChainDescription.Height);
 
 	// -- make sure buffers are same size
 	poNew->Resize(poDevice, poDeviceContext, poNew->m_SwapChainDescription.Width, poNew->m_SwapChainDescription.Height);
@@ -138,7 +167,7 @@ void DxSwapChain::Present(ID3D11DeviceContext* poDXDeviceContext)
 
 void DxSwapChain::UpdateViewPort(ID3D11DeviceContext* _pDeviceContext)
 {
-	m_BackBufferTexture.GetTexture2D()->GetDesc(&m_textureDesc);
+	m_BackBufferTexture->GetTexture2D()->GetDesc(&m_textureDesc);
 
 	memset(&m_viewPort, 0, sizeof(D3D11_VIEWPORT));
 	m_viewPort.Height = (float)m_textureDesc.Height;

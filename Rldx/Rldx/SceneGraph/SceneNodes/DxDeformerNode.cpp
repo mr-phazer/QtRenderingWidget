@@ -68,18 +68,18 @@ namespace rldx
 	void DxDeformerNode::LoadAnimClip(rldx::DxResourceManager& resourceManager, std::wstring m_animFilePath)
 	{
 		// creates 1 animation from the 
-		skel_anim::AnimationCreator animCreateor(resourceManager, m_animFilePath, m_skeleton);
+		skel_anim::AnimationCreator animCreator(resourceManager, m_animFilePath, m_skeleton);
 
-		auto sourceSkeletonName = animCreateor.GetSkeletonName();
+		auto sourceSkeletonName = animCreator.GetSkeletonName();
 
 		if (CompareNoCase(L"rome_man_game", sourceSkeletonName))
 		{
 			// Performs a remap of the m_animation to the current skeleton, if needed
-			skel_anim::AnimationRemapper animRampper(resourceManager, sourceSkeletonName, m_skeleton.GetName());
-			*animCreateor.GetAnimation() = animRampper.RemapAnimation(*animCreateor.GetAnimation());
+			skel_anim::AnimationRemapper animRemapper(resourceManager, sourceSkeletonName, m_skeleton.GetName());
+			*animCreator.GetAnimation() = animRemapper.RemapAnimation(*animCreator.GetAnimation());
 		}
 
-		m_animQueue.AddAnimation(animCreateor.GetAnimation());
+		m_animQueue.AddAnimation(animCreator.GetAnimation());
 	}
 
 

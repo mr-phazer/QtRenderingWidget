@@ -171,11 +171,10 @@ namespace rldx
 	bool DxTexture::CreateBuffers(ID3D11Device* poD3DDevice, UINT width, UINT height, DXGI_FORMAT format, UINT sampleCount, const std::string& objectName)
 	{
 		HRESULT hr = S_OK;
-
+		
 		Create2dTextureBuffer(poD3DDevice, width, height, format, sampleCount);
 		CreateRenderTargetViewBuffer(poD3DDevice);
 		CreateShaderResourceViewBuffer(poD3DDevice);
-
 
 		return true;
 	}
@@ -246,12 +245,12 @@ namespace rldx
 	{
 		auto bytesTexture = rldx::DxResourceManager::GetFile(path);
 
-		auto textPtr = resourcemanager.CreateResouce<DxTexture>();
+		auto textPtr = resourcemanager.CreateResouce<DxTexture>(path);
 		textPtr->LoadFileFromMemory(rldx::DxDeviceManager::Device(), bytesTexture.GetBufferPtr(), bytesTexture.GetBufferSize(), path);
 
 		textPtr->m_fileName = path;
-
 		return textPtr;
+
 	}
 
 	void DxTexture::Resize(ID3D11Device* poDevice, ID3D11DeviceContext* poDeviceContext, unsigned int width, unsigned int height)

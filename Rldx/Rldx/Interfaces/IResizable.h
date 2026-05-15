@@ -4,7 +4,7 @@
 namespace rldx 
 {
 	/// <summary>
-	/// Interface for buffer that needs to be resized when the window changes size
+	/// Interface for d3d11 resizable 2d resurce
 	/// </summary>
 	class IResizable
 	{

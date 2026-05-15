@@ -1,3 +1,5 @@
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING // TODO: Correct, so this is not needed
+
 #include <algorithm>
 #include <codecvt>
 #include <cwctype>
@@ -6,6 +8,7 @@
 #include "StrUtils.h"
 
 namespace utils {
+
 
 	//---------------------------------------------------------------------//
 	// Functions for string conversion

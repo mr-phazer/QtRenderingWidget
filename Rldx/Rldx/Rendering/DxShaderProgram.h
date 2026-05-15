@@ -73,7 +73,7 @@ namespace rldx {
 				return nullptr;
 			}
 
-			auto newShaderPtr = resourceManager.CreateResouce<SHADER_TYPE>();
+			auto newShaderPtr = resourceManager.CreateResouce<SHADER_TYPE>(vertexShaderPath);
 
 			if (!vertexShaderPath.empty())
 			{
@@ -122,6 +122,7 @@ namespace rldx {
 	// TODO: CLEAN UP!
 	class DxMeshShaderProgram : public TDxShaderProgram<VS_PerMesh_ConstBuffer, PS_PerMesh_ConstBuffer>
 	{
+		friend class ResourceManager;
 	public:
 		/*virtual void Create(ID3D11Device* poDevice, std::wstring vertexShaderPath, std::wstring pixelShaderPath)
 		{

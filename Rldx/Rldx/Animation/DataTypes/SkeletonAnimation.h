@@ -25,6 +25,7 @@ namespace skel_anim
 	{
 		SkeletonAnimation() = default;
 		SkeletonAnimation(const std::wstring& name)
+			: IDxResource(name)
 
 			// TODO: corred back if IDxResource gets a new constructor
 			// :
@@ -38,9 +39,13 @@ namespace skel_anim
 		float lastKeyTime = 0.0f;
 		float keyEndTime = 0.0f;
 		float keysPerSecond = 0.0f;
+	};	
 
+
+	class AnimationLoader
+	{
 	public:
-		static SkeletonAnimation* CreateFromAnimFile(rldx::DxResourceManager& resoureceMangager, const anim_file::AnimFile& inAnimFile);
-
+		static SkeletonAnimation* CreateFromAnimFile(rldx::DxResourceManager & resoureceMangager, const anim_file::AnimFile & inAnimFile);
 	};
-} // namespace skel_anim
+
+}; // namespace skel_anim

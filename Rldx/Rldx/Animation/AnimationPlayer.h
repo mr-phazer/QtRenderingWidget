@@ -58,7 +58,7 @@ namespace skel_anim
 		// TODO: rename, to "Load"/similar, "set" sounds like the input only need to be copied
 		void SetAnimation(rldx::DxResourceManager& resourceManager, const anim_file::AnimFile& animFile)
 		{
-			auto m_animation = SkeletonAnimation::CreateFromAnimFile(resourceManager, animFile);
+			auto m_animation = AnimationLoader::CreateFromAnimFile(resourceManager, animFile);
 			m_animationSamplers->SetAnimation(m_animation);
 		}
 

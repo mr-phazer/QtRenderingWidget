@@ -19,17 +19,16 @@
 #include <CommonLibs\Utils\ByteStream.h>
 #include <CommonLibs\Utils\IOUtils.h>
 
+#include <Rldx/Rldx/Managers/CommonTypes.h>
+
 namespace rldx {
 
-	typedef void (*AssetFetchCallbackWrapper) (
-		std::vector<std::wstring>* filesToFetch,
-		std::vector<std::vector<unsigned char>>* outBinFiles
-	);
+	
 
 	class DxResourceManager
 	{
-		// TODO: use shared_ptr<T> to avoid having to manage the lifetime of the resources, and also to avoid having to worry about dangling pointers, and also to allow for easy sharing of resources between different parts of the code (like different scenes, etc)
-		std::map<uint32_t, std::unique_ptr<rldx::IDxResource>> m_umapResources;
+		// TODO: MAYBE use shared_ptr<T> to avoid having to manage the lifetime of the resources, and also to avoid having to worry about dangling pointers, and also to allow for easy sharing of resources between different parts of the code (like different scenes, etc)
+		std::map<IntId, std::unique_ptr<rldx::IDxResource>> m_umapResources;
 
 		// TODO: Does this belong here? Maybe move to a separate class? Like a "FileLoader" class? Alongside with "GetFile"?
 		static std::wstring sm_rooPathAssetPath;// = LR"(c:/temp/)";
@@ -42,7 +41,7 @@ namespace rldx {
 		std::wstring GetGameIdString() const { return m_gameIdString; }
 
 		template<typename Derived_t>
-		Derived_t* CreateResouce();
+		Derived_t* CreateResouce(const std::wstring& resourceName);
 
 		template <typename T>
 		void DestroyResource(T* poResource);
@@ -71,15 +70,18 @@ namespace rldx {
 	};
 
 	template<typename Derived_t>
-	inline Derived_t* DxResourceManager::CreateResouce()
+	inline Derived_t* DxResourceManager::CreateResouce(const std::wstring& resourceName)
 	{
 		static_assert(std::is_base_of<IDxResource, Derived_t>::value, "Error: 'Derived_t' is not derived from `IDxResource`");
+		
+		std::filesystem::path path(resourceName);
+		auto hashIntId = std::filesystem::hash_value(path);	
 
-		auto upoNewResource = std::make_unique<Derived_t>();
+		auto upoNewResource = std::make_unique<Derived_t>(resourceName);
 		auto poRawResource = upoNewResource.get();
 
 		// TODO: maybe change this, so the id used it not from the resourece, in case it is changed/not set
-		auto resourceid = poRawResource->GetId();
+		auto resourceid = hashIntId;
 
 		if (m_umapResources.find(resourceid) != m_umapResources.end()) {
 			throw std::exception("FATAL Error: Resource with id already exists");

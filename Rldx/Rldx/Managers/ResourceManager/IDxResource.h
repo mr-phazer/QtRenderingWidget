@@ -1,7 +1,11 @@
 #pragma once
 
+#include <filesystem>
+
 #include "..\..\Interfaces\TIdentifiable.h"
 #include <CommonLibs/Logger/Logger.h>
+
+namespace fs = std::filesystem;
 
 namespace rldx {
 
@@ -19,20 +23,21 @@ namespace rldx {
 	};
 
 	class IDxResource : public TIdentifiable<ResourceTypeEnum>
-	{
+	{		
 	public:
-		IDxResource()
+	//protected:
+		IDxResource(const std::wstring& name)
 		{
 			SetType(ResourceTypeEnum::NOT_SET);
 			SetTypeString(L"IDxResouce:Base");
-			SetName(L"Unnamed");
+			SetName(name == L"" ? GetIdString() : name);
 		}
 
-		IDxResource(ResourceTypeEnum type, const std::wstring& typeString, const std::wstring& name)
+		/*IDxResource(ResourceTypeEnum type, const std::wstring& typeString, const std::wstring& name)
 		{
 			SetType(type);
 			SetTypeString(typeString);
 			SetName(name);
-		}
+		}		*/
 	};
 }; // namespce rldx

@@ -4,7 +4,7 @@
 
 namespace rldx {
 
-	using IntId = uint32_t;
+	using IntId = size_t;
 	static const IntId INVALID_ID = ~static_cast<IntId>(0);
 
 
@@ -19,10 +19,10 @@ namespace rldx {
 	class IdentifiableBase
 	{
 	public:
-		IdentifiableBase() : m_id(UniqueIdGenerator::GetNextId()) {}
-		virtual ~IdentifiableBase() {};
+		IdentifiableBase() : m_id(UniqueIdGenerator::GetNextId()) { DecreaseCounter(); }
+		virtual ~IdentifiableBase() { DecreaseCounter(); };
 
-		IntId GetId() const { return m_id; }
+		IntId GetId() const { return m_id; }		
 
 		/// <summary>
 		/// Manually set id. Only use if you know what you are doing.
@@ -31,10 +31,13 @@ namespace rldx {
 
 	private: // in C++ is convention so seperate method from variable with and access modifier
 		static IntId GetNextId() { return sm_nextId++; }
+		static void IncreaseCounter() { sm_counter++; }
+		static void DecreaseCounter() { sm_counter--; }
 
 	private:
 		IntId m_id = INVALID_ID;
 		static IntId sm_nextId;
+		static IntId sm_counter;
 	};
 
 
@@ -63,7 +66,7 @@ namespace rldx {
 
 	private:
 		std::wstring m_name = L"no_name";
-		std::wstring m_typeString = L"Tntifiable<T>";
+		std::wstring m_typeString = L"TIdentifiable<T>";
 		KEY_TYPE m_nodeType;
 	};
 

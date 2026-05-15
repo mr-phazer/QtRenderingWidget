@@ -1,6 +1,11 @@
 #pragma once
 
 #include <QtWidgets/qwidget.h>
+#include <QtCore/qstring.h>
+#include <QtCore/qlist.h>
+#include <QtCore/qbytearray.h>
+
+typedef void (*CallBackFuncPtr) (QList<QString>* missingFiles, QList<QByteArray>* outBinFiles);
 
 /// <summary>
 /// Widget Creation, call the method to get a new Widget
